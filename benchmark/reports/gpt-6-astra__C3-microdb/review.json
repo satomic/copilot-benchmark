@@ -1,0 +1,45 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "null_logic_centralised": {
+  "maxPoints": 5,
+  "criterion": "三值逻辑与 NULL 规则集中在 value.py，WHERE / 聚合 / 排序三处都复用它，没有各自重写一套 NULL 判断",
+  "points": 5,
+  "verdict": "完全符合：五者中复用面最广，三个下游模块都调用共享原语",
+  "reasoning": "value.py 定义全部 7 个原语，executor.py:9 一次性导入 and_、arith、compare_eq、compare_lt、is_numeric、logical 等，expr.py 与 aggregate.py 同样复用。静态测量显示有 3 个下游模块调用这些原语，是五者中最多的（Sonnet、Opus、Fable 各 2，Haiku 1），也就是说排序、聚合、条件求值三条路径都没有自己另写一套 NULL 判断。它还额外抽出了一个 logical 辅助，把需要布尔值的位置统一转成三值，这正是规格第 8 节第 2 条要求的行为（非布尔条件必须报 TypeMismatchError），而不是在每个用到条件的地方各判一次。全部 87 项三值与比较与算术测试、27 项排序、31 项聚合测试全过，包括 DESC 下 NULL 仍在最后、排序稳定、分组里 NULL 相等而比较运算下不相等这三条最易写反的规则。",
+  "evidence": [
+   "value.py 定义 7 个原语",
+   "executor.py:9 一次性导入 and_、arith、compare_eq、compare_lt、is_numeric、logical",
+   "静态测量：3 个下游模块调用共享原语，五者最多",
+   "抽出 logical 辅助统一把条件位置转成三值",
+   "三值 21、比较 32、算术 34、排序 27、聚合 31 项全过"
+  ]
+ },
+ "explicit_stage_order": {
+  "maxPoints": 4,
+  "criterion": "执行阶段顺序由 planner 显式表达为数据（可枚举的阶段序列），executor 按该顺序执行，不在控制流里隐式重排",
+  "points": 4,
+  "verdict": "完全符合：executor 只有三行，遍历计划并按阶段名查表调用",
+  "reasoning": "execute_plan（executor.py:276-281）实质只有两行：for stage in plan 然后 execution.run_stage(stage.name)。阶段名到动作的映射集中在 run_stage 内的一张字典（executor.py:257-265），FROM、JOIN、GROUP BY、AGGREGATE、SELECT、DISTINCT、ORDER BY 都在表里，WHERE、HAVING、LIMIT、OFFSET 走少数需要额外参数的分支。executor 里不存在任何关于阶段先后的判断，顺序完全由 planner 生成的序列决定。它把阶段名直接用成 SQL 子句名（GROUP BY、ORDER BY 带空格），可读性好，我的套件按角色归一化后一致通过。11 项计划测试全过，且它是五者中唯一同时给出独立 GROUP BY 与 AGGREGATE 两个阶段的实现，粒度与规格第 8 节列的九个步骤最接近。",
+  "evidence": [
+   "executor.py:276-281 execute_plan 仅遍历计划并 run_stage(stage.name)",
+   "executor.py:257-265 阶段名到动作的字典，executor 内无先后判断",
+   "阶段名直接采用 SQL 子句名",
+   "五者中唯一给出独立 GROUP BY 与 AGGREGATE 两个阶段，粒度最贴近规格第 8 节",
+   "11 项计划测试全过"
+  ]
+ },
+ "name_resolution_single_point": {
+  "maxPoints": 3,
+  "criterion": "名称解析（限定名、非限定名、别名优先、歧义报错）集中在一处，不是在投影与排序里各判一次",
+  "points": 3,
+  "verdict": "完全符合：输入列与输出列各有一个解析点，职责划分清楚",
+  "reasoning": "executor.py:39 的 _resolve 是输入列的唯一解析入口，把 Ref 绑定成 BoundRef，限定名、非限定名与歧义都在其中判定，AmbiguousColumnError 从第 49 行抛出。输出列（ORDER BY 引用投影别名）另有一个解析点，在第 80 行对输出名的歧义抛 AmbiguousColumnError。这不是重复判定而是两个不同的命名空间：规格第 8 节第 3 条与 8.3 节第 5 条明确区分了输入列作用域与输出别名作用域，WHERE 只能看前者、ORDER BY 优先看后者，所以为两者各设一个解析点是对规格结构的直接映射，而不是同一件事判了两次。判据要防的是投影与排序各自重复实现同一套解析，这里没有发生：投影与排序都走这两个入口，没有第三处。相关测试全过：test_ambiguous_column、test_unknown_column、test_unknown_table_in_reference、test_unqualified_unique_column_resolves、test_where_cannot_see_alias、test_order_by_alias_shadows_input_column。",
+  "evidence": [
+   "executor.py:39 _resolve 为输入列唯一解析入口，第 49 行抛 AmbiguousColumnError",
+   "executor.py:80 输出列命名空间的歧义单独判定，对应规格 8.3 节第 5 条",
+   "两个解析点对应两个不同命名空间，非重复实现",
+   "投影与排序均走这两个入口，无第三处",
+   "歧义与未知列与未知表与别名遮蔽相关测试全过"
+  ]
+ }
+}

@@ -1,0 +1,27 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "layering": {
+    "maxPoints": 6,
+    "criterion": "key 解析 / 值解引号 / 转义展开分成独立的辅助函数，主循环可读",
+    "points": 2,
+    "verdict": "不符合：全部内联在单个 65 行函数里，是五者中最长的 parse_env",
+    "reasoning": "判据点名的三件事（key 解析 / 值解引号 / 转义展开）**无一抽出**，全部内联在 envparse.py:4 的 parse_env 内，该函数共 **65 行**，超出本任务 45 行上限，已触发自动长度检查扣分。五个模型的对比很清楚：Fable 抽了 5 个辅助函数（6/6）、Opus 与 Sonnet 各抽 3 个（5/6）、Astra 零个但函数只有 37 行（2/6）、Haiku 零个且函数 65 行。给 2 分而非更低的理由：与 Astra 同为『零抽出』，为保持判据尺度一致给同样的基础分；函数更长这一点已由 bounded_function_length 单独扣分，不在此重复计。",
+    "evidence": [
+      "envparse.py:4 parse_env() 65 行，模块内零辅助函数",
+      "超出 45 行上限（自动检查已扣 1/4）",
+      "对比：Fable 5 个辅助函数、Opus/Sonnet 各 3 个、Astra 0 个但仅 37 行"
+    ]
+  },
+  "escape_single_pass": {
+    "maxPoints": 5,
+    "criterion": "转义用单次左到右扫描或查表，不是链式 .replace()（链式会引入顺序 bug）",
+    "points": 5,
+    "verdict": "符合：单次扫描，无 replace 链",
+    "reasoning": "转义展开是单次左到右扫描，未使用链式 .replace()，因此不存在『先展 \\n 再展 \\\\』的顺序 bug —— 隐藏测试里未知转义 'a\\qb' 与双反斜杠 'a\\\\b' 两例都通过。单引号字面量不做转义、未知转义两字符原样保留这两条规格细节也都正确 —— 五个模型在本项全部满分，说明这条判据已无区分度。",
+    "evidence": [
+      "转义为单次扫描，全文无 .replace(",
+      "隐藏测试未知转义与双反斜杠两例通过",
+      "单引号字面量未做转义展开"
+    ]
+  }
+}

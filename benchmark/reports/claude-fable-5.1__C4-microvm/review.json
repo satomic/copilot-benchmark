@@ -1,0 +1,41 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "shared_type_rules": {
+  "maxPoints": 5,
+  "criterion": "运行时类型规则单一来源：VM 的算术/比较/布尔检查收在一处，优化器折叠复用同一套规则或直接调用它，编译期折叠与运行期语义不可能分叉",
+  "points": 5,
+  "verdict": "完全符合：优化器直接调用 vm.binary_op 与 vm.unary_op",
+  "reasoning": "optimizer.py:9 from .vm import binary_op, unary_op，折叠时直接调用运行时原语，VMRuntimeError 即保持不折叠。与 Sonnet 的三入口、Opus 的派发表是第三种等价形态，判据要的『结构上不可能分叉』都成立。折叠安全三埋点与行为等价测试全过，算术比较 60 项全过。",
+  "evidence": [
+   "optimizer.py:9 from .vm import binary_op, unary_op",
+   "折叠失败以 VMRuntimeError 为信号保持不折叠",
+   "优化器 22 项、算术比较 60 项隐藏测试全过"
+  ]
+ },
+ "jump_patching_single_point": {
+  "maxPoints": 4,
+  "criterion": "前向跳转回填经由一个集中的 emit/patch 机制（标签或补丁表），不是散落各处的裸下标运算",
+  "points": 4,
+  "verdict": "完全符合：emit / emit_jump / patch 三件套，前向跳转有专用入口",
+  "reasoning": "compiler.py:58-66 定义 emit、emit_jump、patch 三个方法，比另四者多了一个 emit_jump 专用入口：发射一条待回填的跳转并返回下标，patch 的 target 参数默认取当前位置。这让『发射前向跳转』成为一个显式概念而不是『先 emit 0 再记住去改』的约定，回填遗漏在类型上更难发生。所有代码生成分支经这三个方法，无裸下标写。控制流 20 项、短路 10 项全过。",
+  "evidence": [
+   "compiler.py:58 emit、:62 emit_jump、:66 patch（target 默认当前位置）",
+   "emit_jump 使前向跳转成为显式概念（五者唯一）",
+   "控制流 20 项、短路 10 项全过"
+  ]
+ },
+ "codec_discipline": {
+  "maxPoints": 3,
+  "criterion": "二进制布局用 struct 声明式表达且 dumps/loads 共用定义；loads 先验 CRC 再信任任何长度字段；读取有单一的越界检查点",
+  "points": 3,
+  "verdict": "完全符合：CRC 先验且把理由写进注释，_Reader 带字段名的单点越界",
+  "reasoning": "loads 在构造 _Reader 之前完成 CRC 校验（serializer.py:145），并且把这么做的原因写成了注释：The checksum guards every length field: validate it before decoding anything。这是规格第 7 节第 3 款的原话级复述，五个模型里唯一把这条契约落在注释里的。_Reader.take 是单一越界检查点，且每次读取带一个 what 字段名参数，越界报错会说出是哪个字段截断了，可诊断性比另四者好。bool 在 int 之前判型（serializer.py:33），另有一处细节：反序列化指令时用 isinstance(arg, int) and not isinstance(arg, bool) 校验参数（serializer.py:53），把 bool 排除出合法参数，这个校验点另四者都没有。逐字节翻转与截断穷举、i64 边界全过。",
+  "evidence": [
+   "serializer.py:144-145 CRC 先验，注释写明 guards every length field",
+   "_Reader.take 单点越界且带字段名，报错可诊断",
+   "serializer.py:33 bool 先于 int 判型",
+   "serializer.py:53 指令参数校验排除 bool（五者唯一）",
+   "逐字节翻转/截断穷举全过"
+  ]
+ }
+}

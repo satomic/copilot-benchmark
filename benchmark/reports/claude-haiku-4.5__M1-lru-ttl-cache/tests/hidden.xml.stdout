@@ -1,0 +1,11 @@
+............................................F                            [100%]
+================================== FAILURES ===================================
+____________________________ test_hot_path_scales _____________________________
+_verify\test_m1.py:410: in test_hot_path_scales
+    assert large < small * 5 + 5e-6, (
+E   AssertionError: per-op cost grew from 2.135e-05s to 4.183e-04s — hot path looks O(n)
+E   assert 0.0004182563000009395 < ((2.135333999758586e-05 * 5) + 5e-06)
+- generated xml file: C:\workspace\13_benchmark\GPT-6 in Coding\benchmark\reports\claude-haiku-4.5__M1-lru-ttl-cache\tests\hidden.xml -
+=========================== short test summary info ===========================
+FAILED _verify/test_m1.py::test_hot_path_scales - AssertionError: per-op cost...
+1 failed, 44 passed in 11.66s

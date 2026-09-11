@@ -1,0 +1,47 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "grammar_correspondence": {
+    "maxPoints": 5,
+    "criterion": "递归下降的函数与 task.md 的文法层级一一对应，命名可读，无手工回溯",
+    "points": 5,
+    "verdict": "完全符合，且方法名与 task.md 的产生式名逐字一致（四者中最贴合）",
+    "reasoning": "task.md 的文法产生式名是 expr / or_expr / and_expr / not_expr / comparison / additive / multiplicative / unary / power / primary。_Parser 的方法名**逐字采用**了这些名字：expr(102) / or_expr(105) / and_expr(113) / not_expr(121) / comparison(127) / additive(139) / multiplicative(147) / unary(155) / power(161) / primary(169)。对比另三个模型：sonnet 与 opus 用 parse_ 前缀（parse_or / parse_and…），astra 把顶层叫 expression。都可读，但只有 Fable 做到与规格文本逐字对应 —— 读代码时可以直接拿 task.md 的文法当索引。结合性全部落实：or_expr / and_expr / additive / multiplicative 用 while 左结合；power(161-167) 右侧递归 unary 实现右结合并支持 `2 ^ -1`；unary(155-159) 递归自身支持 `- - 3`。comparison(127-137) 用 11 行显式拒绝链式比较（`1 < 2 < 3` → ParseError）。另有 parse(93-100) 负责『表达式后必须到输入末尾』的收口（规格第 15 条），与 opus 同样把这件事独立开。无手工回溯：_peek(64) / _advance(71) / _at_op(76) / _at_keyword(80) / _expect_op(84) 五个单 token 前瞻辅助，加 _position(67) 统一取位置，没有保存/恢复位置的 backtrack。隐藏套件 20 项优先级/结合性用例全过，含 `-2 ^ 2 == -4` 与 `2 ^ 3 ^ 2 == 512`。",
+    "evidence": [
+      "parser.py:102-200 十个方法名与 task.md 产生式名逐字一致",
+      "parser.py:161-167 power 右递归 unary",
+      "parser.py:127-137 comparison 显式拒绝链式比较",
+      "parser.py:93-100 parse 独立处理尾部输入收口",
+      "parser.py:64-89 六个单 token 辅助，无回溯"
+    ]
+  },
+  "named_ast": {
+    "maxPoints": 4,
+    "criterion": "AST 用具名节点（dataclass / NamedTuple / 类），不是裸 tuple 或 dict",
+    "points": 4,
+    "verdict": "完全符合，且是四者中位置字段设计最好的：frozen dataclass 继承链把 position 做成不可省的基类字段",
+    "reasoning": "parser.py:9-50 定义 `@dataclass(frozen=True) class Node` 只含 `position: int`，然后 7 个子类 Number / String / Boolean / Variable / Call / Unary / Binary **全部继承 Node**，各自追加自己的字段。无任何裸 tuple 或 dict。**这是四个模型里位置信息处理最好的设计**：把 position 放在基类，dataclass 继承会让它成为每个子类构造函数的**第一个必填参数** —— 位置不是『可以顺手加上的额外字段』，而是**结构上不可省略**。对比：sonnet 在 10 个各自独立的 dataclass 上分别写了一遍 position（可能漏）；opus 用 Node 基类的 __slots__ 达到类似效果；**astra 干脆没有 position** —— 而这个设计差异直接决定了 error_consistency 一项的结果（见下）。frozen=True 让 AST 不可变且可哈希；`Call.args: tuple[Node, ...]` 用不可变元组与 frozen 一致。字段类型标注完整，`Unary.op` 还带注释说明取值范围（`# \"-\" or \"not\"`）。节点数 7 个，介于 sonnet 的 10 与 astra 的 5 之间：Number/String/Boolean 分开而 Unary/Binary 合并。隐藏测试 test_parse_does_not_evaluate 通过。",
+    "evidence": [
+      "parser.py:9-11 Node 基类 frozen dataclass，只含 position: int",
+      "parser.py:14-50 七个子类全部继承 Node，position 成为不可省的第一个构造参数",
+      "parser.py:37 Call.args 用 tuple 与 frozen 一致",
+      "parser.py:42 Unary.op 带取值范围注释",
+      "隐藏测试 test_parse_does_not_evaluate 通过"
+    ]
+  },
+  "error_consistency": {
+    "maxPoints": 3,
+    "criterion": "三类错误消息风格一致且带位置信息，没有 except Exception 吞异常",
+    "points": 3,
+    "verdict": "完全符合，四个模型中唯一满分：EvalError 也带位置，风格统一，无吞异常",
+    "reasoning": "① 异常层次与 str() 语义 —— errors.py:4-29 MiniLangError 带 message 与 position，`__str__`(16-17) 返回 plain message（规格第 29 条），docstring 明确写了这两条契约；三个子类各有自己的 docstring 说明触发场景。② 无吞异常 —— 自动检查 no_broad_except 通过。③ **带位置信息 —— 这是四个模型里唯一做到的。** evaluator.py 共 17 处 raise EvalError，其中 **11 处显式传了 `node.position`**（如第 55 行 `raise EvalError(f\"undefined variable: {node.name}\", node.position)`、第 70 行的 undefined function、第 86 行的 unknown unary operator 等）。剩余几处在 builtins.py 里 —— 那里拿不到 AST 节点，位置为 None 是合理的，而规格第 28 条也只要求 LexError/ParseError 必须有位置。**对照另三个模型**：sonnet 的 AST 每个节点都有 position 但 24 处 raise 无一传递，其 errors.py docstring 还写着『EvalError 发生在解析之后，所以没有位置可用』（与自身设计矛盾）；opus 同样一处未传（`grep EvalError(.*position` 为空）；astra 是结构性缺失（AST 根本没有 position 字段）。三者本项均为 2/3，Fable 是唯一的 3/3。这一分的根源在 named_ast 那条：把 position 做成基类必填字段之后，evaluator 里每个 node 都必然有位置可用，传与不传的成本差别只是多打一个参数 —— **好的数据结构设计让正确的事变成顺手的事**，这是本次基准里最清晰的一个因果链。",
+    "evidence": [
+      "errors.py:4-17 MiniLangError 带 position，__str__ 返回 plain message，docstring 写明契约",
+      "evaluator.py 共 17 处 raise EvalError，11 处传 node.position",
+      "evaluator.py:55 undefined variable 带 node.position",
+      "evaluator.py:70 undefined function 带 node.position",
+      "evaluator.py:86 unknown unary operator 带 node.position",
+      "builtins.py 内无位置属合理（拿不到 AST 节点，规格第 28 条不要求）",
+      "四个模型中唯一在本项拿满分"
+    ]
+  }
+}

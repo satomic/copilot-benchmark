@@ -1,0 +1,45 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "null_logic_centralised": {
+  "maxPoints": 5,
+  "criterion": "三值逻辑与 NULL 规则集中在 value.py，WHERE / 聚合 / 排序三处都复用它，没有各自重写一套 NULL 判断",
+  "points": 5,
+  "verdict": "完全符合：全部原语在 value.py，下游一律通过带别名的模块引用调用",
+  "reasoning": "value.py 定义了全部 7 个原语，下游模块用 from microdb import value as V（expr.py:5）再以 V.and_ 与 V.compare_eq 的形式调用。用带别名的模块引用而不是逐个名字导入是个更强的写法：调用点上永远看得见这些语义来自哪个模块，也不可能出现某个模块偷偷定义同名局部函数把共享实现遮蔽掉。expr.py 负责 WHERE 与投影、aggregate.py 负责聚合、executor.py 负责排序，三处都走同一套原语，正是判据要的三处复用。全部 87 项三值与比较与算术测试、以及依赖它们的排序 27 项与聚合 31 项测试全过，包括最容易分叉的两条：DESC 下 NULL 仍在最后，以及分组与 DISTINCT 里 NULL 等于 NULL 而比较运算下不等。记一个我自己踩过的坑：静态探针最初只匹配 from .value import 这一种写法，把这种模块别名引用误判成没有复用 value.py，是探针的缺陷，已改为统计对原语的实际调用，见报告第 7 节 e。",
+  "evidence": [
+   "expr.py:5 from microdb import value as V，调用点均为 V 前缀",
+   "expr.py 与 aggregate.py 与 executor.py 三处共用同一套原语",
+   "三值 21 项、比较 32 项、算术 34 项全过",
+   "排序 27 项全过，含 DESC 下 NULL 仍最后与稳定性",
+   "分组 NULL 相等与比较运算下不相等两条并存且都正确"
+  ]
+ },
+ "explicit_stage_order": {
+  "maxPoints": 4,
+  "criterion": "执行阶段顺序由 planner 显式表达为数据（可枚举的阶段序列），executor 按该顺序执行，不在控制流里隐式重排",
+  "points": 2,
+  "verdict": "部分符合：计划本身完全正确，但 executor 不遍历它，顺序仍写在控制流里",
+  "reasoning": "前半截做得很好：planner.py:81-95 依次追加命名阶段，生成一个可枚举的序列，阶段命名直接采用 SQL 子句名（from、join、where、group_by、having、select、distinct、order_by、limit），比我参考实现的 scan、filter、project 更贴近规格用语，11 项计划测试全过。扣 2 分是因为后半截没有兑现：execute_plan（executor.py:193-211）并不遍历这个序列。它取 plan.query，然后用一串硬编码的控制流跑完整个流水线，先 _build_from，再 if query.where，再 if grouping_active，再 if query.distinct，再 if query.order_by，最后 _apply_offset_limit，全程只在第 199 行看了计划一眼，用一个 any 表达式判断是否分组。也就是说阶段序列是一份咨询性质的描述，真正决定执行顺序的仍然是 executor 的 if 阶梯。判据的原话是 executor 按该顺序执行不在控制流里隐式重排，这一条没有达到。对比 Opus 与 Fable 都用按阶段类型查表的分派，执行顺序完全由计划决定，加一个阶段不需要改 executor。实际风险不是假设的：计划与执行是两份独立表达的顺序，两者可以不一致而所有测试仍然通过，因为没有任何东西强制它们对齐。",
+  "evidence": [
+   "planner.py:81-95 依次 append 命名阶段，序列可枚举，11 项计划测试全过",
+   "阶段名采用 SQL 子句名，比参考实现更贴近规格用语",
+   "executor.py:193-211 execute_plan 读 plan.query 后用硬编码控制流执行",
+   "executor.py:199 全文唯一一次读 plan.stages，仅用于判断是否分组",
+   "对比 Opus 与 Fable：按阶段类型查表分派，顺序完全由计划决定"
+  ]
+ },
+ "name_resolution_single_point": {
+  "maxPoints": 3,
+  "criterion": "名称解析（限定名、非限定名、别名优先、歧义报错）集中在一处，不是在投影与排序里各判一次",
+  "points": 3,
+  "verdict": "完全符合：单一 resolve_column，四种情形都在里面判",
+  "reasoning": "expr.py:22 的 resolve_column 是全包唯一的解析入口，限定名、非限定名、歧义与未知列四种情形都在函数内部分支处理，AmbiguousColumnError 在包内出现 5 处但只从这一个判定点抛出。投影与排序都通过它，没有各自再判一次。别名优先的规则单独落在排序路径上，_sort_entries 拿的是投影输出的列名表，与输入列解析分离得很干净，test_order_by_alias_shadows_input_column 通过。相关测试全过：test_ambiguous_column、test_unknown_column、test_unknown_table_in_reference、test_unqualified_unique_column_resolves、test_where_cannot_see_alias。",
+  "evidence": [
+   "expr.py:22 resolve_column 为唯一解析入口",
+   "限定名与非限定名与歧义与未知列四种情形集中判定",
+   "AmbiguousColumnError 仅从该点抛出",
+   "test_ambiguous_column 与 unknown_column 与 unknown_table_in_reference 全过",
+   "test_order_by_alias_shadows_input_column 通过，别名优先规则正确"
+  ]
+ }
+}

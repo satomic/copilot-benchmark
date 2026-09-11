@@ -1,0 +1,63 @@
+{
+  "task": "C1-expr-interpreter",
+  "model": "claude-haiku-4.5",
+  "functional": 68.48,
+  "functionalMax": 70.0,
+  "spec": 15,
+  "specMax": 15,
+  "quality": 10.5,
+  "qualityMax": 15.0,
+  "qualityAuto": 1.5,
+  "qualityReview": 9,
+  "total": 93.98,
+  "reviewPending": [],
+  "vetoTriggered": [],
+  "hidden": {
+    "total": 153,
+    "failures": 4,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 149,
+    "time": 4.643,
+    "bad": [
+      {
+        "name": "_verify.test_c1::test_type_errors[true + true]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'minilang.errors.EvalError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c1::test_type_errors[true * 2]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'minilang.errors.EvalError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c1::test_type_errors[true < false]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'minilang.errors.EvalError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c1::test_type_errors[-true]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'minilang.errors.EvalError'>"
+        ]
+      }
+    ]
+  },
+  "visible": null,
+  "own": {
+    "total": 69,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 69,
+    "time": 2.202,
+    "bad": []
+  }
+}

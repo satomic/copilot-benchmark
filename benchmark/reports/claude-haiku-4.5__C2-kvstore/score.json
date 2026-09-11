@@ -1,0 +1,44 @@
+{
+  "task": "C2-kvstore",
+  "model": "claude-haiku-4.5",
+  "functional": 69.76,
+  "functionalMax": 70.0,
+  "spec": 15,
+  "specMax": 15,
+  "quality": 10.0,
+  "qualityMax": 15.0,
+  "qualityAuto": 3.0,
+  "qualityReview": 7,
+  "total": 94.76,
+  "reviewPending": [],
+  "vetoTriggered": [],
+  "hidden": {
+    "total": 238,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 237,
+    "time": 27.64,
+    "bad": [
+      {
+        "name": "_verify.test_c2::test_index_live_keys_order_by_segment_then_offset",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert ['third', 'first', 'second'] == ['first', 'second', 'third']",
+          "  ",
+          "  At index 0 diff: 'third' != 'first'"
+        ]
+      }
+    ]
+  },
+  "visible": null,
+  "own": {
+    "total": 48,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 48,
+    "time": 0.663,
+    "bad": []
+  }
+}

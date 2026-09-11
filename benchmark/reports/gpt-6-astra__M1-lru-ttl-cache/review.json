@@ -1,0 +1,45 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "o1_hotpath": {
+    "maxPoints": 5,
+    "criterion": "用 OrderedDict.move_to_end 或双向链表实现 O(1) 的 get/set，不是每次排序或线性查找",
+    "points": 5,
+    "verdict": "完全符合且是三者中唯一真正满足规格第 9 条的：OrderedDict + move_to_end，配八层基数树索引 deadline",
+    "reasoning": "热路径：lru.py:79 用 OrderedDict 存 _Entry，get（130-142）dict 查找 + move_to_end（135），O(1)；set（143-167）dict 赋值 + move_to_end + _index，O(1)。无排序、无全表扫描。过期索引用的是**八层基数树**（radix trie）而非比较堆：_deadline_path 把 float deadline 拆成 8 段，_index（86-94）沿路径插入、_remove（95-111）沿路径删除并回收空节点。lru.py:57-63 的类 docstring 论证了复杂度：『fixed depth and fanout (at most 256), independent of capacity. Reclaiming k expired entries costs O(k); each removal is charged to its insertion, keeping set amortized O(1)』—— 这个论证是正确的（深度固定为 8，与容量无关）。**关键优势**：_purge_expired（115-129）通过 `min(node.children)` 逐层下降找到**全局最小 deadline**，因此能回收任意位置的过期项，不受 LRU 顺序限制 —— 这使它成为三个模型里**唯一正确实现 task.md 规格第 9 条**的实现。sonnet 与 opus 的实现都只从 LRU 端找过期项：若最旧条目活跃、较新条目已过期，它们会淘汰活跃条目（我的隐藏套件没覆盖这个用例，所以三者功能分都是 70/70，但正确性上 astra 更严格）。代价是复杂度：221 行 vs opus 196、sonnet 181，多了 _DefaultTTL / _Entry / _ExpiryNode 三个内部类。本判据只考察 O(1) 与机制，两项都达到，满分。",
+    "evidence": [
+      "lru.py:79 OrderedDict 存储",
+      "lru.py:135 get 用 move_to_end",
+      "lru.py:86-94 _index 沿八层基数树插入",
+      "lru.py:95-111 _remove 沿路径删除并回收空节点",
+      "lru.py:115-129 _purge_expired 用 min(node.children) 找全局最小 deadline",
+      "lru.py:57-63 类 docstring 的复杂度论证正确",
+      "三者中唯一不受 LRU 位置限制地回收过期项"
+    ]
+  },
+  "module_separation": {
+    "maxPoints": 4,
+    "criterion": "三个模块职责清晰，__init__.py 只做再导出，不塞实现",
+    "points": 4,
+    "verdict": "完全符合：__init__.py 4 行纯再导出（三者中最精简），stats.py 9 行只有 dataclass",
+    "reasoning": "cache/__init__.py 共 4 行：两条 from 导入 + __all__，连 docstring 都省了，零实现代码。cache/stats.py 共 9 行：只有 frozen dataclass CacheStats 与四个默认 0 的字段。cache/lru.py 221 行承载全部实现，内部分层最细：三个内部类（_DefaultTTL 15、_Entry 23、_ExpiryNode 29）、模块级 _deadline_path 辅助、四个内部方法（_index / _remove / _expired / _purge_expired）、公共 API。依赖单向，无循环。判据三项要求全部达到。",
+    "evidence": [
+      "cache/__init__.py 全文 4 行仅 import + __all__",
+      "cache/stats.py 全文 9 行仅 dataclass",
+      "cache/lru.py:15/23/29 三个内部类各司其职",
+      "依赖单向无循环"
+    ]
+  },
+  "sentinel": {
+    "maxPoints": 3,
+    "criterion": "区分 ttl=None 与省略 ttl 用私有模块级 sentinel（object()），不是 \"default\" 字符串或 -1 魔数",
+    "points": 3,
+    "verdict": "完全符合：用私有类的模块级单例 _DEFAULT_TTL = _DefaultTTL() 作哨兵",
+    "reasoning": "lru.py:15-19 定义 `class _DefaultTTL: __slots__ = ()` 后 `_DEFAULT_TTL = _DefaultTTL()`：下划线前缀、模块级、独立类型的单例实例，既不是字符串也不是数字魔数，完全匹配判据精神。判据字面写的是 `object()`，这里用专门的私有类是**等价且更好**的做法：有独立类型便于 isinstance 判定与调试时辨认，`__slots__ = ()` 还避免了实例字典开销。另两个模型用的是 `object()`（sonnet `_MISSING`、opus `_UNSET`），三者都算达标。使用处 set（143-167）用身份比较分派『省略 → 用缓存默认 TTL』与『显式 None → 永不过期』两条语义。隐藏测试 test_omitting_ttl_uses_default 与 test_ttl_none_entry_never_expires 均通过。",
+    "evidence": [
+      "lru.py:15-17 class _DefaultTTL 带 __slots__ = ()",
+      "lru.py:19 _DEFAULT_TTL 模块级单例",
+      "lru.py:143-167 set 用身份比较分派两种 ttl 语义",
+      "隐藏测试两条 ttl 语义用例通过"
+    ]
+  }
+}

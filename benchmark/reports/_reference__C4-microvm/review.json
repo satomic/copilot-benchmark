@@ -1,0 +1,27 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "shared_type_rules": {
+    "maxPoints": 5,
+    "criterion": "运行时类型规则单一来源：VM 的算术/比较/布尔检查收在一处，优化器折叠复用同一套规则或直接调用它，编译期折叠与运行期语义不可能分叉",
+    "points": null,
+    "verdict": "",
+    "reasoning": "",
+    "evidence": []
+  },
+  "jump_patching_single_point": {
+    "maxPoints": 4,
+    "criterion": "前向跳转回填经由一个集中的 emit/patch 机制（标签或补丁表），不是散落各处的裸下标运算",
+    "points": null,
+    "verdict": "",
+    "reasoning": "",
+    "evidence": []
+  },
+  "codec_discipline": {
+    "maxPoints": 3,
+    "criterion": "二进制布局用 struct 声明式表达且 dumps/loads 共用定义；loads 先验 CRC 再信任任何长度字段；读取有单一的越界检查点",
+    "points": null,
+    "verdict": "",
+    "reasoning": "",
+    "evidence": []
+  }
+}

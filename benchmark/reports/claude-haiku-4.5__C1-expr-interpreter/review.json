@@ -1,0 +1,44 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "grammar_correspondence": {
+  "maxPoints": 5,
+  "criterion": "递归下降的函数与 task.md 的文法层级一一对应，命名可读，无手工回溯",
+  "points": 4,
+  "verdict": "符合：文法层级完整覆盖、无回溯，但求值侧函数过长影响可读性",
+  "reasoning": "parser.py（150 行）实现了完整的递归下降，文法九层都有对应函数，结合性全部正确 —— 隐藏套件 20 项优先级/结合性用例全过，包括最反直觉的 `-2 ^ 2 == -4`（unary 比 ^ 松）与 `2 ^ 3 ^ 2 == 512`（右结合），以及 `1 < 2 < 3` 必须报 ParseError 的非结合规则。无手工回溯。扣 1 分不在 parser 而在与之配套的求值分派：evaluator.py:51 的 _eval_binop **107 行**、第 179 行的 _eval_call **68 行**，都远超 60 行上限（自动检查已扣）。文法层级在 parser 里是清楚的，但『每个算子做什么』被压进一个百行函数，读者要理解一个算子的语义得在 107 行里找 —— 判据后半句『命名可读』受此影响。对比五个模型：Astra 的 evaluator 只有 77 行、Fable 151 行且按节点类型拆成 _eval_Number/_eval_Boolean 等小方法，Haiku 是 213 行且集中在两个巨型函数里。",
+  "evidence": [
+   "parser.py 150 行，文法九层完整覆盖，无回溯",
+   "隐藏套件 20 项优先级/结合性用例全过（含 -2^2==-4、2^3^2==512、1<2<3 报错）",
+   "evaluator.py:51 _eval_binop 107 行，evaluator.py:179 _eval_call 68 行，均超 60 行上限",
+   "对比：Astra evaluator 77 行、Fable 按节点类型拆成小方法"
+  ]
+ },
+ "named_ast": {
+  "maxPoints": 4,
+  "criterion": "AST 用具名节点（dataclass / NamedTuple / 类），不是裸 tuple 或 dict",
+  "points": 4,
+  "verdict": "符合：用具名节点类（NumberNode / StringNode / BoolNode / IdentNode / BinOpNode / UnaryOpNode / CallNode / IfNode）",
+  "reasoning": "AST 用的是一组具名节点类，evaluator.py:18-45 的分派可见八种节点类型：NumberNode / StringNode / BoolNode / IdentNode / BinOpNode / UnaryOpNode / CallNode / IfNode。没有裸 tuple 或 dict 充当节点，判据要求达到。节点划分比另四者更细一些：它把 IfNode 单独建模（另四者把 if 当普通 CallNode 处理，在求值时特判惰性），这个选择让『if 是惰性的』这条规格在类型层面就有体现，是合理的设计。BoolNode 与 NumberNode 分开也是对的 —— 讽刺的是，**AST 层面把 bool 与 number 分清了，求值层面却用 `isinstance(x, (int, float))` 把它们混回去了**（详见 error_consistency 一项）。隐藏测试 test_parse_does_not_evaluate 通过，说明 parse 不求值。",
+  "evidence": [
+   "八种具名节点类，无裸 tuple/dict",
+   "IfNode 单独建模，惰性语义在类型层面有体现",
+   "BoolNode 与 NumberNode 在 AST 层分开",
+   "隐藏测试 test_parse_does_not_evaluate 通过"
+  ]
+ },
+ "error_consistency": {
+  "maxPoints": 3,
+  "criterion": "三类错误消息风格一致且带位置信息，没有 except Exception 吞异常",
+  "points": 1,
+  "verdict": "基本不符合：类型检查用 isinstance(x, (int, float)) 把 bool 当数字，导致 4 项隐藏测试失败；EvalError 也不带位置",
+  "reasoning": "**这是本次基准第三个真实功能扣分的根源，功能分 68.48/70。**evaluator.py:81 与 88 用 `isinstance(left, (int, float))` 判断『是否数字』。Python 里 `bool` 是 `int` 的子类，所以 `True` 通过了这个检查，于是四条应当报错的表达式被静默求值：`true + true`（规格 16：+ 要求两数或两串）、`true * 2`（规格 17：仅数字）、`true < false`（规格 20：两数或两串）、`-true`（规格 23：一元负号要求数字）—— 隐藏测试 test_type_errors 这 4 个参数化用例全部 DID NOT RAISE。**这与 A1 是同一个陷阱**：`bool` 是 `int` 子类。Haiku 在 A1 抓住了它（task.md 明写要拒绝 bool），在 C1 漏掉了（C1 只给出值模型 —— number 是 float、boolean 是独立类型 —— 需要自己推出不能用 isinstance(x, int)）。**显式写出的规格它能遵守，需要推导的规格它会漏。** 这是五个模型里唯一一次。对照 Fable 的写法：`def _is_number(value): return type(value) is float`，并在注释里写明『bool is checked by exact type so int/bool confusion cannot slip through』—— 用精确类型而非 isinstance，从根上避免了这个问题。另外两个要点：`and`/`or` 的布尔检查倒是用了 `isinstance(x, bool)`（evaluator.py:57-74），写法与算术侧不一致，本身就是判据所说『风格不一致』的体现；EvalError 也**不带位置信息**（与 Sonnet / Opus / Astra 相同，只有 Fable 传了）。无吞异常这一点达到。给 1 分：仅『无 except Exception 吞异常』这一个要点成立；风格一致性与位置信息两项都不达标，且类型判断的缺陷直接造成了功能失分。",
+  "evidence": [
+   "evaluator.py:81,88 用 isinstance(left, (int, float))，bool 是 int 子类会漏过",
+   "隐藏测试 test_type_errors 四例失败：true + true / true * 2 / true < false / -true",
+   "功能分 68.48/70（149/153），本次基准第三个真实功能扣分",
+   "evaluator.py:57-74 布尔侧用 isinstance(x, bool)，与算术侧写法不一致",
+   "EvalError 不带位置（与 Sonnet/Opus/Astra 同，Fable 是唯一带的）",
+   "对照 Fable：type(value) is float 精确类型判断 + 注释说明"
+  ]
+ }
+}

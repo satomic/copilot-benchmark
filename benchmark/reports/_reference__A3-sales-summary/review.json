@@ -1,0 +1,19 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "grouping_efficiency": {
+    "maxPoints": 5,
+    "criterion": "单遍 dict 累加分组，不是对每个 region 重复扫描全表（O(n²)）",
+    "points": null,
+    "verdict": "",
+    "reasoning": "",
+    "evidence": []
+  },
+  "separation": {
+    "maxPoints": 5,
+    "criterion": "region/amount 的取值与校验抽成辅助函数，错误消息集中构造，聚合逻辑干净",
+    "points": null,
+    "verdict": "",
+    "reasoning": "",
+    "evidence": []
+  }
+}

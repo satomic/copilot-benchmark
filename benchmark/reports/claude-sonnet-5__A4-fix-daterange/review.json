@@ -1,0 +1,29 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "root_cause_fix": {
+    "maxPoints": 7,
+    "criterion": "三个缺陷都从根因修（闭区间 +1、chunk 宽度 days-1、days<=0 前置校验）；不是在返回前特判补一个 chunk 之类的补丁",
+    "points": 7,
+    "verdict": "完全符合：三缺陷全部根因消除，循环换成能自然表达尾部残块的结构",
+    "reasoning": "① 闭区间 off-by-one —— 没走『span + 1』的最小改法，而是把 count 驱动的 for 换成 `while chunk_start <= end`（daterange.py:24-28）。原结构 `count = span // days` 从根上无法表达尾部不足 days 的残块，换 while 后残块由 min() 自然收口，不需要补丁。② chunk 宽度 —— `min(chunk_start + timedelta(days=days - 1), end)`，days-1 修正宽度、min 防越界，一处解决两症。③ days<=0 —— 前置校验（19-20）且一并排除 bool；`end < start` 也前置返回 []（21-22）。没有出现『算完再特判补 chunk』这类补丁修法：隐藏套件 span 0..39 × days 1..11 共 440 组性质检查全过，补丁式修法必然在其中暴露。值得记录：这次的 diff 与本模型另一次运行**逐字节完全相同**，说明该修法是稳定收敛的结果而非偶然。",
+    "evidence": [
+      "daterange.py:19-20 days 前置校验含 bool 排除",
+      "daterange.py:21-22 end<start 前置返回 []",
+      "daterange.py:24-28 for→while 结构替换",
+      "daterange.py:26 min(...days-1..., end) 同时修宽度与越界",
+      "与另一次运行的 diff 逐字节相同"
+    ]
+  },
+  "minimal_diff": {
+    "maxPoints": 4,
+    "criterion": "diff 最小，未重写整个文件，未改动 docstring 的语义",
+    "points": 4,
+    "verdict": "完全符合：单个 hunk、−5/+8 行、全在函数体内，两处 docstring 未动",
+    "reasoning": "与种子的 unified diff 只有一个 hunk，位于 split_range 函数体内：删 span/count 两行与 for 三行，加校验四行与 while 四行。模块 docstring（1-7）与函数 docstring（14-18）逐字节未变，import、签名、参数名与顺序、返回结构全部保持。循环替换是修正缺陷①的必要手段，不算顺手重构。记一个判据未覆盖的点，不扣分：ValueError 消息未带出错实际值；A4 评分表没有 error_messages 条目（那是 A1 的判据），在此扣分会引入表外尺度。",
+    "evidence": [
+      "diff：1 hunk，−5/+8，全在函数体内",
+      "daterange.py:1-7 与 14-18 docstring 未变",
+      "sealed_unmodified 通过：test_daterange.py 哈希与种子一致"
+    ]
+  }
+}

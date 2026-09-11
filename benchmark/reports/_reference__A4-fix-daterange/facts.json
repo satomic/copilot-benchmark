@@ -1,0 +1,296 @@
+{
+  "task": "A4-fix-daterange",
+  "runDir": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\_reference\\A4-fix-daterange",
+  "authoredFiles": [
+    {
+      "path": "daterange.py",
+      "bytes": 1351,
+      "loc": 26
+    },
+    {
+      "path": "task.md",
+      "bytes": 3297,
+      "loc": 43
+    },
+    {
+      "path": "test_daterange.py",
+      "bytes": 2105,
+      "loc": 54
+    }
+  ],
+  "expectedFiles": [
+    "task.md",
+    "daterange.py",
+    "test_daterange.py"
+  ],
+  "missing": [],
+  "extra": [],
+  "totalLoc": 80,
+  "imports": [
+    {
+      "file": "daterange.py",
+      "line": 9,
+      "module": "datetime"
+    },
+    {
+      "file": "test_daterange.py",
+      "line": 2,
+      "module": "datetime"
+    },
+    {
+      "file": "test_daterange.py",
+      "line": 4,
+      "module": "pytest"
+    },
+    {
+      "file": "test_daterange.py",
+      "line": 6,
+      "module": "daterange"
+    }
+  ],
+  "thirdPartyImports": [],
+  "allowedThirdPartyUsed": [
+    "pytest"
+  ],
+  "functions": [
+    {
+      "file": "daterange.py",
+      "name": "split_range",
+      "line": 12,
+      "lines": 23,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "test_daterange.py",
+      "name": "test_uneven_split_keeps_trailing_partial_chunk",
+      "line": 11,
+      "lines": 7,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "test_daterange.py",
+      "name": "test_exact_multiple",
+      "line": 20,
+      "lines": 6,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "test_daterange.py",
+      "name": "test_single_day_range",
+      "line": 28,
+      "lines": 4,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "test_daterange.py",
+      "name": "test_chunk_larger_than_range",
+      "line": 34,
+      "lines": 4,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "test_daterange.py",
+      "name": "test_daily_chunks",
+      "line": 40,
+      "lines": 6,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "test_daterange.py",
+      "name": "test_leap_year_boundary",
+      "line": 48,
+      "lines": 6,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "test_daterange.py",
+      "name": "test_end_before_start_is_empty",
+      "line": 56,
+      "lines": 2,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "test_daterange.py",
+      "name": "test_non_positive_days_raises",
+      "line": 61,
+      "lines": 3,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "days"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "test_daterange.py",
+      "name": "test_chunks_are_contiguous_and_cover_the_range",
+      "line": 66,
+      "lines": 10,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    }
+  ],
+  "broadExcept": [],
+  "prints": [],
+  "syntaxErrors": [],
+  "todos": [],
+  "commentedCode": [],
+  "duplicateBlocks": [],
+  "sealed": [
+    {
+      "file": "test_daterange.py",
+      "expected": "39f9fa303fe168aebda8502b491bc29892b1fb4861684d6b7b1825cd7da8324c",
+      "actual": "39f9fa303fe168aebda8502b491bc29892b1fb4861684d6b7b1825cd7da8324c",
+      "ok": true
+    }
+  ],
+  "transientCandidates": [],
+  "transcript": {
+    "source": null,
+    "turns": 0,
+    "modelCalls": 0,
+    "toolCalls": [],
+    "eventTypes": {},
+    "declaredPaths": [],
+    "mentionedPaths": [],
+    "assistantMessages": []
+  },
+  "paths": {
+    "declared": {
+      "inside": [],
+      "relative": [],
+      "allowlisted": [],
+      "outside": [],
+      "ignored": []
+    },
+    "mentioned": {
+      "inside": [],
+      "relative": [],
+      "allowlisted": [],
+      "outside": [],
+      "ignored": []
+    }
+  },
+  "spec": {
+    "items": [
+      {
+        "id": "readonly",
+        "check": "sealed_unmodified",
+        "points": 6,
+        "awarded": 6,
+        "verdict": "PASS",
+        "evidence": [
+          "test_daterange.py sha256 matches the pristine seed"
+        ],
+        "veto": true
+      },
+      {
+        "id": "files",
+        "check": "file_manifest",
+        "points": 5,
+        "awarded": 5,
+        "verdict": "PASS",
+        "evidence": [
+          "authored file set matches exactly (3 files)"
+        ],
+        "veto": false
+      },
+      {
+        "id": "bounds",
+        "check": "path_containment",
+        "points": 4,
+        "awarded": 4,
+        "verdict": "N/A",
+        "evidence": [
+          "no session transcript available — nothing to check, points awarded by default. Real benchmark runs always ship events.jsonl; a missing transcript here means this run was staged locally (e.g. selftest)."
+        ],
+        "veto": false
+      }
+    ],
+    "score": 15,
+    "max": 15
+  },
+  "autoItems": [
+    {
+      "id": "hygiene",
+      "points": 4,
+      "awarded": 4.0,
+      "passedChecks": 4,
+      "totalChecks": 4,
+      "checks": [
+        {
+          "id": "no_broad_except",
+          "passed": true,
+          "evidence": [
+            "no broad except handlers"
+          ]
+        },
+        {
+          "id": "no_debug_residue",
+          "passed": true,
+          "evidence": [
+            "no TODO markers, no commented-out code, no stray print() outside CLI modules"
+          ]
+        },
+        {
+          "id": "typed_public_api",
+          "passed": true,
+          "evidence": [
+            "all 1 public function(s) fully annotated"
+          ]
+        },
+        {
+          "id": "bounded_function_length",
+          "passed": true,
+          "evidence": [
+            "longest implementation function is 23 lines (limit 40)"
+          ]
+        }
+      ]
+    }
+  ],
+  "reviewItems": [
+    {
+      "id": "root_cause_fix",
+      "points": 7,
+      "criterion": "三个缺陷都从根因修（闭区间 +1、chunk 宽度 days-1、days<=0 前置校验）；不是在返回前特判补一个 chunk 之类的补丁",
+      "mode": "review"
+    },
+    {
+      "id": "minimal_diff",
+      "points": 4,
+      "criterion": "diff 最小，未重写整个文件，未改动 docstring 的语义",
+      "mode": "review"
+    }
+  ],
+  "qualityMax": 15,
+  "qualityAutoScore": 4.0,
+  "qualityReviewMax": 11,
+  "ownTestFunctionCount": 0
+}

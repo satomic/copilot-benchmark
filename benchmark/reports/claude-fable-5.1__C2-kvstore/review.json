@@ -1,0 +1,45 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "record_codec_declarative": {
+  "maxPoints": 5,
+  "criterion": "记录格式集中在 record.py，用 struct 或等价的声明式方式表达头部布局，不是散落各处的手工字节切片；编码与解码共用同一份字段定义",
+  "points": 5,
+  "verdict": "完全符合：单一 HEADER_FMT 常量，HEADER_SIZE 由 struct.calcsize 导出",
+  "reasoning": "格式知识完全收在 record.py：`HEADER_FMT` 是唯一的格式定义，encode 与 decode 都用它调 struct.pack / struct.unpack_from，格式串只出现一次；record.py:18 用 `HEADER_SIZE = struct.calcsize(HEADER_FMT)` 从格式导出头长度而不是硬写 15。MAGIC 与两个 flag 常量齐备（record.py:14-16）。这与 Sonnet 的 struct.Struct 对象、Opus 的命名格式常量是三种等价写法，判据要的『单一来源』都达到了。segment.py 与 store.py 不碰任何字节布局。隐藏套件记录编解码 42 项全过，含 CRC 只覆盖 body、tombstone 与空值的字节级区分、结构检查先于 CRC 三条最易错的。",
+  "evidence": [
+   "record.py HEADER_FMT 为唯一格式定义，encode 与 decode 共用",
+   "record.py:18 HEADER_SIZE = struct.calcsize(HEADER_FMT)，长度由格式导出",
+   "record.py:14-16 MAGIC / FLAG_VALUE / FLAG_TOMBSTONE 均为模块级常量",
+   "静态探针 fmt_string_copies=1，格式串未重复",
+   "隐藏套件记录编解码 42/42 通过"
+  ]
+ },
+ "truncation_vs_corruption": {
+  "maxPoints": 4,
+  "criterion": "截断与损坏的区分有明确且单一的判定点（IncompleteRecordError 与 CorruptRecordError 分开抛、由 scan 统一转译），不是靠散落的 try/except 兜住",
+  "points": 4,
+  "verdict": "完全符合：两类异常精确分开，scan 中单点转译",
+  "reasoning": "decode_record 只负责判定并抛出两类语义不同的异常，segment.scan 是唯一转译点：segment.py:57 `except IncompleteRecordError` 让截断尾静默结束，segment.py:59 `except CorruptRecordError as exc` 升级为 CorruptSegmentError。捕获的都是精确类型，没有 `except Exception`，所以 decode_record 里的编程错误不会被误标成数据损坏（Haiku 在这一点上用了过宽的 except）。结构检查先于 CRC、CRC 先于 UTF-8 解码的顺序与规格一致。最关键的『最后一条记录 CRC 坏了也算损坏而非截断』行为正确（test_crc_damage_on_last_record_is_not_truncation 通过）。隐藏套件段文件 21 项与恢复 17 项全过。",
+  "evidence": [
+   "segment.py:57 except IncompleteRecordError -> 静默结束",
+   "segment.py:59 except CorruptRecordError -> CorruptSegmentError，类型精确",
+   "无 except Exception",
+   "隐藏套件段文件 21/21、重开与恢复 17/17 通过"
+  ]
+ },
+ "atomic_compaction": {
+  "maxPoints": 3,
+  "criterion": "压实顺序正确：先写 tmp、再 os.replace、最后删旧段；tmp 名字不匹配段文件模式，且中途崩溃可恢复",
+  "points": 3,
+  "verdict": "完全符合，且是五者中唯一完全不碰 KVStore 私有属性的实现",
+  "reasoning": "三步顺序完全正确：compact.py:25 用 `segment_filename(new_id) + \".tmp\"` 作为临时名（不匹配 ^\\d{6}\\.seg$）；compact.py:28-33 写入并在关闭前 `os.fsync`；compact.py:37 `os.replace` 提交；compact.py:39-42 之后才 `os.remove` 旧段。与 Sonnet、Opus 一样补上了规格未要求的 fsync。判据之外但值得单独记下的一点（不加分，只记录）：它是五个实现里**唯一完全通过公开接口完成压实**的 —— 静态检查显示它对 `store._xxx` 私有属性的访问次数为 0，靠的是 `store.root`、`store.segment_path(id)`、`store.active_segment`、`store.stats()` 这些公开成员，以及一个自己定义的公开移交方法 `store.reset_after_compaction(new_id, written)`。对比：Opus 与我的参考实现各用了 1 个命名私有钩子（`_reopen` / `_adopt`），Sonnet 直接读写 5 个私有属性（含 `_index`、`_total_records`），Haiku 直接改 3 个（`_segments`、`_index`、`_active_seg`）。规格没有要求这一点，所以不计分，但『压实需要替换存储的内部状态』这个天然的耦合点，只有它把接缝设计成了显式的公开契约。",
+  "evidence": [
+   "compact.py:25 tmp 名为 <id>.seg.tmp，不匹配段文件模式",
+   "compact.py:33 os.fsync 落盘（规格未要求）",
+   "compact.py:37 os.replace 提交",
+   "compact.py:39-42 旧段在提交之后才 os.remove",
+   "compact.py 对 store 私有属性的访问次数为 0（五者唯一），改用公开的 reset_after_compaction",
+   "隐藏套件压实 21/21 通过"
+  ]
+ }
+}

@@ -1,0 +1,45 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "o1_hotpath": {
+    "maxPoints": 5,
+    "criterion": "用 OrderedDict.move_to_end 或双向链表实现 O(1) 的 get/set，不是每次排序或线性查找",
+    "points": 5,
+    "verdict": "完全符合：OrderedDict + move_to_end，回收只碰 LRU 端，无排序无全表扫描",
+    "reasoning": "lru.py:49 用 OrderedDict 存 (value, expires_at)，MRU 在尾。get（98-113）dict 查找 + move_to_end（110），O(1)。set（114-134）dict 赋值 + move_to_end（125），O(1)。两者都无排序、无全表遍历。回收走 _drop_expired_from_lru_end（78-94）：从 LRU 端逐个看，遇到未过期的立刻 break，因此通常只碰 1-2 个条目。lru.py:23-25 的类 docstring 与 79-85 的方法 docstring 都说明了数据结构选择与摊还复杂度的理由。**必须记录的一个正确性缺口（不在本判据范围内，不扣分）**：_drop_expired_from_lru_end 只从 LRU 端找过期项，若最旧条目是活跃的、而某个较新条目已过期，它会淘汰那个活跃的最旧条目，而规格第 9 条要求先回收任何已过期条目、能腾出空间就不该发生淘汰。**值得肯定的是它明确知道这个取舍并写了出来** —— lru.py:81-84 的 docstring 原文：『Interpretation of the \"prefer expired entries over live ones\" rule: to keep set O(1) amortised we do not scan the whole cache.』这是把规格歧义显式化并给出理由，比默默选一边好得多（task.md 第 23 条要 O(1)、第 9 条要优先回收过期项，两者确有张力）。我的隐藏套件没有覆盖这个用例，所以功能分仍 70/70 —— 这是套件漏洞，已列入待补清单。sonnet 的两次运行里，一次用最小堆能正确处理该情形（但 heappush 是 O(log n)），一次与本实现同样的取舍但未加说明。记一处不扣分的小低效：lru.py:87 用 `for key in list(self._data.keys())` 先物化全部键，尽管循环通常立即 break，这个 O(n) 分配是可以避免的（改用 next(iter(...)) 循环）。",
+    "evidence": [
+      "lru.py:49 OrderedDict 存储",
+      "lru.py:110 get 用 move_to_end",
+      "lru.py:125 set 用 move_to_end",
+      "lru.py:78-94 _drop_expired_from_lru_end 只碰 LRU 端并 break",
+      "lru.py:81-84 docstring 显式说明规格张力与取舍",
+      "缺口：非 LRU 端的过期项不回收（隐藏套件未覆盖）",
+      "小低效：lru.py:87 物化全部键"
+    ]
+  },
+  "module_separation": {
+    "maxPoints": 4,
+    "criterion": "三个模块职责清晰，__init__.py 只做再导出，不塞实现",
+    "points": 4,
+    "verdict": "完全符合：__init__.py 6 行纯再导出，stats.py 17 行只有 dataclass，三处都声明 __all__",
+    "reasoning": "cache/__init__.py 共 6 行：docstring、两条 from 导入、__all__，零实现。cache/stats.py 共 17 行：只有 frozen dataclass CacheStats 与四个默认 0 的字段（比另两次实现多几行注释/docstring）。cache/lru.py 196 行承载全部实现，内部分层清晰：模块级 _UNSET 哨兵（17）、两个 staticmethod 校验/判定辅助（_validate_ttl 59、_is_expired 74）、一个回收辅助（_drop_expired_from_lru_end 78）、公共 API（96 起），并有 `# -- public API --` 分隔注释。lru.py:13 也声明了 __all__ = [\"LRUCache\"]，三个模块都主动收窄公共名。依赖单向，无循环。",
+    "evidence": [
+      "cache/__init__.py 全文 6 行仅 import + __all__",
+      "cache/stats.py 全文 17 行仅 dataclass",
+      "cache/lru.py:13 声明 __all__",
+      "cache/lru.py:96 `# -- public API --` 分区注释"
+    ]
+  },
+  "sentinel": {
+    "maxPoints": 3,
+    "criterion": "区分 ttl=None 与省略 ttl 用私有模块级 sentinel（object()），不是 \"default\" 字符串或 -1 魔数",
+    "points": 3,
+    "verdict": "完全符合：_UNSET: Any = object() 私有模块级哨兵，用 is 做身份比较",
+    "reasoning": "lru.py:17 定义 `_UNSET: Any = object()`：下划线前缀、模块级、用 object() 而非字符串或数字魔数，完全匹配判据；额外加了 `: Any` 标注，让类型检查器接受它作为 `float | None` 参数的默认值 —— 这是个体现类型意识的细节。使用处 lru.py:116-117 一行三元：`self._default_ttl if ttl is _UNSET else self._validate_ttl(ttl)`，用 `is` 做身份比较（对哨兵是正确写法），把『省略 → 用默认』与『显式传值（含 None）→ 校验后使用』两条路径压缩得很紧凑。_validate_ttl（59-72）接受 None 并原样返回，从而 ttl=None 落到『永不过期』。隐藏测试 test_omitting_ttl_uses_default 与 test_ttl_none_entry_never_expires 均通过。",
+    "evidence": [
+      "lru.py:17 _UNSET: Any = object()",
+      "lru.py:116-117 `ttl is _UNSET` 三元分派",
+      "lru.py:59-72 _validate_ttl 接受并透传 None",
+      "隐藏测试两条 ttl 语义用例通过"
+    ]
+  }
+}

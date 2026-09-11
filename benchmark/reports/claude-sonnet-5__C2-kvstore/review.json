@@ -1,0 +1,46 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "record_codec_declarative": {
+  "maxPoints": 5,
+  "criterion": "记录格式集中在 record.py，用 struct 或等价的声明式方式表达头部布局，不是散落各处的手工字节切片；编码与解码共用同一份字段定义",
+  "points": 5,
+  "verdict": "完全符合：单一 struct.Struct 实例同时服务编码与解码，HEADER_SIZE 由它导出",
+  "reasoning": "这是判据想要的标准答案。record.py:23 建了一个模块级 `_HEADER_STRUCT = struct.Struct(\">4sBHIL\")`，编码用它的 pack、解码用它的 unpack_from，格式串只存在一处；record.py:24 更进一步用 `_HEADER_SIZE = _HEADER_STRUCT.size` 把头长度从格式定义里导出，而不是另写一个 15 的字面量 —— 这样改字段宽度时长度会自动跟着变，是五个模型里唯一做到这一点的写法（另四者都单独写了 HEADER_SIZE = 15）。魔数与两个 flag 也都是模块级常量，全部格式知识收在 record.py 内，没有任何一处手工字节切片散落到 segment.py 或 store.py。用 `L` 而非 `I` 表示 4 字节无符号整数在大端标准模式下与 `I` 等价（`>L` 固定 4 字节），不是缺陷。隐藏套件记录编解码 42 项全过，包含 CRC 只覆盖 body、tombstone 与空值的字节级区分、结构检查先于 CRC 三条最易错的。",
+  "evidence": [
+   "record.py:23 _HEADER_STRUCT = struct.Struct(\">4sBHIL\")，唯一的格式定义",
+   "record.py:24 _HEADER_SIZE = _HEADER_STRUCT.size，长度由格式导出而非硬编码",
+   "record.py:22,25,26 _MAGIC / _FLAG_VALUE / _FLAG_TOMBSTONE 均为模块级常量",
+   "encode 与 decode 共用 _HEADER_STRUCT，格式串不重复",
+   "隐藏套件记录编解码 42/42 通过"
+  ]
+ },
+ "truncation_vs_corruption": {
+  "maxPoints": 4,
+  "criterion": "截断与损坏的区分有明确且单一的判定点（IncompleteRecordError 与 CorruptRecordError 分开抛、由 scan 统一转译），不是靠散落的 try/except 兜住",
+  "points": 4,
+  "verdict": "完全符合：两类异常精确分开，scan 是唯一转译点，且把契约写进了 docstring",
+  "reasoning": "结构完全符合判据。decode_record 只负责判定并抛出两类语义不同的异常，segment.scan（segment.py:83-91）是唯一的转译点：`except IncompleteRecordError: return` 让截断尾静默结束扫描，`except CorruptRecordError as exc: raise CorruptSegmentError(...) from exc` 把损坏升级为段级错误。捕获的是**精确的异常类型**而不是 `except Exception`，所以 decode_record 里万一有编程错误（struct.error、TypeError）会照常冒出来，不会被伪装成『数据损坏』误导排查方向 —— 这一点比 Haiku 的实现好，后者用了 `except Exception`。`from exc` 保留了异常链，便于定位原始判定。额外加分的地方（判据内，体现理解深度）：segment.py:76-77 的 docstring 直接把最易错的那条契约写了出来 —— 『Stops cleanly on a truncated tail. Raises CorruptSegmentError on any other malformed record, **including a bad record at the very end**』。把『最后一条记录 CRC 坏了也算损坏而非截断』这条反直觉规则显式记录在代码里，是五个模型中唯一这么做的，说明它是想清楚了才写的，而不是恰好通过。隐藏套件段文件 21 项与恢复 17 项全过。",
+  "evidence": [
+   "segment.py:86-87 except IncompleteRecordError -> return（静默结束）",
+   "segment.py:88-89 except CorruptRecordError -> CorruptSegmentError，异常类型精确，保留 from exc",
+   "segment.py:76-77 docstring 明确写出『including a bad record at the very end』",
+   "record.py 结构检查先于 CRC、CRC 先于 UTF-8 解码，顺序与规格一致",
+   "隐藏套件段文件 21/21、重开与恢复 17/17 通过"
+  ]
+ },
+ "atomic_compaction": {
+  "maxPoints": 3,
+  "criterion": "压实顺序正确：先写 tmp、再 os.replace、最后删旧段；tmp 名字不匹配段文件模式，且中途崩溃可恢复",
+  "points": 3,
+  "verdict": "完全符合，并且多做了 fsync",
+  "reasoning": "三个步骤的顺序完全正确：compact.py:29 用 `f\"{new_id:06d}.seg.tmp\"` 作为临时名（不匹配 ^\\d{6}\\.seg$，所以中途崩溃时恢复会完全忽略它，存储保持压实前的状态，正是规格第 6.2 条第 4 款要的效果）；compact.py:34-44 把全部记录写进 tmp；compact.py:47 用 `os.replace` 原子换名；compact.py:50-54 之后才删旧段，且用 `path != final_path` 保护，避免把刚换上去的新段误删。判据之外多做的一件事值得记下来：compact.py:44-45 在关闭 tmp 之前调了 `fh.flush()` 加 `os.fsync(fh.fileno())`，把数据真正落盘再 replace。规格没有要求 fsync，但没有它的话，在真实的掉电场景里 `os.replace` 的原子性只保证目录项的替换，文件内容仍可能是空的或部分的 —— 它是五个模型里唯一补上这一步的。另一处实现优点：写 tmp 的同一个循环里就用累加的 offset 建好了新索引（compact.py:39-42），不需要事后重新 scan 整段找偏移，避免了 O(n^2)。记一处判据外的观察，不扣分：compact.py 直接读写 `store._root` / `store._active` / `store._index` / `store._total_records` 四个私有属性，包内跨模块访问私有成员是常见做法，规格也没有定义公开的移交接口，所以不计分；参考实现提供了一个 `_adopt()` 方法把这层收窄，接缝更小一些。",
+  "evidence": [
+   "compact.py:29 tmp 名为 <id>.seg.tmp，不匹配段文件模式",
+   "compact.py:44-45 flush + os.fsync，规格未要求但正确（五者唯一）",
+   "compact.py:47 os.replace 原子换名",
+   "compact.py:50-54 旧段在 replace 之后才删，并用 path != final_path 自保护",
+   "compact.py:39-42 写入时同步建索引，无事后重扫（避免 O(n^2)）",
+   "隐藏套件压实 21/21 通过"
+  ]
+ }
+}

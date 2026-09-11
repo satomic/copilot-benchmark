@@ -1,0 +1,47 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "null_logic_centralised": {
+  "maxPoints": 5,
+  "criterion": "三值逻辑与 NULL 规则集中在 value.py，WHERE / 聚合 / 排序三处都复用它，没有各自重写一套 NULL 判断",
+  "points": 2,
+  "verdict": "部分符合：value.py 里原语齐备且正确，但排序自己重写了一套 NULL 规则，并且写错了",
+  "reasoning": "好的一半：value.py 定义了全部 7 个原语（type_of、is_numeric、and_、or_、not_、compare_eq、compare_lt、arith、negate），三值真值表 21 项、比较 32 项、算术 34 项隐藏测试全过，说明原语本身实现正确。扣 3 分的原因是复用没有做到：静态测量显示只有 1 个下游模块调用这些原语，而排序路径完全绕开了它们。executor.py:267 的 sort_key 自己写了一套 NULL 排序规则（NULL 映射成 (1, None)，非 NULL 映射成 (0, val)），没有复用 value.py 里任何比较函数。后果是具体的：这套自写规则只处理了 ASC。第 269 行 for expr, direction in stage.items 解出了 direction，然后 sorted(range(len(rows)), key=sort_key) 调用里根本没有用到 direction，既没有 reverse 参数也没有按方向取负。于是 DESC 被静默忽略，test_order_by_desc_nulls_last（得到 30,30,40,None 而非 40,30,30,None）、test_order_by_desc_is_stable、test_order_by_mixed_directions、test_order_by_alias 四项因此失败。判据要考察的正是这件事：NULL 规则一旦在第二处重写，两处就会分叉，而分叉的那一处没有人替它做完整性检查。另记一处判据外的严重代码问题，不在此扣分（已由 no_broad_except 自动检查单独计分）：sort_key 内部有一个 bare except 的兜底循环（executor.py:283），逐个尝试每张表去解析列名，失败就静默继续。",
+  "evidence": [
+   "value.py 定义 7 个原语，三值与比较与算术共 87 项隐藏测试全过",
+   "executor.py:267-292 sort_key 自写 NULL 排序，未复用 value.py",
+   "executor.py:269 解出 direction；sorted() 调用未使用它，DESC 被忽略",
+   "失败项：test_order_by_desc_nulls_last、desc_is_stable、mixed_directions、alias",
+   "静态测量：只有 1 个下游模块调用 value.py 的原语（另三者为 2）",
+   "executor.py:283 bare except（判据外，已由自动检查计分）"
+  ]
+ },
+ "explicit_stage_order": {
+  "maxPoints": 4,
+  "criterion": "执行阶段顺序由 planner 显式表达为数据（可枚举的阶段序列），executor 按该顺序执行，不在控制流里隐式重排",
+  "points": 2,
+  "verdict": "部分符合：阶段建成了类型化序列且 executor 按序遍历，但计划缺了 join 与独立聚合阶段",
+  "reasoning": "结构方向是对的：planner.py 定义了 Stage 基类与 FromStage、WhereStage、GroupByStage、HavingStage、SelectStage、OrderByStage、LimitOffsetStage 七个子类，executor 用 isinstance 链按序分派，顺序确实来自计划而不是散落在控制流里。把 LIMIT 与 OFFSET 合成一个 LimitOffsetStage 是合理取舍，我的套件也接受。扣 2 分的原因是这个序列不完整：带 JOIN 的查询生成的计划里没有 join 阶段。test_plan_full_pipeline_order 报的是 join missing from 一个只含 scan、group、project 的列表，也就是说一个包含 JOIN 与 WHERE 的查询，计划里两者都不出现。既然判据的目的是让流水线可以在不执行的情况下被检查，一个漏掉 join 的计划就没有达到这个目的：调用方看计划会以为不涉及连接。这与它 JOIN 功能本身的失败是同一个根因，连接在 executor 里被特殊处理，而不是作为一个阶段。isinstance 链本身不扣分：Opus 与 Fable 用 _RUNNERS 分派表更简洁，但 if/elif 也是明确按序执行，我的参考实现同样用了链式判断。",
+  "evidence": [
+   "planner.py:7-46 Stage 基类加 7 个子类，类型化的阶段序列",
+   "executor.py:25-31 isinstance 链按序分派",
+   "test_plan_full_pipeline_order 失败：join 不在计划中",
+   "test_plan_adds_aggregate_stage_without_group_by 通过（有 group 阶段）",
+   "JOIN 相关 4 项功能测试失败，与计划缺 join 阶段同源"
+  ]
+ },
+ "name_resolution_single_point": {
+  "maxPoints": 3,
+  "criterion": "名称解析（限定名、非限定名、别名优先、歧义报错）集中在一处，不是在投影与排序里各判一次",
+  "points": 0,
+  "verdict": "不符合：没有解析函数，用 dict 直接取列，歧义不报错，越界抛的是原生 KeyError",
+  "reasoning": "这是 C3 里最明确的一处不符合。它没有任何名称解析函数，而是把行表示成 dict 从列名到值，取列就是 dict 索引，找不到就抛原生 KeyError（expr.py:36）。四个后果都被测到了。一，抛的是 Python 原生 KeyError 而不是规格第 10 节要求的 UnknownColumnError，test_unknown_column 与 test_where_cannot_see_alias 因此失败。二，AmbiguousColumnError 在整个包里只出现 2 处且从未触发，test_ambiguous_column 失败，因为 dict 表示天然让后一张表的同名列覆盖前一张，歧义被静默解决而不是报错。三，限定名形式没有独立处理，test_unknown_table_in_reference 与 test_join_unknown_table 都不报 UnknownTableError。四，JOIN 之后右表列直接消失，test_inner_join 报 KeyError Column v not found，因为 dict 合并时键冲突与缺失都没有规则。排序路径里那个逐表重试的 bare except 兜底循环（executor.py:271-284）正是缺少统一解析点的直接症状：因为没有一个地方知道某个名字该在哪张表里找，只能在运行时穷举。判据要求的集中在一处，这里是零处。",
+  "evidence": [
+   "expr.py:36 抛原生 KeyError 而非 UnknownColumnError",
+   "行表示为 dict，无解析函数（静态测量 resolve_definitions=1，仅 schema.column_index）",
+   "AmbiguousColumnError 仅 2 处且从未触发，test_ambiguous_column 失败",
+   "test_unknown_table_in_reference 与 test_join_unknown_table 均不报 UnknownTableError",
+   "JOIN 后右表列不可达：test_inner_join 报 KeyError Column v not found",
+   "executor.py:271-284 逐表 bare except 重试，是缺统一解析点的症状"
+  ]
+ }
+}

@@ -1,0 +1,45 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "record_codec_declarative": {
+  "maxPoints": 5,
+  "criterion": "记录格式集中在 record.py，用 struct 或等价的声明式方式表达头部布局，不是散落各处的手工字节切片；编码与解码共用同一份字段定义",
+  "points": 3,
+  "verdict": "部分符合：布局集中在 record.py 且用了 struct，但格式串 \">4sBHII\" 在 encode 与 decode 各写了一遍，没有共用同一份定义",
+  "reasoning": "好的部分：头部布局确实集中在 record.py，没有散落的手工切片；用了 struct.pack / struct.unpack_from 而不是逐字节拼装；MAGIC / FLAG_VALUE / FLAG_TOMBSTONE / HEADER_SIZE 都提成了模块级常量，语义清楚。扣 2 分的原因是判据后半句没做到：格式串 \">4sBHII\" 作为字面量在 record.py:27（encode）和 record.py:41（decode）各出现一次，编码与解码没有共用同一份字段定义。这正是格式漂移的经典入口：改字段宽度时必须记得改两处，漏一处就编出能写入却读不回的记录，而且 CRC 校验通过、只有长度错位，最难排查。参考实现用一个模块级 struct.Struct(\">4sBHII\") 实例同时服务 pack 与 unpack_from，HEADER_SIZE 也可由它的 .size 导出。另记一个判据外的观察，不扣分：它在两处都写了 `& 0xffffffff`，zlib.crc32 在 Python 3 已保证返回无符号值，这是多余的但无害。",
+  "evidence": [
+   "record.py:27 encode 用 struct.pack(\">4sBHII\", ...)",
+   "record.py:41 decode 用 struct.unpack_from(\">4sBHII\", buf, offset)，格式串重复",
+   "record.py:5-8 MAGIC / FLAG_VALUE / FLAG_TOMBSTONE / HEADER_SIZE 提为常量",
+   "隐藏套件记录编解码 42 项全过，格式本身完全正确"
+  ]
+ },
+ "truncation_vs_corruption": {
+  "maxPoints": 4,
+  "criterion": "截断与损坏的区分有明确且单一的判定点（IncompleteRecordError 与 CorruptRecordError 分开抛、由 scan 统一转译），不是靠散落的 try/except 兜住",
+  "points": 3,
+  "verdict": "基本符合：两类异常分开、转译点唯一，但 scan 用 except Exception 兜住了不该兜的东西",
+  "reasoning": "判据的主体做到了：decode_record 里 IncompleteRecordError 与 CorruptRecordError 分得很干净，结构检查（magic / flags / key_len / tombstone 带值）在 CRC 之前、CRC 在 UTF-8 解码之前，顺序与规格一致；segment.scan 是唯一的转译点，把 IncompleteRecordError 变成静默 break、把损坏变成 CorruptSegmentError。最关键的一条也过了：CRC 损坏即使发生在文件最后一条记录上也照样抛错，没有被误当成截断尾（test_crc_damage_on_last_record_is_not_truncation 通过）。扣 1 分的原因是 segment.py:53 写的是 `except Exception as e`，而不是 `except CorruptRecordError`。后果是真实的：decode_record 里任何编程错误（struct.error、TypeError、IndexError）都会被重新标注成『这个段文件损坏了，偏移 N』。数据其实是好的，代码是坏的，而报出来的结论指向数据 —— 在存储系统里这会把排查方向带到完全错误的地方，甚至可能让人去恢复一份根本没坏的数据。判据只扣 1 分是因为『分类明确、转译点唯一』这个主要要求确实达到了，异常类型过宽是范围问题而非结构问题。另记一处判据外的性能缺陷，不扣分：scan 在循环里对每条记录都执行 `buf = self._file.read(remaining)`，即从当前位置把剩余文件全部读一遍，整体是 O(n^2) 的 I/O；规格没有对 scan 提复杂度要求，所以不计分。",
+  "evidence": [
+   "record.py:38,61 IncompleteRecordError 只在字节不够时抛",
+   "record.py:44-56 结构检查先于 CRC；record.py:67 CRC 先于 UTF-8 解码",
+   "segment.py:51-52 IncompleteRecordError -> break（静默结束）",
+   "segment.py:53-58 except Exception -> CorruptSegmentError，异常类型过宽",
+   "segment.py:47 每轮循环重读剩余全文，O(n^2) I/O（判据外）",
+   "隐藏套件段文件 21 项全过，含最后一条记录 CRC 损坏必须抛错"
+  ]
+ },
+ "atomic_compaction": {
+  "maxPoints": 3,
+  "criterion": "压实顺序正确：先写 tmp、再 os.replace、最后删旧段；tmp 名字不匹配段文件模式，且中途崩溃可恢复",
+  "points": 1,
+  "verdict": "不符合：完全没有 tmp 文件，也没有 os.replace，直接写最终段名",
+  "reasoning": "这是 C2 里最明确的一处规格违反。task.md 第 6.2 条第 4 款写得很直白：『先写到 <newid>.seg.tmp，再用 os.replace 移到位，旧段只有在移动成功之后才删除』。它的实现是 compact.py:37-38 直接用最终名 `f\"{new_seg_id:06d}.seg\"` 建 Segment 然后往里 append，全文没有 os.replace、没有 rename、没有任何 .tmp 路径（grep 只匹配到一处 unlink）。后果是具体的而不是理论上的：新段名匹配 ^\\d{6}\\.seg$，所以它从被创建的第一个字节起就已经是一个『正式段』。如果进程在写新段的过程中被杀，重开时恢复会把这个半成品当成 id 最大的活跃段收进来，它的截断尾被静默容忍（这部分它做对了），于是存储进入一个旧段与半个新段并存的状态：数据本身还在（因为旧段是最后才删的，这一点它做对了，也是我给 1 分的唯一理由），但 total_records 与 dead_records 会偏大、同一个 key 在多个段里有重复记录，而且 keys() 顺序会被半成品段的位置改写。规格要求的 .tmp 加 os.replace 正是为了让『新段存在』这件事本身成为一个原子的提交点，而它把提交点拆散了。另记一处判据外的实现缺陷，不扣分：_rebuild_index（compact.py:18-28）对每个 key 都从头 scan 一遍新段找偏移，是 O(n^2)；append 时本来就知道偏移，顺手记下来即可，参考实现就是这么做的。",
+  "evidence": [
+   "compact.py:37-38 直接用最终名 <newid>.seg 创建并写入，无 .tmp",
+   "compact.py 全文无 os.replace / rename（grep 仅命中 compact.py:56 的 unlink）",
+   "compact.py:54-56 旧段确实在新段写完之后才删除（唯一做对的一点）",
+   "compact.py:18-28 _rebuild_index 对每个 key 重新 scan 整段，O(n^2)（判据外）",
+   "隐藏套件压实 21 项全过 —— 因为套件测的是压实后的结果，测不到中途崩溃"
+  ]
+ }
+}

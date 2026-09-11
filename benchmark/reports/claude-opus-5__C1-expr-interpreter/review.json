@@ -1,0 +1,46 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "grammar_correspondence": {
+  "maxPoints": 5,
+  "criterion": "递归下降的函数与 task.md 的文法层级一一对应，命名可读，无手工回溯",
+  "points": 5,
+  "verdict": "完全符合：9 个 parse_* 方法与文法九层一一对应，另有 parse_program 收口尾部输入",
+  "reasoning": "task.md 文法自松到紧九层，parser.py 的 _Parser 逐层对应：parse_expr(164) / parse_or(167) / parse_and(175) / parse_not(183) / parse_comparison(189) / parse_additive(202) / parse_multiplicative(210) / parse_unary(218) / parse_power(224) / parse_primary(234)，命名沿用产生式名。结合性全部落实：or/and/additive/multiplicative 用 while 循环左结合；parse_power(224-232) 右侧递归 parse_unary 实现右结合并支持 `2 ^ -1`；parse_unary 递归自身支持 `- - 3`。parse_comparison(189-200) 用 12 行显式拒绝链式比较（`1 < 2 < 3` → ParseError）。比 sonnet 多做的一点：单独抽出 parse_program(154-162) 负责『解析一个完整表达式后必须到达输入末尾』，把『尾部残留输入是 ParseError』这条规格（第 15 条）与表达式文法本身分开 —— 层次更干净。无手工回溯：token 辅助 _peek/_advance/_check_op/_check_keyword/_expect_op(114-152) 都是单 token 前瞻，没有位置保存/恢复。另有 _describe(123-131) 专门把 token 转成人类可读描述用于错误消息。隐藏套件 20 项优先级/结合性用例全过，含 `-2 ^ 2 == -4` 与 `2 ^ 3 ^ 2 == 512`。",
+  "evidence": [
+   "parser.py:164-271 九个 parse_* 与文法九层一一对应",
+   "parser.py:154-162 parse_program 单独处理尾部输入收口（规格第 15 条）",
+   "parser.py:224-232 parse_power 右递归 parse_unary",
+   "parser.py:189-200 parse_comparison 显式拒绝链式比较",
+   "parser.py:114-152 五个单 token 前瞻辅助 + _describe，无回溯"
+  ]
+ },
+ "named_ast": {
+  "maxPoints": 4,
+  "criterion": "AST 用具名节点（dataclass / NamedTuple / 类），不是裸 tuple 或 dict",
+  "points": 4,
+  "verdict": "完全符合：Node 基类 + 6 个具名子类，带 __slots__ / _fields / __eq__ / __hash__",
+  "reasoning": "parser.py:12-105 建了一套小型节点体系：Node 基类（12-32）声明 __slots__ = (\"position\",) 与 _fields 元组，并基于 _fields 自动实现 __repr__ / __eq__ / __hash__；六个子类 Literal / Variable / UnaryOp / BinaryOp / LogicalOp / Call 各自声明自己的 __slots__ 与 _fields。没有任何裸 tuple 或 dict 充当节点。与 sonnet 的十个 @dataclass 相比是不同的取舍，各有优点：opus 这套用 __slots__ 省内存、自动派生的 __eq__/__hash__ 让节点可比较可做字典键（写测试时能直接断言 `parse(a) == parse(b)`），而且 _fields 驱动的 __repr__ 输出更紧凑；代价是每个子类要手写 __init__（41/52/63/75/88/101 六处），比 dataclass 啰嗦。节点数量少一些（6 个 vs sonnet 的 10 个）是因为它用 UnaryOp 统一了 `-` 与 `not`、LogicalOp 统一了 and/or —— 靠 op 字段区分，而 sonnet 拆成了独立类。两种建模都合理。每个节点都带 position（Node 基类的唯一 slot），与 sonnet 一致，同样超出规格要求。parse 不求值：隐藏测试 test_parse_does_not_evaluate 通过。",
+  "evidence": [
+   "parser.py:12-32 Node 基类：__slots__ / _fields 驱动 __repr__/__eq__/__hash__",
+   "parser.py:35-105 六个具名子类，各自声明 __slots__ 与 _fields",
+   "Node 基类唯一 slot 是 position（超出规格要求）",
+   "自动派生 __eq__/__hash__ 使 AST 可比较、可作字典键",
+   "隐藏测试 test_parse_does_not_evaluate 通过"
+  ]
+ },
+ "error_consistency": {
+  "maxPoints": 3,
+  "criterion": "三类错误消息风格一致且带位置信息，没有 except Exception 吞异常",
+  "points": 2,
+  "verdict": "部分符合：风格最成体系、无吞异常，但与 sonnet 同样把 EvalError 的位置全部丢掉了",
+  "reasoning": "① 异常层次与 str() 语义正确 —— errors.py 定义 MiniLangError 带 position，str() 返回 plain message（规格第 29 条），三个子类继承。② 无吞异常 —— 自动检查 no_broad_except 通过。三处 `raise ... from None`（evaluator.py:78/80 等）主动截断无意义的底层异常链，比不处理更讲究。③ 风格一致性是三者中最好的 —— 它专门抽了 _type_name(22-29) 把内部类型映射成『number / string / boolean』这类语言级名称，于是几乎所有类型错误消息都长成`<context> requires numbers, got boolean` 的统一形状（evaluator.py:34 等）；parser.py:123-131 的 _describe 做的是同一件事的语法侧版本。规格点名的四条精确消息（division by zero / modulo by zero / undefined variable: x / undefined function: x）全部逐字节正确，隐藏测试 test_exact_error_messages 通过。**扣 1 分的原因与 sonnet 完全相同：24 处 EvalError 无一传 position。** grep `EvalError(.*position` 结果为空。而它的 Node 基类把 position 做成了唯一的 __slots__ 成员，_Evaluator.eval(127-140) 拿到的每个 node 都有 position 可用 —— 位置信息现成却没用。规格第 28 条允许 EvalError.position 为 None，所以不影响功能分；但本判据要求『带位置信息』，`evaluate(\"1 + foo\")` 仍然无法告诉调用方 foo 在第几个字符。值得注意的是：**两个模型在这一条上犯了同样的错**，说明这是个共性盲点，而不是某个模型的偶发失手。",
+  "evidence": [
+   "errors.py MiniLangError 带 position，str() 返回 plain message",
+   "evaluator.py:22-29 _type_name 统一类型名，使错误消息成统一形状",
+   "parser.py:123-131 _describe 统一 token 描述",
+   "evaluator.py:78/80 raise ... from None 截断无意义异常链",
+   "缺陷：grep EvalError(.*position 为空 —— 24 处 EvalError 全未传位置",
+   "parser.py:15 Node.__slots__ 唯一成员就是 position，位置信息现成却未使用"
+  ]
+ }
+}

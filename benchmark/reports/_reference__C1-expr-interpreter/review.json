@@ -1,0 +1,27 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "grammar_correspondence": {
+    "maxPoints": 5,
+    "criterion": "递归下降的函数与 task.md 的文法层级一一对应，命名可读，无手工回溯",
+    "points": null,
+    "verdict": "",
+    "reasoning": "",
+    "evidence": []
+  },
+  "named_ast": {
+    "maxPoints": 4,
+    "criterion": "AST 用具名节点（dataclass / NamedTuple / 类），不是裸 tuple 或 dict",
+    "points": null,
+    "verdict": "",
+    "reasoning": "",
+    "evidence": []
+  },
+  "error_consistency": {
+    "maxPoints": 3,
+    "criterion": "三类错误消息风格一致且带位置信息，没有 except Exception 吞异常",
+    "points": null,
+    "verdict": "",
+    "reasoning": "",
+    "evidence": []
+  }
+}

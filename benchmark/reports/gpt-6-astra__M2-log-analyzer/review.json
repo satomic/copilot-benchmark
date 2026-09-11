@@ -1,0 +1,43 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "regex_named_groups": {
+    "maxPoints": 5,
+    "criterion": "用一条预编译正则 + 命名组解析日志行，不是多次 split 拼凑",
+    "points": 5,
+    "verdict": "完全符合：模块级预编译单条正则 + 命名组",
+    "reasoning": "logstats.py:14 起是唯一的日志行正则 _LINE，模块级预编译，命名组覆盖全部九个字段。parse_line（37-77）只做匹配 + 取组 + 类型转换，无 split 拼凑。时间戳用 _MONTHS 月份表 + 手工构造 datetime.datetime(..., tzinfo=timezone(offset))，而非 strptime —— 这个选择规避了 strptime 的 %b 依赖 LC_TIME 的隐患（opus 与 sonnet 某次用了 strptime，在非英文 locale 下会失败）。代价是 parse_line 长达 41 行，比 opus 的 26 行长；但仍在 60 行上限内，且判据不考察长度。隐藏套件 10 个畸形样例全部正确判为 None。",
+    "evidence": [
+      "logstats.py:14 唯一的 _LINE，模块级预编译，九个命名组",
+      "logstats.py:37-77 parse_line 无 split",
+      "手工月份表 + timezone 构造，规避 %b 的 locale 依赖",
+      "隐藏套件 test_malformed_lines_return_none 全 10 例通过"
+    ]
+  },
+  "streaming": {
+    "maxPoints": 4,
+    "criterion": "analyze 单遍流式处理任意可迭代对象，不把整个文件 list() 进内存",
+    "points": 4,
+    "verdict": "完全符合：单层 for 遍历入参，全文无物化",
+    "reasoning": "_analyze（93-141）对 lines 只有一层 `for number, line in enumerate(lines, start=1)`（102），grep 全文确认无 list(lines) / tuple(lines) / 索引访问，因此接受任意可迭代对象；隐藏测试 test_analyze_accepts_a_generator 通过。结构上多了一层：公共 analyze（144-146）是 3 行薄包装，把 strict 参数传给内部 _analyze，这样 CLI 的 --strict 与库接口共用同一份聚合逻辑，避免重复实现 —— 是个合理的设计。唯一内存累积是 durations 列表，精确分位数的固有代价，不扣分。",
+    "evidence": [
+      "logstats.py:102 单层 for 遍历 lines",
+      "全文 grep 无 list(lines)",
+      "logstats.py:144-146 analyze 薄包装复用 _analyze 的 strict 分支",
+      "隐藏测试 test_analyze_accepts_a_generator 通过"
+    ]
+  },
+  "percentile_isolated": {
+    "maxPoints": 3,
+    "criterion": "分位数抽成独立函数，空列表与 n=1 的边界显式处理",
+    "points": 1,
+    "verdict": "基本不符合：分位数计算完全内联在 _analyze 里，没有独立函数",
+    "reasoning": "判据的主要要求『抽成独立函数』完全落空 —— 分位数逻辑在 logstats.py:126-129 内联于 _analyze，模块里没有任何 _percentile 之类的函数。这是三个模型里唯一连函数都没抽的。边界处理本身是对的：logstats.py:124 的 `if durations:` 守住空列表；logstats.py:128 的 `max(0, min(parsed - 1, ...))` 双侧 clamp 覆盖 n=1。而且它的实现细节比另两个模型**更严谨**：用整数天花板 `(percentile * parsed + 99) // 100 - 1` 而非 `math.ceil(p / 100 * n)`，第 127 行注释写明理由『Integer ceiling avoids floating-point rank errors』—— 后者在 p/100*n 恰好为整数时可能因浮点误差取错秩，这是个真实存在的陷阱，它规避了。给 1 分的依据：边界（空列表 + n=1）都正确处理，且算法比另两个模型更严谨，这值得记分；但『抽成独立函数』是本项的主要要求，未做到扣 2。对比：sonnet 与 opus 都抽出了 _percentile 但都漏了函数内的空列表守卫，各得 2/3；astra 反过来 —— 边界对了但没抽函数。三个模型三种失分方式，说明这一条判据确实有区分度。",
+    "evidence": [
+      "logstats.py:126-129 分位数逻辑内联于 _analyze，无独立函数",
+      "logstats.py:124 if durations 守住空列表",
+      "logstats.py:128 双侧 clamp 覆盖 n=1",
+      "logstats.py:128 整数天花板避免浮点取秩错误，比另两模型更严谨",
+      "logstats.py:127 注释说明该选择的理由"
+    ]
+  }
+}

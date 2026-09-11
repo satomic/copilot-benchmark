@@ -1,0 +1,44 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "regex_named_groups": {
+  "maxPoints": 5,
+  "criterion": "用一条预编译正则 + 命名组解析日志行，不是多次 split 拼凑",
+  "points": 5,
+  "verdict": "完全符合：模块级预编译单条正则 + 命名组，时间戳用手工月份表规避 locale 依赖",
+  "reasoning": "logstats.py 顶部预编译唯一的日志行正则，命名组覆盖九个字段并锚定全行；parse_line（46-66）只做匹配 + 取组 + 类型转换，无 split 拼凑。时间戳交给 _parse_timestamp（31-43）：用 _MONTHS 月份表 + 手工构造 datetime(..., tzinfo=tz)，**并且返回 `_datetime | None`** —— 把『时间戳本身不合法』这种情况显式建模成返回 None，由 parse_line 转成整行 malformed，比另几个模型用 try/except 包住 strptime 更直白。这个选择同时规避了 strptime 的 %b 依赖 LC_TIME 的隐患（opus 与 sonnet 某次用了 strptime，在非英文 locale 下会失败）。代价是 _parse_timestamp 13 行，比 strptime 一行长，但换来 locale 无关 + 显式的失败路径。隐藏套件 10 个畸形样例全部正确判为 None。",
+  "evidence": [
+   "logstats.py 模块级预编译唯一正则，九个命名组",
+   "logstats.py:46-66 parse_line 无 split",
+   "logstats.py:31-43 _parse_timestamp 返回 `_datetime | None`，显式建模失败",
+   "手工月份表规避 strptime 的 %b locale 依赖",
+   "隐藏套件 test_malformed_lines_return_none 全 10 例通过"
+  ]
+ },
+ "streaming": {
+  "maxPoints": 4,
+  "criterion": "analyze 单遍流式处理任意可迭代对象，不把整个文件 list() 进内存",
+  "points": 4,
+  "verdict": "完全符合：单层 for 遍历入参，无 list() 物化",
+  "reasoning": "analyze（93-141）对 lines 只有一层 `for line in lines`（103），grep 确认无 list(lines) / tuple(lines) / 索引访问，接受任意可迭代对象；隐藏测试 test_analyze_accepts_a_generator 通过。analyze 主体 49 行，控制在 60 行上限内（sonnet 的 79 行触发了扣分）—— 因为它把状态分类抽成 _status_class（69-78）、分位数抽成 _percentile（81-85）、排名抽成 _top（88-90），主体只剩累加与组装。唯一内存累积是 durations 列表，精确分位数的固有代价，不扣分。",
+  "evidence": [
+   "logstats.py:103 单层 for line in lines",
+   "全文无 list(lines)",
+   "logstats.py:93-141 analyze 仅 49 行，未触发长度上限",
+   "隐藏测试 test_analyze_accepts_a_generator 通过"
+  ]
+ },
+ "percentile_isolated": {
+  "maxPoints": 3,
+  "criterion": "分位数抽成独立函数，空列表与 n=1 的边界显式处理",
+  "points": 2,
+  "verdict": "部分符合：函数已独立、n=1 由 clamp 覆盖，但空列表守卫仍在调用方",
+  "reasoning": "① 抽成独立函数 —— logstats.py:81-85 _percentile 独立，是 3 个命名辅助之一。达到。② n=1 —— `idx = ceil(p/100*n) - 1` 后 `min(max(idx, 0), n - 1)`（84），n=1 时夹到 0，正确。③ 空列表 —— **未在函数内处理**。n=0 时 idx = min(max(-1,0), -1) = -1，`sorted_values[-1]` 对空列表抛 IndexError。守卫在 analyze 内的 `if durations:` 分支。`_percentile([], 50)` 单独调用会崩，抽成独立函数的可复用性打了折，扣 1。参考实现在函数首行就有 `if not sorted_values: return 0.0`。**四个模型在这一条上全部失分**（sonnet 2/3、opus 2/3、astra 1/3 因连函数都没抽、Fable 2/3），是本次基准最稳定的共性盲点 —— 四个模型、五次实现，没有一次把空列表守卫收在分位数函数内。记一个判据外的观察，不扣分：logstats.py:88 的 _top 参数名写成 `_Counter: _Counter`，与模块顶部导入的 `_Counter` 类型别名同名，遮蔽了它。功能无碍（函数体内不再需要该类型），但属于命名疏忽。",
+  "evidence": [
+   "logstats.py:81-85 _percentile 独立函数",
+   "logstats.py:84 clamp 覆盖 n=1",
+   "logstats.py:81-85 缺 n==0 守卫，_percentile([], 50) 会 IndexError",
+   "空列表守卫在 analyze 的 if durations 分支内",
+   "判据外：logstats.py:88 参数名 _Counter 遮蔽了同名类型别名"
+  ]
+ }
+}

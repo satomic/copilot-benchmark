@@ -1,0 +1,137 @@
+.............................................................FFF....FF.. [ 24%]
+F....................................................................... [ 48%]
+........................................................................ [ 72%]
+.....................FF.F.....F.F....F...FF............................. [ 97%]
+........                                                                 [100%]
+================================== FAILURES ===================================
+_________________________ test_parse_errors[print 1] __________________________
+_verify\test_c4.py:146: in test_parse_errors
+    mv.parse(src)
+microvm\parser.py:78: in parse
+    return parser.parse_program()
+microvm\parser.py:104: in parse_program
+    statements.append(self.parse_statement())
+microvm\parser.py:114: in parse_statement
+    return self.parse_print()
+microvm\parser.py:144: in parse_print
+    self.expect("OP", ";")
+microvm\parser.py:97: in expect
+    offset = token.offset if token else len(self.src)
+E   AttributeError: 'Parser' object has no attribute 'src'
+________________________ test_parse_errors[let x = 1] _________________________
+_verify\test_c4.py:146: in test_parse_errors
+    mv.parse(src)
+microvm\parser.py:78: in parse
+    return parser.parse_program()
+microvm\parser.py:104: in parse_program
+    statements.append(self.parse_statement())
+microvm\parser.py:112: in parse_statement
+    return self.parse_let()
+microvm\parser.py:131: in parse_let
+    self.expect("OP", ";")
+microvm\parser.py:97: in expect
+    offset = token.offset if token else len(self.src)
+E   AttributeError: 'Parser' object has no attribute 'src'
+__________________________ test_parse_errors[x = 1] ___________________________
+_verify\test_c4.py:146: in test_parse_errors
+    mv.parse(src)
+microvm\parser.py:78: in parse
+    return parser.parse_program()
+microvm\parser.py:104: in parse_program
+    statements.append(self.parse_statement())
+microvm\parser.py:122: in parse_statement
+    return self.parse_assign()
+microvm\parser.py:138: in parse_assign
+    self.expect("OP", ";")
+microvm\parser.py:97: in expect
+    offset = token.offset if token else len(self.src)
+E   AttributeError: 'Parser' object has no attribute 'src'
+____________________ test_parse_errors[if (true) print 1;] ____________________
+_verify\test_c4.py:145: in test_parse_errors
+    with pytest.raises((mv.ParseError, mv.LexError)):
+E   Failed: DID NOT RAISE (<class 'microvm.errors.ParseError'>, <class 'microvm.errors.LexError'>)
+__________________ test_parse_errors[while (true) print 1;] ___________________
+_verify\test_c4.py:145: in test_parse_errors
+    with pytest.raises((mv.ParseError, mv.LexError)):
+E   Failed: DID NOT RAISE (<class 'microvm.errors.ParseError'>, <class 'microvm.errors.LexError'>)
+________________________ test_parse_errors[{ print 1;] ________________________
+_verify\test_c4.py:146: in test_parse_errors
+    mv.parse(src)
+microvm\parser.py:78: in parse
+    return parser.parse_program()
+microvm\parser.py:104: in parse_program
+    statements.append(self.parse_statement())
+microvm\parser.py:120: in parse_statement
+    return self.parse_block()
+microvm\parser.py:172: in parse_block
+    self.expect("OP", "}")
+microvm\parser.py:97: in expect
+    offset = token.offset if token else len(self.src)
+E   AttributeError: 'Parser' object has no attribute 'src'
+_______ test_round_trip_behaviour[print 1.5; print true; print false;] ________
+_verify\test_c4.py:646: in test_round_trip_behaviour
+    assert mv.execute(again) == mv.execute(program)
+E   AssertionError: assert ['1.5', '1', '0'] == ['1.5', 'true', 'false']
+E     
+E     At index 1 diff: '1' != 'true'
+E     Use -v to get more diff
+___ test_round_trip_behaviour[if (true) { print "a"; } else { print "b"; }] ___
+_verify\test_c4.py:646: in test_round_trip_behaviour
+    assert mv.execute(again) == mv.execute(program)
+microvm\vm.py:9: in execute
+    return vm.run()
+microvm\vm.py:29: in run
+    self.execute_instr(instr)
+microvm\vm.py:161: in execute_instr
+    raise VMRuntimeError("Condition must be bool")
+E   microvm.errors.VMRuntimeError: Condition must be bool
+__________________ test_round_trip_preserves_constant_types ___________________
+_verify\test_c4.py:661: in test_round_trip_preserves_constant_types
+    assert [type(c) for c in again.constants] == [type(c) for c in program.constants]
+E   AssertionError: assert [<class 'int'...<class 'int'>] == [<class 'int'...class 'bool'>]
+E     
+E     At index 2 diff: <class 'int'> != <class 'bool'>
+E     Use -v to get more diff
+_________________________ test_bool_constant_encoding _________________________
+_verify\test_c4.py:692: in test_bool_constant_encoding
+    assert struct.pack(">BB", 0x04, 1) in data
+E   AssertionError: assert b'\x04\x01' in b'MVM1\x01\x00\x00\x00\x01\x01\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x03\x01\x00\x00\x00\x00\x13\xff\xff\xff\xff\x15\xff\xff\xff\xff\x7fsw\xb1'
+E    +  where b'\x04\x01' = <built-in function pack>('>BB', 4, 1)
+E    +    where <built-in function pack> = struct.pack
+_______________________ test_checksum_is_crc32_of_body ________________________
+_verify\test_c4.py:703: in test_checksum_is_crc32_of_body
+    assert crc == zlib.crc32(body)
+E   AssertionError: assert 1476246722 == 1345517763
+E    +  where 1345517763 = <built-in function crc32>(b'\x01\x00\x00\x00\x01\x01\x00\x00\x00\x00\x00\x00\x00*\x00\x00\x00\x03\x01\x00\x00\x00\x00\x13\xff\xff\xff\xff\x15\xff\xff\xff\xff')
+E    +    where <built-in function crc32> = zlib.crc32
+____________________ test_corruption_anywhere_is_detected _____________________
+_verify\test_c4.py:741: in test_corruption_anywhere_is_detected
+    mv.loads(bytes(bad))
+microvm\serializer.py:140: in loads
+    names.append(data[pos:pos+name_len].decode("utf-8"))
+E   UnicodeDecodeError: 'utf-8' codec can't decode byte 0x87 in position 0: invalid start byte
+_____________________ test_unknown_constant_tag_rejected ______________________
+_verify\test_c4.py:772: in test_unknown_constant_tag_rejected
+    index = body.index(bytes([0x04]))
+E   ValueError: subsection not found
+____________________ test_bool_payload_must_be_zero_or_one ____________________
+_verify\test_c4.py:781: in test_bool_payload_must_be_zero_or_one
+    index = body.index(struct.pack(">BB", 0x04, 1))
+E   ValueError: subsection not found
+- generated xml file: C:\workspace\13_benchmark\GPT-6 in Coding\benchmark\reports\claude-haiku-4.5__C4-microvm\tests\hidden.xml -
+=========================== short test summary info ===========================
+FAILED _verify/test_c4.py::test_parse_errors[print 1] - AttributeError: 'Pars...
+FAILED _verify/test_c4.py::test_parse_errors[let x = 1] - AttributeError: 'Pa...
+FAILED _verify/test_c4.py::test_parse_errors[x = 1] - AttributeError: 'Parser...
+FAILED _verify/test_c4.py::test_parse_errors[if (true) print 1;] - Failed: DI...
+FAILED _verify/test_c4.py::test_parse_errors[while (true) print 1;] - Failed:...
+FAILED _verify/test_c4.py::test_parse_errors[{ print 1;] - AttributeError: 'P...
+FAILED _verify/test_c4.py::test_round_trip_behaviour[print 1.5; print true; print false;]
+FAILED _verify/test_c4.py::test_round_trip_behaviour[if (true) { print "a"; } else { print "b"; }]
+FAILED _verify/test_c4.py::test_round_trip_preserves_constant_types - Asserti...
+FAILED _verify/test_c4.py::test_bool_constant_encoding - AssertionError: asse...
+FAILED _verify/test_c4.py::test_checksum_is_crc32_of_body - AssertionError: a...
+FAILED _verify/test_c4.py::test_corruption_anywhere_is_detected - UnicodeDeco...
+FAILED _verify/test_c4.py::test_unknown_constant_tag_rejected - ValueError: s...
+FAILED _verify/test_c4.py::test_bool_payload_must_be_zero_or_one - ValueError...
+14 failed, 282 passed in 9.74s

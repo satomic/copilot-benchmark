@@ -1,0 +1,45 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "null_logic_centralised": {
+  "maxPoints": 5,
+  "criterion": "三值逻辑与 NULL 规则集中在 value.py，WHERE / 聚合 / 排序三处都复用它，没有各自重写一套 NULL 判断",
+  "points": 5,
+  "verdict": "完全符合：命名空间复用，排序共用同一个比较函数且把规则写进注释",
+  "reasoning": "value.py 定义全部 7 个原语；expr.py:8 用 from . import value as V 以命名空间方式引用，负责 WHERE 与投影，aggregate.py 与 executor.py 同样复用。排序路径值得单独记：executor.py:201-213 的 _compare_keys 是一个单趟多键比较器，NULL 分支只在这里出现一次，并且注释把规则写了出来，原文是 NULL sorts last regardless of direction；非 NULL 的比较委托给共享的 compare 函数，方向只在最后一步按 desc 取负。这个结构同时保证了三件容易写错的事：NULL 恒在最后、DESC 只反转非 NULL、以及多键单趟比较带来的排序稳定性。对应的 27 项排序测试全过，含 DESC 下 NULL 位置与稳定性。87 项三值与比较与算术测试、31 项聚合测试也全过。",
+  "evidence": [
+   "expr.py:8 from . import value as V，命名空间复用",
+   "executor.py:201-213 _compare_keys 单趟多键比较，NULL 分支仅一处",
+   "executor.py:204 注释写明 NULL sorts last regardless of direction",
+   "非 NULL 比较委托共享 compare 函数，方向仅在返回时取负",
+   "三值 21、比较 32、算术 34、排序 27、聚合 31 项全过"
+  ]
+ },
+ "explicit_stage_order": {
+  "maxPoints": 4,
+  "criterion": "执行阶段顺序由 planner 显式表达为数据（可枚举的阶段序列），executor 按该顺序执行，不在控制流里隐式重排",
+  "points": 4,
+  "verdict": "完全符合：类型化阶段序列加查表分派，并对未注册的阶段显式报错",
+  "reasoning": "planner.py:13-59 定义 Stage 基类与 ScanStage、JoinStage、FilterStage、GroupStage、HavingStage、ProjectStage、DistinctStage 等子类；executor.py:250-258 的 execute_plan 只做一件事：遍历计划，按阶段类型从 _RUNNERS 取出 runner 并调用。executor 里没有任何阶段先后知识，顺序完全由 planner 决定。比 Opus 多做了一步防御：runner 为空时显式抛 TypeError，也就是新增一个阶段类型而忘记注册 runner 会立刻炸出来，而不是被静默跳过。这是这条判据的理想形态：顺序是数据，执行是查表，遗漏是显式错误。11 项计划测试全过。把 GROUP BY 与聚合合并为一个 GroupStage 属规格允许的取舍，第 8 节列的是逻辑步骤而不是必须的阶段对象数量。",
+  "evidence": [
+   "planner.py:13-59 Stage 基类加类型化子类",
+   "executor.py:250-258 execute_plan 遍历计划并按类型查表分派",
+   "executor.py:255-256 未注册的阶段类型显式抛 TypeError，五者唯一",
+   "executor 内无阶段先后逻辑",
+   "11 项计划测试全过"
+  ]
+ },
+ "name_resolution_single_point": {
+  "maxPoints": 3,
+  "criterion": "名称解析（限定名、非限定名、别名优先、歧义报错）集中在一处，不是在投影与排序里各判一次",
+  "points": 3,
+  "verdict": "完全符合：Scope.resolve 单一入口，别名优先用作用域组合实现而非另写一套",
+  "reasoning": "expr.py:40 的 Scope.resolve 是唯一解析入口，内部委托 _resolve 处理限定名、非限定名、歧义与未知情形。别名优先的实现方式很干净：executor.py:195 用 out_scope.extend(scope) 把输出别名作用域叠加在输入列作用域之前，于是 ORDER BY 的解析走的还是同一个 Scope.resolve，只是作用域链不同，别名优先是作用域组合的自然结果，而不是在排序路径里另写一条特判。这比在排序里再判一次别名更不容易分叉。相关测试全过：test_ambiguous_column、test_unknown_column、test_unknown_table_in_reference、test_unqualified_unique_column_resolves、test_where_cannot_see_alias（输入作用域里没有别名，所以自然报未知列）、test_order_by_alias_shadows_input_column。",
+  "evidence": [
+   "expr.py:40 Scope.resolve 为唯一入口，expr.py:46 _resolve 内部分支",
+   "executor.py:195 out_scope.extend(scope) 用作用域组合实现别名优先",
+   "ORDER BY 与投影共用同一个 resolve，无第二处别名特判",
+   "where_cannot_see_alias 与 order_by_alias_shadows_input_column 同时正确",
+   "歧义与未知列与未知表相关测试全过"
+  ]
+ }
+}

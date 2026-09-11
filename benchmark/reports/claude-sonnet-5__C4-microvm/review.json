@@ -1,0 +1,41 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "shared_type_rules": {
+  "maxPoints": 5,
+  "criterion": "运行时类型规则单一来源：VM 的算术/比较/布尔检查收在一处，优化器折叠复用同一套规则或直接调用它，编译期折叠与运行期语义不可能分叉",
+  "points": 5,
+  "verdict": "完全符合：优化器直接 from .vm import apply_binary, apply_neg, apply_not",
+  "reasoning": "这是判据的标准答案。vm.py 把类型规则拆成一组小函数（_values_equal、_apply_additive_like、_apply_div、_apply_mod、_apply_order），对外汇聚成 apply_binary、apply_neg、apply_not 三个入口；optimizer.py:21 直接导入这三个入口做折叠，折叠失败（VMRuntimeError）就保持子树不折叠。编译期与运行期在结构上就是同一套代码，不存在分叉的可能。三条折叠安全埋点（1/0 不折叠、true and 5 不折叠、类型错误不折叠）全过，且过的方式是结构保证而非逐条抄写。它的 _values_equal 也单独处理了 bool 与 int 的分离（type is bool 先判），60 项算术比较测试与 22 项优化器测试全过。",
+  "evidence": [
+   "optimizer.py:21 from .vm import apply_binary, apply_neg, apply_not",
+   "vm.py:13-100 类型规则拆成七个命名辅助，汇聚三个入口",
+   "折叠失败以 VMRuntimeError 为信号保持不折叠，与运行期同一套代码",
+   "优化器 22 项、算术比较 60 项隐藏测试全过"
+  ]
+ },
+ "jump_patching_single_point": {
+  "maxPoints": 4,
+  "criterion": "前向跳转回填经由一个集中的 emit/patch 机制（标签或补丁表），不是散落各处的裸下标运算",
+  "points": 4,
+  "verdict": "完全符合：Emitter 类持有 emit 与 patch 两个方法，回填只经由 patch",
+  "reasoning": "compiler.py:104-108 定义了 emit（追加指令并返回下标）与 patch（按下标改写目标）两个方法，所有前向跳转回填都通过 patch 完成，代码生成分支里没有裸的 instructions 下标赋值。这与参考实现的 _Emitter 同构。控制流 20 项、短路 10 项、跳转界内检查全部通过，嵌套 while 与 else if 链正确。",
+  "evidence": [
+   "compiler.py:104 def emit、:108 def patch，集中回填机制",
+   "代码生成分支无裸下标写",
+   "控制流 20 项、短路 10 项全过"
+  ]
+ },
+ "codec_discipline": {
+  "maxPoints": 3,
+  "criterion": "二进制布局用 struct 声明式表达且 dumps/loads 共用定义；loads 先验 CRC 再信任任何长度字段；读取有单一的越界检查点",
+  "points": 3,
+  "verdict": "完全符合：CRC 先验，_Reader 单一越界检查点，bool 先于 int 判型",
+  "reasoning": "三条子判据全部达标。loads 先取 body 与校验和、crc32 不符立即抛 SerializationError（serializer.py:149），之后才构造 _Reader 解析任何长度字段，规格第 7 节第 3 款的先验 CRC 要求满足。_Reader 是单一的越界检查点，所有读取经它的方法。布局用 struct.pack 声明式表达，标签常量集中定义。最关键的类型点做对了：_encode_const 用 type(value) is bool 在 isinstance(value, int) 之前判型（serializer.py:26），这正是 Haiku 在同一处失守的地方。逐字节翻转与逐字节截断穷举全过，i64 边界、假 CRC 重算攻击（改内容后重算合法 CRC 的变体测试）也全过。",
+  "evidence": [
+   "serializer.py:149 CRC 校验先于任何长度字段解析",
+   "_Reader 为单一越界检查点",
+   "serializer.py:26 type(value) is bool 先于 isinstance int（Haiku 的失守点）",
+   "逐字节翻转/截断穷举、i64 边界全过"
+  ]
+ }
+}

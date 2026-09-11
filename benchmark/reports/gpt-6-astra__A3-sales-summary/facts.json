@@ -1,0 +1,238 @@
+{
+  "task": "A3-sales-summary",
+  "runDir": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-6-astra\\A3-sales-summary",
+  "authoredFiles": [
+    {
+      "path": "sales.py",
+      "bytes": 1375,
+      "loc": 35
+    },
+    {
+      "path": "task.md",
+      "bytes": 4035,
+      "loc": 65
+    }
+  ],
+  "expectedFiles": [
+    "task.md",
+    "sales.py"
+  ],
+  "missing": [],
+  "extra": [],
+  "totalLoc": 35,
+  "imports": [],
+  "thirdPartyImports": [],
+  "allowedThirdPartyUsed": [],
+  "functions": [
+    {
+      "file": "sales.py",
+      "name": "summarize",
+      "line": 1,
+      "lines": 38,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    }
+  ],
+  "broadExcept": [],
+  "prints": [],
+  "syntaxErrors": [],
+  "todos": [],
+  "commentedCode": [],
+  "duplicateBlocks": [],
+  "sealed": [],
+  "transientCandidates": [],
+  "transcript": {
+    "source": "events.jsonl",
+    "turns": 4,
+    "modelCalls": 4,
+    "toolCalls": [
+      {
+        "id": "call_M4u67Tka626XWE7Ka72OJqY8",
+        "turn": "0",
+        "name": "glob",
+        "args": {
+          "pattern": "*"
+        },
+        "success": true,
+        "result": ".\\task.md"
+      },
+      {
+        "id": "custom_call_5nPU3TZPhLLqpLBRiycccIPT",
+        "turn": "1",
+        "name": "apply_patch",
+        "args": {
+          "_raw": "*** Begin Patch\n*** Add File: sales.py\n+def summarize(rows: list[dict]) -> list[dict]:\n+    groups = {}\n+    for index, row in enumerate(rows):\n+        region_value = row.get(\"region\")\n+        if region_value is None:\n+            raise ValueError(f\"row {index}: missing region\")\n+        region = str(region_value).strip()\n+        if not region:\n+            raise ValueError(f\"row {index}: missing region\")\n+\n+        value = row.get(\"amount\")\n+        if value is None or (isinstance(value, str) and not value.strip()):\n+            amount = 0.0\n+        else:\n+            try:\n+                amount = float(value)\n+            except (TypeError, ValueError, OverflowError) as error:\n+                raise ValueError(\n+                    f\"row {index}: invalid amount: {value!r}\"\n+                ) from error\n+\n+        key = region.lower()\n+        if key not in groups:\n+            groups[key] = {\n+                \"region\": region,\n+                \"count\": 0,\n+                \"total\": 0.0,\n+                \"avg\": 0.0,\n+            }\n+        group = groups[key]\n+        group[\"count\"] += 1\n+        group[\"total\"] += amount\n+\n+    result = list(groups.values())\n+    for group in result:\n+        group[\"avg\"] = round(group[\"total\"] / group[\"count\"], 2)\n+        group[\"total\"] = round(group[\"total\"], 2)\n+    return sorted(result, key=lambda group: (-group[\"total\"], group[\"region\"].lower()))\n*** End Patch\n"
+        },
+        "success": true,
+        "result": "Added 1 file(s): C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-6-astra\\A3-sales-summary\\sales.py"
+      },
+      {
+        "id": "call_qrAMOAOFvWmku6EoMesVIkIw",
+        "turn": "2",
+        "name": "powershell",
+        "args": {
+          "command": "@'\nimport copy\nimport contextlib\nimport io\n\noutput = io.StringIO()\nwith contextlib.redirect_stdout(output), contextlib.redirect_stderr(output):\n    import sales\nassert output.getvalue() == ''\nassert [name for name in vars(sales) if not name.startswith('_')] == ['summarize']\nsummarize = sales.summarize\nrows = [\n    {'region': 'North', 'amount': '100'},\n    {'region': 'south', 'amount': 50.5},\n    {'region': ' NORTH ', 'amount': ' 25 '},\n    {'region': 'South', 'amount': None},\n]\noriginal = copy.deepcopy(rows)\nassert summarize(rows) == [\n    {'region': 'North', 'count': 2, 'total': 125.0, 'avg': 62.5},\n    {'region': 'south', 'count': 2, 'total': 50.5, 'avg': 25.25},\n]\nassert rows == original\nassert summarize([]) == []\nassert summarize([{'region': 'a', 'amount': 10}, {'region': 'b', 'amount': 10}]) == [\n    {'region': 'a', 'count': 1, 'total': 10.0, 'avg': 10.0},\n    {'region': 'b', 'count': 1, 'total': 10.0, 'avg': 10.0},\n]\nfor rows, message in [\n    ([{'amount': 1}], 'row 0: missing region'),\n    ([{'region': 'x', 'amount': 'abc'}], \"row 0: invalid amount: 'abc'\"),\n    ([{'region': 'x'}, {'region': None, 'amount': 'abc'}], 'row 1: missing region'),\n    ([{'region': ' \\t ', 'amount': object()}], 'row 0: missing region'),\n    ([{'region': 'x', 'amount': []}, {}], 'row 0: invalid amount: []'),\n]:\n    try:\n        summarize(rows)\n    except ValueError as error:\n        assert str(error) == message, str(error)\n    else:\n        raise AssertionError('Expected ValueError')\nassert summarize([{'region': ' A ', 'amount': True}, {'region': 'a'}, {'region': 'A', 'amount': ' \\t'}, {'region': 'a', 'amount': None}]) == [\n    {'region': 'A', 'count': 4, 'total': 1.0, 'avg': 0.25}\n]\nassert summarize([{'region': 0, 'amount': -1}]) == [{'region': '0', 'count': 1, 'total': -1.0, 'avg': -1.0}]\nassert summarize([{'region': 'b', 'amount': 1.004}, {'region': 'A', 'amount': 1.003}])[0]['region'] == 'A'\nresult = summarize([{'region': 'x', 'amount': 0.0149}, {'region': 'X', 'amount': 0.0149}])\nassert result == [{'region': 'x', 'count': 2, 'total': 0.03, 'avg': 0.01}]\nassert list(result[0]) == ['region', 'count', 'total', 'avg']\nassert [type(value) for value in result[0].values()] == [str, int, float, float]\nprint('All assertions passed.')\n'@ | python -B -",
+          "description": "Verify acceptance criteria and edge cases without creating bytecode"
+        },
+        "success": true,
+        "result": "All assertions passed.\n<shellId: 0 completed with exit code 0>"
+      }
+    ],
+    "eventTypes": {
+      "session.extensions_loaded": 1,
+      "session.tools_updated": 3,
+      "session.mcp_servers_loaded": 1,
+      "user.message": 1,
+      "assistant.turn_start": 4,
+      "model.call_start": 4,
+      "assistant.tool_call_delta": 1209,
+      "model.call_finished": 4,
+      "assistant.message": 4,
+      "tool.execution_start": 3,
+      "tool.execution_complete": 3,
+      "assistant.turn_end": 4,
+      "session.background_tasks_changed": 28,
+      "tool.execution_partial_result": 2,
+      "assistant.message_start": 1,
+      "assistant.message_delta": 33,
+      "session.usage_checkpoint": 1,
+      "assistant.idle": 1,
+      "result": 1
+    },
+    "declaredPaths": [],
+    "mentionedPaths": [
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-6-astra/A3-sales-summary/sales.py",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-6-astra/A3-sales-summary/sales.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-6-astra/A3-sales-summary/sales.py",
+      "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\gpt-6-astra\\\\A3-sales-summary\\\\sales.py",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-6-astra\\A3-sales-summary\\sales.py",
+      "s:/responses"
+    ],
+    "assistantMessages": [
+      {
+        "turn": "3",
+        "content": "Created `sales.py` with `summarize(rows)`, implementing the specified grouping, validation, rounding, sorting, and input preservation. All acceptance criteria pass."
+      }
+    ]
+  },
+  "paths": {
+    "declared": {
+      "inside": [],
+      "relative": [],
+      "allowlisted": [],
+      "outside": [],
+      "ignored": []
+    },
+    "mentioned": {
+      "inside": [
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-6-astra/A3-sales-summary/sales.py",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-6-astra/A3-sales-summary/sales.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-6-astra/A3-sales-summary/sales.py",
+        "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\gpt-6-astra\\\\A3-sales-summary\\\\sales.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-6-astra\\A3-sales-summary\\sales.py"
+      ],
+      "relative": [],
+      "allowlisted": [],
+      "outside": [
+        "s:/responses"
+      ],
+      "ignored": []
+    }
+  },
+  "spec": {
+    "items": [
+      {
+        "id": "files",
+        "check": "file_manifest",
+        "points": 8,
+        "awarded": 8,
+        "verdict": "PASS",
+        "evidence": [
+          "authored file set matches exactly (2 files)"
+        ],
+        "veto": false
+      },
+      {
+        "id": "deps",
+        "check": "stdlib_only",
+        "points": 4,
+        "awarded": 4,
+        "verdict": "PASS",
+        "evidence": [
+          "imports are stdlib / local / task-provided only: (none)"
+        ],
+        "veto": false
+      },
+      {
+        "id": "bounds",
+        "check": "path_containment",
+        "points": 3,
+        "awarded": 3,
+        "verdict": "PASS",
+        "evidence": [
+          "absolute tool paths inside the run dir: 0; relative names resolved against the run dir: 0; allowlisted system locations: 0; outside: 0"
+        ],
+        "veto": false
+      }
+    ],
+    "score": 15,
+    "max": 15
+  },
+  "autoItems": [
+    {
+      "id": "hygiene",
+      "points": 5,
+      "awarded": 5.0,
+      "passedChecks": 4,
+      "totalChecks": 4,
+      "checks": [
+        {
+          "id": "no_broad_except",
+          "passed": true,
+          "evidence": [
+            "no broad except handlers"
+          ]
+        },
+        {
+          "id": "no_debug_residue",
+          "passed": true,
+          "evidence": [
+            "no TODO markers, no commented-out code, no stray print() outside CLI modules"
+          ]
+        },
+        {
+          "id": "typed_public_api",
+          "passed": true,
+          "evidence": [
+            "all 1 public function(s) fully annotated"
+          ]
+        },
+        {
+          "id": "bounded_function_length",
+          "passed": true,
+          "evidence": [
+            "longest implementation function is 38 lines (limit 45)"
+          ]
+        }
+      ]
+    }
+  ],
+  "reviewItems": [
+    {
+      "id": "grouping_efficiency",
+      "points": 5,
+      "criterion": "单遍 dict 累加分组，不是对每个 region 重复扫描全表（O(n²)）",
+      "mode": "review"
+    },
+    {
+      "id": "separation",
+      "points": 5,
+      "criterion": "region/amount 的取值与校验抽成辅助函数，错误消息集中构造，聚合逻辑干净",
+      "mode": "review"
+    }
+  ],
+  "qualityMax": 15,
+  "qualityAutoScore": 5.0,
+  "qualityReviewMax": 10,
+  "ownTestFunctionCount": 0
+}

@@ -1,0 +1,44 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "record_codec_declarative": {
+  "maxPoints": 5,
+  "criterion": "记录格式集中在 record.py，用 struct 或等价的声明式方式表达头部布局，不是散落各处的手工字节切片；编码与解码共用同一份字段定义",
+  "points": 5,
+  "verdict": "完全符合：单一 struct.Struct 实例，_HEADER_SIZE 由 .size 导出，且是五者中最紧凑的实现",
+  "reasoning": "record.py:7 建了模块级 `_HEADER = struct.Struct(\">4sBHII\")`，编码解码共用；record.py:8 `_HEADER_SIZE = _HEADER.size` 把头长度从格式导出而不是硬写 15。这与 Sonnet 的写法完全同构，是判据的标准答案。格式串只出现一次，全部布局知识收在 record.py。它的 record.py 也是五者中最短的之一，整个包实现只有 459 行（Haiku 474、Fable 473、Sonnet 492、Opus 560、参考 513），而 238 项隐藏测试全过 —— 表达密度高但没有牺牲正确性，与它在 C1 上的表现一致（C1 实现 709 行，别人 874 到 1020 行）。隐藏套件记录编解码 42 项全过。",
+  "evidence": [
+   "record.py:7 _HEADER = struct.Struct(\">4sBHII\")，唯一格式定义",
+   "record.py:8 _HEADER_SIZE = _HEADER.size，长度由格式导出",
+   "静态探针 fmt_string_copies=1",
+   "kvstore 包实现共 459 行，五者最短",
+   "隐藏套件记录编解码 42/42 通过"
+  ]
+ },
+ "truncation_vs_corruption": {
+  "maxPoints": 4,
+  "criterion": "截断与损坏的区分有明确且单一的判定点（IncompleteRecordError 与 CorruptRecordError 分开抛、由 scan 统一转译），不是靠散落的 try/except 兜住",
+  "points": 4,
+  "verdict": "完全符合：两类异常精确分开，捕获点精确",
+  "reasoning": "decode_record 只判定并抛两类语义不同的异常（record.py:38 起先判头部字节是否足够，再依次做结构检查、CRC、UTF-8 解码）；segment.py:51 `except IncompleteRecordError` 让截断尾静默结束扫描，segment.py:42 `except CorruptRecordError as exc` 转成 CorruptSegmentError。捕获的都是精确类型，没有 `except Exception`。最关键的『最后一条记录 CRC 损坏必须抛错而不是当成截断』行为正确（test_crc_damage_on_last_record_is_not_truncation 通过）。隐藏套件段文件 21 项、恢复 17 项全过。它没有像 Sonnet 那样把这条反直觉规则写进 docstring，但判据考察结构而非注释，不因此扣分。",
+  "evidence": [
+   "segment.py:51 except IncompleteRecordError -> 静默结束",
+   "segment.py:42 except CorruptRecordError -> CorruptSegmentError，类型精确",
+   "无 except Exception",
+   "隐藏套件段文件 21/21、重开与恢复 17/17 通过"
+  ]
+ },
+ "atomic_compaction": {
+  "maxPoints": 3,
+  "criterion": "压实顺序正确：先写 tmp、再 os.replace、最后删旧段；tmp 名字不匹配段文件模式，且中途崩溃可恢复",
+  "points": 3,
+  "verdict": "完全符合，并且补了 fsync",
+  "reasoning": "顺序完全正确：compact.py:35 用 `destination.with_suffix(\".seg.tmp\")` 生成 `<id>.seg.tmp`（不匹配 ^\\d{6}\\.seg$，恢复会忽略，中途崩溃后存储保持压实前状态）；写入过程中 compact.py:25 调 `os.fsync` 落盘；compact.py:37 `os.replace` 提交；compact.py:38-44 之后才 unlink 旧段并计数。与 Sonnet、Opus、Fable 一样补上了规格未要求的 fsync，四者在这一条上并列满分，只有 Haiku 整段缺失。用 `with_suffix` 而不是字符串拼接生成临时名是个小的整洁点：它从最终路径派生，不会与 segment_name 的格式化逻辑重复。记一处判据外的观察，不扣分：compact.py 访问了 `store._check_open` / `store._reload` / `store._segment_path` / `store._segments` 四个私有成员；包内跨模块访问私有成员是常见做法且规格未定义公开移交接口，所以不计分。对比 Fable 是五者中唯一完全不碰私有属性的（改用公开的 reset_after_compaction），Opus 与参考实现各只用 1 个命名私有钩子。",
+  "evidence": [
+   "compact.py:35 destination.with_suffix(\".seg.tmp\")，不匹配段文件模式",
+   "compact.py:25 os.fsync 落盘（规格未要求）",
+   "compact.py:37 os.replace 提交",
+   "compact.py:38-44 旧段在提交之后才 unlink",
+   "隐藏套件压实 21/21 通过"
+  ]
+ }
+}

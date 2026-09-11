@@ -1,0 +1,31 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "layering": {
+    "maxPoints": 6,
+    "criterion": "key 解析 / 值解引号 / 转义展开分成独立的辅助函数，主循环可读",
+    "points": 2,
+    "verdict": "不符合：模块内零辅助函数，三项关注点全部内联在单个 37 行函数里",
+    "reasoning": "判据点名的三件事无一抽出：① 转义展开 —— envparse.py:26-31 内联的 _re.sub + lambda；② 值解引号 —— envparse.py:25-37 内联的 if/elif/else 三分支；③ key 解析 —— envparse.py:17-22 内联。整个模块只有 parse_env 一个函数，没有任何 _ 前缀辅助。对比：opus 抽出 3 个辅助函数得 5/6，sonnet 两次分别抽出 2 个与 3 个得 4/6 与 5/6。给 2 分的依据：函数总长仅 37 行、结构线性、每个分支都短，所以『主循环可读』这半句勉强达到；但『分成独立的辅助函数』这个主要要求完全落空，扣 4。另记两个判据未覆盖的观察，不扣分：(a) envparse.py:7 把 escapes 字典定义在函数**内部**，每次调用都重建，放模块级更合适；(b) envparse.py:1 用 `import re as _re` 让 re 不进公共名，这个细节做对了（规格要求不得有其他公共名）。",
+    "evidence": [
+      "envparse.py:4-40 唯一函数 parse_env，模块内零辅助函数",
+      "envparse.py:26-31 转义展开内联",
+      "envparse.py:25-37 解引号内联",
+      "envparse.py:17-22 key 解析内联",
+      "envparse.py:7 escapes 字典定义在函数内，每次调用重建（不扣分）"
+    ]
+  },
+  "escape_single_pass": {
+    "maxPoints": 5,
+    "criterion": "转义用单次左到右扫描或查表，不是链式 .replace()（链式会引入顺序 bug）",
+    "points": 5,
+    "verdict": "完全符合，而且是三个实现里最简洁的：单次 re.sub + 查表回调，5 行",
+    "reasoning": "envparse.py:26-31 用 `_re.sub(r\"\\(.)\", lambda match: escapes.get(match[1], match[0]), ...)`：一次正则替换扫过全串，每个 `\\X` 由回调查表决定 —— 语义上等价于单次左到右扫描 + 查表，两种判据认可的形态兼具。**没有任何 .replace 链**，因此不存在顺序 bug。未知转义的处理特别巧妙：`escapes.get(match[1], match[0])` 中 match[0] 是整个匹配（两个字符），所以 `\\q` 原样保留为 `\\q`，正是规格要求；而 flags=_re.DOTALL 让 `\\` + 换行也能匹配。同样正确，但只用 5 行，而 sonnet/opus 的手写指针扫描各用 18-30 行。隐藏测试 'a\\qb' 与 'a\\\\b' 两例通过，验证了这个写法的正确性。",
+    "evidence": [
+      "envparse.py:26-31 单次 _re.sub + 查表回调，5 行",
+      "envparse.py:28 escapes.get(match[1], match[0]) 优雅处理未知转义",
+      "envparse.py:30 flags=_re.DOTALL",
+      "envparse.py 全文无 .replace(",
+      "隐藏测试未知转义与双反斜杠两例通过"
+    ]
+  }
+}

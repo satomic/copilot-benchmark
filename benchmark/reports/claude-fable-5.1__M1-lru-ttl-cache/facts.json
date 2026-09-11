@@ -1,0 +1,1196 @@
+{
+  "task": "M1-lru-ttl-cache",
+  "runDir": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache",
+  "authoredFiles": [
+    {
+      "path": "cache/__init__.py",
+      "bytes": 98,
+      "loc": 3
+    },
+    {
+      "path": "cache/lru.py",
+      "bytes": 7289,
+      "loc": 165
+    },
+    {
+      "path": "cache/stats.py",
+      "bytes": 173,
+      "loc": 7
+    },
+    {
+      "path": "task.md",
+      "bytes": 7092,
+      "loc": 127
+    },
+    {
+      "path": "tests/test_cache.py",
+      "bytes": 10776,
+      "loc": 289
+    }
+  ],
+  "expectedFiles": [
+    "task.md",
+    "cache/__init__.py",
+    "cache/lru.py",
+    "cache/stats.py",
+    "tests/test_cache.py"
+  ],
+  "missing": [],
+  "extra": [],
+  "totalLoc": 464,
+  "imports": [
+    {
+      "file": "cache/__init__.py",
+      "line": 1,
+      "module": ".lru",
+      "relative": true
+    },
+    {
+      "file": "cache/__init__.py",
+      "line": 2,
+      "module": ".stats",
+      "relative": true
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 1,
+      "module": "__future__"
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 3,
+      "module": "heapq"
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 4,
+      "module": "threading"
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 5,
+      "module": "time"
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 6,
+      "module": "collections"
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 7,
+      "module": "typing"
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 9,
+      "module": ".stats",
+      "relative": true
+    },
+    {
+      "file": "cache/stats.py",
+      "line": 1,
+      "module": "dataclasses"
+    },
+    {
+      "file": "tests/test_cache.py",
+      "line": 1,
+      "module": "threading"
+    },
+    {
+      "file": "tests/test_cache.py",
+      "line": 3,
+      "module": "pytest"
+    },
+    {
+      "file": "tests/test_cache.py",
+      "line": 5,
+      "module": "cache"
+    },
+    {
+      "file": "tests/test_cache.py",
+      "line": 50,
+      "module": "cache"
+    },
+    {
+      "file": "tests/test_cache.py",
+      "line": 325,
+      "module": "time"
+    }
+  ],
+  "thirdPartyImports": [],
+  "allowedThirdPartyUsed": [
+    "pytest"
+  ],
+  "functions": [
+    {
+      "file": "cache/lru.py",
+      "name": "__init__",
+      "line": 30,
+      "lines": 27,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "_validate_ttl",
+      "line": 61,
+      "lines": 5,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "_is_expired",
+      "line": 67,
+      "lines": 3,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "_expire",
+      "line": 71,
+      "lines": 3,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "_pop_expired_from_heap",
+      "line": 75,
+      "lines": 12,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "_push_heap",
+      "line": 88,
+      "lines": 3,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "_rebuild_heap",
+      "line": 92,
+      "lines": 7,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "_maybe_compact_heap",
+      "line": 100,
+      "lines": 3,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "get",
+      "line": 106,
+      "lines": 13,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "set",
+      "line": 120,
+      "lines": 26,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "delete",
+      "line": 147,
+      "lines": 10,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "clear",
+      "line": 158,
+      "lines": 4,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "purge_expired",
+      "line": 163,
+      "lines": 9,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "keys",
+      "line": 173,
+      "lines": 6,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "stats",
+      "line": 180,
+      "lines": 8,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "__len__",
+      "line": 189,
+      "lines": 3,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "__contains__",
+      "line": 193,
+      "lines": 9,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "clock",
+      "line": 20,
+      "lines": 2,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "make",
+      "line": 24,
+      "lines": 2,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "capacity",
+        "ttl",
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_capacity_below_one_raises_value_error",
+      "line": 32,
+      "lines": 3,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "bad"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_non_int_capacity_raises_type_error",
+      "line": 38,
+      "lines": 3,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "bad"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_invalid_default_ttl_raises_value_error",
+      "line": 44,
+      "lines": 3,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "bad"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_valid_construction_and_package_surface",
+      "line": 49,
+      "lines": 9,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_capacity_eviction_order_is_lru",
+      "line": 63,
+      "lines": 10,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_get_refreshes_lru_position",
+      "line": 75,
+      "lines": 9,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_set_existing_key_updates_value_and_moves_to_mru",
+      "line": 86,
+      "lines": 11,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_get_default_and_miss_counting",
+      "line": 99,
+      "lines": 5,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_ttl_expiry_via_get_at_exact_deadline",
+      "line": 109,
+      "lines": 10,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_set_restarts_ttl",
+      "line": 121,
+      "lines": 9,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_per_entry_ttl_overrides_default",
+      "line": 132,
+      "lines": 15,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_ttl_none_override_never_expires",
+      "line": 149,
+      "lines": 9,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_default_ttl_none_means_never_expire",
+      "line": 160,
+      "lines": 6,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_set_with_invalid_ttl_raises_value_error",
+      "line": 169,
+      "lines": 5,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "bad",
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_expired_entries_dropped_before_evicting_live_ones",
+      "line": 176,
+      "lines": 15,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_expired_entry_with_re_set_deadline_is_not_wrongly_dropped",
+      "line": 193,
+      "lines": 10,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_purge_expired_removes_only_expired_and_counts",
+      "line": 205,
+      "lines": 12,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_delete_return_values_and_stats",
+      "line": 222,
+      "lines": 11,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_clear_removes_entries_but_keeps_stats",
+      "line": 235,
+      "lines": 16,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_keys_ordering_mru_first_excludes_expired_without_mutation",
+      "line": 253,
+      "lines": 14,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_contains_does_not_count_hits_or_misses",
+      "line": 269,
+      "lines": 10,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_contains_does_not_refresh_lru",
+      "line": 281,
+      "lines": 6,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_len_includes_expired_and_never_exceeds_capacity",
+      "line": 289,
+      "lines": 9,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_stats_snapshot_is_immutable_and_independent",
+      "line": 300,
+      "lines": 10,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_mixed_key_types_with_equal_deadlines",
+      "line": 312,
+      "lines": 10,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_only_time_fn_is_used_as_time_source",
+      "line": 324,
+      "lines": 15,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "monkeypatch",
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_thread_safety_under_concurrent_access",
+      "line": 344,
+      "lines": 31,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "__init__",
+      "line": 9,
+      "lines": 2,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "__call__",
+      "line": 12,
+      "lines": 2,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "advance",
+      "line": 15,
+      "lines": 2,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "boom",
+      "line": 327,
+      "lines": 2,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "worker",
+      "line": 348,
+      "lines": 16,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "n"
+      ],
+      "returns_annotated": false
+    }
+  ],
+  "broadExcept": [
+    {
+      "file": "tests/test_cache.py",
+      "line": 362,
+      "kind": "except Exception",
+      "reraises": false,
+      "usesException": true,
+      "binding": "e"
+    }
+  ],
+  "prints": [],
+  "syntaxErrors": [],
+  "todos": [],
+  "commentedCode": [],
+  "duplicateBlocks": [
+    {
+      "locations": [
+        "cache/lru.py:119",
+        "cache/lru.py:158"
+      ],
+      "firstLine": "with self._lock:",
+      "blockLines": 5
+    },
+    {
+      "locations": [
+        "cache/lru.py:120",
+        "cache/lru.py:159"
+      ],
+      "firstLine": "entry = self._data.get(key)",
+      "blockLines": 5
+    },
+    {
+      "locations": [
+        "cache/lru.py:121",
+        "cache/lru.py:160"
+      ],
+      "firstLine": "if entry is None:",
+      "blockLines": 5
+    }
+  ],
+  "sealed": [],
+  "transientCandidates": [],
+  "transcript": {
+    "source": "events.jsonl",
+    "turns": 16,
+    "modelCalls": 16,
+    "toolCalls": [
+      {
+        "id": "toolu_01PLFazFfyNodscYR1R1Fxcv",
+        "turn": "0",
+        "name": "powershell",
+        "args": {
+          "command": "Get-ChildItem -Recurse -Force | Select-Object FullName; python --version",
+          "description": "List project root contents"
+        },
+        "success": true,
+        "result": "Python 3.11.9\nFullName\n--------\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\task.md\n<shellId: 0 completed with exit code 0>"
+      },
+      {
+        "id": "toolu_01NkmMeS9ETqv2ZGVvn8gth1",
+        "turn": "1",
+        "name": "powershell",
+        "args": {
+          "command": "New-Item -ItemType Directory -Path cache, tests | Out-Null",
+          "description": "Create package directories"
+        },
+        "success": true,
+        "result": "\n<shellId: 1 completed with exit code 0>"
+      },
+      {
+        "id": "toolu_01GSMsFXMF4YDASuXmGC3RF4",
+        "turn": "2",
+        "name": "create",
+        "args": {
+          "path": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\stats.py",
+          "file_text": "from dataclasses import dataclass\n\n\n@dataclass(frozen=True)\nclass CacheStats:\n    hits: int = 0\n    misses: int = 0\n    evictions: int = 0\n    expirations: int = 0\n"
+        },
+        "success": true,
+        "result": "Created file C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\stats.py with 173 characters"
+      },
+      {
+        "id": "toolu_01YYm9f1nC2A7VA5UPuAkrYQ",
+        "turn": "3",
+        "name": "create",
+        "args": {
+          "file_text": "from .lru import LRUCache\nfrom .stats import CacheStats\n\n__all__ = [\"LRUCache\", \"CacheStats\"]\n",
+          "path": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\__init__.py"
+        },
+        "success": true,
+        "result": "Created file C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\__init__.py with 98 characters"
+      },
+      {
+        "id": "toolu_01K7cRENXHGj1cny1j59MCBG",
+        "turn": "4",
+        "name": "create",
+        "args": {
+          "file_text": "from __future__ import annotations\n\nimport heapq\nimport threading\nimport time\nfrom collections import OrderedDict\nfrom typing import Any, Callable, Hashable\n\nfrom .stats import CacheStats\n\n# Sentinel distinguishing \"ttl argument omitted\" from an explicit ``ttl=None``.\n_MISSING = object()\n\n\nclass LRUCache:\n    \"\"\"Thread-safe LRU cache with lazy per-entry time-to-live.\n\n    Entries live in an ``OrderedDict`` (least recently used first, most recently\n    used last) mapped to ``[value, expires_at]`` where ``expires_at`` is ``None``\n    for entries that never expire.\n\n    An expiry min-heap of ``(expires_at, key)`` lets ``set`` drop already-expired\n    entries when the cache is full without scanning every entry. Heap items may\n    be stale (the key was deleted or re-set with a different deadline); they are\n    validated against the live entry when popped and discarded otherwise. The\n    heap is rebuilt whenever it grows past twice the number of entries, keeping\n    the per-operation cost amortised constant.\n    \"\"\"\n\n    def __init__(\n        self,\n        capacity: int,\n        ttl: float | None = None,\n        time_fn: Callable[[], float] = time.monotonic,\n    ) -> None:\n        if isinstance(capacity, bool) or not isinstance(capacity, int):\n            raise TypeError(\"capacity must be an int\")\n        if capacity < 1:\n            raise ValueError(\"capacity must be >= 1\")\n        if ttl is not None:\n            self._validate_ttl(ttl)\n        if not callable(time_fn):\n            raise TypeError(\"time_fn must be callable\")\n\n        self._capacity = capacity\n        self._default_ttl = ttl\n        self._time_fn = time_fn\n        self._lock = threading.RLock()\n        self._data: OrderedDict[Hashable, list] = OrderedDict()\n        self._expiry_heap: list[tuple[float, Hashable]] = []\n        self._hits = 0\n        self._misses = 0\n        self._evictions = 0\n        self._expirations = 0\n\n    # ------------------------------------------------------------------ helpers\n\n    @staticmethod\n    def _validate_ttl(ttl: Any) -> None:\n        if isinstance(ttl, bool) or not isinstance(ttl, (int, float)):\n            raise ValueError(\"ttl must be a real number > 0\")\n        if not ttl > 0:  # also rejects NaN\n            raise ValueError(\"ttl must be a real number > 0\")\n\n    def _is_expired(self, entry: list, now: float) -> bool:\n        expires_at = entry[1]\n        return expires_at is not None and now >= expires_at\n\n    def _expire(self, key: Hashable) -> None:\n        del self._data[key]\n        self._expirations += 1\n\n    def _pop_expired_from_heap(self, now: float) -> int:\n        \"\"\"Remove every entry whose deadline has passed; returns count removed.\"\"\"\n        removed = 0\n        heap = self._expiry_heap\n        while heap and heap[0][0] <= now:\n            expires_at, key = heapq.heappop(heap)\n            entry = self._data.get(key)\n            # Skip stale heap items: key gone or deadline was replaced by a set().\n            if entry is not None and entry[1] == expires_at:\n                self._expire(key)\n                removed += 1\n        return removed\n\n    def _maybe_compact_heap(self) -> None:\n        if len(self._expiry_heap) > 2 * len(self._data) + 16:\n            self._expiry_heap = [\n                (entry[1], key) for key, entry in self._data.items() if entry[1] is not None\n            ]\n            heapq.heapify(self._expiry_heap)\n\n    # ------------------------------------------------------------------ public\n\n    def get(self, key: Hashable, default: Any = None) -> Any:\n        with self._lock:\n            entry = self._data.get(key)\n            if entry is None:\n                self._misses += 1\n                return default\n            if self._is_expired(entry, self._time_fn()):\n                self._expire(key)\n                self._misses += 1\n                return default\n            self._data.move_to_end(key)\n            self._hits += 1\n            return entry[0]\n\n    def set(self, key: Hashable, value: Any, ttl: float | None = _MISSING) -> None:\n        if ttl is _MISSING:\n            ttl = self._default_ttl\n        elif ttl is not None:\n            self._validate_ttl(ttl)\n\n        with self._lock:\n            now = self._time_fn()\n            expires_at = None if ttl is None else now + ttl\n\n            if key in self._data:\n                entry = self._data[key]\n                entry[0] = value\n                entry[1] = expires_at\n                self._data.move_to_end(key)\n            else:\n                if len(self._data) >= self._capacity:\n                    self._pop_expired_from_heap(now)\n                if len(self._data) >= self._capacity:\n                    self._data.popitem(last=False)\n                    self._evictions += 1\n                self._data[key] = [value, expires_at]\n\n            if expires_at is not None:\n                heapq.heappush(self._expiry_heap, (expires_at, key))\n                self._maybe_compact_heap()\n\n    def delete(self, key: Hashable) -> bool:\n        with self._lock:\n            entry = self._data.get(key)\n            if entry is None:\n                return False\n            if self._is_expired(entry, self._time_fn()):\n                self._expire(key)\n                return False\n            del self._data[key]\n            return True\n\n    def clear(self) -> None:\n        with self._lock:\n            self._data.clear()\n            self._expiry_heap.clear()\n\n    def purge_expired(self) -> int:\n        with self._lock:\n            now = self._time_fn()\n            expired = [k for k, e in self._data.items() if self._is_expired(e, now)]\n            for k in expired:\n                self._expire(k)\n            # Drop heap items that are now stale so they do not accumulate.\n            self._expiry_heap = [\n                (deadline, k) for deadline, k in self._expiry_heap\n                if k in self._data and self._data[k][1] == deadline\n            ]\n            heapq.heapify(self._expiry_heap)\n            return len(expired)\n\n    def keys(self) -> list:\n        with self._lock:\n            now = self._time_fn()\n            return [\n                k for k, e in reversed(self._data.items()) if not self._is_expired(e, now)\n            ]\n\n    def stats(self) -> CacheStats:\n        with self._lock:\n            return CacheStats(\n                hits=self._hits,\n                misses=self._misses,\n                evictions=self._evictions,\n                expirations=self._expirations,\n            )\n\n    def __len__(self) -> int:\n        with self._lock:\n            return len(self._data)\n\n    def __contains__(self, key: object) -> bool:\n        with self._lock:\n            entry = self._data.get(key)\n            if entry is None:\n                return False\n            if self._is_expired(entry, self._time_fn()):\n                self._expire(key)\n                return False\n            return True\n",
+          "path": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\lru.py"
+        },
+        "success": true,
+        "result": "Created file C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\lru.py with 7091 characters"
+      },
+      {
+        "id": "toolu_019gDPS1Biz3b7VdtbLSZXdR",
+        "turn": "5",
+        "name": "edit",
+        "args": {
+          "path": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\lru.py",
+          "old_str": "        self._expiry_heap: list[tuple[float, Hashable]] = []\n        self._hits = 0",
+          "new_str": "        # (expires_at, seq, key); seq breaks ties so keys are never compared.\n        self._expiry_heap: list[tuple[float, int, Hashable]] = []\n        self._seq = 0\n        self._hits = 0"
+        },
+        "success": true,
+        "result": "File C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\lru.py updated with changes."
+      },
+      {
+        "id": "toolu_01WaZR3fFUSvGz3RSqLrwpkA",
+        "turn": "6",
+        "name": "edit",
+        "args": {
+          "new_str": "            expires_at, _, key = heapq.heappop(heap)",
+          "old_str": "            expires_at, key = heapq.heappop(heap)",
+          "path": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\lru.py"
+        },
+        "success": true,
+        "result": "File C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\lru.py updated with changes."
+      },
+      {
+        "id": "toolu_017w677RkT1rbdBPmKgMV6yd",
+        "turn": "7",
+        "name": "edit",
+        "args": {
+          "new_str": "    def _push_heap(self, expires_at: float, key: Hashable) -> None:\n        self._seq += 1\n        heapq.heappush(self._expiry_heap, (expires_at, self._seq, key))\n\n    def _rebuild_heap(self) -> None:\n        self._expiry_heap = []\n        for key, entry in self._data.items():\n            if entry[1] is not None:\n                self._seq += 1\n                self._expiry_heap.append((entry[1], self._seq, key))\n        heapq.heapify(self._expiry_heap)\n\n    def _maybe_compact_heap(self) -> None:\n        if len(self._expiry_heap) > 2 * len(self._data) + 16:\n            self._rebuild_heap()",
+          "old_str": "    def _maybe_compact_heap(self) -> None:\n        if len(self._expiry_heap) > 2 * len(self._data) + 16:\n            self._expiry_heap = [\n                (entry[1], key) for key, entry in self._data.items() if entry[1] is not None\n            ]\n            heapq.heapify(self._expiry_heap)",
+          "path": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\lru.py"
+        },
+        "success": true,
+        "result": "File C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\lru.py updated with changes."
+      },
+      {
+        "id": "toolu_013VMfwNi2hAr5SsiEdttSKn",
+        "turn": "8",
+        "name": "edit",
+        "args": {
+          "new_str": "            if expires_at is not None:\n                self._push_heap(expires_at, key)\n                self._maybe_compact_heap()",
+          "old_str": "            if expires_at is not None:\n                heapq.heappush(self._expiry_heap, (expires_at, key))\n                self._maybe_compact_heap()",
+          "path": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\lru.py"
+        },
+        "success": true,
+        "result": "File C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\lru.py updated with changes."
+      },
+      {
+        "id": "toolu_01D1n9V4WAgjudr9jhvM6weM",
+        "turn": "9",
+        "name": "edit",
+        "args": {
+          "new_str": "            for k in expired:\n                self._expire(k)\n            # Rebuild the heap so stale items do not accumulate.\n            self._rebuild_heap()\n            return len(expired)",
+          "old_str": "            for k in expired:\n                self._expire(k)\n            # Drop heap items that are now stale so they do not accumulate.\n            self._expiry_heap = [\n                (deadline, k) for deadline, k in self._expiry_heap\n                if k in self._data and self._data[k][1] == deadline\n            ]\n            heapq.heapify(self._expiry_heap)\n            return len(expired)",
+          "path": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\lru.py"
+        },
+        "success": true,
+        "result": "File C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\lru.py updated with changes."
+      },
+      {
+        "id": "toolu_019eeJYWPFtfmpnAskQSPj5W",
+        "turn": "10",
+        "name": "edit",
+        "args": {
+          "new_str": "    An expiry min-heap of ``(expires_at, seq, key)`` lets ``set`` drop already-expired",
+          "old_str": "    An expiry min-heap of ``(expires_at, key)`` lets ``set`` drop already-expired",
+          "path": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\lru.py"
+        },
+        "success": true,
+        "result": "File C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\lru.py updated with changes."
+      },
+      {
+        "id": "toolu_019phaDXmYqm4eDX8yQboHpz",
+        "turn": "11",
+        "name": "create",
+        "args": {
+          "file_text": "import threading\n\nimport pytest\n\nfrom cache import LRUCache, CacheStats\n\n\nclass FakeClock:\n    def __init__(self, start: float = 0.0) -> None:\n        self.now = start\n\n    def __call__(self) -> float:\n        return self.now\n\n    def advance(self, seconds: float) -> None:\n        self.now += seconds\n\n\n@pytest.fixture\ndef clock():\n    return FakeClock()\n\n\ndef make(capacity=3, ttl=None, clock=None):\n    return LRUCache(capacity=capacity, ttl=ttl, time_fn=clock or FakeClock())\n\n\n# --------------------------------------------------------------- construction\n\n\n@pytest.mark.parametrize(\"bad\", [0, -1])\ndef test_capacity_below_one_raises_value_error(bad):\n    with pytest.raises(ValueError):\n        LRUCache(capacity=bad)\n\n\n@pytest.mark.parametrize(\"bad\", [True, False, 1.0, \"2\", None])\ndef test_non_int_capacity_raises_type_error(bad):\n    with pytest.raises(TypeError):\n        LRUCache(capacity=bad)\n\n\n@pytest.mark.parametrize(\"bad\", [0, -1, -0.5, \"10\", True, float(\"nan\")])\ndef test_invalid_default_ttl_raises_value_error(bad):\n    with pytest.raises(ValueError):\n        LRUCache(capacity=1, ttl=bad)\n\n\ndef test_valid_construction_and_package_surface():\n    import cache\n\n    assert cache.__all__ == [\"LRUCache\", \"CacheStats\"]\n    c = LRUCache(capacity=1)\n    assert len(c) == 0\n    assert c.stats() == CacheStats()\n    c2 = LRUCache(capacity=1, ttl=2.5)\n    assert c2.keys() == []\n\n\n# ------------------------------------------------------------------- LRU core\n\n\ndef test_capacity_eviction_order_is_lru(clock):\n    c = make(capacity=2, clock=clock)\n    c.set(\"a\", 1)\n    c.set(\"b\", 2)\n    c.set(\"c\", 3)  # evicts 'a'\n    assert c.get(\"a\") is None\n    assert c.get(\"b\") == 2\n    assert c.get(\"c\") == 3\n    assert c.stats().evictions == 1\n    assert len(c) == 2\n\n\ndef test_get_refreshes_lru_position(clock):\n    c = make(capacity=2, clock=clock)\n    c.set(\"a\", 1)\n    c.set(\"b\", 2)\n    assert c.get(\"a\") == 1  # 'a' becomes MRU\n    c.set(\"c\", 3)  # evicts 'b'\n    assert \"b\" not in c\n    assert c.keys() == [\"c\", \"a\"]\n    assert c.stats().evictions == 1\n\n\ndef test_set_existing_key_updates_value_and_moves_to_mru(clock):\n    c = make(capacity=2, clock=clock)\n    c.set(\"a\", 1)\n    c.set(\"b\", 2)\n    c.set(\"a\", 10)\n    assert c.keys() == [\"a\", \"b\"]\n    assert len(c) == 2\n    c.set(\"c\", 3)  # evicts 'b', the LRU\n    assert c.keys() == [\"c\", \"a\"]\n    assert c.get(\"a\") == 10\n    assert c.stats().evictions == 1\n\n\ndef test_get_default_and_miss_counting(clock):\n    c = make(clock=clock)\n    assert c.get(\"missing\") is None\n    assert c.get(\"missing\", \"dflt\") == \"dflt\"\n    assert c.stats() == CacheStats(hits=0, misses=2)\n\n\n# ------------------------------------------------------------------------ TTL\n\n\ndef test_ttl_expiry_via_get_at_exact_deadline(clock):\n    c = make(capacity=2, ttl=10, clock=clock)\n    c.set(\"a\", 1)\n    clock.advance(9.999)\n    assert c.get(\"a\") == 1\n    clock.advance(0.001)  # now == t0 + ttl -> already expired\n    assert c.get(\"a\") is None\n    assert c.get(\"a\", \"d\") == \"d\"  # gone: plain miss, no second expiration\n    assert c.stats() == CacheStats(hits=1, misses=2, evictions=0, expirations=1)\n    assert len(c) == 0\n\n\ndef test_set_restarts_ttl(clock):\n    c = make(ttl=10, clock=clock)\n    c.set(\"a\", 1)\n    clock.advance(8)\n    c.set(\"a\", 2)\n    clock.advance(8)\n    assert c.get(\"a\") == 2\n    clock.advance(2)\n    assert c.get(\"a\") is None\n\n\ndef test_per_entry_ttl_overrides_default(clock):\n    c = make(ttl=10, clock=clock)\n    c.set(\"short\", 1, ttl=2)\n    c.set(\"long\", 2, ttl=50)\n    c.set(\"default\", 3)\n    clock.advance(2)\n    assert c.get(\"short\") is None\n    assert c.get(\"long\") == 2\n    assert c.get(\"default\") == 3\n    clock.advance(8)\n    assert c.get(\"default\") is None\n    assert c.get(\"long\") == 2\n    clock.advance(40)\n    assert c.get(\"long\") is None\n    assert c.stats().expirations == 3\n\n\ndef test_ttl_none_override_never_expires(clock):\n    c = make(capacity=8, ttl=5, clock=clock)\n    c.set(\"forever\", 1, ttl=None)\n    c.set(\"temp\", 2)\n    clock.advance(1000)\n    assert c.get(\"forever\") == 1\n    assert c.get(\"temp\") is None\n    assert \"forever\" in c\n    assert c.keys() == [\"forever\"]\n\n\ndef test_default_ttl_none_means_never_expire(clock):\n    c = make(ttl=None, clock=clock)\n    c.set(\"a\", 1)\n    clock.advance(1e9)\n    assert c.get(\"a\") == 1\n    assert c.purge_expired() == 0\n\n\n@pytest.mark.parametrize(\"bad\", [0, -1, -2.5, \"5\", True, float(\"nan\")])\ndef test_set_with_invalid_ttl_raises_value_error(bad, clock):\n    c = make(clock=clock)\n    with pytest.raises(ValueError):\n        c.set(\"a\", 1, ttl=bad)\n    assert len(c) == 0\n\n\ndef test_expired_entries_dropped_before_evicting_live_ones(clock):\n    c = make(capacity=3, ttl=10, clock=clock)\n    c.set(\"a\", 1, ttl=1)\n    c.set(\"b\", 2)\n    c.set(\"c\", 3)\n    clock.advance(1)\n    assert len(c) == 3  # 'a' expired but not yet purged\n    c.set(\"d\", 4)  # room made by dropping expired 'a'; no eviction\n    assert c.stats().evictions == 0\n    assert c.stats().expirations == 1\n    assert c.keys() == [\"d\", \"c\", \"b\"]\n    c.set(\"e\", 5)  # no expired entries -> LRU 'b' evicted\n    assert c.stats().evictions == 1\n    assert c.keys() == [\"e\", \"d\", \"c\"]\n    assert len(c) == 3\n\n\ndef test_expired_entry_with_re_set_deadline_is_not_wrongly_dropped(clock):\n    c = make(capacity=2, ttl=10, clock=clock)\n    c.set(\"a\", 1, ttl=1)\n    c.set(\"a\", 1, ttl=100)  # stale heap item for old deadline must be ignored\n    c.set(\"b\", 2)\n    clock.advance(5)\n    c.set(\"c\", 3)  # nothing expired -> LRU 'a' evicted... wait, 'a' is LRU\n    assert c.stats().expirations == 0\n    assert c.stats().evictions == 1\n    assert c.keys() == [\"c\", \"b\"]\n\n\ndef test_purge_expired_removes_only_expired_and_counts(clock):\n    c = make(capacity=5, ttl=10, clock=clock)\n    c.set(\"a\", 1, ttl=1)\n    c.set(\"b\", 2, ttl=2)\n    c.set(\"c\", 3)\n    c.set(\"d\", 4, ttl=None)\n    clock.advance(2)\n    assert c.purge_expired() == 2\n    assert c.purge_expired() == 0\n    assert len(c) == 2\n    assert c.keys() == [\"d\", \"c\"]\n    assert c.stats() == CacheStats(hits=0, misses=0, evictions=0, expirations=2)\n\n\n# ------------------------------------------------------------ other operations\n\n\ndef test_delete_return_values_and_stats(clock):\n    c = make(ttl=10, clock=clock)\n    c.set(\"a\", 1)\n    c.set(\"b\", 2)\n    assert c.delete(\"a\") is True\n    assert c.delete(\"a\") is False\n    assert c.delete(\"nope\") is False\n    clock.advance(10)\n    assert c.delete(\"b\") is False  # expired: counts an expiration\n    assert len(c) == 0\n    assert c.stats() == CacheStats(hits=0, misses=0, evictions=0, expirations=1)\n\n\ndef test_clear_removes_entries_but_keeps_stats(clock):\n    c = make(capacity=2, ttl=10, clock=clock)\n    c.set(\"a\", 1)\n    c.set(\"b\", 2)\n    c.set(\"c\", 3)\n    c.get(\"c\")\n    c.get(\"zzz\")\n    before = c.stats()\n    assert before == CacheStats(hits=1, misses=1, evictions=1, expirations=0)\n    c.clear()\n    assert len(c) == 0\n    assert c.keys() == []\n    assert c.stats() == before\n    c.set(\"x\", 1)\n    assert c.get(\"x\") == 1\n    assert c.stats().hits == 2\n\n\ndef test_keys_ordering_mru_first_excludes_expired_without_mutation(clock):\n    c = make(capacity=4, ttl=10, clock=clock)\n    c.set(\"a\", 1)\n    c.set(\"b\", 2)\n    c.set(\"c\", 3, ttl=1)\n    c.set(\"d\", 4)\n    assert c.keys() == [\"d\", \"c\", \"b\", \"a\"]\n    c.get(\"a\")\n    assert c.keys() == [\"a\", \"d\", \"c\", \"b\"]\n    clock.advance(1)\n    stats_before = c.stats()\n    assert c.keys() == [\"a\", \"d\", \"b\"]\n    assert len(c) == 4  # keys() did not remove the expired entry\n    assert c.stats() == stats_before\n\n\ndef test_contains_does_not_count_hits_or_misses(clock):\n    c = make(ttl=10, clock=clock)\n    c.set(\"a\", 1)\n    assert \"a\" in c\n    assert \"b\" not in c\n    assert c.stats() == CacheStats()\n    clock.advance(10)\n    assert \"a\" not in c  # lazily removed, one expiration\n    assert len(c) == 0\n    assert c.stats() == CacheStats(hits=0, misses=0, evictions=0, expirations=1)\n\n\ndef test_contains_does_not_refresh_lru(clock):\n    c = make(capacity=2, clock=clock)\n    c.set(\"a\", 1)\n    c.set(\"b\", 2)\n    assert \"a\" in c\n    assert c.keys() == [\"b\", \"a\"]\n\n\ndef test_len_includes_expired_and_never_exceeds_capacity(clock):\n    c = make(capacity=2, ttl=1, clock=clock)\n    c.set(\"a\", 1)\n    c.set(\"b\", 2)\n    clock.advance(1)\n    assert len(c) == 2\n    c.set(\"c\", 3)\n    assert len(c) <= 2\n    assert c.keys() == [\"c\"]\n\n\ndef test_stats_snapshot_is_immutable_and_independent(clock):\n    c = make(clock=clock)\n    c.set(\"a\", 1)\n    snap = c.stats()\n    c.get(\"a\")\n    c.get(\"b\")\n    assert snap == CacheStats()\n    assert c.stats() == CacheStats(hits=1, misses=1)\n    with pytest.raises(Exception):\n        snap.hits = 5  # frozen dataclass\n\n\ndef test_mixed_key_types_with_equal_deadlines(clock):\n    c = make(capacity=4, ttl=10, clock=clock)\n    c.set(\"s\", 1)\n    c.set(1, 2)\n    c.set((1, 2), 3)\n    c.set(None, 4)\n    clock.advance(10)\n    c.set(\"new\", 5)  # drops expired entries; must not compare keys\n    assert c.keys() == [\"new\"]\n    assert c.stats().expirations == 4\n\n\ndef test_only_time_fn_is_used_as_time_source(monkeypatch, clock):\n    import time as _time\n\n    def boom(*_a, **_k):\n        raise AssertionError(\"cache must not call time.* directly\")\n\n    monkeypatch.setattr(_time, \"monotonic\", boom)\n    monkeypatch.setattr(_time, \"time\", boom)\n    c = make(capacity=2, ttl=5, clock=clock)\n    c.set(\"a\", 1)\n    assert c.get(\"a\") == 1\n    assert \"a\" in c\n    c.keys()\n    c.purge_expired()\n    c.delete(\"a\")\n\n\n# ---------------------------------------------------------------- concurrency\n\n\ndef test_thread_safety_under_concurrent_access(clock):\n    c = make(capacity=50, ttl=1000, clock=clock)\n    errors = []\n\n    def worker(n):\n        try:\n            for i in range(500):\n                key = (n, i % 20)\n                c.set(key, i)\n                c.get(key)\n                c.get((\"other\", i))\n                if i % 7 == 0:\n                    c.delete(key)\n                if i % 50 == 0:\n                    c.keys()\n                    c.purge_expired()\n                    _ = key in c\n                    len(c)\n        except Exception as e:  # pragma: no cover\n            errors.append(e)\n\n    threads = [threading.Thread(target=worker, args=(n,)) for n in range(8)]\n    for t in threads:\n        t.start()\n    for t in threads:\n        t.join()\n\n    assert errors == []\n    assert len(c) <= 50\n    s = c.stats()\n    assert s.hits + s.misses == 8 * 500 * 2\n",
+          "path": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\tests\\test_cache.py"
+        },
+        "success": true,
+        "result": "Created file C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\tests\\test_cache.py with 10780 characters"
+      },
+      {
+        "id": "toolu_01EHtSF3E7UxxPXKeSWpsF2S",
+        "turn": "12",
+        "name": "edit",
+        "args": {
+          "new_str": "    c.set(\"c\", 3)  # nothing expired -> LRU 'a' is evicted, not expired",
+          "old_str": "    c.set(\"c\", 3)  # nothing expired -> LRU 'a' evicted... wait, 'a' is LRU",
+          "path": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\tests\\test_cache.py"
+        },
+        "success": true,
+        "result": "File C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\tests\\test_cache.py updated with changes."
+      },
+      {
+        "id": "toolu_01BoxqyYsvQddukfVLg6GbSs",
+        "turn": "13",
+        "name": "powershell",
+        "args": {
+          "command": "python -m pytest tests -q -p no:cacheprovider 2>&1 | Select-Object -Last 5; @'\nfrom cache import LRUCache, CacheStats\nclock = [0.0]\nc = LRUCache(capacity=2, ttl=10, time_fn=lambda: clock[0])\nc.set(\"a\", 1); c.set(\"b\", 2)\nassert c.get(\"a\") == 1\nc.set(\"c\", 3)\nassert c.keys() == [\"c\", \"a\"]\nassert c.get(\"b\") is None\nassert c.stats() == CacheStats(hits=1, misses=1, evictions=1, expirations=0)\nclock[0] = 10.0\nassert c.get(\"a\") is None\nassert c.stats().expirations == 1\nc2 = LRUCache(capacity=8, ttl=5, time_fn=lambda: clock[0])\nc2.set(\"forever\", 1, ttl=None)\nclock[0] += 1000\nassert c2.get(\"forever\") == 1\nimport pytest\nwith pytest.raises(ValueError): LRUCache(capacity=0)\nwith pytest.raises(TypeError): LRUCache(capacity=True)\nprint(\"ACCEPTANCE OK\")\n'@ | python -; Get-ChildItem -Recurse -Force -File | Select-Object -ExpandProperty FullName",
+          "description": "Run tests and acceptance script, list files",
+          "initial_wait": 60
+        },
+        "success": true,
+        "result": "..........................................                               [100%]\n42 passed in 0.29s\nACCEPTANCE OK\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\task.md\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\__init__.py\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\lru.py\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\stats.py\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\__pycache__\\__init__.cpython-311.pyc\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\__pycache__\\lru.cpython-311.pyc\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\__pycache__\\stats.cpython-311.pyc\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\tests\\test_cache.py\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\tests\\__pycache__\\test_cache.cpython-311-pytest-8.3.4.pyc\n<shellId: 2 completed with exit code 0>"
+      },
+      {
+        "id": "toolu_019WxYN35gZaXUdx64f1L5by",
+        "turn": "14",
+        "name": "powershell",
+        "args": {
+          "command": "Remove-Item -Recurse -Force cache\\__pycache__, tests\\__pycache__; Get-ChildItem -Recurse -Force -File | Select-Object -ExpandProperty Name",
+          "description": "Remove pycache and confirm final file list"
+        },
+        "success": true,
+        "result": "task.md\n__init__.py\nlru.py\nstats.py\ntest_cache.py\n<shellId: 3 completed with exit code 0>"
+      }
+    ],
+    "eventTypes": {
+      "session.extensions_loaded": 1,
+      "session.tools_updated": 3,
+      "session.mcp_servers_loaded": 1,
+      "user.message": 1,
+      "assistant.turn_start": 16,
+      "model.call_start": 16,
+      "assistant.reasoning_delta": 38,
+      "assistant.message_start": 6,
+      "assistant.message_delta": 93,
+      "assistant.tool_call_delta": 3463,
+      "model.call_finished": 16,
+      "assistant.message": 16,
+      "assistant.reasoning": 3,
+      "tool.execution_start": 15,
+      "session.background_tasks_changed": 114,
+      "tool.execution_partial_result": 15,
+      "tool.execution_complete": 15,
+      "assistant.turn_end": 16,
+      "session.info": 4,
+      "session.usage_checkpoint": 1,
+      "assistant.idle": 1,
+      "result": 1
+    },
+    "declaredPaths": [
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\__init__.py",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\lru.py",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\stats.py",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\tests\\test_cache.py",
+      "Directory",
+      "cache",
+      "cache\\__pycache__",
+      "pytest",
+      "tests",
+      "tests\\__pycache__"
+    ],
+    "mentionedPaths": [
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/claude-fable-5.1/M1-lru-ttl-cache/cache/__init__.py",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/claude-fable-5.1/M1-lru-ttl-cache/cache/__init__.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/claude-fable-5.1/M1-lru-ttl-cache/cache/__init__.py",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/claude-fable-5.1/M1-lru-ttl-cache/cache/lru.py",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/claude-fable-5.1/M1-lru-ttl-cache/cache/lru.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/claude-fable-5.1/M1-lru-ttl-cache/cache/lru.py",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/claude-fable-5.1/M1-lru-ttl-cache/cache/stats.py",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/claude-fable-5.1/M1-lru-ttl-cache/cache/stats.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/claude-fable-5.1/M1-lru-ttl-cache/cache/stats.py",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/claude-fable-5.1/M1-lru-ttl-cache/tests/test_cache.py",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/claude-fable-5.1/M1-lru-ttl-cache/tests/test_cache.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/claude-fable-5.1/M1-lru-ttl-cache/tests/test_cache.py",
+      "C:\\\\wo",
+      "C:\\\\wor",
+      "C:\\\\workspa",
+      "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\claude-fable-5.1\\\\M1-lru-ttl-cache\\\\cache\\\\__init__.py",
+      "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\claude-fable-5.1\\\\M1-lru-ttl-cache\\\\cache\\\\lru.py",
+      "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\claude-fable-5.1\\\\M1-lru-ttl-cache\\\\cache\\\\stats.py",
+      "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\claude-fable-5.1\\\\M1-lru-ttl-cache\\\\tests\\\\test_cache.py",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\__init__.py",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\__init__.py with 98 characters",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\__pycache__\\__init__.cpython-311.pyc",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\__pycache__\\lru.cpython-311.pyc",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\__pycache__\\stats.cpython-311.pyc",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\lru.py",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\lru.py updated with changes",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\lru.py with 7091 characters",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\stats.py",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\stats.py with 173 characters",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\task.md",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\tests\\__pycache__\\test_cache.cpython-311-pytest-8.3.4.pyc",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\tests\\test_cache.py",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\tests\\test_cache.py updated with changes",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\tests\\test_cache.py with 10780 characters",
+      "G:\\n",
+      "d:\\n",
+      "e:\\n",
+      "k:\\n",
+      "s:\\n",
+      "t:\\n",
+      "y:\\n"
+    ],
+    "assistantMessages": [
+      {
+        "turn": "0",
+        "content": "I'll check the project root, then create the four deliverables."
+      },
+      {
+        "turn": "5",
+        "content": "Fixing a heap tiebreak issue (keys of mixed types would fail comparison on equal deadlines) before writing tests."
+      },
+      {
+        "turn": "10",
+        "content": "Also update the docstring to match, then write the tests."
+      },
+      {
+        "turn": "12",
+        "content": "Cleaning up a stray comment in one test, then running the suite plus the acceptance script."
+      },
+      {
+        "turn": "14",
+        "content": "All green. Removing the generated `__pycache__` dirs so only the deliverables remain."
+      },
+      {
+        "turn": "15",
+        "content": "Done. Created the four deliverables:\n\n- `cache/stats.py` — frozen `CacheStats` dataclass.\n- `cache/lru.py` — `LRUCache` using an `OrderedDict` (LRU order) plus an expiry min-heap with lazy stale-item invalidation, so `set` can drop expired entries before evicting without scanning (amortised O(1)). Single `RLock`, `time_fn` is the only clock, sentinel distinguishes omitted `ttl` from `ttl=None`.\n- `cache/__init__.py` — re-exports with `__all__`.\n- `tests/test_cache.py` — 27 test functions (42 cases with parametrization), fake-clock driven, covering every required area plus thread safety and \"no direct `time.*` calls\".\n\n`python -m pytest tests -q` → 42 passed; the acceptance script also passes."
+      }
+    ]
+  },
+  "paths": {
+    "declared": {
+      "inside": [
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\__init__.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\lru.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\stats.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\tests\\test_cache.py"
+      ],
+      "relative": [
+        "Directory",
+        "cache",
+        "cache\\__pycache__",
+        "pytest",
+        "tests",
+        "tests\\__pycache__"
+      ],
+      "allowlisted": [],
+      "outside": [],
+      "ignored": []
+    },
+    "mentioned": {
+      "inside": [
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/claude-fable-5.1/M1-lru-ttl-cache/cache/__init__.py",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/claude-fable-5.1/M1-lru-ttl-cache/cache/__init__.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/claude-fable-5.1/M1-lru-ttl-cache/cache/__init__.py",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/claude-fable-5.1/M1-lru-ttl-cache/cache/lru.py",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/claude-fable-5.1/M1-lru-ttl-cache/cache/lru.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/claude-fable-5.1/M1-lru-ttl-cache/cache/lru.py",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/claude-fable-5.1/M1-lru-ttl-cache/cache/stats.py",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/claude-fable-5.1/M1-lru-ttl-cache/cache/stats.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/claude-fable-5.1/M1-lru-ttl-cache/cache/stats.py",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/claude-fable-5.1/M1-lru-ttl-cache/tests/test_cache.py",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/claude-fable-5.1/M1-lru-ttl-cache/tests/test_cache.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/claude-fable-5.1/M1-lru-ttl-cache/tests/test_cache.py",
+        "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\claude-fable-5.1\\\\M1-lru-ttl-cache\\\\cache\\\\__init__.py",
+        "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\claude-fable-5.1\\\\M1-lru-ttl-cache\\\\cache\\\\lru.py",
+        "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\claude-fable-5.1\\\\M1-lru-ttl-cache\\\\cache\\\\stats.py",
+        "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\claude-fable-5.1\\\\M1-lru-ttl-cache\\\\tests\\\\test_cache.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\__init__.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\__init__.py with 98 characters",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\__pycache__\\__init__.cpython-311.pyc",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\__pycache__\\lru.cpython-311.pyc",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\__pycache__\\stats.cpython-311.pyc",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\lru.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\lru.py updated with changes",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\lru.py with 7091 characters",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\stats.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\stats.py with 173 characters",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\task.md",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\tests\\__pycache__\\test_cache.cpython-311-pytest-8.3.4.pyc",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\tests\\test_cache.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\tests\\test_cache.py updated with changes",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\tests\\test_cache.py with 10780 characters"
+      ],
+      "relative": [],
+      "allowlisted": [],
+      "outside": [
+        "G:\\n",
+        "d:\\n",
+        "e:\\n",
+        "k:\\n",
+        "s:\\n",
+        "t:\\n",
+        "y:\\n"
+      ],
+      "ignored": [
+        "C:\\\\wo",
+        "C:\\\\wor",
+        "C:\\\\workspa"
+      ]
+    }
+  },
+  "spec": {
+    "items": [
+      {
+        "id": "files",
+        "check": "file_manifest",
+        "points": 6,
+        "awarded": 6,
+        "verdict": "PASS",
+        "evidence": [
+          "authored file set matches exactly (5 files)"
+        ],
+        "veto": false
+      },
+      {
+        "id": "deps",
+        "check": "stdlib_only",
+        "points": 5,
+        "awarded": 5,
+        "verdict": "PASS",
+        "evidence": [
+          "imports are stdlib / local / task-provided only: __future__, cache, collections, dataclasses, heapq, pytest, threading, time, typing",
+          "task-provided (allowlisted, not a violation): pytest"
+        ],
+        "veto": false
+      },
+      {
+        "id": "bounds",
+        "check": "path_containment",
+        "points": 4,
+        "awarded": 4,
+        "verdict": "PASS",
+        "evidence": [
+          "absolute tool paths inside the run dir: 4; relative names resolved against the run dir: 6; allowlisted system locations: 0; outside: 0",
+          "  absolute, inside: C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\__init__.py",
+          "  absolute, inside: C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\lru.py",
+          "  absolute, inside: C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\cache\\stats.py",
+          "  absolute, inside: C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-fable-5.1\\M1-lru-ttl-cache\\tests\\test_cache.py",
+          "  relative/bare tokens (the CLI lists these for shell commands; they resolve under the run dir, which is the tool cwd): 'Directory', 'cache', 'cache\\\\__pycache__', 'pytest', 'tests', 'tests\\\\__pycache__'"
+        ],
+        "veto": false
+      }
+    ],
+    "score": 15,
+    "max": 15
+  },
+  "autoItems": [
+    {
+      "id": "hygiene",
+      "points": 3,
+      "awarded": 3.0,
+      "passedChecks": 4,
+      "totalChecks": 4,
+      "checks": [
+        {
+          "id": "no_broad_except",
+          "passed": true,
+          "evidence": [
+            "no exception swallowing — 1 broad handler(s), all accounted for: tests/test_cache.py:362 (records via e)"
+          ]
+        },
+        {
+          "id": "no_debug_residue",
+          "passed": true,
+          "evidence": [
+            "no TODO markers, no commented-out code, no stray print() outside CLI modules"
+          ]
+        },
+        {
+          "id": "typed_public_api",
+          "passed": true,
+          "evidence": [
+            "all 7 public function(s) fully annotated"
+          ]
+        },
+        {
+          "id": "bounded_function_length",
+          "passed": true,
+          "evidence": [
+            "longest implementation function is 27 lines (limit 50)"
+          ]
+        }
+      ]
+    }
+  ],
+  "reviewItems": [
+    {
+      "id": "o1_hotpath",
+      "points": 5,
+      "criterion": "用 OrderedDict.move_to_end 或双向链表实现 O(1) 的 get/set，不是每次排序或线性查找",
+      "mode": "review"
+    },
+    {
+      "id": "module_separation",
+      "points": 4,
+      "criterion": "三个模块职责清晰，__init__.py 只做再导出，不塞实现",
+      "mode": "review"
+    },
+    {
+      "id": "sentinel",
+      "points": 3,
+      "criterion": "区分 ttl=None 与省略 ttl 用私有模块级 sentinel（object()），不是 \"default\" 字符串或 -1 魔数",
+      "mode": "review"
+    }
+  ],
+  "qualityMax": 15,
+  "qualityAutoScore": 3.0,
+  "qualityReviewMax": 12,
+  "ownTestFunctionCount": 27.0
+}

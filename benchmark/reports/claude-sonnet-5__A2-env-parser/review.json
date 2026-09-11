@@ -1,0 +1,29 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "layering": {
+    "maxPoints": 6,
+    "criterion": "key 解析 / 值解引号 / 转义展开分成独立的辅助函数，主循环可读",
+    "points": 5,
+    "verdict": "基本符合：转义展开、注释剥离、解引号分派三者都已抽出，仅 key 解析仍内联（但很整洁）",
+    "reasoning": "逐项核对判据点名的三件事：① 转义展开 —— envparse.py:7-25 _expand_double_escapes 独立抽出。② 值解引号 —— envparse.py:39-46 _parse_value 独立抽出，三分支（双引号→展开转义、单引号→字面量、其余→剥离注释）各自委派，职责清晰。③ key 解析 —— envparse.py:64-70 仍内联在主循环。另外 envparse.py:28-36 _strip_unquoted_comment 也独立抽出（判据未列，同类，加分）。主循环 parse_env 仅 27 行且线性可读，判据后半句达到。扣 1 分只因 key 解析（strip → export 剥离 → _KEY_RE 校验）未成函数；但这次的 export 处理（66-67）写法干净：两个 startswith 判断后 `[len(\"export\"):].lstrip()`，比不抽函数带来的可读性损失很小。算术：三项主要关注点中两项抽出 +4，附加抽出 _strip_unquoted_comment +1，主循环可读 +1，key 解析未抽出 −1 → 5/6。",
+    "evidence": [
+      "envparse.py:7-25 _expand_double_escapes",
+      "envparse.py:28-36 _strip_unquoted_comment",
+      "envparse.py:39-46 _parse_value 解引号分派已抽出",
+      "envparse.py:64-70 key 解析仍内联（6 行，整洁）"
+    ]
+  },
+  "escape_single_pass": {
+    "maxPoints": 5,
+    "criterion": "转义用单次左到右扫描或查表，不是链式 .replace()（链式会引入顺序 bug）",
+    "points": 5,
+    "verdict": "完全符合，且同时用了两种推荐形态：单次扫描 + 字典查表",
+    "reasoning": "envparse.py:4 定义 _ESCAPES 字典（5 项），envparse.py:11-24 单指针 while 扫描：遇反斜杠查表命中则 i += 2，未命中则两字符原样保留（19-22），其余 i += 1。判据给的两种合格形态（单次扫描 / 查表）它都用上了。全文无 .replace 调用，因此不存在『先展 \\n 再展 \\\\』的顺序 bug —— 隐藏测试 'a\\qb' 与 'a\\\\b' 两例通过。值得一提：这次用字典查表把上一批那种五段 if 阶梯压成了 3 行（15-18），是更好的写法。",
+    "evidence": [
+      "envparse.py:4 _ESCAPES 查表",
+      "envparse.py:11-24 单指针扫描",
+      "envparse.py:19-22 未知转义两字符保留",
+      "envparse.py 全文无 .replace("
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "layering": {
+    "maxPoints": 6,
+    "criterion": "key 解析 / 值解引号 / 转义展开分成独立的辅助函数，主循环可读",
+    "points": 5,
+    "verdict": "基本符合：转义展开、注释剥离、解引号分派三者均抽出，仅 key 解析内联（5 行，极简洁）",
+    "reasoning": "逐项核对：① 转义展开 —— envparse.py:18-36 _expand_escapes 独立抽出，配 envparse.py:9-15 的 _ESCAPES 查表。② 值解引号 —— envparse.py:46-52 _parse_value 独立抽出，三分支各自委派，职责清晰。③ key 解析 —— envparse.py:66-70 仍内联，但只有 5 行（strip → export 剥离 → _KEY_RE 校验），非常紧凑。附加：envparse.py:39-43 _strip_inline_comment 也独立抽出（判据未列，同类，加分）。主循环 parse_env 仅 18 行（55-72），是三个模型里最短的，判据后半句『主循环可读』充分达到。还有一个值得记的细节：envparse.py:3 用 `import re as _re`，让 re 不出现在模块公共名里，配合第 5 行的 __all__ 主动满足规格『不得有其他公共名』—— 这是理解了要求而非碰运气。扣 1 分只因 key 解析未成函数。算术：两项主关注点抽出 +4，附加抽出 +1，主循环最简洁 +1，key 内联 −1 → 5/6。",
+    "evidence": [
+      "envparse.py:18-36 _expand_escapes",
+      "envparse.py:39-43 _strip_inline_comment",
+      "envparse.py:46-52 _parse_value",
+      "envparse.py:66-70 key 解析内联（5 行）",
+      "envparse.py:3 import re as _re + 第 5 行 __all__ 收窄公共名"
+    ]
+  },
+  "escape_single_pass": {
+    "maxPoints": 5,
+    "criterion": "转义用单次左到右扫描或查表，不是链式 .replace()（链式会引入顺序 bug）",
+    "points": 5,
+    "verdict": "完全符合：字典查表 + 单指针扫描，两种推荐形态都用上",
+    "reasoning": "envparse.py:9-15 _ESCAPES 五项字典；envparse.py:22-35 单指针 while 扫描：遇反斜杠查表命中则取映射值、未命中则两字符原样保留（29-31，并有注释），统一 i += 2；其余 i += 1。分支结构用 if/else 而非多个 continue，比另两次实现更紧凑（18 行）。全文无 .replace 调用，因此不存在链式替换的顺序 bug —— 隐藏测试 'a\\qb' 与 'a\\\\b' 两例通过。",
+    "evidence": [
+      "envparse.py:9-15 _ESCAPES 查表",
+      "envparse.py:22-35 单指针扫描",
+      "envparse.py:29-31 未知转义保留两字符并注释",
+      "envparse.py 全文无 .replace("
+    ]
+  }
+}

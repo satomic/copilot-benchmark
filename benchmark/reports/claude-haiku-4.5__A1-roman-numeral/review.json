@@ -1,0 +1,27 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "algorithm": {
+    "maxPoints": 6,
+    "criterion": "查表 + 贪心（divmod / 循环减法）实现；不是按千百十个位写 if/elif 硬编码分支",
+    "points": 5,
+    "verdict": "符合但冗长：确实是查表 + 贪心，但 to_roman 写到 51 行（限 40），是五者中最长的",
+    "reasoning": "核心算法对了：用值/符号查表 + 贪心消减，没有按千百十个位展开 if/elif，判据禁止的做法不存在。1..3999 全量往返测试通过。扣 1 分的原因是**实现冗长到触发了自动长度检查**：roman.py 的 to_roman 共 51 行，超出本任务 40 行上限（另四个模型分别是 13/14/12/13 行，差距近 4 倍）。多出来的行主要是把校验、查表、拼装写成了带大量空行与注释的顺序段落，而不是像另四者那样用一个紧凑的 divmod 循环。判据考察的是『是否查表+贪心』而非行数，所以只扣 1 分而非更多 —— 长度问题已经由 mode=auto 的 bounded_function_length 单独扣了分（3.75/5），在此重复重罚会双重计分。",
+    "evidence": [
+      "roman.py 用值/符号查表 + 贪心消减，无位分支硬编码",
+      "roman.py:1 to_roman() 51 行，超出 40 行上限（自动检查已扣）",
+      "另四个模型的 to_roman 为 13/14/12/13 行",
+      "隐藏测试 1..3999 全量往返通过"
+    ]
+  },
+  "error_messages": {
+    "maxPoints": 4,
+    "criterion": "TypeError / ValueError 的消息可读且包含出错的实际值或类型，不是裸 raise",
+    "points": 4,
+    "verdict": "符合：两类异常分开且消息带出错信息，bool 陷阱也接住了",
+    "reasoning": "TypeError 与 ValueError 分开抛出、消息可读且带上了出错的类型或数值，满足判据要求。`bool` 是 `int` 子类这个主要区分点也正确排除了 —— 五个模型在这一条上全部通过。记一个判据外的观察，不扣分：它在实现里加了较多解释性注释与空行，对错误消息本身没有影响。",
+    "evidence": [
+      "TypeError 与 ValueError 分开，消息含出错类型/数值",
+      "正确排除 bool（隐藏测试 test_bad_type_raises_type_error 全 7 例通过）"
+    ]
+  }
+}

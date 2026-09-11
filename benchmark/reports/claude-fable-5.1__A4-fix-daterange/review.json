@@ -1,0 +1,30 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "root_cause_fix": {
+    "maxPoints": 7,
+    "criterion": "三个缺陷都从根因修（闭区间 +1、chunk 宽度 days-1、days<=0 前置校验）；不是在返回前特判补一个 chunk 之类的补丁",
+    "points": 7,
+    "verdict": "完全符合：三缺陷全部根因消除，并把两个 timedelta 提为循环外常量",
+    "reasoning": "① 闭区间 off-by-one —— 把 count 驱动的 for 换成 `while chunk_start <= end`（daterange.py:27-31）。原结构 `count = span // days` 从根上无法表达尾部残块，换 while 后由 min() 自然收口。② chunk 宽度 —— `chunk_end = min(chunk_start + step - one_day, end)`（daterange.py:29）：`step - one_day` 表达『闭区间宽度为 days 天』，min 防越界，一处解决两症。③ days<=0 —— 前置校验（20-21）且排除 bool，第 19 行注释说明理由『bool is an int subclass; reject it so True/False are not silently accepted』。`end < start` 也前置返回 []（22-23）。一个别人没做的小优化：daterange.py:25-26 把 `timedelta(days=days)` 与 `timedelta(days=1)` 提成循环外的 step / one_day 两个常量，避免每轮重新构造 timedelta 对象。对可读性也有帮助 —— `chunk_start + step - one_day` 比 `chunk_start + timedelta(days=days - 1)` 更直白地表达了『走一步再退一天』。无补丁式修法：隐藏套件 span 0..39 × days 1..11 共 440 组性质检查全过。四个模型在本项全部 7/7，修法分两派：sonnet/opus/Fable 用 while + min，astra 用 span+1 + range 步进。",
+    "evidence": [
+      "daterange.py:20-21 days 校验含 bool 排除",
+      "daterange.py:19 注释说明为何排除 bool",
+      "daterange.py:22-23 end<start 前置返回 []",
+      "daterange.py:27-31 for→while 结构替换",
+      "daterange.py:25-26 step / one_day 提为循环外常量",
+      "daterange.py:29 min(chunk_start + step - one_day, end)"
+    ]
+  },
+  "minimal_diff": {
+    "maxPoints": 4,
+    "criterion": "diff 最小，未重写整个文件，未改动 docstring 的语义",
+    "points": 4,
+    "verdict": "完全符合：单 hunk、−5/+11 行、全在函数体内，两处 docstring 未动",
+    "reasoning": "unified diff 只有一个 hunk，位于 split_range 函数体内：删 span/count 两行与 for 三行，加校验三行（含注释）、两个 timedelta 常量、改写的 while 四行。模块 docstring（1-7）与函数 docstring（14-18）**逐字节未变**（astra 改了一处措辞，虽被允许）。签名、参数名与顺序、返回结构全保持。循环替换是修正缺陷①的必要手段。diff 比 sonnet（+8）多 3 行，多出来的是注释与两个常量提取 —— 都是有价值的增量。记一个判据未覆盖的点，不扣分：ValueError 消息未带出错实际值；A4 评分表无 error_messages 条目。",
+    "evidence": [
+      "diff：1 hunk，−5/+11，全在函数体内",
+      "daterange.py:1-7 与 14-18 docstring 逐字节未变",
+      "sealed_unmodified 通过：test_daterange.py 哈希与种子一致"
+    ]
+  }
+}

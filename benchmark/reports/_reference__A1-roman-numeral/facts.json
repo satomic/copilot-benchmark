@@ -1,0 +1,168 @@
+{
+  "task": "A1-roman-numeral",
+  "runDir": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\_reference\\A1-roman-numeral",
+  "authoredFiles": [
+    {
+      "path": "roman.py",
+      "bytes": 926,
+      "loc": 19
+    },
+    {
+      "path": "task.md",
+      "bytes": 2430,
+      "loc": 35
+    }
+  ],
+  "expectedFiles": [
+    "task.md",
+    "roman.py"
+  ],
+  "missing": [],
+  "extra": [],
+  "totalLoc": 19,
+  "imports": [],
+  "thirdPartyImports": [],
+  "allowedThirdPartyUsed": [],
+  "functions": [
+    {
+      "file": "roman.py",
+      "name": "to_roman",
+      "line": 13,
+      "lines": 14,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    }
+  ],
+  "broadExcept": [],
+  "prints": [],
+  "syntaxErrors": [],
+  "todos": [],
+  "commentedCode": [],
+  "duplicateBlocks": [],
+  "sealed": [],
+  "transientCandidates": [],
+  "transcript": {
+    "source": null,
+    "turns": 0,
+    "modelCalls": 0,
+    "toolCalls": [],
+    "eventTypes": {},
+    "declaredPaths": [],
+    "mentionedPaths": [],
+    "assistantMessages": []
+  },
+  "paths": {
+    "declared": {
+      "inside": [],
+      "relative": [],
+      "allowlisted": [],
+      "outside": [],
+      "ignored": []
+    },
+    "mentioned": {
+      "inside": [],
+      "relative": [],
+      "allowlisted": [],
+      "outside": [],
+      "ignored": []
+    }
+  },
+  "spec": {
+    "items": [
+      {
+        "id": "files",
+        "check": "file_manifest",
+        "points": 8,
+        "awarded": 8,
+        "verdict": "PASS",
+        "evidence": [
+          "authored file set matches exactly (2 files)"
+        ],
+        "veto": false
+      },
+      {
+        "id": "deps",
+        "check": "stdlib_only",
+        "points": 4,
+        "awarded": 4,
+        "verdict": "PASS",
+        "evidence": [
+          "imports are stdlib / local / task-provided only: (none)"
+        ],
+        "veto": false
+      },
+      {
+        "id": "bounds",
+        "check": "path_containment",
+        "points": 3,
+        "awarded": 3,
+        "verdict": "N/A",
+        "evidence": [
+          "no session transcript available — nothing to check, points awarded by default. Real benchmark runs always ship events.jsonl; a missing transcript here means this run was staged locally (e.g. selftest)."
+        ],
+        "veto": false
+      }
+    ],
+    "score": 15,
+    "max": 15
+  },
+  "autoItems": [
+    {
+      "id": "hygiene",
+      "points": 5,
+      "awarded": 5.0,
+      "passedChecks": 4,
+      "totalChecks": 4,
+      "checks": [
+        {
+          "id": "no_broad_except",
+          "passed": true,
+          "evidence": [
+            "no broad except handlers"
+          ]
+        },
+        {
+          "id": "no_debug_residue",
+          "passed": true,
+          "evidence": [
+            "no TODO markers, no commented-out code, no stray print() outside CLI modules"
+          ]
+        },
+        {
+          "id": "typed_public_api",
+          "passed": true,
+          "evidence": [
+            "all 1 public function(s) fully annotated"
+          ]
+        },
+        {
+          "id": "bounded_function_length",
+          "passed": true,
+          "evidence": [
+            "longest implementation function is 14 lines (limit 40)"
+          ]
+        }
+      ]
+    }
+  ],
+  "reviewItems": [
+    {
+      "id": "algorithm",
+      "points": 6,
+      "criterion": "查表 + 贪心（divmod / 循环减法）实现；不是按千百十个位写 if/elif 硬编码分支",
+      "mode": "review"
+    },
+    {
+      "id": "error_messages",
+      "points": 4,
+      "criterion": "TypeError / ValueError 的消息可读且包含出错的实际值或类型，不是裸 raise",
+      "mode": "review"
+    }
+  ],
+  "qualityMax": 15,
+  "qualityAutoScore": 5.0,
+  "qualityReviewMax": 10,
+  "ownTestFunctionCount": 0
+}

@@ -1,0 +1,41 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "regex_named_groups": {
+    "maxPoints": 5,
+    "criterion": "用一条预编译正则 + 命名组解析日志行，不是多次 split 拼凑",
+    "points": 5,
+    "verdict": "完全符合：模块级预编译单条正则 + 命名组，时间戳交给 strptime",
+    "reasoning": "logstats.py:20 起是唯一的日志行正则 _LINE_RE，模块级预编译，覆盖九个命名组并用 ^...$ 锚定全行。parse_line（30-61）只做匹配 + 取组 + 类型转换，无 split 拼凑。时间戳用 logstats.py:27 的 _TIMESTAMP_FMT 常量配 datetime.strptime（39）一行解析，比另一次运行那种 14 行手工切片（19 个硬编码下标）干净得多。正则严格性到位：status 限 `\\d{3}`、method 限 `[A-Z]+`、bytes 限 `-|\\d+`，隐藏套件 10 个畸形样例（小写 method、两位 status、无引号请求行等）全部正确判为 None。记一个不扣分的取舍：strptime 的 %b 依赖 LC_TIME，非英文 locale 下会解析失败；手工月份表版本反而没这个隐患。两种做法各有风险，判据只考察日志行是否用一条正则 + 命名组，故不影响得分。",
+    "evidence": [
+      "logstats.py:20-26 唯一的 _LINE_RE，九个命名组",
+      "logstats.py:27,39 strptime 一行解析时间戳",
+      "logstats.py:30-61 parse_line 无 split",
+      "隐藏套件 test_malformed_lines_return_none 全 10 例通过"
+    ]
+  },
+  "streaming": {
+    "maxPoints": 4,
+    "criterion": "analyze 单遍流式处理任意可迭代对象，不把整个文件 list() 进内存",
+    "points": 4,
+    "verdict": "完全符合：单层 for 遍历入参，无 list() 物化",
+    "reasoning": "analyze（72-150）对 lines 只有一层 `for raw in lines`（84），全程无 list(lines)、sorted(lines) 或索引访问，因此接受任意可迭代对象；隐藏测试 test_analyze_accepts_a_generator 传 iter([...]) 通过。计数器与状态分类均为流式累加。唯一在内存累积的是 durations 列表 —— 精确分位数的固有代价，要算 p50/p95 必须持有全部样本（规格未要求近似算法），不扣分。CLI 侧读文件用 splitlines 是 main 的职责，判据约束的是 analyze 的接口形态。",
+    "evidence": [
+      "logstats.py:84 单层 for raw in lines",
+      "analyze 内无 list(lines)",
+      "隐藏测试 test_analyze_accepts_a_generator 通过"
+    ]
+  },
+  "percentile_isolated": {
+    "maxPoints": 3,
+    "criterion": "分位数抽成独立函数，空列表与 n=1 的边界显式处理",
+    "points": 2,
+    "verdict": "部分符合：函数已独立、n=1 由 clamp 覆盖，但空列表边界仍在调用方而非函数内",
+    "reasoning": "① 抽成独立函数 —— logstats.py:64-69 _percentile 独立且带 docstring，达到。② n=1 —— `idx = ceil(p/100*n) - 1` 后接 `max(0, min(idx, n-1))`（68），n=1 时任何 p 都夹到 0，正确；隐藏测试 test_percentile_single_value 通过。③ 空列表 —— **仍未在函数内处理**。n=0 时 idx = max(0, min(-1, -1)) = 0，随后 `sorted_values[0]` 抛 IndexError。空输入靠调用方 analyze 的 if 分支绕开，因此 `_percentile([], 50)` 单独调用会崩。参考实现在函数首行就有 `if not sorted_values: return 0.0`。抽成独立函数的意义正在于可复用，收不住边界就打了折，扣 1。本模型两次运行该任务都是同一个缺口，属稳定行为。不影响功能分（隐藏套件 44/44 全过）。",
+    "evidence": [
+      "logstats.py:64-69 _percentile 独立函数 + docstring",
+      "logstats.py:68 clamp 覆盖 n=1",
+      "logstats.py:64-69 缺 n==0 守卫，_percentile([], 50) 会 IndexError",
+      "另一次运行同一缺口"
+    ]
+  }
+}

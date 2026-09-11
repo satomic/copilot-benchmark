@@ -1,0 +1,43 @@
+{
+  "task": "M1-lru-ttl-cache",
+  "model": "claude-haiku-4.5",
+  "functional": 68.78,
+  "functionalMax": 70.0,
+  "spec": 15,
+  "specMax": 15,
+  "quality": 10.0,
+  "qualityMax": 15.0,
+  "qualityAuto": 3.0,
+  "qualityReview": 7,
+  "total": 93.78,
+  "reviewPending": [],
+  "vetoTriggered": [],
+  "hidden": {
+    "total": 45,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 44,
+    "time": 11.589,
+    "bad": [
+      {
+        "name": "_verify.test_m1::test_hot_path_scales",
+        "kind": "failure",
+        "message": [
+          "AssertionError: per-op cost grew from 2.135e-05s to 4.183e-04s — hot path looks O(n)",
+          "assert 0.0004182563000009395 < ((2.135333999758586e-05 * 5) + 5e-06)"
+        ]
+      }
+    ]
+  },
+  "visible": null,
+  "own": {
+    "total": 29,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 29,
+    "time": 0.341,
+    "bad": []
+  }
+}

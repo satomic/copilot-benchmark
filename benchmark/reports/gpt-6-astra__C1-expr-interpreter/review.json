@@ -1,0 +1,47 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "grammar_correspondence": {
+  "maxPoints": 5,
+  "criterion": "递归下降的函数与 task.md 的文法层级一一对应，命名可读，无手工回溯",
+  "points": 5,
+  "verdict": "完全符合：九个方法覆盖文法九层，且是三者中最紧凑的实现（parser.py 仅 118 行）",
+  "reasoning": "文法九层逐层对应：expression(67) 对 or_expr、and_expression(73)、not_expression(79)、comparison(84)、additive(91)、multiplicative(97)、unary(103)、power(108)、primary(114)。除 primary（28 行）外每个方法只有 2–6 行，parser.py 总长 118 行 —— 对比 sonnet 204 行、opus 213 行，是三者中最紧凑的，而文法覆盖度相同。结合性全部落实：or/and/additive/multiplicative 用 while 左结合；power(108-112) 右侧递归 unary 实现右结合并支持 `2 ^ -1`；unary(103-106) 递归自身支持 `- - 3`；comparison(84-89) 六行内完成非结合判定（`1 < 2 < 3` → ParseError）。无手工回溯：peek(47) / accept(50) / expect(63) 都是单 token 前瞻，没有位置保存与恢复。error(58-61) 是个亮点：它把『token 缺失时错误位置应落在源串末尾』这件事显式处理成 `token.position if token is not None else self.end`，并写了注释 —— 另两个模型也做对了，但只有它把这个边界单独抽成一个方法。唯一可挑的是命名：顶层叫 expression 而非 or_expression，与 task.md 的 or_expr 对不上字面，但语义位置无歧义、可读性不受影响，不扣分。隐藏套件 20 项优先级/结合性用例全过，含 `-2 ^ 2 == -4` 与 `2 ^ 3 ^ 2 == 512`。",
+  "evidence": [
+   "parser.py:67-141 九个方法覆盖文法九层",
+   "parser.py 仅 118 行（sonnet 204 / opus 213）",
+   "parser.py:108-112 power 右递归 unary",
+   "parser.py:84-89 comparison 六行完成非结合判定",
+   "parser.py:58-61 error() 显式处理 token 缺失时的位置回退，并有注释",
+   "命名偏差：顶层用 expression 而非 or_expression（不扣分）"
+  ]
+ },
+ "named_ast": {
+  "maxPoints": 4,
+  "criterion": "AST 用具名节点（dataclass / NamedTuple / 类），不是裸 tuple 或 dict",
+  "points": 4,
+  "verdict": "完全符合，且是三者中类型表达最严谨的：5 个 frozen dataclass + Node 联合类型别名",
+  "reasoning": "parser.py:8-34 定义 5 个 `@dataclass(frozen=True)` 节点：Literal / Variable / Unary / Binary / Call，字段全部具名并带类型标注（如 `Literal.value: float | str | bool`）。无任何裸 tuple 或 dict。三点比另两个模型更严谨的地方：① **frozen=True** —— AST 构造后不可变，符合它作为解析产物的语义，也顺带可哈希；sonnet 用普通 @dataclass（可变），opus 手写 __eq__/__hash__ 来补这个能力。② parser.py:37 `Node: TypeAlias = Literal | Variable | Unary | Binary | Call` —— 用联合类型别名给『AST 节点』一个真正的静态类型，evaluator.py:30 的签名 `_evaluate(node: Node, env: dict) -> Value` 因此是可被类型检查器验证的；另两个模型都用 Any。③ `Call.arguments: tuple[\"Node\", ...]` 用不可变元组而非 list，与 frozen 一致。节点数 5 个（Unary 统一 `-`/`not`，Binary 统一算术/比较/逻辑），比 sonnet 的 10 个更聚合，代价是 evaluator 里要靠 operator 字段二次分派 —— 两种建模都合理。**记录一个判据外的设计缺口，不扣分**：这 5 个节点**都没有 position 字段**。sonnet 与 opus 都给每个节点带了位置（超出规格要求），astra 没有。这直接导致 EvalError 无法携带位置（详见 error_consistency 一项），但本判据只考察『是否用具名节点』，故不影响本项得分。隐藏测试 test_parse_does_not_evaluate 通过。",
+  "evidence": [
+   "parser.py:8-34 五个 @dataclass(frozen=True) 节点，字段带类型标注",
+   "parser.py:37 Node: TypeAlias 联合类型，使 evaluator 签名可静态检查",
+   "parser.py:34 Call.arguments 用 tuple 而非 list，与 frozen 一致",
+   "缺口：五个节点均无 position 字段（另两模型都有），不影响本项",
+   "隐藏测试 test_parse_does_not_evaluate 通过"
+  ]
+ },
+ "error_consistency": {
+  "maxPoints": 3,
+  "criterion": "三类错误消息风格一致且带位置信息，没有 except Exception 吞异常",
+  "points": 2,
+  "verdict": "部分符合：语法侧位置处理最细致、无吞异常，但 EvalError 结构性地无法带位置，且有一处泄漏 Python 内部消息",
+  "reasoning": "① 异常层次正确 —— errors.py:1-18 共 11 行，MiniLangError 用类级标注 `position: int | None`，__init__ 只把 message 交给 super()，因此默认 __str__ 返回 plain message（规格第 29 条），无需像 sonnet 那样手写 __str__。三个子类各自 pass。是三者中最精简的错误模块。② 无吞异常 —— evaluator.py:76 用的是**窄捕获** `except (ZeroDivisionError, OverflowError, ValueError)`，并 `raise ... from error` 保留链，比宽捕获更讲究；自动检查 no_broad_except 通过。③ 语法侧位置最细致 —— parser.py:58-61 的 error() 显式处理 token 缺失时回退到 self.end，隐藏测试 test_lex_error_has_position 与 test_parse_error_has_position 都通过。**扣 1 分的两个原因**：(a) **EvalError 全部无位置，且是结构性的** —— grep evaluator.py 的 'position' 结果为 0。sonnet 与 opus 是『AST 里有位置却没传』（信息浪费），astra 是『AST 里根本没收集位置』（信息缺失）。用户可见症状相同（`evaluate(\"1 + foo\")` 报不出 foo 的位置），但要补的话 astra 需要改 AST 定义，另两者只需在 raise 处多传一个参数。(b) **evaluator.py:77 `raise EvalError(str(error))` 把 Python 内部异常文本直接当成语言级错误消息**，破坏了其余消息的统一风格 —— 其他地方都是 `division by zero`、`comparison requires two numbers or two strings` 这类语言级措辞，这一处会漏出 CPython 的原文（如 OverflowError 的 'Result too large'）。抵扣项：语法侧位置处理是三者中最细致的，错误模块最精简，窄捕获比宽捕获好。综合仍与 sonnet / opus 同为 2/3 —— 三个模型在『EvalError 带位置』这一条上**全部失分**，是本任务最明确的共性盲点。**另记一个判据外的真实缺陷，不扣分**：evaluator.py:83-84 的 `evaluate` 把调用方的 env 直接传给 _evaluate，**没有做防御性拷贝**（sonnet 有 `dict(env) if env else {}` 并写了注释）。当前 _evaluate 只读不写 env，所以隐藏测试 test_env_is_not_mutated 通过、不影响功能分；但规格第 31 条要求『evaluate 不得修改传入的 env』，靠『恰好没写』而非结构保证是脆弱的，日后加个 let 绑定就会破。这属于健壮性而非本判据的三个要点，故只记录。",
+  "evidence": [
+   "errors.py:1-18 共 11 行，类级 position 标注，默认 __str__ 即 plain message",
+   "evaluator.py:76 窄捕获 (ZeroDivisionError, OverflowError, ValueError) 并 from error",
+   "parser.py:58-61 error() 处理 token 缺失时回退 self.end",
+   "缺陷 a：evaluator.py 中 'position' 出现 0 次，AST 未收集位置（结构性）",
+   "缺陷 b：evaluator.py:77 raise EvalError(str(error)) 泄漏 Python 内部消息",
+   "判据外：evaluator.py:83-84 evaluate 未拷贝 env（规格第 31 条，靠只读恰好通过）"
+  ]
+ }
+}

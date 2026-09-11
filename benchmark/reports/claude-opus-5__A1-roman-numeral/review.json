@@ -1,0 +1,29 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "algorithm": {
+    "maxPoints": 6,
+    "criterion": "查表 + 贪心（divmod / 循环减法）实现；不是按千百十个位写 if/elif 硬编码分支",
+    "points": 6,
+    "verdict": "完全符合：13 组值/符号查表 + divmod 贪心，无位分支",
+    "reasoning": "roman.py:6-20 模块级不可变元组 _VALUES 逐行列出全部 13 组（值, 符号），含 4 个减法对，从大到小；第 5 行注释说明了排序与减法形式。roman.py:32-34 单层循环 + divmod 同时取商余，商即符号重复次数。O(13)，与 n 无关。数据与算法完全分离。另外 roman.py:3 显式声明 __all__ = [\"to_roman\"]，主动收窄公共接口，规格只要求『不得有其他公共名』，它用声明的方式表达了意图。记一个判据未覆盖的风格点，不扣分：第 33 行复用参数名 n 作为循环累加变量（`count, n = divmod(n, value)`），改写了入参。功能无碍，但另起一个 remaining 变量可读性更好。",
+    "evidence": [
+      "roman.py:6-20 _VALUES 查表",
+      "roman.py:33 divmod 贪心",
+      "roman.py:3 显式 __all__",
+      "roman.py:33 复用参数名 n 作累加器（风格，不扣分）"
+    ]
+  },
+  "error_messages": {
+    "maxPoints": 4,
+    "criterion": "TypeError / ValueError 的消息可读且包含出错的实际值或类型，不是裸 raise",
+    "points": 4,
+    "verdict": "完全符合：两个异常都用 f-string 带出错类型/数值，并有 docstring 与注释",
+    "reasoning": "roman.py:27 TypeError 为 f\"n must be an int, got {type(n).__name__}\"，回报实际类型名。roman.py:29 ValueError 为 f\"n must be in range 1..3999, got {n}\"，给出合法区间与越界实际值。roman.py:25-26 用 `not isinstance(n, int) or isinstance(n, bool)` 排除 bool，并有注释『bool is a subclass of int but is not an acceptable input』—— 本任务的主要区分点，未踩坑。此外 roman.py:24 给公共函数写了 docstring（sonnet 两次都没写），虽然判据未要求，但配合错误消息构成了完整的接口自述。",
+    "evidence": [
+      "roman.py:27 TypeError 含类型名",
+      "roman.py:29 ValueError 含实际值",
+      "roman.py:25-26 显式排除 bool 并注释",
+      "roman.py:24 公共函数有 docstring"
+    ]
+  }
+}

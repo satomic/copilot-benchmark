@@ -1,0 +1,438 @@
+........................................................................ [ 19%]
+........................................................................ [ 38%]
+..............................FFF.F.......FF..F.FF....FF..FF............ [ 57%]
+............F..........................FFFFF............................ [ 76%]
+.........FFFFFFF.F..F.FF.FF...........F..FFF.FF.F.F.F.......FFFFFF.F.... [ 95%]
+...F.F...........                                                        [100%]
+================================== FAILURES ===================================
+______ test_comparison_not_associative[SELECT a FROM t WHERE 1 < 2 < 3] _______
+_verify\test_c3.py:526: in test_comparison_not_associative
+    with pytest.raises(db.ParseError):
+E   Failed: DID NOT RAISE <class 'microdb.errors.ParseError'>
+______ test_comparison_not_associative[SELECT a FROM t WHERE 1 = 2 = 3] _______
+_verify\test_c3.py:526: in test_comparison_not_associative
+    with pytest.raises(db.ParseError):
+E   Failed: DID NOT RAISE <class 'microdb.errors.ParseError'>
+______ test_comparison_not_associative[SELECT a FROM t WHERE 1 < 2 >= 3] ______
+_verify\test_c3.py:526: in test_comparison_not_associative
+    with pytest.raises(db.ParseError):
+E   Failed: DID NOT RAISE <class 'microdb.errors.ParseError'>
+_________________________ test_parse_errors[SELECT a] _________________________
+_verify\test_c3.py:538: in test_parse_errors
+    with pytest.raises((db.ParseError, db.LexError)):
+E   Failed: DID NOT RAISE (<class 'microdb.errors.ParseError'>, <class 'microdb.errors.LexError'>)
+__________________ test_parse_errors[SELECT a FROM t JOIN u] __________________
+_verify\test_c3.py:538: in test_parse_errors
+    with pytest.raises((db.ParseError, db.LexError)):
+E   Failed: DID NOT RAISE (<class 'microdb.errors.ParseError'>, <class 'microdb.errors.LexError'>)
+__________________ test_parse_errors[SELECT a FROM t extra] ___________________
+_verify\test_c3.py:538: in test_parse_errors
+    with pytest.raises((db.ParseError, db.LexError)):
+E   Failed: DID NOT RAISE (<class 'microdb.errors.ParseError'>, <class 'microdb.errors.LexError'>)
+_________________________ test_parse_error_has_offset _________________________
+_verify\test_c3.py:543: in test_parse_error_has_offset
+    with pytest.raises(db.ParseError) as info:
+E   Failed: DID NOT RAISE <class 'microdb.errors.ParseError'>
+_______________________ test_nested_aggregate_rejected ________________________
+_verify\test_c3.py:555: in test_nested_aggregate_rejected
+    with pytest.raises((db.ParseError, db.AggregateError)):
+E   Failed: DID NOT RAISE (<class 'microdb.errors.ParseError'>, <class 'microdb.errors.AggregateError'>)
+______________________ test_aggregate_in_where_rejected _______________________
+_verify\test_c3.py:560: in test_aggregate_in_where_rejected
+    with pytest.raises((db.AggregateError, db.ParseError)):
+E   Failed: DID NOT RAISE (<class 'microdb.errors.AggregateError'>, <class 'microdb.errors.ParseError'>)
+_________________________ test_expression_output_name _________________________
+_verify\test_c3.py:586: in test_expression_output_name
+    assert run("SELECT age + 1 FROM p").columns == ["age + 1"]
+E   AssertionError: assert [] == ['age + 1']
+E     
+E     Right contains one more item: 'age + 1'
+E     Use -v to get more diff
+_________________ test_expression_output_name_collapses_space _________________
+_verify\test_c3.py:590: in test_expression_output_name_collapses_space
+    assert run("SELECT age   +    1 FROM p").columns == ["age + 1"]
+E   AssertionError: assert [] == ['age + 1']
+E     
+E     Right contains one more item: 'age + 1'
+E     Use -v to get more diff
+_____________________________ test_unknown_column _____________________________
+_verify\test_c3.py:604: in test_unknown_column
+    run("SELECT nope FROM p")
+_verify\test_c3.py:129: in go
+    return db.execute(query, tables if tables is not None else {"p": people})
+microdb\__init__.py:15: in execute
+    result = execute_plan(plan_stages, tables)
+microdb\executor.py:34: in execute_plan
+    rows, output_columns = _execute_select(stage, rows, tables, plan)
+microdb\executor.py:176: in _execute_select
+    return _execute_select_ungrouped(stage, rows, tables)
+microdb\executor.py:215: in _execute_select_ungrouped
+    val = evaluate(item[0], row)
+microdb\expr.py:36: in evaluate
+    raise KeyError(f"Column '{expr.col_name}' not found")
+E   KeyError: "Column 'nope' not found"
+_______________________ test_unknown_table_in_reference _______________________
+_verify\test_c3.py:608: in test_unknown_table_in_reference
+    with pytest.raises(db.UnknownTableError):
+E   Failed: DID NOT RAISE <class 'microdb.errors.UnknownTableError'>
+_____________________ test_scalar_type_errors[length(1)] ______________________
+_verify\test_c3.py:638: in test_scalar_type_errors
+    with pytest.raises(db.TypeMismatchError):
+E   Failed: DID NOT RAISE <class 'microdb.errors.TypeMismatchError'>
+_________________________ test_where_requires_bool[1] _________________________
+_verify\test_c3.py:701: in test_where_requires_bool
+    with pytest.raises(db.TypeMismatchError):
+E   Failed: DID NOT RAISE <class 'microdb.errors.TypeMismatchError'>
+________________________ test_where_requires_bool['a'] ________________________
+_verify\test_c3.py:701: in test_where_requires_bool
+    with pytest.raises(db.TypeMismatchError):
+E   Failed: DID NOT RAISE <class 'microdb.errors.TypeMismatchError'>
+________________________ test_where_requires_bool[age] ________________________
+_verify\test_c3.py:701: in test_where_requires_bool
+    with pytest.raises(db.TypeMismatchError):
+E   Failed: DID NOT RAISE <class 'microdb.errors.TypeMismatchError'>
+______________________ test_where_requires_bool[age + 1] ______________________
+_verify\test_c3.py:701: in test_where_requires_bool
+    with pytest.raises(db.TypeMismatchError):
+E   Failed: DID NOT RAISE <class 'microdb.errors.TypeMismatchError'>
+_________________________ test_where_cannot_see_alias _________________________
+_verify\test_c3.py:707: in test_where_cannot_see_alias
+    run("SELECT age AS a FROM p WHERE a > 10")
+_verify\test_c3.py:129: in go
+    return db.execute(query, tables if tables is not None else {"p": people})
+microdb\__init__.py:15: in execute
+    result = execute_plan(plan_stages, tables)
+microdb\executor.py:28: in execute_plan
+    rows = _execute_where(stage, rows)
+microdb\executor.py:126: in _execute_where
+    pred = evaluate(stage.expr, row)
+microdb\expr.py:39: in evaluate
+    left = evaluate(expr.left, row, is_aggregate_context)
+microdb\expr.py:36: in evaluate
+    raise KeyError(f"Column '{expr.col_name}' not found")
+E   KeyError: "Column 'a' not found"
+_____________________ test_grouping_error_for_bare_column _____________________
+_verify\test_c3.py:852: in test_grouping_error_for_bare_column
+    with pytest.raises(db.GroupingError):
+E   Failed: DID NOT RAISE <class 'microdb.errors.GroupingError'>
+________________________ test_grouping_error_for_star _________________________
+_verify\test_c3.py:858: in test_grouping_error_for_star
+    run("SELECT * FROM p GROUP BY age")
+_verify\test_c3.py:129: in go
+    return db.execute(query, tables if tables is not None else {"p": people})
+microdb\__init__.py:15: in execute
+    result = execute_plan(plan_stages, tables)
+microdb\executor.py:34: in execute_plan
+    rows, output_columns = _execute_select(stage, rows, tables, plan)
+microdb\executor.py:174: in _execute_select
+    return _execute_select_grouped(stage, rows, tables)
+microdb\executor.py:239: in _execute_select_grouped
+    raise ValueError("Invalid select item")
+E   ValueError: Invalid select item
+____________ test_grouping_error_mixing_bare_column_with_aggregate ____________
+_verify\test_c3.py:862: in test_grouping_error_mixing_bare_column_with_aggregate
+    with pytest.raises(db.GroupingError):
+E   Failed: DID NOT RAISE <class 'microdb.errors.GroupingError'>
+_________________________ test_having_filters_groups __________________________
+_verify\test_c3.py:867: in test_having_filters_groups
+    out = run("SELECT age, count(*) FROM p GROUP BY age HAVING count(*) > 1").rows
+_verify\test_c3.py:129: in go
+    return db.execute(query, tables if tables is not None else {"p": people})
+microdb\__init__.py:15: in execute
+    result = execute_plan(plan_stages, tables)
+microdb\executor.py:32: in execute_plan
+    rows = _execute_having(stage, rows)
+microdb\executor.py:160: in _execute_having
+    pred = evaluate(stage.expr, group_row)
+microdb\expr.py:39: in evaluate
+    left = evaluate(expr.left, row, is_aggregate_context)
+microdb\expr.py:69: in evaluate
+    return evaluate_call(expr.value, expr.args or [], row)
+microdb\expr.py:141: in evaluate_call
+    raise UnknownFunctionError(f"Unknown function: {func_name}")
+E   microdb.errors.UnknownFunctionError: Unknown function: count
+_______________________ test_having_unknown_drops_group _______________________
+_verify\test_c3.py:873: in test_having_unknown_drops_group
+    out = db.execute("SELECT a, sum(b) FROM t GROUP BY a HAVING sum(b) > 1", {"t": t}).rows
+microdb\__init__.py:15: in execute
+    result = execute_plan(plan_stages, tables)
+microdb\executor.py:32: in execute_plan
+    rows = _execute_having(stage, rows)
+microdb\executor.py:160: in _execute_having
+    pred = evaluate(stage.expr, group_row)
+microdb\expr.py:39: in evaluate
+    left = evaluate(expr.left, row, is_aggregate_context)
+microdb\expr.py:69: in evaluate
+    return evaluate_call(expr.value, expr.args or [], row)
+microdb\expr.py:141: in evaluate_call
+    raise UnknownFunctionError(f"Unknown function: {func_name}")
+E   microdb.errors.UnknownFunctionError: Unknown function: sum
+______________ test_having_may_reference_aggregate_not_in_select ______________
+_verify\test_c3.py:878: in test_having_may_reference_aggregate_not_in_select
+    out = run("SELECT age FROM p GROUP BY age HAVING count(*) > 1").rows
+_verify\test_c3.py:129: in go
+    return db.execute(query, tables if tables is not None else {"p": people})
+microdb\__init__.py:15: in execute
+    result = execute_plan(plan_stages, tables)
+microdb\executor.py:32: in execute_plan
+    rows = _execute_having(stage, rows)
+microdb\executor.py:160: in _execute_having
+    pred = evaluate(stage.expr, group_row)
+microdb\expr.py:39: in evaluate
+    left = evaluate(expr.left, row, is_aggregate_context)
+microdb\expr.py:69: in evaluate
+    return evaluate_call(expr.value, expr.args or [], row)
+microdb\expr.py:141: in evaluate_call
+    raise UnknownFunctionError(f"Unknown function: {func_name}")
+E   microdb.errors.UnknownFunctionError: Unknown function: count
+_________________ test_having_without_grouping_is_consistent __________________
+_verify\test_c3.py:885: in test_having_without_grouping_is_consistent
+    result = run("SELECT id FROM p HAVING id > 1")
+_verify\test_c3.py:129: in go
+    return db.execute(query, tables if tables is not None else {"p": people})
+microdb\__init__.py:15: in execute
+    result = execute_plan(plan_stages, tables)
+microdb\executor.py:32: in execute_plan
+    rows = _execute_having(stage, rows)
+microdb\executor.py:158: in _execute_having
+    for key in group[0].keys():
+E   KeyError: 0
+________________________ test_order_by_desc_nulls_last ________________________
+_verify\test_c3.py:900: in test_order_by_desc_nulls_last
+    assert [r[0] for r in run("SELECT age FROM p ORDER BY age DESC").rows] == [40, 30, 30, None]
+E   assert [30, 30, 40, None] == [40, 30, 30, None]
+E     
+E     At index 0 diff: 30 != 40
+E     Use -v to get more diff
+________________________ test_order_by_desc_is_stable _________________________
+_verify\test_c3.py:916: in test_order_by_desc_is_stable
+    assert out == [3, 1, 2]
+E   assert [1, 2, 3] == [3, 1, 2]
+E     
+E     At index 0 diff: 1 != 3
+E     Use -v to get more diff
+_______________________ test_order_by_mixed_directions ________________________
+_verify\test_c3.py:928: in test_order_by_mixed_directions
+    assert out == [[0, 3], [1, 2], [1, 1]]
+E   assert [[0, 3], [1, 1], [1, 2]] == [[0, 3], [1, 2], [1, 1]]
+E     
+E     At index 1 diff: [1, 1] != [1, 2]
+E     Use -v to get more diff
+_____________________________ test_order_by_alias _____________________________
+_verify\test_c3.py:932: in test_order_by_alias
+    assert [r[0] for r in run("SELECT age AS a FROM p ORDER BY a DESC").rows] == [
+E   assert [30, 30, 40, None] == [40, 30, 30, None]
+E     
+E     At index 0 diff: 30 != 40
+E     Use -v to get more diff
+__________________________ test_order_by_expression ___________________________
+_verify\test_c3.py:944: in test_order_by_expression
+    assert out == [3, 1, 4, 2]
+E   assert [1, 2, 3, 4] == [3, 1, 4, 2]
+E     
+E     At index 0 diff: 1 != 3
+E     Use -v to get more diff
+_________________________ test_order_by_type_mismatch _________________________
+_verify\test_c3.py:951: in test_order_by_type_mismatch
+    db.execute("SELECT coalesce(a, b) AS c FROM t ORDER BY c", {"t": t})
+microdb\__init__.py:15: in execute
+    result = execute_plan(plan_stages, tables)
+microdb\executor.py:38: in execute_plan
+    rows = _execute_order_by(stage, rows, output_columns, tables, plan)
+microdb\executor.py:294: in _execute_order_by
+    sorted_indices = sorted(range(len(rows)), key=sort_key)
+E   TypeError: '<' not supported between instances of 'int' and 'str'
+_______________________________ test_inner_join _______________________________
+_verify\test_c3.py:1000: in test_inner_join
+    out = db.execute("SELECT l.n, r.v FROM l JOIN r ON l.id = r.lid", joined).rows
+microdb\__init__.py:15: in execute
+    result = execute_plan(plan_stages, tables)
+microdb\executor.py:34: in execute_plan
+    rows, output_columns = _execute_select(stage, rows, tables, plan)
+microdb\executor.py:176: in _execute_select
+    return _execute_select_ungrouped(stage, rows, tables)
+microdb\executor.py:215: in _execute_select_ungrouped
+    val = evaluate(item[0], row)
+microdb\expr.py:36: in evaluate
+    raise KeyError(f"Column '{expr.col_name}' not found")
+E   KeyError: "Column 'v' not found"
+______________________ test_join_row_order_is_left_major ______________________
+_verify\test_c3.py:1015: in test_join_row_order_is_left_major
+    out = db.execute("SELECT l.id, r.v FROM l JOIN r ON l.id = r.lid", joined).rows
+microdb\__init__.py:15: in execute
+    result = execute_plan(plan_stages, tables)
+microdb\executor.py:34: in execute_plan
+    rows, output_columns = _execute_select(stage, rows, tables, plan)
+microdb\executor.py:176: in _execute_select
+    return _execute_select_ungrouped(stage, rows, tables)
+microdb\executor.py:215: in _execute_select_ungrouped
+    val = evaluate(item[0], row)
+microdb\expr.py:36: in evaluate
+    raise KeyError(f"Column '{expr.col_name}' not found")
+E   KeyError: "Column 'v' not found"
+___________________________ test_join_column_order ____________________________
+_verify\test_c3.py:1020: in test_join_column_order
+    assert db.execute("SELECT * FROM l JOIN r ON l.id = r.lid", joined).columns == [
+E   AssertionError: assert ['id', 'n'] == ['id', 'n', 'lid', 'v']
+E     
+E     Right contains 2 more items, first extra item: 'lid'
+E     Use -v to get more diff
+____________________ test_join_unknown_condition_drops_row ____________________
+_verify\test_c3.py:1029: in test_join_unknown_condition_drops_row
+    assert out == [[1]]
+E   assert [[1], [None]] == [[1]]
+E     
+E     Left contains one more item: [None]
+E     Use -v to get more diff
+____________________________ test_ambiguous_column ____________________________
+_verify\test_c3.py:1044: in test_ambiguous_column
+    with pytest.raises(db.AmbiguousColumnError):
+E   Failed: DID NOT RAISE <class 'microdb.errors.AmbiguousColumnError'>
+___________________ test_unqualified_unique_column_resolves ___________________
+_verify\test_c3.py:1050: in test_unqualified_unique_column_resolves
+    assert out == [["a"], ["a"], ["b"]]
+E   AssertionError: assert [['a'], ['b'], ['c']] == [['a'], ['a'], ['b']]
+E     
+E     At index 1 diff: ['b'] != ['a']
+E     Use -v to get more diff
+____________________________ test_join_with_having ____________________________
+_verify\test_c3.py:1061: in test_join_with_having
+    out = db.execute(
+microdb\__init__.py:15: in execute
+    result = execute_plan(plan_stages, tables)
+microdb\executor.py:32: in execute_plan
+    rows = _execute_having(stage, rows)
+microdb\executor.py:160: in _execute_having
+    pred = evaluate(stage.expr, group_row)
+microdb\expr.py:39: in evaluate
+    left = evaluate(expr.left, row, is_aggregate_context)
+microdb\expr.py:69: in evaluate
+    return evaluate_call(expr.value, expr.args or [], row)
+microdb\expr.py:141: in evaluate_call
+    raise UnknownFunctionError(f"Unknown function: {func_name}")
+E   microdb.errors.UnknownFunctionError: Unknown function: sum
+___________________________ test_join_unknown_table ___________________________
+_verify\test_c3.py:1073: in test_join_unknown_table
+    with pytest.raises(db.UnknownTableError):
+E   Failed: DID NOT RAISE <class 'microdb.errors.UnknownTableError'>
+________________________ test_plan_full_pipeline_order ________________________
+_verify\test_c3.py:1154: in test_plan_full_pipeline_order
+    assert role in roles, f"{role} missing from {roles}"
+E   AssertionError: join missing from ['scan', 'group', 'project', 'distinct']
+E   assert 'join' in ['scan', 'group', 'project', 'distinct']
+_______________________________ test_cli_basic ________________________________
+_verify\test_c3.py:1207: in test_cli_basic
+    assert done.stdout.splitlines() == ["count(*)", "1"]
+E   AssertionError: assert ['count(*)', '', '1', ''] == ['count(*)', '1']
+E     
+E     At index 1 diff: '' != '1'
+E     Left contains 2 more items, first extra item: '1'
+E     Use -v to get more diff
+____________________________ test_cli_header_names ____________________________
+_verify\test_c3.py:1212: in test_cli_header_names
+    assert done.stdout.splitlines() == ["id,name", "1,ann"]
+E   AssertionError: assert ['id,name', '', '1,ann', ''] == ['id,name', '1,ann']
+E     
+E     At index 1 diff: '' != '1,ann'
+E     Left contains 2 more items, first extra item: '1,ann'
+E     Use -v to get more diff
+________________________ test_cli_null_is_empty_field _________________________
+_verify\test_c3.py:1217: in test_cli_null_is_empty_field
+    assert done.stdout.splitlines() == ["age", ""]
+E   assert ['age', '', '""', ''] == ['age', '']
+E     
+E     Left contains 2 more items, first extra item: '""'
+E     Use -v to get more diff
+___________________________ test_cli_bool_lowercase ___________________________
+_verify\test_c3.py:1224: in test_cli_bool_lowercase
+    assert done.stdout.splitlines() == ["f", "true", "false"]
+E   AssertionError: assert ['f', '', 'tr..., 'false', ''] == ['f', 'true', 'false']
+E     
+E     At index 1 diff: '' != 'true'
+E     Left contains 3 more items, first extra item: ''
+E     Use -v to get more diff
+____________________ test_cli_bool_input_case_insensitive _____________________
+_verify\test_c3.py:1231: in test_cli_bool_input_case_insensitive
+    assert done.stdout.splitlines() == ["f", "true"]
+E   AssertionError: assert ['f', '', 'true', ''] == ['f', 'true']
+E     
+E     At index 1 diff: '' != 'true'
+E     Left contains 2 more items, first extra item: 'true'
+E     Use -v to get more diff
+_____________________________ test_cli_two_tables _____________________________
+_verify\test_c3.py:1244: in test_cli_two_tables
+    assert done.stdout.splitlines() == ["id", "1"]
+E   AssertionError: assert ['l.id', '', '1', ''] == ['id', '1']
+E     
+E     At index 0 diff: 'l.id' != 'id'
+E     Left contains 2 more items, first extra item: '1'
+E     Use -v to get more diff
+____________________ test_cli_usage_errors_exit_two[args1] ____________________
+_verify\test_c3.py:1253: in test_cli_usage_errors_exit_two
+    assert cli(*args).returncode == 2
+E   assert 3 == 2
+E    +  where 3 = CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...z5n2kfra8p0\\python.exe', '-m', 'microdb', 'SELECT 1 FROM t'], returncode=3, stdout='', stderr="Table 't' not found\n").returncode
+E    +    where CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...z5n2kfra8p0\\python.exe', '-m', 'microdb', 'SELECT 1 FROM t'], returncode=3, stdout='', stderr="Table 't' not found\n") = cli(*('SELECT 1 FROM t',))
+__________ test_cli_query_error_exit_three[SELECT id FROM t WHERE 1] __________
+_verify\test_c3.py:1280: in test_cli_query_error_exit_three
+    assert done.returncode == 3
+E   AssertionError: assert 0 == 3
+E    +  where 0 = CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...143\\test_cli_query_error_exit_thre2\\people.csv', 'SELECT id FROM t WHERE 1'], returncode=0, stdout='\n\n', stderr='').returncode
+_________ test_cli_query_error_exit_three[SELECT id, count(*) FROM t] _________
+_verify\test_c3.py:1280: in test_cli_query_error_exit_three
+    assert done.returncode == 3
+E   AssertionError: assert 0 == 3
+E    +  where 0 = CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...error_exit_thre4\\people.csv', 'SELECT id, count(*) FROM t'], returncode=0, stdout='id,count(*)\n\n1,3\n\n', stderr='').returncode
+- generated xml file: C:\workspace\13_benchmark\GPT-6 in Coding\benchmark\reports\claude-haiku-4.5__C3-microdb\tests\hidden.xml -
+=========================== short test summary info ===========================
+FAILED _verify/test_c3.py::test_comparison_not_associative[SELECT a FROM t WHERE 1 < 2 < 3]
+FAILED _verify/test_c3.py::test_comparison_not_associative[SELECT a FROM t WHERE 1 = 2 = 3]
+FAILED _verify/test_c3.py::test_comparison_not_associative[SELECT a FROM t WHERE 1 < 2 >= 3]
+FAILED _verify/test_c3.py::test_parse_errors[SELECT a] - Failed: DID NOT RAIS...
+FAILED _verify/test_c3.py::test_parse_errors[SELECT a FROM t JOIN u] - Failed...
+FAILED _verify/test_c3.py::test_parse_errors[SELECT a FROM t extra] - Failed:...
+FAILED _verify/test_c3.py::test_parse_error_has_offset - Failed: DID NOT RAIS...
+FAILED _verify/test_c3.py::test_nested_aggregate_rejected - Failed: DID NOT R...
+FAILED _verify/test_c3.py::test_aggregate_in_where_rejected - Failed: DID NOT...
+FAILED _verify/test_c3.py::test_expression_output_name - AssertionError: asse...
+FAILED _verify/test_c3.py::test_expression_output_name_collapses_space - Asse...
+FAILED _verify/test_c3.py::test_unknown_column - KeyError: "Column 'nope' not...
+FAILED _verify/test_c3.py::test_unknown_table_in_reference - Failed: DID NOT ...
+FAILED _verify/test_c3.py::test_scalar_type_errors[length(1)] - Failed: DID N...
+FAILED _verify/test_c3.py::test_where_requires_bool[1] - Failed: DID NOT RAIS...
+FAILED _verify/test_c3.py::test_where_requires_bool['a'] - Failed: DID NOT RA...
+FAILED _verify/test_c3.py::test_where_requires_bool[age] - Failed: DID NOT RA...
+FAILED _verify/test_c3.py::test_where_requires_bool[age + 1] - Failed: DID NO...
+FAILED _verify/test_c3.py::test_where_cannot_see_alias - KeyError: "Column 'a...
+FAILED _verify/test_c3.py::test_grouping_error_for_bare_column - Failed: DID ...
+FAILED _verify/test_c3.py::test_grouping_error_for_star - ValueError: Invalid...
+FAILED _verify/test_c3.py::test_grouping_error_mixing_bare_column_with_aggregate
+FAILED _verify/test_c3.py::test_having_filters_groups - microdb.errors.Unknow...
+FAILED _verify/test_c3.py::test_having_unknown_drops_group - microdb.errors.U...
+FAILED _verify/test_c3.py::test_having_may_reference_aggregate_not_in_select
+FAILED _verify/test_c3.py::test_having_without_grouping_is_consistent - KeyEr...
+FAILED _verify/test_c3.py::test_order_by_desc_nulls_last - assert [30, 30, 40...
+FAILED _verify/test_c3.py::test_order_by_desc_is_stable - assert [1, 2, 3] ==...
+FAILED _verify/test_c3.py::test_order_by_mixed_directions - assert [[0, 3], [...
+FAILED _verify/test_c3.py::test_order_by_alias - assert [30, 30, 40, None] ==...
+FAILED _verify/test_c3.py::test_order_by_expression - assert [1, 2, 3, 4] == ...
+FAILED _verify/test_c3.py::test_order_by_type_mismatch - TypeError: '<' not s...
+FAILED _verify/test_c3.py::test_inner_join - KeyError: "Column 'v' not found"
+FAILED _verify/test_c3.py::test_join_row_order_is_left_major - KeyError: "Col...
+FAILED _verify/test_c3.py::test_join_column_order - AssertionError: assert ['...
+FAILED _verify/test_c3.py::test_join_unknown_condition_drops_row - assert [[1...
+FAILED _verify/test_c3.py::test_ambiguous_column - Failed: DID NOT RAISE <cla...
+FAILED _verify/test_c3.py::test_unqualified_unique_column_resolves - Assertio...
+FAILED _verify/test_c3.py::test_join_with_having - microdb.errors.UnknownFunc...
+FAILED _verify/test_c3.py::test_join_unknown_table - Failed: DID NOT RAISE <c...
+FAILED _verify/test_c3.py::test_plan_full_pipeline_order - AssertionError: jo...
+FAILED _verify/test_c3.py::test_cli_basic - AssertionError: assert ['count(*)...
+FAILED _verify/test_c3.py::test_cli_header_names - AssertionError: assert ['i...
+FAILED _verify/test_c3.py::test_cli_null_is_empty_field - assert ['age', '', ...
+FAILED _verify/test_c3.py::test_cli_bool_lowercase - AssertionError: assert [...
+FAILED _verify/test_c3.py::test_cli_bool_input_case_insensitive - AssertionEr...
+FAILED _verify/test_c3.py::test_cli_two_tables - AssertionError: assert ['l.i...
+FAILED _verify/test_c3.py::test_cli_usage_errors_exit_two[args1] - assert 3 == 2
+FAILED _verify/test_c3.py::test_cli_query_error_exit_three[SELECT id FROM t WHERE 1]
+FAILED _verify/test_c3.py::test_cli_query_error_exit_three[SELECT id, count(*) FROM t]
+50 failed, 327 passed in 7.93s

@@ -1,0 +1,46 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "grammar_correspondence": {
+    "maxPoints": 5,
+    "criterion": "递归下降的函数与 task.md 的文法层级一一对应，命名可读，无手工回溯",
+    "points": 5,
+    "verdict": "完全符合：9 个解析方法与文法 9 层严格一一对应，命名直接取自文法产生式",
+    "reasoning": "task.md 的文法自松到紧共 9 层：expr / or_expr / and_expr / not_expr / comparison / additive / multiplicative / unary / power / primary。parser.py 的 _Parser 里对应 parse_expr(113) / parse_or(116) / parse_and(124) / parse_not(132) / parse_comparison(140) / parse_additive(157) / parse_multiplicative(169) / parse_unary(181) / parse_power(189) / parse_primary(198) —— 逐个对上，命名直接沿用文法产生式名，读代码等于读文法。结合性也都落实到位：parse_or / parse_and / parse_additive / parse_multiplicative 用 while 循环实现左结合；parse_power(189-196) 右侧递归调用 parse_unary 实现右结合并允许 `2 ^ -1`；parse_unary(181-187) 递归自身实现 `- - 3`。parse_comparison(140-155) 用 16 行显式处理非结合：匹配一个比较符后再检查是否还跟着比较符，有则抛 ParseError —— 这正是 `1 < 2 < 3` 必须报错那条规格。无手工回溯：辅助方法 peek/advance/at_end/is_op/is_op_in/is_keyword（87-111）都是单 token 前瞻，没有保存/恢复位置的 backtrack 逻辑。隐藏套件的 20 项优先级与结合性用例全过，包括最容易错的 `-2 ^ 2 == -4` 与 `2 ^ 3 ^ 2 == 512`。",
+    "evidence": [
+      "parser.py:113-245 九个 parse_* 方法与文法九层一一对应",
+      "parser.py:189-196 parse_power 右递归 parse_unary，实现右结合且支持 2^-1",
+      "parser.py:140-155 parse_comparison 显式拒绝链式比较",
+      "parser.py:87-111 六个单 token 前瞻辅助，无回溯",
+      "隐藏套件 test_precedence_and_associativity 全 20 例通过"
+    ]
+  },
+  "named_ast": {
+    "maxPoints": 4,
+    "criterion": "AST 用具名节点（dataclass / NamedTuple / 类），不是裸 tuple 或 dict",
+    "points": 4,
+    "verdict": "完全符合：10 个 @dataclass 节点类，字段具名且都带 position",
+    "reasoning": "parser.py:16-79 定义了 10 个 @dataclass 节点：NumberNode / StringNode / BoolNode / IdentNode / CallNode / UnaryMinusNode / NotNode / AndNode / OrNode / BinOpNode。全部是具名字段，没有任何裸 tuple 或 dict 充当节点。设计上有两点值得肯定：① **每个节点都带 position 字段**，使 EvalError 也能拿到位置（规格只要求 LexError/ParseError 有位置，这是超出要求）；② 把 and / or / not 拆成独立的 AndNode / OrNode / NotNode 而不是塞进 BinOpNode 的 op 字段 —— 因为它们需要短路语义与其他二元运算不同的求值路径，分开建模让 evaluator 的分派更直白。CallNode(41-45) 用 `field(default_factory=list)` 给 args 默认值，避免可变默认参数陷阱。parser.py:3-4 的模块 docstring 明确写了『Produces an AST built from simple dataclasses; parsing never evaluates anything』，与规格第 30 条（parse 不得求值）一致，隐藏测试也验证了。",
+    "evidence": [
+      "parser.py:16-79 十个 @dataclass 节点类",
+      "每个节点都有 position 字段（超出规格要求）",
+      "parser.py:60-73 And/Or 独立建模以支持短路语义",
+      "parser.py:41-45 CallNode 用 field(default_factory=list)",
+      "隐藏测试 test_parse_does_not_evaluate 通过"
+    ]
+  },
+  "error_consistency": {
+    "maxPoints": 3,
+    "criterion": "三类错误消息风格一致且带位置信息，没有 except Exception 吞异常",
+    "points": 2,
+    "verdict": "部分符合：风格一致、无吞异常，但 EvalError 全部不带位置，尽管节点里有 position 可用",
+    "reasoning": "① 异常层次与 str() 语义正确 —— errors.py:4-31 定义 MiniLangError 基类带 message 与 position 两个属性，`__str__`（17-19）只返回 plain message，注释明确写了『No position prefix: str(error) must be the plain message』，符合规格第 29 条。三个子类各自 pass 继承。② 无吞异常 —— 自动检查 no_broad_except 通过，全文没有 except Exception 后不处理的写法。③ 风格一致 —— 24 处 raise 的措辞成体系：算子类用 `'op' requires ...`（evaluator.py:138/142/158），内置函数类用 `name() takes N argument(s), got M`（builtins.py:14/38/46/63），规格点名的四条精确消息（division by zero / modulo by zero / undefined variable: x / undefined function: x）全部逐字节正确，隐藏测试 test_exact_error_messages 通过。**扣 1 分的原因：EvalError 全部没有带位置。** errors.py:7-9 的 docstring 自己写了『or None when no position is available (this is always the case for EvalError, which happens after parsing)』—— 但这个理由站不住：AST 的每个节点都存了 position（见 named_ast 一项），evaluator 拿到 node 就能拿到 node.position，却在全部 24 处 raise 里都没有传。规格第 28 条允许 EvalError.position 为 None，所以这不影响功能分；但本判据要求的是『带位置信息』，而现成的位置信息被浪费了 —— `evaluate(\"1 + foo\")` 报 undefined variable 时无法告诉调用方 foo 在第几个字符。对比参考实现：它在 evaluator 的每处 raise 都传了 node.position。",
+    "evidence": [
+      "errors.py:4-31 三类异常继承 MiniLangError，__str__ 返回 plain message",
+      "errors.py:17-19 注释说明为何不加位置前缀（符合规格第 29 条）",
+      "builtins.py + evaluator.py 共 24 处 raise，措辞成体系",
+      "隐藏测试 test_exact_error_messages 四条精确消息全过",
+      "缺陷：evaluator.py 全部 EvalError 均未传 node.position，尽管每个 AST 节点都有该字段",
+      "errors.py:7-9 docstring 的解释与自身 AST 设计矛盾"
+    ]
+  }
+}

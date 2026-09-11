@@ -1,0 +1,32 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "root_cause_fix": {
+    "maxPoints": 7,
+    "criterion": "三个缺陷都从根因修（闭区间 +1、chunk 宽度 days-1、days<=0 前置校验）；不是在返回前特判补一个 chunk 之类的补丁",
+    "points": 7,
+    "verdict": "完全符合：三缺陷全部根因消除，用的是最小结构改动（span+1 + range 步进）",
+    "reasoning": "① 闭区间 off-by-one —— 直接改成 `span = (end - start).days + 1`（daterange.py:23），这是判据括号里点名的那个根因修法，比换 while 循环改动更小。② chunk 宽度 —— `chunk_end = start + timedelta(days=min(offset + days, span) - 1)`（daterange.py:28）：min 收口到 span、再减 1 换算成闭区间末端，一处表达式同时修正宽度与越界。③ days<=0 —— 前置校验（21-22）且排除 bool，第 20 行注释说明理由。**特别值得记的一点**：它没有写 `if end < start: return []`，因为不需要 —— end < start 时 span ≤ 0，`range(0, span, days)` 天然为空，返回 []。另两个模型都显式加了这个 early return。少一个分支而行为等价，是更简洁的正确解。无补丁式修法：隐藏套件 span 0..39 × days 1..11 共 440 组性质检查全过。",
+    "evidence": [
+      "daterange.py:21-22 days 校验含 bool 排除",
+      "daterange.py:20 注释说明为何排除 bool",
+      "daterange.py:23 span = (end - start).days + 1",
+      "daterange.py:26-29 range(0, span, days) 步进",
+      "daterange.py:28 min(offset+days, span) - 1 同时修宽度与越界",
+      "无需 end<start 的 early return：span<=0 时 range 天然为空"
+    ]
+  },
+  "minimal_diff": {
+    "maxPoints": 4,
+    "criterion": "diff 最小，未重写整个文件，未改动 docstring 的语义",
+    "points": 4,
+    "verdict": "完全符合：单 hunk、−5/+8 行、全在函数体内；docstring 仅一处措辞澄清，语义未变",
+    "reasoning": "unified diff 只有一个 hunk：删 span/count 两行与 for 三行，加校验三行（含注释）、span 一行、改写的 for 三行。函数签名、参数名与顺序、返回结构全保持。docstring 改动只有一处：`Raises ValueError when days is not positive.` → `... is not a positive integer.`。这是**澄清而非语义变更** —— 它与新增的 bool/int 校验一致，而 task.md 约束第 2 条明确允许『You may correct wording, but the contract must remain the one described above』。模块 docstring（1-7）逐字节未变。三个模型里它的 diff 最短。",
+    "evidence": [
+      "diff：1 hunk，−5/+8，全在函数体内",
+      "docstring 仅 'not positive' → 'not a positive integer' 的措辞澄清",
+      "task.md 约束第 2 条明确允许措辞修正",
+      "daterange.py:1-7 模块 docstring 未变",
+      "sealed_unmodified 通过：test_daterange.py 哈希与种子一致"
+    ]
+  }
+}

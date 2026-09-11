@@ -1,0 +1,45 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "regex_named_groups": {
+    "maxPoints": 5,
+    "criterion": "用一条预编译正则 + 命名组解析日志行，不是多次 split 拼凑",
+    "points": 2,
+    "verdict": "部分符合：确实是单条正则、非 split 拼凑，但既未预编译也未用命名组，且过于宽松导致真实的规格违反",
+    "reasoning": "① 单条正则、非 split —— 达到。logstats.py:17-29 用一个正则一次匹配全部九个字段，没有多次 split 拼凑，这是判据的核心，给基础分。② **未预编译** —— 正则是 parse_line 内的局部变量 `pattern`（第 17 行），第 30 行每次调用都走 `re.match(pattern, line)`。虽然 Python 有内部正则缓存，但判据明写『预编译』，另四个模型都是模块级 `re.compile`。③ **未用命名组** —— 全部用位置组，取值靠 `match.group(1..9)`；另四个模型都用 `(?P<name>...)` 命名组，可读性与抗改性都更好。④ **最严重：正则过于宽松，造成本次基准唯一的 M2 功能扣分。** method 字段写成 `\"(\\w+)\\s+...\"`，而 task.md 第 41 行明确要求 `<method> — uppercase letters`。`\\w+` 接受小写，于是隐藏测试里的畸形样例 `\"get /a HTTP/1.1\"` 被错误判为合法行（应返回 None），test_malformed_lines_return_none 该用例失败，功能分 68.75/70。这不是风格问题而是**规格违反** —— 另四个模型都用了 `[A-Z]+` 或等价约束。综合：核心形态达标给 2 分，预编译、命名组、严格性三项均未达到扣 3 分。",
+    "evidence": [
+      "logstats.py:17-29 单条正则，非 split 拼凑（给基础分）",
+      "logstats.py:17 正则是函数内局部变量，未模块级预编译",
+      "全部使用位置组，未用 (?P<name>...) 命名组",
+      "method 用 \\w+ 而 task.md 第 41 行要求 uppercase letters",
+      "隐藏测试 test_malformed_lines_return_none 的小写 method 用例失败 → 功能分 68.75/70",
+      "另四个模型均用 [A-Z]+ 或等价约束"
+    ]
+  },
+  "streaming": {
+    "maxPoints": 4,
+    "criterion": "analyze 单遍流式处理任意可迭代对象，不把整个文件 list() 进内存",
+    "points": 4,
+    "verdict": "符合：单层 for 遍历入参，无 list() 物化",
+    "reasoning": "logstats.py:87 是单层 `for line in lines`，全文无 list(lines) / tuple(lines) / 索引访问，因此接受任意可迭代对象；隐藏测试 test_analyze_accepts_a_generator 传入生成器通过。唯一在内存累积的是 durations 列表，这是精确分位数的固有代价，规格未要求近似算法，不扣分。记一个判据外的观察，不扣分：analyze 本身 **103 行**（logstats.py:74-176），远超 60 行上限，是五个模型中最长的（另四者 39–79 行）。状态分类、排名、输出组装都内联在里面。这已由 bounded_function_length 单独扣分。",
+    "evidence": [
+      "logstats.py:87 单层 for line in lines",
+      "全文无 list(lines)",
+      "隐藏测试 test_analyze_accepts_a_generator 通过",
+      "判据外：analyze 103 行，五者中最长（自动检查已扣）"
+    ]
+  },
+  "percentile_isolated": {
+    "maxPoints": 3,
+    "criterion": "分位数抽成独立函数，空列表与 n=1 的边界显式处理",
+    "points": 3,
+    "verdict": "完全符合，五个模型中唯一满分：函数独立，且空列表与 n=1 两个边界都在函数内显式处理",
+    "reasoning": "判据三个要点**全部达到**，这是五个模型里唯一的一次：① 抽成独立函数 —— logstats.py:64-71 `_percentile(values, p)` 独立且带 docstring 说明用 nearest-rank；② **空列表边界在函数内** —— 第 66-67 行 `if not values: return 0.0` 是函数的第一件事，因此 `_percentile([], 50)` 可以安全单独调用；③ n=1 边界 —— 第 69-70 行 `ceil(p/100*n) - 1` 后接 `max(0, min(index, n - 1))` 双侧 clamp，n=1 时任何 p 都夹到 0。**这一条此前是本次基准最稳定的共性盲点**：Sonnet（两次采样）、Opus、Fable 都把空列表守卫放在调用方而非函数内（各 2/3），Astra 连函数都没抽（1/3）。四个更大的模型、五次实现全部漏掉，而最小的 Haiku 做对了 —— 这说明『把边界收在函数内』不是模型能力问题，而是习惯问题，与参数规模无关。算法本身也正确：nearest-rank 而非插值，隐藏测试 n=1 / n=4 / n=20 三组分位数用例全过。",
+    "evidence": [
+      "logstats.py:64-71 _percentile 独立函数 + docstring",
+      "logstats.py:66-67 `if not values: return 0.0` —— 空列表守卫在函数内（五者唯一）",
+      "logstats.py:69-70 双侧 clamp 覆盖 n=1",
+      "隐藏测试 n=1 / n=4 / n=20 三组分位数用例全过",
+      "对比：Sonnet/Opus/Fable 各 2/3，Astra 1/3"
+    ]
+  }
+}

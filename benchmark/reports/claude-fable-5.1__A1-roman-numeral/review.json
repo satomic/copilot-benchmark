@@ -1,0 +1,28 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "algorithm": {
+    "maxPoints": 6,
+    "criterion": "查表 + 贪心（divmod / 循环减法）实现；不是按千百十个位写 if/elif 硬编码分支",
+    "points": 6,
+    "verdict": "完全符合：13 组查表 + divmod 贪心，且用独立累加变量未改写入参",
+    "reasoning": "roman.py:5-19 模块级元组 _NUMERALS 列出全部 13 组（值, 符号），含 4 个减法对，从大到小。roman.py:31-33 单层循环 + divmod。O(13)，与 n 无关，数据与算法分离。roman.py:3 声明 __all__。一个比 opus 与 astra 更好的细节：roman.py:30 另起 `remaining = n` 作累加变量，**没有改写参数 n**；opus 与 astra 都直接 `count, n = divmod(n, value)` 覆盖了入参。功能无差异，但不改写入参在调试与后续扩展时更安全，与 sonnet 的写法一致。",
+    "evidence": [
+      "roman.py:5-19 _NUMERALS 查表",
+      "roman.py:32 divmod 贪心",
+      "roman.py:30 独立 remaining 变量，未改写入参 n",
+      "roman.py:3 声明 __all__"
+    ]
+  },
+  "error_messages": {
+    "maxPoints": 4,
+    "criterion": "TypeError / ValueError 的消息可读且包含出错的实际值或类型，不是裸 raise",
+    "points": 4,
+    "verdict": "完全符合：两条消息都用 f-string 带出错类型/数值",
+    "reasoning": "roman.py:25 TypeError 为 f\"n must be an int, not {type(n).__name__}\"，回报实际类型名 —— 与 astra 那个固定字符串 \"n must be an int, not bool\"（对字符串输入会误导）形成直接对照，Fable 这里的措辞随输入变化，不会指错方向。roman.py:27 ValueError 为 f\"n must be in the range 1..3999, got {n}\"，给出区间与越界实际值。roman.py:23-24 用 `isinstance(n, bool) or not isinstance(n, int)` 排除 bool 并有注释，抓住了本任务的主要区分点。记一个判据未覆盖的点，不扣分：to_roman 无 docstring（模块有），task.md 与本判据均未要求。",
+    "evidence": [
+      "roman.py:25 TypeError 含实际类型名",
+      "roman.py:27 ValueError 含实际值 n",
+      "roman.py:23-24 显式排除 bool 并注释"
+    ]
+  }
+}

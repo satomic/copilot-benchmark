@@ -1,0 +1,29 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "argparse_exit2": {
+    "maxPoints": 5,
+    "criterion": "用 argparse 的 type= 校验让退出码 2 自然产生，而不是散落的手写 sys.exit(2)",
+    "points": 1,
+    "verdict": "基本不符合：未用 argparse，手写解析器；退出码 2 靠手工 return",
+    "reasoning": "判据两个要点都落空。① 未用 argparse —— 只 import 了 re 与 sys（wordfreq.py:3-4），参数解析是手写的 _parse_args（30-48），19 行 while 循环。② 退出码 2 非 argparse 自然产生，而是 main 里 catch ValueError 后 `return 2`（56-58）。给 1 分而非 0：错误出口**集中在一处** try/except，未出现判据所指『散落的 sys.exit(2)』。手写解析的实际退化（隐藏测试未覆盖但对 CLI 是真损失）：不支持 `--top=5` 等号写法（落进第 45 行 unrecognized argument）、不支持 `-n5` 紧凑写法、**完全没有 -h/--help**。argparse 三者全部免费提供。功能分仍 43/43 满分，因 task.md 验收条件只用空格分隔写法 —— 这正说明质量分与功能分考察的不是同一件事。注意：本模型两次运行该任务都是同样的手写解析形态，属稳定行为，不是偶发失手。",
+    "evidence": [
+      "wordfreq.py:3-4 import 无 argparse",
+      "wordfreq.py:30-48 手写 _parse_args 19 行",
+      "wordfreq.py:56-58 手工 return 2（唯一错误出口，故给 1 分）",
+      "wordfreq.py:45 未知参数一律报错 → --top=5 与 --help 不可用"
+    ]
+  },
+  "tokenize_single_regex": {
+    "maxPoints": 5,
+    "criterion": "分词用一条正则 + 统一 strip，不是多层 replace 或逐字符状态机",
+    "points": 5,
+    "verdict": "完全符合：模块级预编译单条正则 + 统一 strip(\"'\")",
+    "reasoning": "wordfreq.py:6 预编译唯一正则 _TOKEN_RE = r\"[a-z0-9']+\"；tokenize（9-17）先整体 lower、再 findall、再对每个 token 统一 strip(\"'\") 并过滤空串。无 replace 链、无逐字符状态机。关键加分点：它照规格用 `[a-z0-9']` 而非凭经验用 `\\w`。后者会把 über 留成 über、__x__ 留成 __x__，而隐藏测试恰好要求为 ber 与 x —— 这是本任务刻意设置的『照规格 vs 凭经验』分水岭，它选对了。记一个不扣分的观察：这次 top_words 用手写 dict 计数（23-25）替代了 collections.Counter，略啰嗦但正确；判据只考察分词，不涉及计数容器选择。",
+    "evidence": [
+      "wordfreq.py:6 _TOKEN_RE 模块级预编译，全文唯一正则",
+      "wordfreq.py:10-11 先 lower 再 findall",
+      "wordfreq.py:14 统一 strip(\"'\")",
+      "隐藏测试 über/__x__ 两例通过，未误用 \\w"
+    ]
+  }
+}

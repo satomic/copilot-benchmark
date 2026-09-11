@@ -1,0 +1,27 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "record_codec_declarative": {
+    "maxPoints": 5,
+    "criterion": "记录格式集中在 record.py，用 struct 或等价的声明式方式表达头部布局，不是散落各处的手工字节切片；编码与解码共用同一份字段定义",
+    "points": null,
+    "verdict": "",
+    "reasoning": "",
+    "evidence": []
+  },
+  "truncation_vs_corruption": {
+    "maxPoints": 4,
+    "criterion": "截断与损坏的区分有明确且单一的判定点（IncompleteRecordError 与 CorruptRecordError 分开抛、由 scan 统一转译），不是靠散落的 try/except 兜住",
+    "points": null,
+    "verdict": "",
+    "reasoning": "",
+    "evidence": []
+  },
+  "atomic_compaction": {
+    "maxPoints": 3,
+    "criterion": "压实顺序正确：先写 tmp、再 os.replace、最后删旧段；tmp 名字不匹配段文件模式，且中途崩溃可恢复",
+    "points": null,
+    "verdict": "",
+    "reasoning": "",
+    "evidence": []
+  }
+}

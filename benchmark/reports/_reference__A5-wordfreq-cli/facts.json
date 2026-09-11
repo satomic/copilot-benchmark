@@ -1,0 +1,219 @@
+{
+  "task": "A5-wordfreq-cli",
+  "runDir": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\_reference\\A5-wordfreq-cli",
+  "authoredFiles": [
+    {
+      "path": "task.md",
+      "bytes": 3526,
+      "loc": 62
+    },
+    {
+      "path": "wordfreq.py",
+      "bytes": 1424,
+      "loc": 35
+    }
+  ],
+  "expectedFiles": [
+    "task.md",
+    "wordfreq.py"
+  ],
+  "missing": [],
+  "extra": [],
+  "totalLoc": 35,
+  "imports": [
+    {
+      "file": "wordfreq.py",
+      "line": 3,
+      "module": "argparse"
+    },
+    {
+      "file": "wordfreq.py",
+      "line": 4,
+      "module": "re"
+    },
+    {
+      "file": "wordfreq.py",
+      "line": 5,
+      "module": "sys"
+    },
+    {
+      "file": "wordfreq.py",
+      "line": 6,
+      "module": "collections"
+    }
+  ],
+  "thirdPartyImports": [],
+  "allowedThirdPartyUsed": [],
+  "functions": [
+    {
+      "file": "wordfreq.py",
+      "name": "tokenize",
+      "line": 12,
+      "lines": 4,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "wordfreq.py",
+      "name": "top_words",
+      "line": 18,
+      "lines": 7,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "wordfreq.py",
+      "name": "main",
+      "line": 27,
+      "lines": 11,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "wordfreq.py",
+      "name": "_positive_int",
+      "line": 40,
+      "lines": 5,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    }
+  ],
+  "broadExcept": [],
+  "prints": [],
+  "syntaxErrors": [],
+  "todos": [],
+  "commentedCode": [],
+  "duplicateBlocks": [],
+  "sealed": [],
+  "transientCandidates": [],
+  "transcript": {
+    "source": null,
+    "turns": 0,
+    "modelCalls": 0,
+    "toolCalls": [],
+    "eventTypes": {},
+    "declaredPaths": [],
+    "mentionedPaths": [],
+    "assistantMessages": []
+  },
+  "paths": {
+    "declared": {
+      "inside": [],
+      "relative": [],
+      "allowlisted": [],
+      "outside": [],
+      "ignored": []
+    },
+    "mentioned": {
+      "inside": [],
+      "relative": [],
+      "allowlisted": [],
+      "outside": [],
+      "ignored": []
+    }
+  },
+  "spec": {
+    "items": [
+      {
+        "id": "files",
+        "check": "file_manifest",
+        "points": 8,
+        "awarded": 8,
+        "verdict": "PASS",
+        "evidence": [
+          "authored file set matches exactly (2 files)"
+        ],
+        "veto": false
+      },
+      {
+        "id": "deps",
+        "check": "stdlib_only",
+        "points": 4,
+        "awarded": 4,
+        "verdict": "PASS",
+        "evidence": [
+          "imports are stdlib / local / task-provided only: argparse, collections, re, sys"
+        ],
+        "veto": false
+      },
+      {
+        "id": "bounds",
+        "check": "path_containment",
+        "points": 3,
+        "awarded": 3,
+        "verdict": "N/A",
+        "evidence": [
+          "no session transcript available — nothing to check, points awarded by default. Real benchmark runs always ship events.jsonl; a missing transcript here means this run was staged locally (e.g. selftest)."
+        ],
+        "veto": false
+      }
+    ],
+    "score": 15,
+    "max": 15
+  },
+  "autoItems": [
+    {
+      "id": "hygiene",
+      "points": 5,
+      "awarded": 5.0,
+      "passedChecks": 4,
+      "totalChecks": 4,
+      "checks": [
+        {
+          "id": "no_broad_except",
+          "passed": true,
+          "evidence": [
+            "no broad except handlers"
+          ]
+        },
+        {
+          "id": "no_debug_residue",
+          "passed": true,
+          "evidence": [
+            "no TODO markers, no commented-out code, no stray print() outside CLI modules"
+          ]
+        },
+        {
+          "id": "typed_public_api",
+          "passed": true,
+          "evidence": [
+            "all 3 public function(s) fully annotated"
+          ]
+        },
+        {
+          "id": "bounded_function_length",
+          "passed": true,
+          "evidence": [
+            "longest implementation function is 11 lines (limit 40)"
+          ]
+        }
+      ]
+    }
+  ],
+  "reviewItems": [
+    {
+      "id": "argparse_exit2",
+      "points": 5,
+      "criterion": "用 argparse 的 type= 校验让退出码 2 自然产生，而不是散落的手写 sys.exit(2)",
+      "mode": "review"
+    },
+    {
+      "id": "tokenize_single_regex",
+      "points": 5,
+      "criterion": "分词用一条正则 + 统一 strip，不是多层 replace 或逐字符状态机",
+      "mode": "review"
+    }
+  ],
+  "qualityMax": 15,
+  "qualityAutoScore": 5.0,
+  "qualityReviewMax": 10,
+  "ownTestFunctionCount": 0
+}

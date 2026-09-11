@@ -1,0 +1,42 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "shared_type_rules": {
+  "maxPoints": 5,
+  "criterion": "运行时类型规则单一来源：VM 的算术/比较/布尔检查收在一处，优化器折叠复用同一套规则或直接调用它，编译期折叠与运行期语义不可能分叉",
+  "points": 5,
+  "verdict": "完全符合：优化器导入 VM 的 BINARY_OPS 与 UNARY_OPS 派发表做折叠",
+  "reasoning": "vm.py 把每个运算符实现成命名函数（op_add、op_div、op_mod 等）并汇入 BINARY_OPS、UNARY_OPS 两张派发表，VM 执行与优化器折叠都查同一张表：optimizer.py:14 from .vm import BINARY_OPS, UNARY_OPS，_fold_binary 调表内函数、以 VMRuntimeError 为不可折叠信号。这与 Sonnet 的三入口方案同构，都满足单一来源。派发表方案还有个附带好处：VM 主循环里没有运算符逻辑，只有查表调用。折叠安全三埋点（1/0、true and 5、类型错误）全过，优化器 22 项、算术比较 60 项全过。",
+  "evidence": [
+   "optimizer.py:14 from .vm import BINARY_OPS, UNARY_OPS",
+   "vm.py:52 起每个运算符为命名函数并汇入派发表，执行与折叠共用",
+   "折叠失败以 VMRuntimeError 为信号保持不折叠",
+   "优化器 22 项、算术比较 60 项隐藏测试全过"
+  ]
+ },
+ "jump_patching_single_point": {
+  "maxPoints": 4,
+  "criterion": "前向跳转回填经由一个集中的 emit/patch 机制（标签或补丁表），不是散落各处的裸下标运算",
+  "points": 4,
+  "verdict": "完全符合：emit 与 patch 集中在发射器上",
+  "reasoning": "compiler.py:77-83 定义 emit（返回下标）与 patch（改写目标），所有前向回填经由 patch，代码生成分支无裸下标写。控制流 20 项、短路 10 项、跳转界内检查全过，嵌套 while 与 else if 链正确。",
+  "evidence": [
+   "compiler.py:77 def emit、:83 def patch",
+   "回填仅经 patch，无散落下标运算",
+   "控制流 20 项、短路 10 项全过"
+  ]
+ },
+ "codec_discipline": {
+  "maxPoints": 3,
+  "criterion": "二进制布局用 struct 声明式表达且 dumps/loads 共用定义；loads 先验 CRC 再信任任何长度字段；读取有单一的越界检查点",
+  "points": 3,
+  "verdict": "完全符合：CRC 先验、_Reader 单点越界、bool 先判，另有一道防御性异常边界",
+  "reasoning": "loads 的顺序完全按规格：长度下限、magic、版本、CRC（serializer.py:181），全部通过后才把 body 交给 _decode_body 解析长度字段；_Reader.take 是单一越界检查点。序列化侧 isinstance(value, bool) 在 isinstance(value, int) 之前（serializer.py:28-30），bool 类型经往返保持。判据外多做的一层值得记录：_decode_body 外面包了一道 except (struct.error, UnicodeDecodeError) 转 SerializationError 的防御边界（serializer.py:184-186），即使内部某个检查漏了，泄漏出去的也是规格要求的异常类型，这恰好是 Haiku 失分的那一点（它泄漏了 UnicodeDecodeError）。逐字节翻转与截断穷举、i64 边界全过。",
+  "evidence": [
+   "serializer.py:181 CRC 校验先于任何长度字段解析",
+   "serializer.py:28-30 bool 先于 int 判型",
+   "_Reader.take 单一越界检查点",
+   "serializer.py:184-186 防御性异常边界把标准库异常转成 SerializationError",
+   "逐字节翻转/截断穷举全过"
+  ]
+ }
+}

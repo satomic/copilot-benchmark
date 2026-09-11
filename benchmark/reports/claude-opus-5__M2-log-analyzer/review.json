@@ -1,0 +1,42 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "regex_named_groups": {
+    "maxPoints": 5,
+    "criterion": "用一条预编译正则 + 命名组解析日志行，不是多次 split 拼凑",
+    "points": 5,
+    "verdict": "完全符合：模块级预编译单条正则 + 命名组，时间戳交给 strptime 常量格式",
+    "reasoning": "logstats.py:14 起是唯一的日志行正则 _LINE_RE，模块级预编译，九个命名组，^...$ 锚定全行。parse_line（30-55）只做匹配 + 取组 + 类型转换，无 split 拼凑；取值用 `match[\"timestamp\"]` 下标语法而非 group()，更简洁。时间戳用 logstats.py:25 的 _TS_FORMAT 常量配 strptime（39）一行解析，格式串抽成常量便于复用与检查。正则严格性到位：status 限 3 位数字、method 限大写字母、bytes 限 `-|\\d+`，隐藏套件 10 个畸形样例（小写 method、两位 status、无引号请求行、坏时区等）全部正确判为 None。记一个不扣分的取舍：strptime 的 %b 依赖 LC_TIME，非英文 locale 下会失败；sonnet 某次用手工月份表反而避开了这个隐患。两种做法各有风险，判据只考察日志行的解析方式。",
+    "evidence": [
+      "logstats.py:14-23 唯一的 _LINE_RE，九个命名组",
+      "logstats.py:25,39 _TS_FORMAT + strptime",
+      "logstats.py:30-55 parse_line 无 split",
+      "隐藏套件 test_malformed_lines_return_none 全 10 例通过"
+    ]
+  },
+  "streaming": {
+    "maxPoints": 4,
+    "criterion": "analyze 单遍流式处理任意可迭代对象，不把整个文件 list() 进内存",
+    "points": 4,
+    "verdict": "完全符合：单层 for 遍历入参，全文无 list(lines)",
+    "reasoning": "analyze（93-131）对 lines 只有一层 `for line in lines`（119），grep 全文确认没有 list(lines)、sorted(lines) 或索引访问，因此接受任意可迭代对象；隐藏测试 test_analyze_accepts_a_generator 传 iter([...]) 通过。空行判断抽成了 _is_blank（58-59），状态分类抽成 _status_class（62-65），使 analyze 主体只有 39 行 —— 是三个模型里最短的 analyze（sonnet 两次分别是 63 行与 79 行，后者还因此触发了函数长度上限扣分）。唯一内存累积是 durations 列表 —— 精确分位数的固有代价，规格未要求近似算法，不扣分。",
+    "evidence": [
+      "logstats.py:119 单层 for line in lines",
+      "全文 grep 无 list(lines)",
+      "logstats.py:93-131 analyze 仅 39 行",
+      "隐藏测试 test_analyze_accepts_a_generator 通过"
+    ]
+  },
+  "percentile_isolated": {
+    "maxPoints": 3,
+    "criterion": "分位数抽成独立函数，空列表与 n=1 的边界显式处理",
+    "points": 2,
+    "verdict": "部分符合：函数已独立、n=1 由 clamp 覆盖，但空列表边界在 _duration_stats 而非 _percentile 内",
+    "reasoning": "① 抽成独立函数 —— logstats.py:68-72 _percentile 独立，且是 5 个命名辅助函数之一（_is_blank / _status_class / _percentile / _duration_stats / _top），分解程度是三个模型里最好的。② n=1 —— `index = ceil(p/100*n) - 1` 后接 `min(max(index, 0), n - 1)`（71），n=1 时夹到 0，正确。③ 空列表 —— **未在 _percentile 内处理**。n=0 时 index = min(max(-1, 0), -1) = min(0, -1) = -1，随后 `sorted_values[-1]` 对空列表抛 IndexError。守卫在调用方 _duration_stats（76-77，`if not durations: return {...全零...}`）。比 sonnet 好的一点：守卫至少落在一个专门的辅助函数里而非 analyze 主体，层次更清楚；但判据要的是『空列表边界在分位数函数内显式处理』，`_percentile([], 50)` 单独调用仍会崩，所以扣 1。参考实现在函数首行就有 `if not sorted_values: return 0.0`。三个模型三次实现都在这一条上失分，说明这是个稳定的盲点。",
+    "evidence": [
+      "logstats.py:68-72 _percentile 独立函数",
+      "logstats.py:71 clamp 覆盖 n=1",
+      "logstats.py:68-72 缺 n==0 守卫，_percentile([], 50) 会 IndexError",
+      "logstats.py:76-77 守卫在 _duration_stats 内"
+    ]
+  }
+}

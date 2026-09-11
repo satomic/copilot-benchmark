@@ -1,0 +1,556 @@
+{
+  "task": "M1-lru-ttl-cache",
+  "runDir": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\_reference\\M1-lru-ttl-cache",
+  "authoredFiles": [
+    {
+      "path": "cache/__init__.py",
+      "bytes": 94,
+      "loc": 3
+    },
+    {
+      "path": "cache/lru.py",
+      "bytes": 5337,
+      "loc": 127
+    },
+    {
+      "path": "cache/stats.py",
+      "bytes": 209,
+      "loc": 8
+    },
+    {
+      "path": "task.md",
+      "bytes": 7092,
+      "loc": 127
+    },
+    {
+      "path": "tests/test_cache.py",
+      "bytes": 2503,
+      "loc": 85
+    }
+  ],
+  "expectedFiles": [
+    "task.md",
+    "cache/__init__.py",
+    "cache/lru.py",
+    "cache/stats.py",
+    "tests/test_cache.py"
+  ],
+  "missing": [],
+  "extra": [],
+  "totalLoc": 223,
+  "imports": [
+    {
+      "file": "cache/__init__.py",
+      "line": 1,
+      "module": ".lru",
+      "relative": true
+    },
+    {
+      "file": "cache/__init__.py",
+      "line": 2,
+      "module": ".stats",
+      "relative": true
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 3,
+      "module": "__future__"
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 5,
+      "module": "threading"
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 6,
+      "module": "time"
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 7,
+      "module": "collections"
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 8,
+      "module": "typing"
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 10,
+      "module": ".stats",
+      "relative": true
+    },
+    {
+      "file": "cache/stats.py",
+      "line": 3,
+      "module": "dataclasses"
+    },
+    {
+      "file": "tests/test_cache.py",
+      "line": 2,
+      "module": "pytest"
+    },
+    {
+      "file": "tests/test_cache.py",
+      "line": 4,
+      "module": "cache"
+    }
+  ],
+  "thirdPartyImports": [],
+  "allowedThirdPartyUsed": [
+    "pytest"
+  ],
+  "functions": [
+    {
+      "file": "cache/lru.py",
+      "name": "_check_ttl",
+      "line": 157,
+      "lines": 6,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "__init__",
+      "line": 18,
+      "lines": 22,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "get",
+      "line": 43,
+      "lines": 14,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "keys",
+      "line": 58,
+      "lines": 8,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "stats",
+      "line": 67,
+      "lines": 8,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "set",
+      "line": 78,
+      "lines": 23,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "delete",
+      "line": 102,
+      "lines": 10,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "clear",
+      "line": 113,
+      "lines": 3,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "purge_expired",
+      "line": 117,
+      "lines": 3,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "__len__",
+      "line": 123,
+      "lines": 3,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "__contains__",
+      "line": 127,
+      "lines": 10,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "_is_expired",
+      "line": 140,
+      "lines": 2,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "_reclaim",
+      "line": 143,
+      "lines": 12,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "clock",
+      "line": 8,
+      "lines": 2,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "make",
+      "line": 13,
+      "lines": 4,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_eviction_order",
+      "line": 19,
+      "lines": 7,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "make"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_get_refreshes_recency",
+      "line": 28,
+      "lines": 7,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "make"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_ttl_expiry_via_get",
+      "line": 37,
+      "lines": 6,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "make",
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_per_entry_ttl",
+      "line": 45,
+      "lines": 5,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "make",
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_ttl_none_override",
+      "line": 52,
+      "lines": 5,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "make",
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_purge_expired",
+      "line": 59,
+      "lines": 7,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "make",
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_delete_returns",
+      "line": 68,
+      "lines": 5,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "make"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_clear_keeps_stats",
+      "line": 75,
+      "lines": 7,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "make"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_keys_ordering",
+      "line": 84,
+      "lines": 5,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "make"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_contains_no_hit_accounting",
+      "line": 91,
+      "lines": 6,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "make"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_constructor_validation",
+      "line": 99,
+      "lines": 7,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_set_restarts_ttl",
+      "line": 108,
+      "lines": 7,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "make",
+        "clock"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "_make",
+      "line": 14,
+      "lines": 2,
+      "public": false,
+      "annotated": false,
+      "unannotated_args": [
+        "capacity",
+        "ttl"
+      ],
+      "returns_annotated": false
+    }
+  ],
+  "broadExcept": [],
+  "prints": [],
+  "syntaxErrors": [],
+  "todos": [],
+  "commentedCode": [],
+  "duplicateBlocks": [],
+  "sealed": [],
+  "transientCandidates": [],
+  "transcript": {
+    "source": null,
+    "turns": 0,
+    "modelCalls": 0,
+    "toolCalls": [],
+    "eventTypes": {},
+    "declaredPaths": [],
+    "mentionedPaths": [],
+    "assistantMessages": []
+  },
+  "paths": {
+    "declared": {
+      "inside": [],
+      "relative": [],
+      "allowlisted": [],
+      "outside": [],
+      "ignored": []
+    },
+    "mentioned": {
+      "inside": [],
+      "relative": [],
+      "allowlisted": [],
+      "outside": [],
+      "ignored": []
+    }
+  },
+  "spec": {
+    "items": [
+      {
+        "id": "files",
+        "check": "file_manifest",
+        "points": 6,
+        "awarded": 6,
+        "verdict": "PASS",
+        "evidence": [
+          "authored file set matches exactly (5 files)"
+        ],
+        "veto": false
+      },
+      {
+        "id": "deps",
+        "check": "stdlib_only",
+        "points": 5,
+        "awarded": 5,
+        "verdict": "PASS",
+        "evidence": [
+          "imports are stdlib / local / task-provided only: __future__, cache, collections, dataclasses, pytest, threading, time, typing",
+          "task-provided (allowlisted, not a violation): pytest"
+        ],
+        "veto": false
+      },
+      {
+        "id": "bounds",
+        "check": "path_containment",
+        "points": 4,
+        "awarded": 4,
+        "verdict": "N/A",
+        "evidence": [
+          "no session transcript available — nothing to check, points awarded by default. Real benchmark runs always ship events.jsonl; a missing transcript here means this run was staged locally (e.g. selftest)."
+        ],
+        "veto": false
+      }
+    ],
+    "score": 15,
+    "max": 15
+  },
+  "autoItems": [
+    {
+      "id": "hygiene",
+      "points": 3,
+      "awarded": 3.0,
+      "passedChecks": 4,
+      "totalChecks": 4,
+      "checks": [
+        {
+          "id": "no_broad_except",
+          "passed": true,
+          "evidence": [
+            "no broad except handlers"
+          ]
+        },
+        {
+          "id": "no_debug_residue",
+          "passed": true,
+          "evidence": [
+            "no TODO markers, no commented-out code, no stray print() outside CLI modules"
+          ]
+        },
+        {
+          "id": "typed_public_api",
+          "passed": true,
+          "evidence": [
+            "all 7 public function(s) fully annotated"
+          ]
+        },
+        {
+          "id": "bounded_function_length",
+          "passed": true,
+          "evidence": [
+            "longest implementation function is 23 lines (limit 50)"
+          ]
+        }
+      ]
+    }
+  ],
+  "reviewItems": [
+    {
+      "id": "o1_hotpath",
+      "points": 5,
+      "criterion": "用 OrderedDict.move_to_end 或双向链表实现 O(1) 的 get/set，不是每次排序或线性查找",
+      "mode": "review"
+    },
+    {
+      "id": "module_separation",
+      "points": 4,
+      "criterion": "三个模块职责清晰，__init__.py 只做再导出，不塞实现",
+      "mode": "review"
+    },
+    {
+      "id": "sentinel",
+      "points": 3,
+      "criterion": "区分 ttl=None 与省略 ttl 用私有模块级 sentinel（object()），不是 \"default\" 字符串或 -1 魔数",
+      "mode": "review"
+    }
+  ],
+  "qualityMax": 15,
+  "qualityAutoScore": 3.0,
+  "qualityReviewMax": 12,
+  "ownTestFunctionCount": 12.0
+}

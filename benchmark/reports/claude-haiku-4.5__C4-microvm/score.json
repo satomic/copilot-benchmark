@@ -1,0 +1,141 @@
+{
+  "task": "C4-microvm",
+  "model": "claude-haiku-4.5",
+  "functional": 67.26,
+  "functionalMax": 70.0,
+  "spec": 15,
+  "specMax": 15,
+  "quality": 4.75,
+  "qualityMax": 15.0,
+  "qualityAuto": 0.75,
+  "qualityReview": 4,
+  "total": 87.01,
+  "reviewPending": [],
+  "vetoTriggered": [],
+  "hidden": {
+    "total": 296,
+    "failures": 14,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 282,
+    "time": 9.662,
+    "bad": [
+      {
+        "name": "_verify.test_c4::test_parse_errors[print 1]",
+        "kind": "failure",
+        "message": [
+          "AttributeError: 'Parser' object has no attribute 'src'"
+        ]
+      },
+      {
+        "name": "_verify.test_c4::test_parse_errors[let x = 1]",
+        "kind": "failure",
+        "message": [
+          "AttributeError: 'Parser' object has no attribute 'src'"
+        ]
+      },
+      {
+        "name": "_verify.test_c4::test_parse_errors[x = 1]",
+        "kind": "failure",
+        "message": [
+          "AttributeError: 'Parser' object has no attribute 'src'"
+        ]
+      },
+      {
+        "name": "_verify.test_c4::test_parse_errors[if (true) print 1;]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE (<class 'microvm.errors.ParseError'>, <class 'microvm.errors.LexError'>)"
+        ]
+      },
+      {
+        "name": "_verify.test_c4::test_parse_errors[while (true) print 1;]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE (<class 'microvm.errors.ParseError'>, <class 'microvm.errors.LexError'>)"
+        ]
+      },
+      {
+        "name": "_verify.test_c4::test_parse_errors[{ print 1;]",
+        "kind": "failure",
+        "message": [
+          "AttributeError: 'Parser' object has no attribute 'src'"
+        ]
+      },
+      {
+        "name": "_verify.test_c4::test_round_trip_behaviour[print 1.5; print true; print false;]",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert ['1.5', '1', '0'] == ['1.5', 'true', 'false']",
+          "  ",
+          "  At index 1 diff: '1' != 'true'"
+        ]
+      },
+      {
+        "name": "_verify.test_c4::test_round_trip_behaviour[if (true) { print \"a\"; } else { print \"b\"; }]",
+        "kind": "failure",
+        "message": [
+          "microvm.errors.VMRuntimeError: Condition must be bool"
+        ]
+      },
+      {
+        "name": "_verify.test_c4::test_round_trip_preserves_constant_types",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert [<class 'int'...<class 'int'>] == [<class 'int'...class 'bool'>]",
+          "  ",
+          "  At index 2 diff: <class 'int'> != <class 'bool'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c4::test_bool_constant_encoding",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert b'\\x04\\x01' in b'MVM1\\x01\\x00\\x00\\x00\\x01\\x01\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x01\\x00\\x00\\x00\\x03\\x01\\x00\\x00\\x00\\x00\\x13\\xff\\xff\\xff\\xff\\x15\\xff\\xff\\xff\\xff\\x7fsw\\xb1'",
+          " +  where b'\\x04\\x01' = <built-in function pack>('>BB', 4, 1)",
+          " +    where <built-in function pack> = struct.pack"
+        ]
+      },
+      {
+        "name": "_verify.test_c4::test_checksum_is_crc32_of_body",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert 1476246722 == 1345517763",
+          " +  where 1345517763 = <built-in function crc32>(b'\\x01\\x00\\x00\\x00\\x01\\x01\\x00\\x00\\x00\\x00\\x00\\x00\\x00*\\x00\\x00\\x00\\x03\\x01\\x00\\x00\\x00\\x00\\x13\\xff\\xff\\xff\\xff\\x15\\xff\\xff\\xff\\xff')",
+          " +    where <built-in function crc32> = zlib.crc32"
+        ]
+      },
+      {
+        "name": "_verify.test_c4::test_corruption_anywhere_is_detected",
+        "kind": "failure",
+        "message": [
+          "UnicodeDecodeError: 'utf-8' codec can't decode byte 0x87 in position 0: invalid start byte"
+        ]
+      },
+      {
+        "name": "_verify.test_c4::test_unknown_constant_tag_rejected",
+        "kind": "failure",
+        "message": [
+          "ValueError: subsection not found"
+        ]
+      },
+      {
+        "name": "_verify.test_c4::test_bool_payload_must_be_zero_or_one",
+        "kind": "failure",
+        "message": [
+          "ValueError: subsection not found"
+        ]
+      }
+    ]
+  },
+  "visible": null,
+  "own": {
+    "total": 78,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 78,
+    "time": 0.525,
+    "bad": []
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "o1_hotpath": {
+    "maxPoints": 5,
+    "criterion": "用 OrderedDict.move_to_end 或双向链表实现 O(1) 的 get/set，不是每次排序或线性查找",
+    "points": 0,
+    "verdict": "完全不符合：用 Python list 维护 MRU，get/set 每次两次 O(n) 线性扫描",
+    "reasoning": "**这是判据明确禁止的做法，且是本次基准唯一一次真实的功能扣分。**lru.py:39 用的是普通 `dict` 存条目，lru.py:40 另建 `self._order: list[Hashable] = []` 维护 MRU 顺序。热路径的实际复杂度：① `_make_mru`（lru.py:61-65）先 `if key in self._order`（对 list 是 O(n) 线性查找）、再 `self._order.remove(key)`（又一次 O(n) 扫描）、最后 append —— **每次调用两次 O(n)**；② `get`（76-94）命中时必调 `_make_mru`；`set`（96-141）无论新增还是更新都必调 `_make_mru`；③ 淘汰用 `self._order.pop(0)`（lru.py:135），从 list 头部弹出也是 O(n)；④ `_remove_entry`（54-59）同样有 `if key in self._order` + `remove`。这直接违反 task.md 第 23 条『get 与 set 必须是 O(1) 摊还』。**最能说明问题的一点**：lru.py:3 写了 `from collections import OrderedDict`、lru.py:37 的注释还写着『OrderedDict maintains insertion order; we'll move items to the end when accessed』—— 它知道正确答案是什么，甚至把 import 和注释都写好了，但 lru.py:39 实际落地成了 `dict` + 一个 list，`OrderedDict` 导入后从未使用。隐藏测试 `test_hot_path_scales` 实测：容量 500 → 10000（20 倍）时单次操作耗时从 1.124e-05s 涨到 2.163e-04s（19 倍），与容量同比例增长，是教科书式的 O(n) 曲线。**这个判定不依赖计时** —— 上面的代码结构分析已足以定性，计时只是佐证（该 run 与 A5 并发执行过，计时本身有污染风险，但 19× 的信号远超噪声）。五个模型对比：Sonnet / Opus 用 OrderedDict + move_to_end，Astra 用基数树，Fable 用最小堆 —— 四者本项 5/5；只有 Haiku 用了 list。给 0 分。",
+    "evidence": [
+      "lru.py:39 用普通 dict 而非 OrderedDict",
+      "lru.py:40 self._order 是 Python list",
+      "lru.py:61-65 _make_mru：`in` + `remove` 两次 O(n)",
+      "lru.py:135 self._order.pop(0) 从 list 头弹出，O(n)",
+      "lru.py:3 导入 OrderedDict 但从未使用；lru.py:37 注释写了正确做法却未落地",
+      "隐藏测试 test_hot_path_scales：容量 20× → 单次耗时 19×，O(n) 曲线",
+      "违反 task.md 第 23 条（get/set 必须 O(1) 摊还）"
+    ]
+  },
+  "module_separation": {
+    "maxPoints": 4,
+    "criterion": "三个模块职责清晰，__init__.py 只做再导出，不塞实现",
+    "points": 4,
+    "verdict": "符合：三个文件按要求拆分，__init__.py 只做再导出",
+    "reasoning": "cache/__init__.py 只做再导出并声明 __all__，cache/stats.py 只含 CacheStats dataclass，cache/lru.py 承载实现。三个模块职责清晰、依赖单向、无循环，判据要求达到。文件清单与 task.md 完全一致（spec 的 file_manifest 检查 15/15 通过）。内部也有 _is_expired / _remove_entry / _make_mru / _cleanup_expired 四个辅助方法，分解本身是合理的 —— 问题出在 _make_mru 的**数据结构选择**而非模块划分，那已在 o1_hotpath 一项扣分，此处不重复计。",
+    "evidence": [
+      "cache/__init__.py 只做再导出 + __all__",
+      "cache/stats.py 只含 dataclass",
+      "四个内部辅助方法，分解合理",
+      "file_manifest 检查 15/15 通过"
+    ]
+  },
+  "sentinel": {
+    "maxPoints": 3,
+    "criterion": "区分 ttl=None 与省略 ttl 用私有模块级 sentinel（object()），不是 \"default\" 字符串或 -1 魔数",
+    "points": 3,
+    "verdict": "符合：_UNSET_TTL 私有模块级哨兵，用 is 身份比较",
+    "reasoning": "用 `_UNSET_TTL` 作私有模块级哨兵，签名 `ttl: float | None = _UNSET_TTL`（lru.py:100），使用处 lru.py:104 用 `ttl is _UNSET_TTL` 做身份比较 —— 不是 \"default\" 字符串也不是 -1 魔数，完全匹配判据。三分支语义正确：省略 → 用缓存默认 TTL；显式 None → 永不过期；数值 → 校验后使用（lru.py:104-114，含 bool 排除与 ttl<=0 校验）。隐藏测试 test_omitting_ttl_uses_default 与 test_ttl_none_entry_never_expires 均通过。**五个模型在这一条上全部满分**，说明 sentinel 这个规格点已无区分度。",
+    "evidence": [
+      "_UNSET_TTL 私有模块级哨兵",
+      "lru.py:100 签名 ttl: float | None = _UNSET_TTL",
+      "lru.py:104 用 is 身份比较",
+      "lru.py:104-114 三分支语义正确，含 bool 排除",
+      "隐藏测试两条 ttl 语义用例通过"
+    ]
+  }
+}

@@ -1,0 +1,204 @@
+{
+  "task": "A2-env-parser",
+  "runDir": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\_reference\\A2-env-parser",
+  "authoredFiles": [
+    {
+      "path": "envparse.py",
+      "bytes": 2001,
+      "loc": 51
+    },
+    {
+      "path": "task.md",
+      "bytes": 4068,
+      "loc": 63
+    }
+  ],
+  "expectedFiles": [
+    "task.md",
+    "envparse.py"
+  ],
+  "missing": [],
+  "extra": [],
+  "totalLoc": 51,
+  "imports": [
+    {
+      "file": "envparse.py",
+      "line": 3,
+      "module": "re"
+    }
+  ],
+  "thirdPartyImports": [],
+  "allowedThirdPartyUsed": [],
+  "functions": [
+    {
+      "file": "envparse.py",
+      "name": "parse_env",
+      "line": 11,
+      "lines": 18,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "envparse.py",
+      "name": "_parse_value",
+      "line": 31,
+      "lines": 6,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "envparse.py",
+      "name": "_expand",
+      "line": 39,
+      "lines": 18,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "envparse.py",
+      "name": "_strip_comment",
+      "line": 59,
+      "lines": 6,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    }
+  ],
+  "broadExcept": [],
+  "prints": [],
+  "syntaxErrors": [],
+  "todos": [],
+  "commentedCode": [],
+  "duplicateBlocks": [],
+  "sealed": [],
+  "transientCandidates": [],
+  "transcript": {
+    "source": null,
+    "turns": 0,
+    "modelCalls": 0,
+    "toolCalls": [],
+    "eventTypes": {},
+    "declaredPaths": [],
+    "mentionedPaths": [],
+    "assistantMessages": []
+  },
+  "paths": {
+    "declared": {
+      "inside": [],
+      "relative": [],
+      "allowlisted": [],
+      "outside": [],
+      "ignored": []
+    },
+    "mentioned": {
+      "inside": [],
+      "relative": [],
+      "allowlisted": [],
+      "outside": [],
+      "ignored": []
+    }
+  },
+  "spec": {
+    "items": [
+      {
+        "id": "files",
+        "check": "file_manifest",
+        "points": 8,
+        "awarded": 8,
+        "verdict": "PASS",
+        "evidence": [
+          "authored file set matches exactly (2 files)"
+        ],
+        "veto": false
+      },
+      {
+        "id": "deps",
+        "check": "stdlib_only",
+        "points": 4,
+        "awarded": 4,
+        "verdict": "PASS",
+        "evidence": [
+          "imports are stdlib / local / task-provided only: re"
+        ],
+        "veto": false
+      },
+      {
+        "id": "bounds",
+        "check": "path_containment",
+        "points": 3,
+        "awarded": 3,
+        "verdict": "N/A",
+        "evidence": [
+          "no session transcript available — nothing to check, points awarded by default. Real benchmark runs always ship events.jsonl; a missing transcript here means this run was staged locally (e.g. selftest)."
+        ],
+        "veto": false
+      }
+    ],
+    "score": 15,
+    "max": 15
+  },
+  "autoItems": [
+    {
+      "id": "hygiene",
+      "points": 4,
+      "awarded": 4.0,
+      "passedChecks": 4,
+      "totalChecks": 4,
+      "checks": [
+        {
+          "id": "no_broad_except",
+          "passed": true,
+          "evidence": [
+            "no broad except handlers"
+          ]
+        },
+        {
+          "id": "no_debug_residue",
+          "passed": true,
+          "evidence": [
+            "no TODO markers, no commented-out code, no stray print() outside CLI modules"
+          ]
+        },
+        {
+          "id": "typed_public_api",
+          "passed": true,
+          "evidence": [
+            "all 1 public function(s) fully annotated"
+          ]
+        },
+        {
+          "id": "bounded_function_length",
+          "passed": true,
+          "evidence": [
+            "longest implementation function is 18 lines (limit 45)"
+          ]
+        }
+      ]
+    }
+  ],
+  "reviewItems": [
+    {
+      "id": "layering",
+      "points": 6,
+      "criterion": "key 解析 / 值解引号 / 转义展开分成独立的辅助函数，主循环可读",
+      "mode": "review"
+    },
+    {
+      "id": "escape_single_pass",
+      "points": 5,
+      "criterion": "转义用单次左到右扫描或查表，不是链式 .replace()（链式会引入顺序 bug）",
+      "mode": "review"
+    }
+  ],
+  "qualityMax": 15,
+  "qualityAutoScore": 4.0,
+  "qualityReviewMax": 11,
+  "ownTestFunctionCount": 0
+}

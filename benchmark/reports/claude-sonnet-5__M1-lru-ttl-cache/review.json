@@ -1,0 +1,43 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "o1_hotpath": {
+    "maxPoints": 5,
+    "criterion": "用 OrderedDict.move_to_end 或双向链表实现 O(1) 的 get/set，不是每次排序或线性查找",
+    "points": 5,
+    "verdict": "完全符合：OrderedDict + move_to_end，_make_room 只检查将被移除的条目，摊还 O(1)",
+    "reasoning": "get（lru.py:74-91）dict 查找 + move_to_end（89），O(1)。set（93-111）dict 赋值 + move_to_end，O(1)。两者都无排序、无全表遍历。_make_room（56-73）从 LRU 端逐个取 `next(iter(self._data.items()))`，已过期的直接删并计 expiration、继续；遇到活跃的就淘汰它并 break。lru.py:29-34 有一段注释论证摊还复杂度：每次迭代都恰好移除一个条目、每个条目只会被移除一次，因此整个生命周期摊还 O(1) —— 这个论证是正确的，而且比另一次运行用最小堆的写法**更贴合 task.md 第 23 条**（堆的 heappush 是 O(log n)，这里没有任何超出 O(1) 的操作）。**必须记录的一个正确性缺口（不在本判据范围内，故不扣分，但你应当知道）**：_make_room 只从 LRU 端往前找过期项。若最旧的条目是活跃的、而某个较新的条目已过期，它会淘汰那个活跃的最旧条目，而规格第 9 条要求先回收任何已过期条目、能腾出空间就不该发生淘汰。另一次运行的最小堆版本能正确处理这种情形。**我的隐藏套件没有覆盖这个用例**（test_expired_entries_are_reclaimed_before_eviction 让两个条目同时过期，走不到这条分支），所以功能分仍是 70/70。这是隐藏套件的漏洞，已记入待补清单，但不能在本判据（考察 O(1) 与机制）下扣分，否则评分尺度会失控。",
+    "evidence": [
+      "lru.py:39 OrderedDict 存储",
+      "lru.py:89 get 用 move_to_end",
+      "lru.py:56-73 _make_room 从 LRU 端逐个处理",
+      "lru.py:29-34 摊还 O(1) 的论证注释",
+      "缺口：_make_room 不回收非 LRU 端的过期项（隐藏套件未覆盖）"
+    ]
+  },
+  "module_separation": {
+    "maxPoints": 4,
+    "criterion": "三个模块职责清晰，__init__.py 只做再导出，不塞实现",
+    "points": 4,
+    "verdict": "完全符合：__init__.py 6 行纯再导出，stats.py 11 行只有 dataclass",
+    "reasoning": "cache/__init__.py 共 6 行：docstring、两条 from 导入、__all__，零实现代码。cache/stats.py 共 11 行：只有 frozen dataclass CacheStats 与四个默认 0 的字段。cache/lru.py 181 行承载全部实现，内部再分层：模块级 _MISSING 哨兵、三个内部辅助（_validate_entry_ttl / _is_expired / _make_room）、公共 API。依赖单向：lru.py 依赖 stats.py，无循环。",
+    "evidence": [
+      "cache/__init__.py 全文 6 行仅 import + __all__",
+      "cache/stats.py 全文 11 行仅 dataclass",
+      "cache/lru.py:10 单向 from .stats import CacheStats",
+      "cache/lru.py:49-73 内部辅助集中"
+    ]
+  },
+  "sentinel": {
+    "maxPoints": 3,
+    "criterion": "区分 ttl=None 与省略 ttl 用私有模块级 sentinel（object()），不是 \"default\" 字符串或 -1 魔数",
+    "points": 3,
+    "verdict": "完全符合：_MISSING = object() 私有模块级哨兵，注释写明了两种语义的区别",
+    "reasoning": "lru.py:14 定义 `_MISSING = object()`：下划线前缀、模块级、用 object() 而非字符串或数字魔数，完全匹配判据。12-13 行注释直接写出两种语义 —— 『ttl 参数省略』用缓存默认 TTL，『显式传 ttl=None』则该条目永不过期 —— 说明理解了规格第 6 条而非碰巧写对。签名 lru.py:93 `ttl: float | None = _MISSING`，使用处用 `is` 做身份比较（对哨兵是正确写法）。隐藏测试 test_omitting_ttl_uses_default 与 test_ttl_none_entry_never_expires 分别验证两种语义，均通过。",
+    "evidence": [
+      "lru.py:14 _MISSING = object()",
+      "lru.py:12-13 注释说明两种语义",
+      "lru.py:93 签名 ttl: float | None = _MISSING",
+      "隐藏测试两条 ttl 语义用例通过"
+    ]
+  }
+}

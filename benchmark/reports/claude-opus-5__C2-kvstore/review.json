@@ -1,0 +1,46 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "record_codec_declarative": {
+  "maxPoints": 5,
+  "criterion": "记录格式集中在 record.py，用 struct 或等价的声明式方式表达头部布局，不是散落各处的手工字节切片；编码与解码共用同一份字段定义",
+  "points": 5,
+  "verdict": "完全符合：命名格式常量单一来源，HEADER_SIZE 由 struct.calcsize 导出",
+  "reasoning": "判据要的两点都做到了。record.py:21 定义 `HEADER_FORMAT: str = \"!4sBHII\"` 作为唯一的格式来源，encode（record.py:53）与 decode（record.py:70）都把这个常量传给 struct.pack / struct.unpack_from，格式串在文件里只出现一次；record.py:22 用 `HEADER_SIZE: int = struct.calcsize(HEADER_FORMAT)` 把头长度从格式里算出来而不是硬写 15。这与 Sonnet 用 struct.Struct 对象是两种等价的写法，都满足『共用同一份字段定义』。用 `!`（网络字节序）而不是 `>`（大端标准模式）在布局上完全等价，不是缺陷 —— 我的静态探针最初只认 `>`，把它误判为不合格，这是探针的 bug，已修（见 §7e）。全部格式知识收在 record.py 内，segment.py 与 store.py 都不碰字节。隐藏套件记录编解码 42 项全过。另记两处判据外的观察，不扣分：一是它在 encode_record 里也做了 key/value 的 isinstance 校验（规格只要求 KVStore 层校验，这里多做一层无害且更稳）；二是 `& 0xFFFFFFFF` 是多余的，Python 3 的 zlib.crc32 已返回无符号值。",
+  "evidence": [
+   "record.py:21 HEADER_FORMAT: str = \"!4sBHII\"，唯一格式来源",
+   "record.py:22 HEADER_SIZE: int = struct.calcsize(HEADER_FORMAT)，长度由格式导出",
+   "record.py:53 encode 与 record.py:70 decode 共用该常量，格式串不重复",
+   "`!` 与 `>` 布局等价（均为大端、无填充）",
+   "隐藏套件记录编解码 42/42 通过"
+  ]
+ },
+ "truncation_vs_corruption": {
+  "maxPoints": 4,
+  "criterion": "截断与损坏的区分有明确且单一的判定点（IncompleteRecordError 与 CorruptRecordError 分开抛、由 scan 统一转译），不是靠散落的 try/except 兜住",
+  "points": 4,
+  "verdict": "完全符合：异常类型精确，scan 是唯一转译点，docstring 写明了两条路径",
+  "reasoning": "结构与判据完全一致。decode_record 只做判定并抛两类语义不同的异常；segment.scan（segment.py:84-92）是唯一转译点，`except IncompleteRecordError: return` 让截断尾静默收尾，`except CorruptRecordError as exc: raise CorruptSegmentError(...) from exc` 把损坏升级为段级错误。捕获的是精确类型而非 `except Exception`，所以 decode_record 里的编程错误不会被伪装成数据损坏 —— 这一点与 Sonnet 一致、比 Haiku 好。`from exc` 保留了异常链。docstring（segment.py:77-78）把两条路径都写了出来：『A truncated tail ends the scan silently; corruption raises CorruptSegmentError』。它没有像 Sonnet 那样额外点明『including a bad record at the very end』这条最反直觉的规则，但行为是对的（test_crc_damage_on_last_record_is_not_truncation 通过），而判据考察的是结构而非注释详尽程度，所以不因此扣分。隐藏套件段文件 21 项、恢复 17 项全过。",
+  "evidence": [
+   "segment.py:87-88 except IncompleteRecordError -> return",
+   "segment.py:89-90 except CorruptRecordError -> CorruptSegmentError，类型精确并保留 from exc",
+   "segment.py:77-78 docstring 写明截断静默、损坏抛错两条路径",
+   "record.py 结构检查先于 CRC、CRC 先于 UTF-8 解码",
+   "隐藏套件段文件 21/21、重开与恢复 17/17 通过"
+  ]
+ },
+ "atomic_compaction": {
+  "maxPoints": 3,
+  "criterion": "压实顺序正确：先写 tmp、再 os.replace、最后删旧段；tmp 名字不匹配段文件模式，且中途崩溃可恢复",
+  "points": 3,
+  "verdict": "完全符合，且把崩溃可恢复的理由写进了注释",
+  "reasoning": "三步顺序完全正确：compact.py:32 用 `segment_name(new_id) + \".tmp\"` 作为临时名（不匹配 ^\\d{6}\\.seg$，恢复会完全忽略）；compact.py:35-43 写入并在关闭前 `os.fsync`；compact.py:45 用 `os.replace` 提交；compact.py:48 之后才 unlink 旧段。与 Sonnet 一样补了规格没要求的 fsync，这在真实掉电场景下才是真正的持久化保证。值得单独记的一点：compact.py:31 的注释直接写出了这么做的**原因** —— 『...before os.replace leaves the pre-compaction store intact』，即解释了 tmp 名字为什么必须不匹配段文件模式。五个模型里只有它和 Fable 把这个因果关系落在注释里，而这正是这条规格最容易被当成『多余的仪式』而省掉的地方（Haiku 就整段省掉了）。写 tmp 时同步累加 offset 建索引，没有事后重扫。隐藏套件压实 21 项全过。",
+  "evidence": [
+   "compact.py:32 tmp 名为 <id>.seg.tmp，不匹配段文件模式",
+   "compact.py:31 注释解释了崩溃可恢复的原因",
+   "compact.py:43 os.fsync 落盘（规格未要求）",
+   "compact.py:45 os.replace 提交",
+   "compact.py:48 旧段在提交之后才 unlink",
+   "隐藏套件压实 21/21 通过"
+  ]
+ }
+}

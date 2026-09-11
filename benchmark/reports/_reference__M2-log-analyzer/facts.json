@@ -1,0 +1,454 @@
+{
+  "task": "M2-log-analyzer",
+  "runDir": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\_reference\\M2-log-analyzer",
+  "authoredFiles": [
+    {
+      "path": "access.log",
+      "bytes": 3302,
+      "loc": 40
+    },
+    {
+      "path": "logstats.py",
+      "bytes": 6309,
+      "loc": 172
+    },
+    {
+      "path": "task.md",
+      "bytes": 7522,
+      "loc": 131
+    },
+    {
+      "path": "tests/test_logstats.py",
+      "bytes": 1864,
+      "loc": 47
+    }
+  ],
+  "expectedFiles": [
+    "task.md",
+    "access.log",
+    "logstats.py",
+    "tests/test_logstats.py"
+  ],
+  "missing": [],
+  "extra": [],
+  "totalLoc": 219,
+  "imports": [
+    {
+      "file": "logstats.py",
+      "line": 8,
+      "module": "__future__"
+    },
+    {
+      "file": "logstats.py",
+      "line": 10,
+      "module": "argparse"
+    },
+    {
+      "file": "logstats.py",
+      "line": 11,
+      "module": "json"
+    },
+    {
+      "file": "logstats.py",
+      "line": 12,
+      "module": "math"
+    },
+    {
+      "file": "logstats.py",
+      "line": 13,
+      "module": "re"
+    },
+    {
+      "file": "logstats.py",
+      "line": 14,
+      "module": "sys"
+    },
+    {
+      "file": "logstats.py",
+      "line": 15,
+      "module": "collections"
+    },
+    {
+      "file": "logstats.py",
+      "line": 16,
+      "module": "datetime"
+    },
+    {
+      "file": "logstats.py",
+      "line": 17,
+      "module": "typing"
+    },
+    {
+      "file": "tests/test_logstats.py",
+      "line": 2,
+      "module": "json"
+    },
+    {
+      "file": "tests/test_logstats.py",
+      "line": 3,
+      "module": "subprocess"
+    },
+    {
+      "file": "tests/test_logstats.py",
+      "line": 4,
+      "module": "sys"
+    },
+    {
+      "file": "tests/test_logstats.py",
+      "line": 6,
+      "module": "pytest"
+    },
+    {
+      "file": "tests/test_logstats.py",
+      "line": 8,
+      "module": "logstats"
+    }
+  ],
+  "thirdPartyImports": [],
+  "allowedThirdPartyUsed": [
+    "pytest"
+  ],
+  "functions": [
+    {
+      "file": "logstats.py",
+      "name": "parse_line",
+      "line": 32,
+      "lines": 21,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "logstats.py",
+      "name": "analyze",
+      "line": 55,
+      "lines": 39,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "logstats.py",
+      "name": "main",
+      "line": 96,
+      "lines": 29,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "logstats.py",
+      "name": "_status_class",
+      "line": 130,
+      "lines": 10,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "logstats.py",
+      "name": "_rank",
+      "line": 142,
+      "lines": 2,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "logstats.py",
+      "name": "_percentile",
+      "line": 146,
+      "lines": 6,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "logstats.py",
+      "name": "_duration_summary",
+      "line": 154,
+      "lines": 11,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "logstats.py",
+      "name": "_positive_int",
+      "line": 167,
+      "lines": 5,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "logstats.py",
+      "name": "_render_table",
+      "line": 174,
+      "lines": 29,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "tests/test_logstats.py",
+      "name": "line",
+      "line": 13,
+      "lines": 2,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "path",
+        "status",
+        "size",
+        "dur",
+        "ip"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_logstats.py",
+      "name": "test_parse_good_line_fields",
+      "line": 17,
+      "lines": 6,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_logstats.py",
+      "name": "test_malformed_returns_none",
+      "line": 25,
+      "lines": 2,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_logstats.py",
+      "name": "test_dash_bytes_is_zero",
+      "line": 29,
+      "lines": 5,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_logstats.py",
+      "name": "test_dash_user_is_none",
+      "line": 36,
+      "lines": 2,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_logstats.py",
+      "name": "test_nearest_rank_percentile",
+      "line": 40,
+      "lines": 4,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_logstats.py",
+      "name": "test_top_truncation_and_tie_break",
+      "line": 46,
+      "lines": 4,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_logstats.py",
+      "name": "test_strict_exits_2",
+      "line": 52,
+      "lines": 9,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "tmp_path"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_logstats.py",
+      "name": "test_missing_file_exits_2",
+      "line": 63,
+      "lines": 6,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    }
+  ],
+  "broadExcept": [],
+  "prints": [
+    {
+      "file": "logstats.py",
+      "line": 108
+    },
+    {
+      "file": "logstats.py",
+      "line": 116
+    }
+  ],
+  "syntaxErrors": [],
+  "todos": [],
+  "commentedCode": [],
+  "duplicateBlocks": [],
+  "sealed": [
+    {
+      "file": "access.log",
+      "expected": "86bafd3cfb72eb359e090c108628b0c7464e69d410480fb1982ab9c5aed2a447",
+      "actual": "86bafd3cfb72eb359e090c108628b0c7464e69d410480fb1982ab9c5aed2a447",
+      "ok": true
+    }
+  ],
+  "transientCandidates": [],
+  "transcript": {
+    "source": null,
+    "turns": 0,
+    "modelCalls": 0,
+    "toolCalls": [],
+    "eventTypes": {},
+    "declaredPaths": [],
+    "mentionedPaths": [],
+    "assistantMessages": []
+  },
+  "paths": {
+    "declared": {
+      "inside": [],
+      "relative": [],
+      "allowlisted": [],
+      "outside": [],
+      "ignored": []
+    },
+    "mentioned": {
+      "inside": [],
+      "relative": [],
+      "allowlisted": [],
+      "outside": [],
+      "ignored": []
+    }
+  },
+  "spec": {
+    "items": [
+      {
+        "id": "readonly",
+        "check": "sealed_unmodified",
+        "points": 4,
+        "awarded": 4,
+        "verdict": "PASS",
+        "evidence": [
+          "access.log sha256 matches the pristine seed"
+        ],
+        "veto": true
+      },
+      {
+        "id": "files",
+        "check": "file_manifest",
+        "points": 6,
+        "awarded": 6,
+        "verdict": "PASS",
+        "evidence": [
+          "authored file set matches exactly (4 files)"
+        ],
+        "veto": false
+      },
+      {
+        "id": "deps",
+        "check": "stdlib_only",
+        "points": 5,
+        "awarded": 5,
+        "verdict": "PASS",
+        "evidence": [
+          "imports are stdlib / local / task-provided only: __future__, argparse, collections, datetime, json, logstats, math, pytest, re, subprocess, sys, typing",
+          "task-provided (allowlisted, not a violation): pytest"
+        ],
+        "veto": false
+      }
+    ],
+    "score": 15,
+    "max": 15
+  },
+  "autoItems": [
+    {
+      "id": "hygiene",
+      "points": 3,
+      "awarded": 3.0,
+      "passedChecks": 4,
+      "totalChecks": 4,
+      "checks": [
+        {
+          "id": "no_broad_except",
+          "passed": true,
+          "evidence": [
+            "no broad except handlers"
+          ]
+        },
+        {
+          "id": "no_debug_residue",
+          "passed": true,
+          "evidence": [
+            "no TODO markers, no commented-out code, no stray print() outside CLI modules"
+          ]
+        },
+        {
+          "id": "typed_public_api",
+          "passed": true,
+          "evidence": [
+            "all 3 public function(s) fully annotated"
+          ]
+        },
+        {
+          "id": "bounded_function_length",
+          "passed": true,
+          "evidence": [
+            "longest implementation function is 39 lines (limit 60)"
+          ]
+        }
+      ]
+    }
+  ],
+  "reviewItems": [
+    {
+      "id": "regex_named_groups",
+      "points": 5,
+      "criterion": "用一条预编译正则 + 命名组解析日志行，不是多次 split 拼凑",
+      "mode": "review"
+    },
+    {
+      "id": "streaming",
+      "points": 4,
+      "criterion": "analyze 单遍流式处理任意可迭代对象，不把整个文件 list() 进内存",
+      "mode": "review"
+    },
+    {
+      "id": "percentile_isolated",
+      "points": 3,
+      "criterion": "分位数抽成独立函数，空列表与 n=1 的边界显式处理",
+      "mode": "review"
+    }
+  ],
+  "qualityMax": 15,
+  "qualityAutoScore": 3.0,
+  "qualityReviewMax": 12,
+  "ownTestFunctionCount": 8.0
+}

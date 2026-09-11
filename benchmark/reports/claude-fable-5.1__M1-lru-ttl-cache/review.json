@@ -1,0 +1,46 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "o1_hotpath": {
+    "maxPoints": 5,
+    "criterion": "用 OrderedDict.move_to_end 或双向链表实现 O(1) 的 get/set，不是每次排序或线性查找",
+    "points": 5,
+    "verdict": "完全符合，并且正确实现了规格第 9 条：OrderedDict + move_to_end，配过期最小堆",
+    "reasoning": "热路径：lru.py:49 用 OrderedDict 存 [value, expires_at] 列表，get（106-118）dict 查找 + move_to_end（116），O(1)；set（120-160）dict 赋值 + move_to_end，O(1)。两者都无排序、无全表扫描。过期回收用 `(expires_at, seq, key)` 最小堆：_pop_expired_from_heap（75-86）heappop 定位，陈旧项（键已删或 deadline 被 set 换过）在弹出时与活跃条目比对后丢弃（第 82 行注释说明）；堆膨胀用 `len(heap) > 2 * len(data) + 16` 触发重建（100-102）。lru.py:17-27 的类 docstring 完整论证了这套设计与摊还复杂度。**正确性上属于第一档**：set 的淘汰路径（132-136）先调 _pop_expired_from_heap 再考虑淘汰，而堆给的是**全局最小 deadline**，因此能回收任意位置的过期项，不受 LRU 顺序限制 —— 正确实现了 task.md 规格第 9 条。四个模型在这一条上分两档：Fable（最小堆）与 astra（八层基数树）**正确**；sonnet 本批与 opus 只从 LRU 端找过期项，若最旧条目活跃、较新条目已过期会误淘汰活跃条目（我的隐藏套件未覆盖该分支，所以四者功能分都是 70/70）。**记录一个事实供读者权衡**：heappush 是 O(log n)，所以 set 严格说不是 task.md 第 23 条要求的 O(1)。与 sonnet 归档批的最小堆实现同理。判据点名的机制（move_to_end）已用上、禁止的做法（排序/线性查找）都没有，且这个 O(log n) 换掉的是回收路径上的 O(n)，故判满分；若按第 23 条字面从严，此处可扣 1 分 —— 事实已列明。",
+    "evidence": [
+      "lru.py:49 OrderedDict 存储",
+      "lru.py:116 get 用 move_to_end",
+      "lru.py:75-86 _pop_expired_from_heap 用堆定位全局最小 deadline",
+      "lru.py:82 注释说明陈旧堆项的识别",
+      "lru.py:100-102 堆膨胀上限 2*len+16 触发重建",
+      "lru.py:132-136 淘汰前先回收过期项，正确实现规格第 9 条",
+      "lru.py:17-27 类 docstring 论证摊还复杂度",
+      "事实：heappush 为 O(log n)，set 非严格 O(1)"
+    ]
+  },
+  "module_separation": {
+    "maxPoints": 4,
+    "criterion": "三个模块职责清晰，__init__.py 只做再导出，不塞实现",
+    "points": 4,
+    "verdict": "完全符合：__init__.py 4 行纯再导出，stats.py 9 行只有 dataclass",
+    "reasoning": "cache/__init__.py 共 4 行：两条 from 导入 + __all__，零实现（与 astra 并列最精简）。cache/stats.py 共 9 行：只有 frozen dataclass CacheStats 与四个默认 0 的字段。cache/lru.py 201 行承载全部实现，内部分层清晰：模块级 _MISSING 哨兵（12）、两个校验/判定辅助（_validate_ttl 61、_is_expired 67）、四个堆维护辅助（_expire 71、_pop_expired_from_heap 75、_push_heap 88、_rebuild_heap 92、_maybe_compact_heap 100）、公共 API（106 起）。把堆的四个操作各自成函数，是四个模型里堆逻辑分解最细的 —— sonnet 归档批的堆实现把回收逻辑塞在一个 _reclaim_one_expired 里。依赖单向，无循环。",
+    "evidence": [
+      "cache/__init__.py 全文 4 行仅 import + __all__",
+      "cache/stats.py 全文 9 行仅 dataclass",
+      "cache/lru.py:71-102 堆维护拆成 5 个独立辅助函数",
+      "依赖单向无循环"
+    ]
+  },
+  "sentinel": {
+    "maxPoints": 3,
+    "criterion": "区分 ttl=None 与省略 ttl 用私有模块级 sentinel（object()），不是 \"default\" 字符串或 -1 魔数",
+    "points": 3,
+    "verdict": "完全符合：_MISSING = object() 私有模块级哨兵，用 is 身份比较",
+    "reasoning": "lru.py:12 定义 `_MISSING = object()`：下划线前缀、模块级、object() 实例，不是字符串也不是数字魔数，完全匹配判据。使用处 set（121-124）三分支：`ttl is _MISSING` → 用缓存默认 TTL；`ttl is not None` → 走 _validate_ttl 校验；否则（显式 None）→ 永不过期。用 `is` 做身份比较，对哨兵是正确写法。值得一提的是校验时机：它把哨兵判定与校验放在**加锁之前**（121-124 在 `with self._lock` 之外），参数校验不需要持锁，减少了锁持有时间 —— 四个模型里只有它注意到了这一点。隐藏测试 test_omitting_ttl_uses_default 与 test_ttl_none_entry_never_expires 均通过。",
+    "evidence": [
+      "lru.py:12 _MISSING = object()",
+      "lru.py:121-124 三分支身份比较",
+      "lru.py:121-124 参数校验在加锁之前，减少锁持有时间（四者中唯一）",
+      "隐藏测试两条 ttl 语义用例通过"
+    ]
+  }
+}

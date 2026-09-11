@@ -1,0 +1,30 @@
+# Models under test — one --model slug per line.
+# Blank lines and lines starting with '#' are ignored.
+#
+# IMPORTANT: these must be the CLI slug, not the /model display name.
+# Only slugs verified to work on this account are listed. To add another model,
+# select it interactively with /model, run one prompt with
+# --usage-output-file, and copy the `currentModel` field from the JSON.
+# See ../COPILOT-CLI-BENCHMARK.md section 3.1.
+#
+# 'auto' is deliberately excluded: it lets Copilot pick, which destroys
+# reproducibility.
+#
+# All four run at reasoning effort `medium`, which run-suite.ps1 passes
+# explicitly (it is also each model's default per the /model picker).
+#
+# NOTE on claude-fable-5.1: the slug uses a DOT, not a dash. `claude-fable-5-1`
+# (the Anthropic API style id) is rejected as "not available" — verified 2026-09-10.
+#
+# NOTE on claude-haiku-4.5: it rejects --effort entirely ("does not support
+# reasoning effort configuration"), matching the "-" in its /model effort column.
+# run-suite.ps1 keeps it in $NoEffortModels and omits the flag; runs.csv records
+# effort='(unsupported)'. Prompt caching DOES work for it on real runs; an early
+# probe that showed cache_write=0 was an artifact of a 3.9k prompt (below the
+# minimum cacheable length), not a model limitation.
+
+gpt-6-astra
+claude-sonnet-5
+claude-opus-5
+claude-fable-5.1
+claude-haiku-4.5

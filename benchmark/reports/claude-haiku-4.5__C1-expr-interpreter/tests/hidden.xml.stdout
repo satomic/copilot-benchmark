@@ -1,0 +1,27 @@
+........................................................................ [ 47%]
+................F.F.F...F............................................... [ 94%]
+.........                                                                [100%]
+================================== FAILURES ===================================
+________________________ test_type_errors[true + true] ________________________
+_verify\test_c1.py:337: in test_type_errors
+    with pytest.raises(ml.EvalError):
+E   Failed: DID NOT RAISE <class 'minilang.errors.EvalError'>
+_________________________ test_type_errors[true * 2] __________________________
+_verify\test_c1.py:337: in test_type_errors
+    with pytest.raises(ml.EvalError):
+E   Failed: DID NOT RAISE <class 'minilang.errors.EvalError'>
+_______________________ test_type_errors[true < false] ________________________
+_verify\test_c1.py:337: in test_type_errors
+    with pytest.raises(ml.EvalError):
+E   Failed: DID NOT RAISE <class 'minilang.errors.EvalError'>
+___________________________ test_type_errors[-true] ___________________________
+_verify\test_c1.py:337: in test_type_errors
+    with pytest.raises(ml.EvalError):
+E   Failed: DID NOT RAISE <class 'minilang.errors.EvalError'>
+- generated xml file: C:\workspace\13_benchmark\GPT-6 in Coding\benchmark\reports\claude-haiku-4.5__C1-expr-interpreter\tests\hidden.xml -
+=========================== short test summary info ===========================
+FAILED _verify/test_c1.py::test_type_errors[true + true] - Failed: DID NOT RA...
+FAILED _verify/test_c1.py::test_type_errors[true * 2] - Failed: DID NOT RAISE...
+FAILED _verify/test_c1.py::test_type_errors[true < false] - Failed: DID NOT R...
+FAILED _verify/test_c1.py::test_type_errors[-true] - Failed: DID NOT RAISE <c...
+4 failed, 149 passed in 4.71s

@@ -1,0 +1,30 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "argparse_exit2": {
+    "maxPoints": 5,
+    "criterion": "用 argparse 的 type= 校验让退出码 2 自然产生，而不是散落的手写 sys.exit(2)",
+    "points": 5,
+    "verdict": "完全符合：argparse + 自定义 type=_positive_int，退出码 2 由 argparse 自然产生",
+    "reasoning": "判据两个要点都精确命中。① 用了 argparse —— wordfreq.py:48-62 _build_parser 构造 parser，`-n/--top` 用 `type=_positive_int`（57）做校验；_positive_int（38-45）在非整数与 <1 两种情况下分别抛 argparse.ArgumentTypeError（42、44），消息都带上出错的实际值。② 退出码 2 是 argparse 自然产生的 —— argparse 校验失败时自己 print 到 stderr 并 SystemExit(2)。wordfreq.py:69-72 catch SystemExit 后 `return int(exc.code)`，这样 main() 返回码而不是直接终止调用方；67-68 的注释明确说明了这个设计意图。没有任何手写的 sys.exit(2)。附带收益（sonnet 的手写解析器全都缺失）：`--top=5` 等号写法、`-n5` 紧凑写法、`-h/--help` 自动帮助、`metavar=N` 与 help 文案，全部免费获得。对比：sonnet 两次运行都手写 19 行 while 解析器，本项各得 1/5。这是原子层最大的单项差距。**记录一个判据外的真实缺陷，不扣分**：wordfreq.py:34-35 定义了 `class _UsageError(Exception): pass` 但全文从未使用 —— 是死代码，应删。它属于 hygiene 范畴，而 hygiene 是 mode=auto 条目、分数由确定性检查算出（本次 5/5），我的 no_debug_residue 检查不识别『未使用的类』，所以漏掉了。在本判据（考察 argparse）下扣分会引入表外尺度，故仅记录并列入检查器待补清单。",
+    "evidence": [
+      "wordfreq.py:48-62 _build_parser 用 argparse",
+      "wordfreq.py:38-45 _positive_int 作 type= 校验",
+      "wordfreq.py:69-72 catch SystemExit 转成返回码，注释说明意图",
+      "wordfreq.py 全文无手写 sys.exit(2)",
+      "缺陷：wordfreq.py:34-35 _UsageError 死代码（检查器漏检，未扣分）"
+    ]
+  },
+  "tokenize_single_regex": {
+    "maxPoints": 5,
+    "criterion": "分词用一条正则 + 统一 strip，不是多层 replace 或逐字符状态机",
+    "points": 5,
+    "verdict": "完全符合：模块级预编译单条正则 + 统一 strip(\"'\")",
+    "reasoning": "wordfreq.py:12 预编译唯一正则 _TOKEN_RE = r\"[a-z0-9']+\"；tokenize（15-22）先 `text.lower()` 再 findall，对每个 token 统一 `strip(\"'\")` 并过滤空串。无 replace 链、无状态机。照规格用 `[a-z0-9']` 而非凭经验用 `\\w`：后者会把 über 留成 über、__x__ 留成 __x__，隐藏测试要求为 ber 与 x —— 本任务刻意设置的『照规格 vs 凭经验』分水岭，它选对了。top_words（25-31）用 collections.Counter 计数后按 (-count, word) 排序，简洁正确。",
+    "evidence": [
+      "wordfreq.py:12 _TOKEN_RE 模块级预编译，全文唯一正则",
+      "wordfreq.py:18 lower + findall",
+      "wordfreq.py:19 统一 strip(\"'\")",
+      "隐藏测试 über/__x__ 两例通过"
+    ]
+  }
+}

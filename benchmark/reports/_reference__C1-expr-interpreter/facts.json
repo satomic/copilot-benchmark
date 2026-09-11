@@ -1,0 +1,1114 @@
+{
+  "task": "C1-expr-interpreter",
+  "runDir": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\_reference\\C1-expr-interpreter",
+  "authoredFiles": [
+    {
+      "path": "minilang/__init__.py",
+      "bytes": 333,
+      "loc": 14
+    },
+    {
+      "path": "minilang/__main__.py",
+      "bytes": 1129,
+      "loc": 32
+    },
+    {
+      "path": "minilang/builtins.py",
+      "bytes": 3924,
+      "loc": 101
+    },
+    {
+      "path": "minilang/errors.py",
+      "bytes": 546,
+      "loc": 12
+    },
+    {
+      "path": "minilang/evaluator.py",
+      "bytes": 5842,
+      "loc": 151
+    },
+    {
+      "path": "minilang/lexer.py",
+      "bytes": 2971,
+      "loc": 82
+    },
+    {
+      "path": "minilang/parser.py",
+      "bytes": 6468,
+      "loc": 163
+    },
+    {
+      "path": "task.md",
+      "bytes": 11376,
+      "loc": 210
+    },
+    {
+      "path": "tests/test_minilang.py",
+      "bytes": 3729,
+      "loc": 99
+    }
+  ],
+  "expectedFiles": [
+    "task.md",
+    "minilang/__init__.py",
+    "minilang/errors.py",
+    "minilang/lexer.py",
+    "minilang/parser.py",
+    "minilang/evaluator.py",
+    "minilang/builtins.py",
+    "minilang/__main__.py",
+    "tests/test_minilang.py"
+  ],
+  "missing": [],
+  "extra": [],
+  "totalLoc": 654,
+  "imports": [
+    {
+      "file": "minilang/__init__.py",
+      "line": 3,
+      "module": ".errors",
+      "relative": true
+    },
+    {
+      "file": "minilang/__init__.py",
+      "line": 4,
+      "module": ".evaluator",
+      "relative": true
+    },
+    {
+      "file": "minilang/__init__.py",
+      "line": 5,
+      "module": ".lexer",
+      "relative": true
+    },
+    {
+      "file": "minilang/__init__.py",
+      "line": 6,
+      "module": ".parser",
+      "relative": true
+    },
+    {
+      "file": "minilang/__main__.py",
+      "line": 3,
+      "module": "__future__"
+    },
+    {
+      "file": "minilang/__main__.py",
+      "line": 5,
+      "module": "re"
+    },
+    {
+      "file": "minilang/__main__.py",
+      "line": 6,
+      "module": "sys"
+    },
+    {
+      "file": "minilang/__main__.py",
+      "line": 8,
+      "module": ".builtins",
+      "relative": true
+    },
+    {
+      "file": "minilang/__main__.py",
+      "line": 9,
+      "module": ".errors",
+      "relative": true
+    },
+    {
+      "file": "minilang/__main__.py",
+      "line": 10,
+      "module": ".evaluator",
+      "relative": true
+    },
+    {
+      "file": "minilang/builtins.py",
+      "line": 3,
+      "module": "__future__"
+    },
+    {
+      "file": "minilang/builtins.py",
+      "line": 5,
+      "module": ".errors",
+      "relative": true
+    },
+    {
+      "file": "minilang/evaluator.py",
+      "line": 3,
+      "module": "__future__"
+    },
+    {
+      "file": "minilang/evaluator.py",
+      "line": 5,
+      "module": ".",
+      "relative": true
+    },
+    {
+      "file": "minilang/evaluator.py",
+      "line": 6,
+      "module": ".errors",
+      "relative": true
+    },
+    {
+      "file": "minilang/evaluator.py",
+      "line": 7,
+      "module": ".parser",
+      "relative": true
+    },
+    {
+      "file": "minilang/lexer.py",
+      "line": 3,
+      "module": "__future__"
+    },
+    {
+      "file": "minilang/lexer.py",
+      "line": 5,
+      "module": "re"
+    },
+    {
+      "file": "minilang/lexer.py",
+      "line": 6,
+      "module": "dataclasses"
+    },
+    {
+      "file": "minilang/lexer.py",
+      "line": 8,
+      "module": ".errors",
+      "relative": true
+    },
+    {
+      "file": "minilang/parser.py",
+      "line": 3,
+      "module": "__future__"
+    },
+    {
+      "file": "minilang/parser.py",
+      "line": 5,
+      "module": "dataclasses"
+    },
+    {
+      "file": "minilang/parser.py",
+      "line": 7,
+      "module": ".errors",
+      "relative": true
+    },
+    {
+      "file": "minilang/parser.py",
+      "line": 8,
+      "module": ".lexer",
+      "relative": true
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "line": 2,
+      "module": "subprocess"
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "line": 3,
+      "module": "sys"
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "line": 5,
+      "module": "pytest"
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "line": 7,
+      "module": "minilang"
+    }
+  ],
+  "thirdPartyImports": [],
+  "allowedThirdPartyUsed": [
+    "pytest"
+  ],
+  "functions": [
+    {
+      "file": "minilang/__main__.py",
+      "name": "main",
+      "line": 15,
+      "lines": 24,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/builtins.py",
+      "name": "is_builtin",
+      "line": 33,
+      "lines": 2,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/builtins.py",
+      "name": "check_arity",
+      "line": 37,
+      "lines": 9,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/builtins.py",
+      "name": "call",
+      "line": 48,
+      "lines": 34,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/builtins.py",
+      "name": "format_number",
+      "line": 84,
+      "lines": 7,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/builtins.py",
+      "name": "format_value",
+      "line": 93,
+      "lines": 12,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/builtins.py",
+      "name": "_number",
+      "line": 107,
+      "lines": 4,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/builtins.py",
+      "name": "_string",
+      "line": 113,
+      "lines": 4,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/builtins.py",
+      "name": "_type_name",
+      "line": 119,
+      "lines": 8,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/errors.py",
+      "name": "__init__",
+      "line": 7,
+      "lines": 3,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/evaluator.py",
+      "name": "evaluate",
+      "line": 12,
+      "lines": 4,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/evaluator.py",
+      "name": "_eval",
+      "line": 18,
+      "lines": 16,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/evaluator.py",
+      "name": "_eval_unary",
+      "line": 36,
+      "lines": 13,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/evaluator.py",
+      "name": "_eval_logical",
+      "line": 51,
+      "lines": 16,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/evaluator.py",
+      "name": "_eval_binary",
+      "line": 69,
+      "lines": 51,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/evaluator.py",
+      "name": "_eval_call",
+      "line": 122,
+      "lines": 18,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/evaluator.py",
+      "name": "_equal",
+      "line": 142,
+      "lines": 4,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/evaluator.py",
+      "name": "_compare",
+      "line": 148,
+      "lines": 16,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/evaluator.py",
+      "name": "_is_number",
+      "line": 166,
+      "lines": 2,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/evaluator.py",
+      "name": "_check_env_value",
+      "line": 170,
+      "lines": 4,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/evaluator.py",
+      "name": "_type_name",
+      "line": 176,
+      "lines": 8,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/lexer.py",
+      "name": "tokenize",
+      "line": 28,
+      "lines": 53,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/lexer.py",
+      "name": "_read_string",
+      "line": 83,
+      "lines": 24,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/parser.py",
+      "name": "parse",
+      "line": 57,
+      "lines": 6,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/parser.py",
+      "name": "__init__",
+      "line": 66,
+      "lines": 4,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/parser.py",
+      "name": "_peek",
+      "line": 73,
+      "lines": 2,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/parser.py",
+      "name": "_advance",
+      "line": 76,
+      "lines": 6,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/parser.py",
+      "name": "_match_op",
+      "line": 83,
+      "lines": 6,
+      "public": false,
+      "annotated": false,
+      "unannotated_args": [
+        "values"
+      ],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/parser.py",
+      "name": "_match_keyword",
+      "line": 90,
+      "lines": 6,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/parser.py",
+      "name": "expect_end",
+      "line": 97,
+      "lines": 4,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/parser.py",
+      "name": "parse_expr",
+      "line": 104,
+      "lines": 2,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/parser.py",
+      "name": "_or_expr",
+      "line": 107,
+      "lines": 7,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/parser.py",
+      "name": "_and_expr",
+      "line": 115,
+      "lines": 7,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/parser.py",
+      "name": "_not_expr",
+      "line": 123,
+      "lines": 5,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/parser.py",
+      "name": "_comparison",
+      "line": 129,
+      "lines": 13,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/parser.py",
+      "name": "_additive",
+      "line": 143,
+      "lines": 7,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/parser.py",
+      "name": "_multiplicative",
+      "line": 151,
+      "lines": 7,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/parser.py",
+      "name": "_unary",
+      "line": 159,
+      "lines": 5,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/parser.py",
+      "name": "_power",
+      "line": 165,
+      "lines": 7,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/parser.py",
+      "name": "_primary",
+      "line": 173,
+      "lines": 25,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/parser.py",
+      "name": "_arguments",
+      "line": 199,
+      "lines": 9,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "minilang/parser.py",
+      "name": "_current_position",
+      "line": 209,
+      "lines": 3,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "repl",
+      "line": 12,
+      "lines": 8,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "lines"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_number_lexing",
+      "line": 22,
+      "lines": 2,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_string_lexing_with_escapes",
+      "line": 26,
+      "lines": 3,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_comment_is_ignored",
+      "line": 31,
+      "lines": 2,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_token_positions",
+      "line": 35,
+      "lines": 2,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_keyword_kind",
+      "line": 39,
+      "lines": 3,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_lex_error_unterminated_string",
+      "line": 44,
+      "lines": 3,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_lex_error_single_equals",
+      "line": 49,
+      "lines": 3,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_lex_error_bad_escape",
+      "line": 54,
+      "lines": 3,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_lex_error_trailing_dot",
+      "line": 59,
+      "lines": 3,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_multiplicative_before_additive",
+      "line": 64,
+      "lines": 2,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_parentheses_override",
+      "line": 68,
+      "lines": 2,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_power_is_right_associative",
+      "line": 72,
+      "lines": 2,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_unary_minus_looser_than_power",
+      "line": 76,
+      "lines": 2,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_negative_exponent",
+      "line": 80,
+      "lines": 2,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_comparison_is_non_associative",
+      "line": 84,
+      "lines": 3,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_trailing_input_is_a_parse_error",
+      "line": 89,
+      "lines": 3,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_and_binds_tighter_than_or",
+      "line": 94,
+      "lines": 2,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_not_is_looser_than_comparison",
+      "line": 98,
+      "lines": 2,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_short_circuit_and",
+      "line": 102,
+      "lines": 2,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_short_circuit_or",
+      "line": 106,
+      "lines": 2,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_if_is_lazy",
+      "line": 110,
+      "lines": 2,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_all_builtins",
+      "line": 114,
+      "lines": 11,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_undefined_variable_and_function",
+      "line": 127,
+      "lines": 7,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_division_by_zero_and_env_immutability",
+      "line": 136,
+      "lines": 7,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_repl_assignment_and_vars",
+      "line": 145,
+      "lines": 4,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_repl_reports_errors_and_continues",
+      "line": 151,
+      "lines": 3,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_minilang.py",
+      "name": "test_repl_formats_strings_with_escapes",
+      "line": 156,
+      "lines": 3,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    }
+  ],
+  "broadExcept": [],
+  "prints": [
+    {
+      "file": "minilang/__main__.py",
+      "line": 27
+    },
+    {
+      "file": "minilang/__main__.py",
+      "line": 35
+    },
+    {
+      "file": "minilang/__main__.py",
+      "line": 37
+    }
+  ],
+  "syntaxErrors": [],
+  "todos": [],
+  "commentedCode": [],
+  "duplicateBlocks": [
+    {
+      "locations": [
+        "minilang/builtins.py:94",
+        "minilang/evaluator.py:144"
+      ],
+      "firstLine": "def _type_name(value: object) -> str:",
+      "blockLines": 5
+    },
+    {
+      "locations": [
+        "minilang/builtins.py:95",
+        "minilang/evaluator.py:145"
+      ],
+      "firstLine": "if isinstance(value, bool):",
+      "blockLines": 5
+    },
+    {
+      "locations": [
+        "minilang/builtins.py:96",
+        "minilang/evaluator.py:146"
+      ],
+      "firstLine": "return \"boolean\"",
+      "blockLines": 5
+    },
+    {
+      "locations": [
+        "minilang/builtins.py:97",
+        "minilang/evaluator.py:147"
+      ],
+      "firstLine": "if isinstance(value, float):",
+      "blockLines": 5
+    }
+  ],
+  "sealed": [],
+  "transientCandidates": [],
+  "transcript": {
+    "source": null,
+    "turns": 0,
+    "modelCalls": 0,
+    "toolCalls": [],
+    "eventTypes": {},
+    "declaredPaths": [],
+    "mentionedPaths": [],
+    "assistantMessages": []
+  },
+  "paths": {
+    "declared": {
+      "inside": [],
+      "relative": [],
+      "allowlisted": [],
+      "outside": [],
+      "ignored": []
+    },
+    "mentioned": {
+      "inside": [],
+      "relative": [],
+      "allowlisted": [],
+      "outside": [],
+      "ignored": []
+    }
+  },
+  "spec": {
+    "items": [
+      {
+        "id": "files",
+        "check": "file_manifest",
+        "points": 6,
+        "awarded": 6,
+        "verdict": "PASS",
+        "evidence": [
+          "authored file set matches exactly (9 files)"
+        ],
+        "veto": false
+      },
+      {
+        "id": "deps",
+        "check": "stdlib_only",
+        "points": 5,
+        "awarded": 5,
+        "verdict": "PASS",
+        "evidence": [
+          "imports are stdlib / local / task-provided only: __future__, dataclasses, minilang, pytest, re, subprocess, sys",
+          "task-provided (allowlisted, not a violation): pytest"
+        ],
+        "veto": false
+      },
+      {
+        "id": "bounds",
+        "check": "path_containment",
+        "points": 4,
+        "awarded": 4,
+        "verdict": "N/A",
+        "evidence": [
+          "no session transcript available — nothing to check, points awarded by default. Real benchmark runs always ship events.jsonl; a missing transcript here means this run was staged locally (e.g. selftest)."
+        ],
+        "veto": false
+      }
+    ],
+    "score": 15,
+    "max": 15
+  },
+  "autoItems": [
+    {
+      "id": "hygiene",
+      "points": 3,
+      "awarded": 3.0,
+      "passedChecks": 4,
+      "totalChecks": 4,
+      "checks": [
+        {
+          "id": "no_broad_except",
+          "passed": true,
+          "evidence": [
+            "no broad except handlers"
+          ]
+        },
+        {
+          "id": "no_debug_residue",
+          "passed": true,
+          "evidence": [
+            "no TODO markers, no commented-out code, no stray print() outside CLI modules"
+          ]
+        },
+        {
+          "id": "typed_public_api",
+          "passed": true,
+          "evidence": [
+            "all 11 public function(s) fully annotated"
+          ]
+        },
+        {
+          "id": "bounded_function_length",
+          "passed": true,
+          "evidence": [
+            "longest implementation function is 53 lines (limit 60)"
+          ]
+        }
+      ]
+    }
+  ],
+  "reviewItems": [
+    {
+      "id": "grammar_correspondence",
+      "points": 5,
+      "criterion": "递归下降的函数与 task.md 的文法层级一一对应，命名可读，无手工回溯",
+      "mode": "review"
+    },
+    {
+      "id": "named_ast",
+      "points": 4,
+      "criterion": "AST 用具名节点（dataclass / NamedTuple / 类），不是裸 tuple 或 dict",
+      "mode": "review"
+    },
+    {
+      "id": "error_consistency",
+      "points": 3,
+      "criterion": "三类错误消息风格一致且带位置信息，没有 except Exception 吞异常",
+      "mode": "review"
+    }
+  ],
+  "qualityMax": 15,
+  "qualityAutoScore": 3.0,
+  "qualityReviewMax": 12,
+  "ownTestFunctionCount": 27.0
+}

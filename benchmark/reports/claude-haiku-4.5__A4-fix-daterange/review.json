@@ -1,0 +1,29 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "root_cause_fix": {
+    "maxPoints": 7,
+    "criterion": "三个缺陷都从根因修（闭区间 +1、chunk 宽度 days-1、days<=0 前置校验）；不是在返回前特判补一个 chunk 之类的补丁",
+    "points": 7,
+    "verdict": "完全符合：三缺陷全部根因消除，440 组性质检查全过",
+    "reasoning": "三个缺陷都从根因修正：闭区间的 +1、chunk 宽度的 days-1、以及 days<=0 的前置校验，没有出现『算完再特判补一个 chunk』或『结果为空就补一个』这类补丁式修法。判据的硬性验证是隐藏套件里 span 0..39 × days 1..11 共 440 组性质检查 —— 全部通过，补丁式修法必然在其中暴露。可见套件 11/11 也全过。**五个模型在 A4 全部 7/7**，是本次唯一五方满分的判据 —— 说明『改 bug』这类任务对当代模型已无区分度，即使是最小的 Haiku 也能稳定做对。",
+    "evidence": [
+      "三缺陷根因修正，无补丁式修法",
+      "隐藏套件 440 组性质检查全过",
+      "可见套件 test_daterange.py 11/11 全过",
+      "五个模型在本项全部 7/7"
+    ]
+  },
+  "minimal_diff": {
+    "maxPoints": 4,
+    "criterion": "diff 最小，未重写整个文件，未改动 docstring 的语义",
+    "points": 4,
+    "verdict": "符合：改动集中在函数体内，docstring 语义未变，只读文件未篡改",
+    "reasoning": "改动集中在 split_range 函数体内，未重写整个文件；docstring 的语义保持不变；`sealed_unmodified` 检查通过 —— test_daterange.py 的 sha256 与原始种子一致，没有走『改测试而不是改实现』的捷径（这是 A4 的一票否决项）。函数签名、参数名与顺序、返回结构全部保持。",
+    "evidence": [
+      "改动集中在 split_range 函数体内",
+      "docstring 语义未变",
+      "sealed_unmodified 通过：test_daterange.py 哈希与种子一致",
+      "公共 API 未变"
+    ]
+  }
+}

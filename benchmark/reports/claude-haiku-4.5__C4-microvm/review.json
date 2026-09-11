@@ -1,0 +1,43 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "shared_type_rules": {
+  "maxPoints": 5,
+  "criterion": "运行时类型规则单一来源：VM 的算术/比较/布尔检查收在一处，优化器折叠复用同一套规则或直接调用它，编译期折叠与运行期语义不可能分叉",
+  "points": 2,
+  "verdict": "部分符合：VM 内规则集中，但优化器自带一套算术，且 VM 的分派函数本身 141 行",
+  "reasoning": "VM 侧的类型检查确实集中在 vm.py 里，算术、比较、布尔三类都有辅助判断，这一半达标，运行期语义相关的隐藏测试大面积通过（算术与比较 60 项全过、短路 10 项全过）。扣 3 分有两个原因。第一，optimizer.py 只从 parser 导入 AST 节点，不导入 vm 的任何规则，折叠时自带一套 Python 算术，这正是判据要防的分叉点，编译期与运行期是两套独立实现，恰好一致但没有任何结构保证一致。第二，vm.py 的 execute_instr 写到 141 行，是全部 55 个 run 里最长的函数，超出 60 行上限 2.35 倍，所有类型规则内联在一个巨型 if 阶梯里，说它『收在一处』字面上成立，但这一处是不可维护的一整块。它的折叠安全性测试倒是全过（1/0 不折叠、true and 5 不折叠），说明语义抄对了，只是结构上没有共享。",
+  "evidence": [
+   "vm.py execute_instr 141 行，全部 55 run 最长函数，类型规则内联其中",
+   "optimizer.py 仅 from .parser import ...，未复用任何 vm 规则",
+   "折叠安全 22 项隐藏测试全过（语义抄对了，结构未共享）",
+   "算术与比较 60 项、短路 10 项全过"
+  ]
+ },
+ "jump_patching_single_point": {
+  "maxPoints": 4,
+  "criterion": "前向跳转回填经由一个集中的 emit/patch 机制（标签或补丁表），不是散落各处的裸下标运算",
+  "points": 2,
+  "verdict": "部分符合：无集中 patch 机制，8 处裸下标写，但跳转本身全部正确",
+  "reasoning": "compiler.py 没有任何 emit/patch 辅助函数（静态检查 def patch/def emit 均为零），前向跳转回填用 8 处裸的 instructions 下标赋值完成，分散在 if、while、and、or 四个代码生成分支里。判据描述的反面形态就是这样。给 2 分而不是更低，是因为结果正确：跳转目标在界内的隐藏检查、控制流 20 项、短路 10 项全部通过，包括嵌套 while 与 else if 链。也就是说它把容易写错的事用容易写错的方式写对了，这次。风险是结构性的：四处独立的下标运算各自维护『当前长度减一』这类不变量，改任何一处编码（比如给 and 换编码）都要求作者记得全部四处的约定。",
+  "evidence": [
+   "compiler.py 无 emit/patch 辅助（def patch/def emit 计数为 0）",
+   "8 处裸 instructions[i] = 赋值分散在四个代码生成分支",
+   "控制流 20 项、短路 10 项、跳转界内检查全部通过",
+   "结果正确但每处独立维护回填不变量"
+  ]
+ },
+ "codec_discipline": {
+  "maxPoints": 3,
+  "criterion": "二进制布局用 struct 声明式表达且 dumps/loads 共用定义；loads 先验 CRC 再信任任何长度字段；读取有单一的越界检查点",
+  "points": 0,
+  "verdict": "不符合：bool 分支不可达导致类型经编解码丢失，CRC 覆盖范围错误，损坏可泄漏非规格异常",
+  "reasoning": "这是 C4 三条判据里最实质的失败，14 项功能失败里有 8 项源于此。核心缺陷在 serializer.py:9-23：isinstance(const, int) 写在 isinstance(const, bool) 之前，而 Python 的 bool 是 int 子类，于是每个 true/false 都走 INT 分支、按 0x01 标签序列化，第 22 行的 0x04 分支是不可达的死代码。后果可观察：print true 经 dumps/loads 后打印 1；if (true) 的条件经往返后不再是 BOOL，被它自己的运行时检查拒绝。这是它第四次踩 bool 是 int 子类这同一个坑：A1 里规格明写它接住了，C1 的求值器、C4 的序列化器都在这个点上失守。第二个缺陷：CRC 计算的是 data[:checksum_pos]，把 4 字节 magic 也算了进去，规格第 7 节写明校验和覆盖 magic 与校验和之间的内容，test_checksum_is_crc32_of_body 因此失败。第三个缺陷：逐字节翻转穷举里有位置泄漏 UnicodeDecodeError 而不是 SerializationError，说明字符串解码没有被编解码错误边界包住。读取也没有单一的越界检查点，长度字段直接切片。三条子判据全部未达。",
+  "evidence": [
+   "serializer.py:9 isinstance int 先于 :22 isinstance bool，0x04 分支不可达",
+   "round-trip 后 print true 输出 1；if (true) 报 Condition must be bool",
+   "serializer.py:151 CRC 覆盖含 magic 的前缀，规格要求不含 magic",
+   "corruption 穷举泄漏 UnicodeDecodeError（应为 SerializationError）",
+   "14 项功能失败中 8 项源于编解码"
+  ]
+ }
+}

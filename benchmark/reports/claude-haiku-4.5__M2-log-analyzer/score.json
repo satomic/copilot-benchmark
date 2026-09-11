@@ -1,0 +1,44 @@
+{
+  "task": "M2-log-analyzer",
+  "model": "claude-haiku-4.5",
+  "functional": 68.75,
+  "functionalMax": 70.0,
+  "spec": 15,
+  "specMax": 15,
+  "quality": 11.25,
+  "qualityMax": 15.0,
+  "qualityAuto": 2.25,
+  "qualityReview": 9,
+  "total": 95.0,
+  "reviewPending": [],
+  "vetoTriggered": [],
+  "hidden": {
+    "total": 44,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 43,
+    "time": 7.547,
+    "bad": [
+      {
+        "name": "_verify.test_m2::test_malformed_lines_return_none[1.1.1.1 - - [09/Sep/2026:08:00:01 +0800] \"get /a HTTP/1.1\" 200 1 0.5]",
+        "kind": "failure",
+        "message": [
+          "assert {'bytes': 1, 'duration': 0.5, 'ip': '1.1.1.1', 'method': 'get', ...} is None",
+          " +  where {'bytes': 1, 'duration': 0.5, 'ip': '1.1.1.1', 'method': 'get', ...} = <function parse_line at 0x000001B05E3FD760>('1.1.1.1 - - [09/Sep/2026:08:00:01 +0800] \"get /a HTTP/1.1\" 200 1 0.5')",
+          " +    where <function parse_line at 0x000001B05E3FD760> = <module 'logstats' from 'C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\claude-haiku-4.5\\\\M2-log-analyzer\\\\logstats.py'>.parse_line"
+        ]
+      }
+    ]
+  },
+  "visible": null,
+  "own": {
+    "total": 25,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 25,
+    "time": 0.53,
+    "bad": []
+  }
+}

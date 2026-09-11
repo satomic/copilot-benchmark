@@ -1,0 +1,422 @@
+{
+  "task": "C3-microdb",
+  "model": "claude-haiku-4.5",
+  "functional": 62.31,
+  "functionalMax": 70.0,
+  "spec": 15,
+  "specMax": 15,
+  "quality": 5.5,
+  "qualityMax": 15.0,
+  "qualityAuto": 1.5,
+  "qualityReview": 4,
+  "total": 82.81,
+  "reviewPending": [],
+  "vetoTriggered": [],
+  "hidden": {
+    "total": 377,
+    "failures": 50,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 327,
+    "time": 7.848,
+    "bad": [
+      {
+        "name": "_verify.test_c3::test_comparison_not_associative[SELECT a FROM t WHERE 1 < 2 < 3]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'microdb.errors.ParseError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_comparison_not_associative[SELECT a FROM t WHERE 1 = 2 = 3]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'microdb.errors.ParseError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_comparison_not_associative[SELECT a FROM t WHERE 1 < 2 >= 3]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'microdb.errors.ParseError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_parse_errors[SELECT a]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE (<class 'microdb.errors.ParseError'>, <class 'microdb.errors.LexError'>)"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_parse_errors[SELECT a FROM t JOIN u]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE (<class 'microdb.errors.ParseError'>, <class 'microdb.errors.LexError'>)"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_parse_errors[SELECT a FROM t extra]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE (<class 'microdb.errors.ParseError'>, <class 'microdb.errors.LexError'>)"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_parse_error_has_offset",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'microdb.errors.ParseError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_nested_aggregate_rejected",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE (<class 'microdb.errors.ParseError'>, <class 'microdb.errors.AggregateError'>)"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_aggregate_in_where_rejected",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE (<class 'microdb.errors.AggregateError'>, <class 'microdb.errors.ParseError'>)"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_expression_output_name",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert [] == ['age + 1']",
+          "  ",
+          "  Right contains one more item: 'age + 1'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_expression_output_name_collapses_space",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert [] == ['age + 1']",
+          "  ",
+          "  Right contains one more item: 'age + 1'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_unknown_column",
+        "kind": "failure",
+        "message": [
+          "KeyError: \"Column 'nope' not found\""
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_unknown_table_in_reference",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'microdb.errors.UnknownTableError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_scalar_type_errors[length(1)]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'microdb.errors.TypeMismatchError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_where_requires_bool[1]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'microdb.errors.TypeMismatchError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_where_requires_bool['a']",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'microdb.errors.TypeMismatchError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_where_requires_bool[age]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'microdb.errors.TypeMismatchError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_where_requires_bool[age + 1]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'microdb.errors.TypeMismatchError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_where_cannot_see_alias",
+        "kind": "failure",
+        "message": [
+          "KeyError: \"Column 'a' not found\""
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_grouping_error_for_bare_column",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'microdb.errors.GroupingError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_grouping_error_for_star",
+        "kind": "failure",
+        "message": [
+          "ValueError: Invalid select item"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_grouping_error_mixing_bare_column_with_aggregate",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'microdb.errors.GroupingError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_having_filters_groups",
+        "kind": "failure",
+        "message": [
+          "microdb.errors.UnknownFunctionError: Unknown function: count"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_having_unknown_drops_group",
+        "kind": "failure",
+        "message": [
+          "microdb.errors.UnknownFunctionError: Unknown function: sum"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_having_may_reference_aggregate_not_in_select",
+        "kind": "failure",
+        "message": [
+          "microdb.errors.UnknownFunctionError: Unknown function: count"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_having_without_grouping_is_consistent",
+        "kind": "failure",
+        "message": [
+          "KeyError: 0"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_order_by_desc_nulls_last",
+        "kind": "failure",
+        "message": [
+          "assert [30, 30, 40, None] == [40, 30, 30, None]",
+          "  ",
+          "  At index 0 diff: 30 != 40"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_order_by_desc_is_stable",
+        "kind": "failure",
+        "message": [
+          "assert [1, 2, 3] == [3, 1, 2]",
+          "  ",
+          "  At index 0 diff: 1 != 3"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_order_by_mixed_directions",
+        "kind": "failure",
+        "message": [
+          "assert [[0, 3], [1, 1], [1, 2]] == [[0, 3], [1, 2], [1, 1]]",
+          "  ",
+          "  At index 1 diff: [1, 1] != [1, 2]"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_order_by_alias",
+        "kind": "failure",
+        "message": [
+          "assert [30, 30, 40, None] == [40, 30, 30, None]",
+          "  ",
+          "  At index 0 diff: 30 != 40"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_order_by_expression",
+        "kind": "failure",
+        "message": [
+          "assert [1, 2, 3, 4] == [3, 1, 4, 2]",
+          "  ",
+          "  At index 0 diff: 1 != 3"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_order_by_type_mismatch",
+        "kind": "failure",
+        "message": [
+          "TypeError: '<' not supported between instances of 'int' and 'str'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_inner_join",
+        "kind": "failure",
+        "message": [
+          "KeyError: \"Column 'v' not found\""
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_join_row_order_is_left_major",
+        "kind": "failure",
+        "message": [
+          "KeyError: \"Column 'v' not found\""
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_join_column_order",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert ['id', 'n'] == ['id', 'n', 'lid', 'v']",
+          "  ",
+          "  Right contains 2 more items, first extra item: 'lid'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_join_unknown_condition_drops_row",
+        "kind": "failure",
+        "message": [
+          "assert [[1], [None]] == [[1]]",
+          "  ",
+          "  Left contains one more item: [None]"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_ambiguous_column",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'microdb.errors.AmbiguousColumnError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_unqualified_unique_column_resolves",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert [['a'], ['b'], ['c']] == [['a'], ['a'], ['b']]",
+          "  ",
+          "  At index 1 diff: ['b'] != ['a']"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_join_with_having",
+        "kind": "failure",
+        "message": [
+          "microdb.errors.UnknownFunctionError: Unknown function: sum"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_join_unknown_table",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'microdb.errors.UnknownTableError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_plan_full_pipeline_order",
+        "kind": "failure",
+        "message": [
+          "AssertionError: join missing from ['scan', 'group', 'project', 'distinct']",
+          "assert 'join' in ['scan', 'group', 'project', 'distinct']"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_cli_basic",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert ['count(*)', '', '1', ''] == ['count(*)', '1']",
+          "  ",
+          "  At index 1 diff: '' != '1'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_cli_header_names",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert ['id,name', '', '1,ann', ''] == ['id,name', '1,ann']",
+          "  ",
+          "  At index 1 diff: '' != '1,ann'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_cli_null_is_empty_field",
+        "kind": "failure",
+        "message": [
+          "assert ['age', '', '\"\"', ''] == ['age', '']",
+          "  ",
+          "  Left contains 2 more items, first extra item: '\"\"'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_cli_bool_lowercase",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert ['f', '', 'tr..., 'false', ''] == ['f', 'true', 'false']",
+          "  ",
+          "  At index 1 diff: '' != 'true'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_cli_bool_input_case_insensitive",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert ['f', '', 'true', ''] == ['f', 'true']",
+          "  ",
+          "  At index 1 diff: '' != 'true'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_cli_two_tables",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert ['l.id', '', '1', ''] == ['id', '1']",
+          "  ",
+          "  At index 0 diff: 'l.id' != 'id'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_cli_usage_errors_exit_two[args1]",
+        "kind": "failure",
+        "message": [
+          "assert 3 == 2",
+          " +  where 3 = CompletedProcess(args=['C:\\\\Users\\\\xuefengyin\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\\\\PythonSoftwareFoundation.Python...z5n2kfra8p0\\\\python.exe', '-m', 'microdb', 'SELECT 1 FROM t'], returncode=3, stdout='', stderr=\"Table 't' not found\\n\").returncode",
+          " +    where CompletedProcess(args=['C:\\\\Users\\\\xuefengyin\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\\\\PythonSoftwareFoundation.Python...z5n2kfra8p0\\\\python.exe', '-m', 'microdb', 'SELECT 1 FROM t'], returncode=3, stdout='', stderr=\"Table 't' not found\\n\") = cli(*('SELECT 1 FROM t',))"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_cli_query_error_exit_three[SELECT id FROM t WHERE 1]",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert 0 == 3",
+          " +  where 0 = CompletedProcess(args=['C:\\\\Users\\\\xuefengyin\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\\\\PythonSoftwareFoundation.Python...143\\\\test_cli_query_error_exit_thre2\\\\people.csv', 'SELECT id FROM t WHERE 1'], returncode=0, stdout='\\n\\n', stderr='').returncode"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_cli_query_error_exit_three[SELECT id, count(*) FROM t]",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert 0 == 3",
+          " +  where 0 = CompletedProcess(args=['C:\\\\Users\\\\xuefengyin\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\\\\PythonSoftwareFoundation.Python...error_exit_thre4\\\\people.csv', 'SELECT id, count(*) FROM t'], returncode=0, stdout='id,count(*)\\n\\n1,3\\n\\n', stderr='').returncode"
+        ]
+      }
+    ]
+  },
+  "visible": null,
+  "own": {
+    "total": 71,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 71,
+    "time": 0.315,
+    "bad": []
+  }
+}

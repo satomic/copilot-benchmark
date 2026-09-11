@@ -1,0 +1,41 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "shared_type_rules": {
+  "maxPoints": 5,
+  "criterion": "运行时类型规则单一来源：VM 的算术/比较/布尔检查收在一处，优化器折叠复用同一套规则或直接调用它，编译期折叠与运行期语义不可能分叉",
+  "points": 5,
+  "verdict": "完全符合：优化器导入 VM 的 _BINARY_OPS 派发表与 _binary/_unary 入口",
+  "reasoning": "optimizer.py:5 from .vm import _BINARY_OPS, _Value, _binary, _unary，折叠直接调用运行时入口，VMRuntimeError 即不折叠，与 Opus 的派发表方案同构。附带一提它还导入了 _Value 类型别名，折叠函数的签名与 VM 的签名共用同一个类型，静态层面也对齐。三条折叠安全埋点、22 项优化器测试、60 项算术比较全过。整个包 785 行是五者最短（第四次蝉联最短），最长函数 _step 只有 40 行。",
+  "evidence": [
+   "optimizer.py:5 from .vm import _BINARY_OPS, _Value, _binary, _unary",
+   "折叠调用运行时入口，失败即不折叠",
+   "共用 _Value 类型别名，签名层面对齐",
+   "优化器 22 项、算术比较 60 项全过"
+  ]
+ },
+ "jump_patching_single_point": {
+  "maxPoints": 4,
+  "criterion": "前向跳转回填经由一个集中的 emit/patch 机制（标签或补丁表），不是散落各处的裸下标运算",
+  "points": 4,
+  "verdict": "完全符合：_patch(index) 集中回填，目标即当前位置",
+  "reasoning": "compiler.py:56 定义 _patch(index)，语义是把 index 处跳转的目标改写为当前位置，所有前向回填（if 的两处、逻辑短路的一处）都调它，无裸下标写。把 target 固定为『当前位置』使 patch 无法被误用为任意改写，接口比参考实现更窄也更安全。控制流 20 项、短路 10 项、跳转界内检查全过。",
+  "evidence": [
+   "compiler.py:56 def _patch(index)，目标固定为当前位置",
+   "compiler.py:91,101,103 全部回填经 _patch",
+   "控制流 20 项、短路 10 项全过"
+  ]
+ },
+ "codec_discipline": {
+  "maxPoints": 3,
+  "criterion": "二进制布局用 struct 声明式表达且 dumps/loads 共用定义；loads 先验 CRC 再信任任何长度字段；读取有单一的越界检查点",
+  "points": 3,
+  "verdict": "完全符合：CRC 先验、_Reader 单点越界、type is bool 判型",
+  "reasoning": "loads 的控制流最短也最清楚：长度下限、magic、CRC（serializer.py:148），三关全过才把 body 交给 _Reader._program() 解析，任何长度字段都在 CRC 之后才被读取。_Reader._read 是单一越界检查点。serializer.py:33 用 type(value) is bool 判型（比 isinstance 更严格的写法），bool 经往返保持类型。逐字节翻转与截断穷举、i64 边界、假 CRC 全过。它的 320 个自测再次是五者最多（Sonnet 86、Opus 91、Fable 90、Haiku 78），且用 9 轮、438 秒完成整个任务，是 C4 最快最省的满分。",
+  "evidence": [
+   "serializer.py:148 CRC 校验后才进入 _Reader 解析",
+   "_Reader._read 单一越界检查点",
+   "serializer.py:33 type(value) is bool 判型",
+   "逐字节翻转/截断穷举全过；自测 320 项五者最多"
+  ]
+ }
+}

@@ -1,0 +1,33 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "layering": {
+    "maxPoints": 6,
+    "criterion": "key 解析 / 值解引号 / 转义展开分成独立的辅助函数，主循环可读",
+    "points": 6,
+    "verdict": "完全符合，四个模型中唯一满分：三项关注点全部抽出，另有 _error 工厂集中错误消息",
+    "reasoning": "判据点名的三件事**全部抽成独立函数**：① 转义展开 → envparse.py:24-41 _expand_double_quoted（配 envparse.py:9 的 _DQ_ESCAPES 查表）；② 值解引号 → envparse.py:51-57 _parse_value，三分支各自委派；③ **key 解析 → envparse.py:16-21 _parse_key** —— 这是另外三个模型全部留在主循环里内联的一项，只有 Fable 抽了出来，而且用 envparse.py:8 预编译的 _EXPORT_RE 配 `sub(..., count=1)` 一行完成 export 前缀剥离（sonnet 用两个 startswith + 切片、opus 用一个 startswith + 切片）。超出判据的加分项：envparse.py:12-13 的 _error 是个**异常工厂**，把 `ValueError(f\"invalid line {lineno}: {line}\")` 这条消息集中到一处构造，主循环两处抛错（70、74）都调它 —— 四个模型里只有 Fable 这么做，其余都在各处重复拼字符串。另有 _strip_trailing_comment（44-48）也独立抽出。主循环 parse_env（60-76）仅 17 行，纯编排：切行 → 跳过空白/注释 → 切分 → 委派 → 存值，是四者中最短且最线性的。envparse.py:3 用 `import re as _re` + 第 5 行 __all__ 主动收窄公共名，符合规格要求。envparse.py:63-64 还注释说明了『尾随 \r 属于行终止符，因此也不出现在错误消息里』—— 这正是隐藏测试逐字节比对错误消息时的一个易错点，它想清楚了。",
+    "evidence": [
+      "envparse.py:16-21 _parse_key（唯一抽出此项的模型）",
+      "envparse.py:24-41 _expand_double_quoted + 第 9 行 _DQ_ESCAPES 查表",
+      "envparse.py:51-57 _parse_value 解引号分派",
+      "envparse.py:12-13 _error 异常工厂集中错误消息（四者中唯一）",
+      "envparse.py:8 _EXPORT_RE.sub(count=1) 一行剥离 export 前缀",
+      "envparse.py:60-76 主循环仅 17 行纯编排",
+      "envparse.py:63-64 注释说明 \r 不进错误消息"
+    ]
+  },
+  "escape_single_pass": {
+    "maxPoints": 5,
+    "criterion": "转义用单次左到右扫描或查表，不是链式 .replace()（链式会引入顺序 bug）",
+    "points": 5,
+    "verdict": "完全符合：字典查表 + 单指针扫描，两种推荐形态兼具",
+    "reasoning": "envparse.py:9 _DQ_ESCAPES 五项字典；envparse.py:28-40 单指针 while 扫描，命中查表取映射值、未命中则两字符原样保留（35-36），统一 i += 2；其余 i += 1。用 if/else 结构而非多个 continue，18 行完成。全文无 .replace 调用，无顺序 bug。隐藏测试 'a\\qb' 与 'a\\\\b' 两例通过。命名上把『双引号内的转义』写进函数名（_expand_double_quoted）也比泛泛的 _expand_escapes 更准确 —— 规格里单引号是字面量、不做转义，函数名直接表达了这个边界。",
+    "evidence": [
+      "envparse.py:9 _DQ_ESCAPES 查表",
+      "envparse.py:28-40 单指针扫描",
+      "envparse.py:35-36 未知转义保留两字符",
+      "envparse.py 全文无 .replace(",
+      "函数名 _expand_double_quoted 明确限定作用域"
+    ]
+  }
+}

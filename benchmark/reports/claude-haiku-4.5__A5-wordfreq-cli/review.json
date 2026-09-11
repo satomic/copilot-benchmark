@@ -1,0 +1,27 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "argparse_exit2": {
+    "maxPoints": 5,
+    "criterion": "用 argparse 的 type= 校验让退出码 2 自然产生，而不是散落的手写 sys.exit(2)",
+    "points": 4,
+    "verdict": "符合但 main 过长：用了 argparse 且退出码 2 正确，但 main() 44 行超出上限",
+    "reasoning": "用了 argparse，退出码 2 由 argparse 的校验自然产生，隐藏测试里 `-n 0` / `-n -1` / `-n abc` / `-n 1.5` / `-n ''` 五种用法错误全部正确返回 2 且 stdout 为空。判据的两个要点都达到。扣 1 分的原因：wordfreq.py:47 的 main() 共 **44 行**，超出本任务 40 行上限，错误处理与输出逻辑没有像 Opus / Fable 那样抽成 _build_parser 之类的辅助函数。对比五个模型：Opus / Astra / Fable 都是 5/5（都抽了 _build_parser 或等价结构），Sonnet 1/5（完全没用 argparse，手写 19 行解析器），Haiku 4/5。值得强调的是 Haiku **没有**踩 Sonnet 那个坑 —— 它老老实实用了 argparse，所以 `--top=5`、`-n5`、`-h/--help` 都可用。",
+    "evidence": [
+      "用 argparse，退出码 2 由其校验自然产生",
+      "隐藏测试 5 种用法错误全部返回 2 且 stdout 为空",
+      "wordfreq.py:47 main() 44 行，超出 40 行上限（自动检查已扣）",
+      "未犯 Sonnet 手写解析器的错误，--help 等功能可用"
+    ]
+  },
+  "tokenize_single_regex": {
+    "maxPoints": 5,
+    "criterion": "分词用一条正则 + 统一 strip，不是多层 replace 或逐字符状态机",
+    "points": 5,
+    "verdict": "符合：一条正则 + 统一 strip，并照规格用了 [a-z0-9'] 而非 \\w",
+    "reasoning": "分词用一条正则配统一的 strip，无 replace 链、无逐字符状态机。关键是它**照规格用了 `[a-z0-9']` 而不是凭经验用 `\\w`** —— 隐藏测试要求 über→ber、__x__→x，两例通过。这是本任务刻意设置的『照规格 vs 凭经验』分水岭，五个模型全部选对了一边。本项五个模型只有 Astra 扣 1 分（正则写在函数体内未预编译），其余四者满分。",
+    "evidence": [
+      "一条正则 + 统一 strip，无 replace 链",
+      "用 [a-z0-9'] 而非 \\w，隐藏测试 über/__x__ 两例通过"
+    ]
+  }
+}

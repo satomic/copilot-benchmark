@@ -1,0 +1,12 @@
+.........F..................................                             [100%]
+================================== FAILURES ===================================
+_ test_malformed_lines_return_none[1.1.1.1 - - [09/Sep/2026:08:00:01 +0800] "get /a HTTP/1.1" 200 1 0.5] _
+_verify\test_m2.py:135: in test_malformed_lines_return_none
+    assert mod.parse_line(bad) is None
+E   assert {'bytes': 1, 'duration': 0.5, 'ip': '1.1.1.1', 'method': 'get', ...} is None
+E    +  where {'bytes': 1, 'duration': 0.5, 'ip': '1.1.1.1', 'method': 'get', ...} = <function parse_line at 0x000001B05E3FD760>('1.1.1.1 - - [09/Sep/2026:08:00:01 +0800] "get /a HTTP/1.1" 200 1 0.5')
+E    +    where <function parse_line at 0x000001B05E3FD760> = <module 'logstats' from 'C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\claude-haiku-4.5\\M2-log-analyzer\\logstats.py'>.parse_line
+- generated xml file: C:\workspace\13_benchmark\GPT-6 in Coding\benchmark\reports\claude-haiku-4.5__M2-log-analyzer\tests\hidden.xml -
+=========================== short test summary info ===========================
+FAILED _verify/test_m2.py::test_malformed_lines_return_none[1.1.1.1 - - [09/Sep/2026:08:00:01 +0800] "get /a HTTP/1.1" 200 1 0.5]
+1 failed, 43 passed in 7.62s

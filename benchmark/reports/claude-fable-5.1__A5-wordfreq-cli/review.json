@@ -1,0 +1,30 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "argparse_exit2": {
+    "maxPoints": 5,
+    "criterion": "用 argparse 的 type= 校验让退出码 2 自然产生，而不是散落的手写 sys.exit(2)",
+    "points": 5,
+    "verdict": "完全符合：argparse + type=_positive_int，退出码 2 由 argparse 自然产生",
+    "reasoning": "① 用了 argparse —— wordfreq.py:42-56 _build_parser 构造 parser，`-n/--top` 用 `type=_positive_int`（51）校验；_positive_int（32-39）对非整数与 <1 分别抛 ArgumentTypeError（36、38），**两条消息都带上了出错的实际值**（`invalid integer value: {value!r}` 与 `N must be at least 1, got {number}`）—— 这一点比 astra 的固定字符串（\"N must be an integer\" / \"N must be at least 1\"）更好。② 退出码 2 由 argparse 自然产生 —— wordfreq.py:61-65 catch SystemExit 后 `return int(exc.code) if exc.code is not None else 0`，第 64 行注释说明『argparse already wrote the usage error to stderr; exit code 2 for errors』。对 `exc.code is None` 的处理是四者中最严谨的：argparse 的 `--help` 会 SystemExit(0)，但某些路径下 code 可能为 None，Fable 显式兜住了这种情况（opus 也做了，astra 直接 int(error.code)）。全文无手写 sys.exit(2)。附带获得 `--top=5`、`-n5`、`-h/--help`、metavar 与 help 文案。对比：sonnet 两次采样都手写 19 行 while 解析器（1/5），opus / astra / Fable 都用 argparse（5/5）。",
+    "evidence": [
+      "wordfreq.py:42-56 _build_parser 用 argparse",
+      "wordfreq.py:32-39 _positive_int 作 type= 校验",
+      "wordfreq.py:36/38 两条 ArgumentTypeError 都带实际值",
+      "wordfreq.py:61-65 catch SystemExit 并处理 exc.code is None",
+      "wordfreq.py 全文无手写 sys.exit(2)"
+    ]
+  },
+  "tokenize_single_regex": {
+    "maxPoints": 5,
+    "criterion": "分词用一条正则 + 统一 strip，不是多层 replace 或逐字符状态机",
+    "points": 5,
+    "verdict": "完全符合：模块级预编译单条正则 + 统一 strip(\"'\")",
+    "reasoning": "wordfreq.py:12 模块级预编译唯一正则 _TOKEN_RE = r\"[a-z0-9']+\"；tokenize（15-21）先 `text.lower()` 再 findall，对每个 token 统一 `strip(\"'\")` 并过滤空串。无 replace 链、无状态机。照规格用 `[a-z0-9']` 而非凭经验用 `\\w` —— 隐藏测试要求 über→ber、__x__→x，两例通过，抓住了本任务『照规格 vs 凭经验』的分水岭。top_words（24-29）用 collections.Counter 计数后按 (-count, word) 排序。本项四个模型的唯一差别：astra 把正则写在函数体内字面量（4/5），sonnet / opus / Fable 都是模块级预编译（5/5）。",
+    "evidence": [
+      "wordfreq.py:12 _TOKEN_RE 模块级预编译，全文唯一正则",
+      "wordfreq.py:17 lower + findall",
+      "wordfreq.py:18 统一 strip(\"'\")",
+      "隐藏测试 über/__x__ 两例通过"
+    ]
+  }
+}

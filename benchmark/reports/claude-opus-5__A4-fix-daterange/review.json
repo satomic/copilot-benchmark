@@ -1,0 +1,30 @@
+{
+  "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+  "root_cause_fix": {
+    "maxPoints": 7,
+    "criterion": "三个缺陷都从根因修（闭区间 +1、chunk 宽度 days-1、days<=0 前置校验）；不是在返回前特判补一个 chunk 之类的补丁",
+    "points": 7,
+    "verdict": "完全符合：三缺陷全部根因消除，且 days 校验额外排除了 bool",
+    "reasoning": "① 闭区间 off-by-one —— 把 count 驱动的 for 换成 `while chunk_start <= end`（daterange.py:26-30）。原结构 `count = span // days` 从根上无法表达尾部残块，换 while 后由 min() 自然收口。② chunk 宽度 —— `min(chunk_start + timedelta(days=days - 1), end)`：days-1 修正宽度、min 防越界，一处解决两症。③ days<=0 —— 前置校验（19-20），且写成 `isinstance(days, bool) or not isinstance(days, int) or days <= 0`，把 bool 也挡掉了；第 18 行注释说明理由『True/False are not meaningful chunk sizes』。task.md 只要求拒绝非正整数，排除 bool 是超出要求的严谨。`end < start` 也前置返回 []（22-23）。无任何补丁式修法：隐藏套件 span 0..39 × days 1..11 共 440 组性质检查全过。顺带一提：这个修法与 sonnet 两次运行的结构完全一致（while + min + 前置校验），说明它是这道题的收敛解，三次独立运行都到达了同一处。",
+    "evidence": [
+      "daterange.py:19-20 days 校验含 bool 排除",
+      "daterange.py:18 注释说明为何排除 bool",
+      "daterange.py:22-23 end<start 前置返回 []",
+      "daterange.py:26-30 for→while 结构替换",
+      "daterange.py:28 min(...days-1..., end)"
+    ]
+  },
+  "minimal_diff": {
+    "maxPoints": 4,
+    "criterion": "diff 最小，未重写整个文件，未改动 docstring 的语义",
+    "points": 4,
+    "verdict": "完全符合：单 hunk、−5/+10 行、全在函数体内，两处 docstring 未动",
+    "reasoning": "unified diff 只有一个 hunk，位于 split_range 函数体内：删 span/count 两行与 for 三行，加校验五行（含一行注释）与 while 四行，另给 chunks 加了类型标注 `list[tuple[date, date]]`。模块 docstring（1-7）与函数 docstring（14-18）逐字节未变，import、签名、参数名与顺序、返回结构全保持。比 sonnet 的版本多 2 行，多出来的是那条解释性注释和类型标注 —— 都是有价值的增量，不算冗余。循环替换是修正缺陷①的必要手段，不算重写。记一个判据未覆盖的点，不扣分：ValueError 消息未带实际值；A4 评分表无 error_messages 条目。",
+    "evidence": [
+      "diff：1 hunk，−5/+10，全在函数体内",
+      "daterange.py:1-7 与 14-18 docstring 未变",
+      "新增 chunks 类型标注",
+      "sealed_unmodified 通过：test_daterange.py 哈希与种子一致"
+    ]
+  }
+}

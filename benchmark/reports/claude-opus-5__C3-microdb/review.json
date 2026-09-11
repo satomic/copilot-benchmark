@@ -1,0 +1,45 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "null_logic_centralised": {
+  "maxPoints": 5,
+  "criterion": "三值逻辑与 NULL 规则集中在 value.py，WHERE / 聚合 / 排序三处都复用它，没有各自重写一套 NULL 判断",
+  "points": 5,
+  "verdict": "完全符合：三处都显式从 value.py 导入，排序也走同一套比较",
+  "reasoning": "value.py 定义全部 7 个原语；expr.py:31 用 `from .value import (...)` 拉入逻辑与算术原语（WHERE 与投影），aggregate.py 复用同一批（聚合），executor.py:27 单独导入 `compare_eq, compare_lt, type_of` 用于排序。三处复用都在，而且排序用的是共享比较函数而不是自写一套，这正是判据要防的分叉点。87 项三值/比较/算术测试与依赖它们的 27 项排序、31 项聚合测试全过，包括 DESC 下 NULL 仍在最后、排序稳定、分组里 NULL 相等而 `=` 下不相等这三条最容易写反的规则。",
+  "evidence": [
+   "value.py 定义 7 个原语",
+   "expr.py:31 from .value import (...)，WHERE 与投影复用",
+   "executor.py:27 from .value import compare_eq, compare_lt, type_of，排序复用",
+   "aggregate.py 复用同一批原语",
+   "三值 21 / 比较 32 / 算术 34 / 排序 27 / 聚合 31 项全过"
+  ]
+ },
+ "explicit_stage_order": {
+  "maxPoints": 4,
+  "criterion": "执行阶段顺序由 planner 显式表达为数据（可枚举的阶段序列），executor 按该顺序执行，不在控制流里隐式重排",
+  "points": 4,
+  "verdict": "完全符合：类型化阶段序列 + `_RUNNERS[type(stage)]` 分派表，executor 里没有顺序知识",
+  "reasoning": "这是三个判定项里最能分出高下的一条，它拿了满分。planner.py:32-73 定义 Stage 基类与 ScanStage / JoinStage / FilterStage / GroupStage / HavingStage / ProjectStage / DistinctStage 等子类，计划是一串类型化对象；executor.py:275-281 的 `execute_plan` 只有四行实质代码：`for stage in plan_obj: runner = _RUNNERS[type(stage)]; runner(state, stage)`。**executor 里不存在任何关于阶段先后的知识**，顺序完全由 planner 决定，加一个阶段只需在计划里插入并注册一个 runner，不必改执行循环。这与 Sonnet 形成清晰对比：Sonnet 的计划正确但 executor 用硬编码 if 阶梯跑流水线，两份顺序可以不一致而测试照样通过。它把 GROUP BY 与聚合合并成一个 GroupStage，规格第 8 节列的是逻辑步骤而不是必须的阶段对象数量，所以这是合理取舍，我的套件也接受（这一点最初被我的测试误判，见第 7 节 e）。",
+  "evidence": [
+   "planner.py:32-73 Stage 基类加类型化子类，计划为对象序列",
+   "executor.py:275-281 execute_plan 仅 for stage in plan_obj: _RUNNERS[type(stage)](state, stage)",
+   "executor 内无任何阶段先后逻辑，顺序完全来自计划",
+   "GROUP BY 与聚合合并为一个 GroupStage，属合理取舍",
+   "11 项计划测试全过"
+  ]
+ },
+ "name_resolution_single_point": {
+  "maxPoints": 3,
+  "criterion": "名称解析（限定名、非限定名、别名优先、歧义报错）集中在一处，不是在投影与排序里各判一次",
+  "points": 3,
+  "verdict": "完全符合：单一 resolve_column，配合结构化的表达式键做别名匹配",
+  "reasoning": "expr.py:89 的 `resolve_column(ctx, table, name)` 是唯一解析入口，限定名、非限定名、歧义、未知表与未知列都在其中判定，`AmbiguousColumnError` 在包内 5 处引用但只从这一点抛出。别名优先的处理有一个额外的巧妙之处：executor.py:284 的 `_select_keys` 为每个投影表达式算出一个结构化的 `expr_key`，ORDER BY 用这个键去匹配输出列，而不是靠比较源文本字符串。这样 `ORDER BY a` 与 `SELECT b AS a` 的匹配是按结构判定的，比字符串比较更稳。相关测试全过：ambiguous_column、unknown_column、unknown_table_in_reference、unqualified_unique_column_resolves、where_cannot_see_alias、order_by_alias_shadows_input_column。",
+  "evidence": [
+   "expr.py:89 resolve_column 为唯一解析入口",
+   "AmbiguousColumnError 仅从该点抛出",
+   "executor.py:284 _select_keys 用结构化 expr_key 匹配 ORDER BY 与输出列",
+   "别名遮蔽输入列一项通过",
+   "歧义 / 未知列 / 未知表相关测试全过"
+  ]
+ }
+}
