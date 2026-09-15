@@ -1,0 +1,454 @@
+{
+  "task": "A3-sales-summary",
+  "runDir": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\A3-sales-summary",
+  "authoredFiles": [
+    {
+      "path": "sales.py",
+      "bytes": 1727,
+      "loc": 47
+    },
+    {
+      "path": "task.md",
+      "bytes": 4035,
+      "loc": 65
+    }
+  ],
+  "expectedFiles": [
+    "task.md",
+    "sales.py"
+  ],
+  "missing": [],
+  "extra": [],
+  "totalLoc": 47,
+  "imports": [],
+  "thirdPartyImports": [],
+  "allowedThirdPartyUsed": [],
+  "functions": [
+    {
+      "file": "sales.py",
+      "name": "_normalize_region",
+      "line": 1,
+      "lines": 2,
+      "public": false,
+      "annotated": false,
+      "unannotated_args": [
+        "value"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "sales.py",
+      "name": "_coerce_amount",
+      "line": 5,
+      "lines": 9,
+      "public": false,
+      "annotated": false,
+      "unannotated_args": [
+        "value"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "sales.py",
+      "name": "summarize",
+      "line": 16,
+      "lines": 44,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    }
+  ],
+  "broadExcept": [],
+  "prints": [],
+  "syntaxErrors": [],
+  "todos": [],
+  "commentedCode": [],
+  "duplicateBlocks": [],
+  "sealed": [],
+  "transientCandidates": [
+    "checkpoint.md"
+  ],
+  "transcript": {
+    "source": "events.jsonl",
+    "turns": 7,
+    "modelCalls": 7,
+    "toolCalls": [
+      {
+        "id": "call_f9DR41MEvtbyJtjBrJkT36cL",
+        "turn": "0",
+        "name": "view",
+        "args": {
+          "path": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\A3-sales-summary"
+        },
+        "success": true,
+        "result": "task.md"
+      },
+      {
+        "id": "call_PiPweXD1HiblRGnav8oLFLfU",
+        "turn": "1",
+        "name": "create",
+        "args": {
+          "path": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\A3-sales-summary\\sales.py",
+          "file_text": "def _normalize_region(value):\n    return str(value).strip()\n\n\ndef _coerce_amount(value):\n    if value is None:\n        return 0.0\n    if isinstance(value, str) and not value.strip():\n        return 0.0\n    try:\n        return float(value)\n    except (TypeError, ValueError):\n        raise ValueError(f\"invalid amount: {value!r}\")\n\n\ndef summarize(rows: list[dict]) -> list[dict]:\n    if not rows:\n        return []\n\n    groups = {}\n\n    for i, row in enumerate(rows):\n        region_value = row.get(\"region\") if isinstance(row, dict) else None\n        if region_value is None:\n            raise ValueError(f\"row {i}: missing region\")\n\n        region_text = _normalize_region(region_value)\n        if not region_text:\n            raise ValueError(f\"row {i}: missing region\")\n\n        key = region_text.lower()\n        if key not in groups:\n            groups[key] = {\"region\": region_text, \"count\": 0, \"total\": 0.0}\n\n        amount_raw = row.get(\"amount\")\n        amount = 0.0\n        if amount_raw is not None and not (isinstance(amount_raw, str) and not amount_raw.strip()):\n            try:\n                amount = float(amount_raw)\n            except (TypeError, ValueError):\n                raise ValueError(f\"row {i}: invalid amount: {amount_raw!r}\")\n\n        group = groups[key]\n        group[\"count\"] += 1\n        group[\"total\"] += amount\n\n    output = []\n    for group in groups.values():\n        total = round(group[\"total\"], 2)\n        avg = round(group[\"total\"] / group[\"count\"], 2)\n        output.append(\n            {\n                \"region\": group[\"region\"],\n                \"count\": group[\"count\"],\n                \"total\": total,\n                \"avg\": avg,\n            }\n        )\n\n    output.sort(key=lambda item: (-item[\"total\"], item[\"region\"].lower()))\n    return output\n"
+        },
+        "success": true,
+        "result": "Created file C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\A3-sales-summary\\sales.py with 1854 characters"
+      },
+      {
+        "id": "call_F5yjg5T6JtcpyiXb2yBncDtR",
+        "turn": "2",
+        "name": "powershell",
+        "args": {
+          "command": "python - <<'PY'\nfrom sales import summarize\n\ncases = [\n    ([\n        {\"region\": \"North\", \"amount\": \"100\"},\n        {\"region\": \"south\", \"amount\": 50.5},\n        {\"region\": \" NORTH \", \"amount\": \" 25 \"},\n        {\"region\": \"South\", \"amount\": None},\n    ], [\n        {\"region\": \"North\", \"count\": 2, \"total\": 125.0, \"avg\": 62.5},\n        {\"region\": \"south\", \"count\": 2, \"total\": 50.5, \"avg\": 25.25},\n    ]),\n    ([], []),\n    ([{\"region\": \"a\", \"amount\": 10}, {\"region\": \"b\", \"amount\": 10}], [\n        {\"region\": \"a\", \"count\": 1, \"total\": 10.0, \"avg\": 10.0},\n        {\"region\": \"b\", \"count\": 1, \"total\": 10.0, \"avg\": 10.0},\n    ]),\n]\nfor rows, expected in cases:\n    got = summarize(rows)\n    print(got)\n    print(got == expected)\n\ntry:\n    summarize([{\"amount\": 1}])\nexcept Exception as e:\n    print(type(e).__name__, str(e))\n\ntry:\n    summarize([{\"region\": \"x\", \"amount\": \"abc\"}])\nexcept Exception as e:\n    print(type(e).__name__, str(e))\nPY",
+          "description": "Run focused Python checks for sales aggregation behavior and required errors.",
+          "mode": "sync",
+          "initial_wait": 30
+        },
+        "success": true,
+        "result": "ParserError: \nLine |\n   2 |  python - <<'PY'\n     |            ~\n     | �ض����������ȱ���ļ��淶��\n<shellId: 0 completed with exit code 1>"
+      },
+      {
+        "id": "call_CAz1Fy5QbMpeQd7g3ayFc65p",
+        "turn": "3",
+        "name": "edit",
+        "args": {
+          "path": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\A3-sales-summary\\sales.py",
+          "old_str": "def _coerce_amount(value):\n    if value is None:\n        return 0.0\n    if isinstance(value, str) and not value.strip():\n        return 0.0\n    try:\n        return float(value)\n    except (TypeError, ValueError):\n        raise ValueError(f\"invalid amount: {value!r}\")\n\n\ndef summarize(rows: list[dict]) -> list[dict]:\n    if not rows:\n        return []\n\n    groups = {}\n\n    for i, row in enumerate(rows):\n        region_value = row.get(\"region\") if isinstance(row, dict) else None\n        if region_value is None:\n            raise ValueError(f\"row {i}: missing region\")\n\n        region_text = _normalize_region(region_value)\n        if not region_text:\n            raise ValueError(f\"row {i}: missing region\")\n\n        key = region_text.lower()\n        if key not in groups:\n            groups[key] = {\"region\": region_text, \"count\": 0, \"total\": 0.0}\n\n        amount_raw = row.get(\"amount\")\n        amount = 0.0\n        if amount_raw is not None and not (isinstance(amount_raw, str) and not amount_raw.strip()):\n            try:\n                amount = float(amount_raw)\n            except (TypeError, ValueError):\n                raise ValueError(f\"row {i}: invalid amount: {amount_raw!r}\")\n\n        group = groups[key]\n        group[\"count\"] += 1\n        group[\"total\"] += amount\n",
+          "new_str": "def _coerce_amount(value):\n    if value is None:\n        return 0.0\n    if isinstance(value, str) and not value.strip():\n        return 0.0\n    try:\n        return float(value)\n    except (TypeError, ValueError):\n        raise ValueError(f\"invalid amount: {value!r}\")\n\n\ndef summarize(rows: list[dict]) -> list[dict]:\n    if not rows:\n        return []\n\n    groups = {}\n\n    for i, row in enumerate(rows):\n        region_value = row.get(\"region\") if isinstance(row, dict) else None\n        if region_value is None:\n            raise ValueError(f\"row {i}: missing region\")\n\n        region_text = _normalize_region(region_value)\n        if not region_text:\n            raise ValueError(f\"row {i}: missing region\")\n\n        key = region_text.lower()\n        if key not in groups:\n            groups[key] = {\"region\": region_text, \"count\": 0, \"total\": 0.0}\n\n        amount_raw = row.get(\"amount\")\n        try:\n            amount = _coerce_amount(amount_raw)\n        except ValueError as exc:\n            raise ValueError(f\"row {i}: invalid amount: {amount_raw!r}\") from exc\n\n        group = groups[key]\n        group[\"count\"] += 1\n        group[\"total\"] += amount\n"
+        },
+        "success": true,
+        "result": "File C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\A3-sales-summary\\sales.py updated with changes."
+      },
+      {
+        "id": "call_Ij6IFGMaUOCWyzO61YCrFoLx",
+        "turn": "4",
+        "name": "powershell",
+        "args": {
+          "command": "@'\nfrom sales import summarize\n\nprint(summarize([\n    {\"region\": \"North\", \"amount\": \"100\"},\n    {\"region\": \"south\", \"amount\": 50.5},\n    {\"region\": \" NORTH \", \"amount\": \" 25 \"},\n    {\"region\": \"South\", \"amount\": None},\n]))\nprint(summarize([]))\nprint(summarize([{\"region\": \"a\", \"amount\": 10}, {\"region\": \"b\", \"amount\": 10}]))\n\nfor rows in [\n    [{\"amount\": 1}],\n    [{\"region\": \"x\", \"amount\": \"abc\"}],\n]:\n    try:\n        summarize(rows)\n    except Exception as e:\n        print(type(e).__name__, str(e))\n'@ | python -",
+          "description": "Validate sales aggregation examples and exact error messages with Python.",
+          "mode": "sync",
+          "initial_wait": 30
+        },
+        "success": true,
+        "result": "[{'region': 'North', 'count': 2, 'total': 125.0, 'avg': 62.5}, {'region': 'south', 'count': 2, 'total': 50.5, 'avg': 25.25}]\n[]\n[{'region': 'a', 'count': 1, 'total': 10.0, 'avg': 10.0}, {'region': 'b', 'count': 1, 'total': 10.0, 'avg': 10.0}]\nValueError row 0: missing region\nValueError row 0: invalid amount: 'abc'\n<shellId: 1 completed with exit code 0>"
+      },
+      {
+        "id": "call_wvyCnUkPi01B2f0WwwCx7F82",
+        "turn": "5",
+        "name": "session_artifacts",
+        "args": {
+          "operation": "write",
+          "path": "checkpoint.md",
+          "content": "Goal: Implement sales aggregation in sales.py per specification.\nAcceptance criteria: public API summarize(rows)->list[dict], grouping by lowercased region, missing/blank region errors, invalid amount errors, sorted totals, exact dict key order.\nProgress: Created sales.py with region normalization, amount coercion, grouping logic, and sorting. Validated against provided examples and exact error strings.\nNext action: finalize and return the completed result.\n"
+        },
+        "success": true,
+        "result": "{\"operation\":\"create\"}"
+      }
+    ],
+    "eventTypes": {
+      "session.skills_loaded": 2,
+      "session.custom_agents_updated": 1,
+      "session.extensions_loaded": 1,
+      "session.tools_updated": 3,
+      "session.mcp_servers_loaded": 1,
+      "user.message": 1,
+      "assistant.turn_start": 7,
+      "model.call_start": 7,
+      "assistant.reasoning_delta": 685,
+      "assistant.tool_call_delta": 540,
+      "model.call_finished": 7,
+      "assistant.message": 7,
+      "assistant.reasoning": 5,
+      "tool.execution_start": 6,
+      "tool.execution_complete": 6,
+      "assistant.turn_end": 7,
+      "session.info": 1,
+      "assistant.message_start": 2,
+      "assistant.message_delta": 46,
+      "session.background_tasks_changed": 55,
+      "tool.execution_partial_result": 4,
+      "session.usage_checkpoint": 1,
+      "assistant.idle": 1,
+      "result": 1
+    },
+    "declaredPaths": [
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\A3-sales-summary",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\A3-sales-summary\\sales.py",
+      "Exception",
+      "abc",
+      "amount",
+      "checkpoint.md",
+      "e:",
+      "except",
+      "expected",
+      "got",
+      "import",
+      "sales",
+      "summarize"
+    ],
+    "mentionedPaths": [
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/A3-sales-summary",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/A3-sales-summary b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/A3-sales-summary",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/A3-sales-summary/sales.py",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/A3-sales-summary/sales.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/A3-sales-summary/sales.py",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\_direct\\plugin\\commands\\activate.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\_direct\\plugin\\commands\\deactivate.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\airunway-aks-setup\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\appinsights-instrumentation\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-ai\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-aigateway\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-app-onboard-prereq\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-app-onboard\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-cloud-migrate\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-compliance\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-compute\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-cost\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-deploy\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-diagnostics\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-enterprise-infra-planner\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-kubernetes\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-kusto\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-messaging\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-prepare\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-quotas\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-reliability\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-resource-lookup\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-resource-visualizer\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-storage\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-upgrade\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-validate\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\entra-agent-id\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\entra-app-registration\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\microsoft-foundry\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\python-appservice-deploy\\SKILL.md",
+      "C:\\Users\\xuefengyin\\AppData\\Local\\copilot\\pkg\\win32-x64\\1.0.84-8\\builtin\\customize-cloud-agent\\SKILL.md",
+      "C:\\Users\\xuefengyin\\AppData\\Local\\copilot\\pkg\\win32-x64\\1.0.84-8\\builtin\\github-pr-media\\SKILL.md",
+      "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\mai-code-1.1-flash\\\\A3-sales-summary\\\\sales.py",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\A3-sales-summary",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\A3-sales-summary\\sales.py",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\A3-sales-summary\\sales.py updated with changes",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\A3-sales-summary\\sales.py with 1854 characters",
+      "c:\\n            raise ValueError(f",
+      "e:\\n",
+      "e:\\n            raise ValueError",
+      "e:\\n            raise ValueError(f",
+      "e:\\n        print",
+      "e:\\n        return 0.0\\n",
+      "e:\\n    print(type",
+      "e:\\n    print(type(e",
+      "s:\\n",
+      "s:\\n            groups[key] = {",
+      "s:\\n    got = summarize(rows",
+      "t:\\n",
+      "t:\\n            raise Value",
+      "t:\\n            raise ValueError(f",
+      "y:\\n",
+      "y:\\n                amount =",
+      "y:\\n        return float(value)\\n",
+      "y:\\n        summarize"
+    ],
+    "assistantMessages": [
+      {
+        "turn": "2",
+        "content": "I’ve implemented the core aggregation logic; now I’m checking the edge cases against the required error strings and ordering."
+      },
+      {
+        "turn": "6",
+        "content": "Done — implemented `sales.py` with the required `summarize(rows)` behavior and exact validation/error messages."
+      }
+    ]
+  },
+  "paths": {
+    "declared": {
+      "inside": [
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\A3-sales-summary",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\A3-sales-summary\\sales.py"
+      ],
+      "relative": [
+        "Exception",
+        "abc",
+        "amount",
+        "checkpoint.md",
+        "except",
+        "expected",
+        "got",
+        "import",
+        "sales",
+        "summarize"
+      ],
+      "allowlisted": [],
+      "outside": [],
+      "ignored": [
+        "e:"
+      ]
+    },
+    "mentioned": {
+      "inside": [
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/A3-sales-summary",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/A3-sales-summary/sales.py",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/A3-sales-summary/sales.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/A3-sales-summary/sales.py",
+        "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\mai-code-1.1-flash\\\\A3-sales-summary\\\\sales.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\A3-sales-summary",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\A3-sales-summary\\sales.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\A3-sales-summary\\sales.py updated with changes",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\A3-sales-summary\\sales.py with 1854 characters"
+      ],
+      "relative": [],
+      "allowlisted": [],
+      "outside": [
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/A3-sales-summary b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/A3-sales-summary",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\_direct\\plugin\\commands\\activate.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\_direct\\plugin\\commands\\deactivate.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\airunway-aks-setup\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\appinsights-instrumentation\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-ai\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-aigateway\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-app-onboard-prereq\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-app-onboard\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-cloud-migrate\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-compliance\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-compute\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-cost\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-deploy\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-diagnostics\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-enterprise-infra-planner\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-kubernetes\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-kusto\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-messaging\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-prepare\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-quotas\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-reliability\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-resource-lookup\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-resource-visualizer\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-storage\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-upgrade\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-validate\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\entra-agent-id\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\entra-app-registration\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\microsoft-foundry\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\python-appservice-deploy\\SKILL.md",
+        "C:\\Users\\xuefengyin\\AppData\\Local\\copilot\\pkg\\win32-x64\\1.0.84-8\\builtin\\customize-cloud-agent\\SKILL.md",
+        "C:\\Users\\xuefengyin\\AppData\\Local\\copilot\\pkg\\win32-x64\\1.0.84-8\\builtin\\github-pr-media\\SKILL.md",
+        "c:\\n            raise ValueError(f",
+        "e:\\n",
+        "e:\\n            raise ValueError",
+        "e:\\n            raise ValueError(f",
+        "e:\\n        print",
+        "e:\\n        return 0.0\\n",
+        "e:\\n    print(type",
+        "e:\\n    print(type(e",
+        "s:\\n",
+        "s:\\n            groups[key] = {",
+        "s:\\n    got = summarize(rows",
+        "t:\\n",
+        "t:\\n            raise Value",
+        "t:\\n            raise ValueError(f",
+        "y:\\n",
+        "y:\\n                amount =",
+        "y:\\n        return float(value)\\n",
+        "y:\\n        summarize"
+      ],
+      "ignored": []
+    }
+  },
+  "spec": {
+    "items": [
+      {
+        "id": "files",
+        "check": "file_manifest",
+        "points": 8,
+        "awarded": 8,
+        "verdict": "PASS",
+        "evidence": [
+          "authored file set matches exactly (2 files)"
+        ],
+        "veto": false
+      },
+      {
+        "id": "deps",
+        "check": "stdlib_only",
+        "points": 4,
+        "awarded": 4,
+        "verdict": "PASS",
+        "evidence": [
+          "imports are stdlib / local / task-provided only: (none)"
+        ],
+        "veto": false
+      },
+      {
+        "id": "bounds",
+        "check": "path_containment",
+        "points": 3,
+        "awarded": 3,
+        "verdict": "PASS",
+        "evidence": [
+          "absolute tool paths inside the run dir: 2; relative names resolved against the run dir: 10; allowlisted system locations: 0; outside: 0",
+          "  absolute, inside: C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\A3-sales-summary",
+          "  absolute, inside: C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\A3-sales-summary\\sales.py",
+          "  relative/bare tokens (the CLI lists these for shell commands; they resolve under the run dir, which is the tool cwd): 'Exception', 'abc', 'amount', 'checkpoint.md', 'except', 'expected', 'got', 'import', 'sales', 'summarize'"
+        ],
+        "veto": false
+      }
+    ],
+    "score": 15,
+    "max": 15
+  },
+  "autoItems": [
+    {
+      "id": "hygiene",
+      "points": 5,
+      "awarded": 5.0,
+      "passedChecks": 4,
+      "totalChecks": 4,
+      "checks": [
+        {
+          "id": "no_broad_except",
+          "passed": true,
+          "evidence": [
+            "no broad except handlers"
+          ]
+        },
+        {
+          "id": "no_debug_residue",
+          "passed": true,
+          "evidence": [
+            "no TODO markers, no commented-out code, no stray print() outside CLI modules"
+          ]
+        },
+        {
+          "id": "typed_public_api",
+          "passed": true,
+          "evidence": [
+            "all 1 public function(s) fully annotated"
+          ]
+        },
+        {
+          "id": "bounded_function_length",
+          "passed": true,
+          "evidence": [
+            "longest implementation function is 44 lines (limit 45)"
+          ]
+        }
+      ]
+    }
+  ],
+  "reviewItems": [
+    {
+      "id": "grouping_efficiency",
+      "points": 5,
+      "criterion": "单遍 dict 累加分组，不是对每个 region 重复扫描全表（O(n²)）",
+      "mode": "review"
+    },
+    {
+      "id": "separation",
+      "points": 5,
+      "criterion": "region/amount 的取值与校验抽成辅助函数，错误消息集中构造，聚合逻辑干净",
+      "mode": "review"
+    }
+  ],
+  "qualityMax": 15,
+  "qualityAutoScore": 5.0,
+  "qualityReviewMax": 10,
+  "ownTestFunctionCount": 0
+}

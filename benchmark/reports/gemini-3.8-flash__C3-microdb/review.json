@@ -1,0 +1,36 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "null_logic_centralised": {
+  "maxPoints": 5,
+  "criterion": "三值逻辑与 NULL 规则集中在 value.py，WHERE / 聚合 / 排序三处都复用它，没有各自重写一套 NULL 判断",
+  "points": 5,
+  "verdict": "完全符合：三值逻辑单点定义，四个模块导入复用",
+  "reasoning": "value.py 集中三值逻辑与 NULL 比较规则，expr/aggregate/executor/schema 四处 from value import 复用（grep 计数 4），全模块无第二套 NULL 真值表。NULL 语义类隐藏测试全部通过（本任务 35 项失败全部是 lexer API 未导出，与 NULL 无关）。",
+  "evidence": [
+   "value.py 单点定义",
+   "四个模块导入复用"
+  ]
+ },
+ "explicit_stage_order": {
+  "maxPoints": 4,
+  "criterion": "执行阶段顺序由 planner 显式表达为数据（可枚举的阶段序列），executor 按该顺序执行，不在控制流里隐式重排",
+  "points": 3,
+  "verdict": "大体符合：Plan 是真实数据序列，但 executor 按名字捞取阶段载荷而非按序列驱动",
+  "reasoning": "planner.py:73-84 的 Plan 实现 Sequence 协议，阶段序列是可枚举数据。失分点：executor 侧的消费模式是按名字过滤捞取（如 planner.py:380 的 [stage.aggregates for stage in plan if stage.name == 'AGGREGATE']），执行顺序由 executor 自身控制流决定、计划只当作载荷容器；介于 sonnet 的完全摆设（2/4）与 mai/grok 的逐阶段顺序消费（4/4）之间，给 3/4。",
+  "evidence": [
+   "planner.py:73-84 Plan 为 Sequence",
+   "按名字捞取而非顺序驱动（失分点）"
+  ]
+ },
+ "name_resolution_single_point": {
+  "maxPoints": 3,
+  "criterion": "名称解析（限定名、非限定名、别名优先、歧义报错）集中在一处，不是在投影与排序里各判一次",
+  "points": 3,
+  "verdict": "完全符合：单一 resolver 工厂，歧义单点报错",
+  "reasoning": "executor.py:39-60 的 _make_resolver 是唯一解析点，产出的 resolve 闭包注入 RowEvalContext（executor.py:73,117），JOIN 条件、WHERE、投影共用同一解析路径，歧义在 executor.py:55 单点抛 AmbiguousColumnError。",
+  "evidence": [
+   "executor.py:39-60 resolver 工厂",
+   "executor.py:55 歧义单点"
+  ]
+ }
+}

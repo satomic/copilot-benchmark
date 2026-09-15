@@ -1,0 +1,39 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "regex_named_groups": {
+  "maxPoints": 5,
+  "criterion": "用一条预编译正则 + 命名组解析日志行，不是多次 split 拼凑",
+  "points": 5,
+  "verdict": "完全符合：单条预编译正则，8 个命名组，方法字符类严格大写",
+  "reasoning": "logstats.py:14-21 单条模块级预编译正则，ip/user/timestamp/method/path/protocol/status/bytes/duration 全部命名组，逐段注释式拼接可读性好。method 用 [A-Z]+（logstats.py:18），严格执行规格的大写要求（对照：haiku 用 \\w+ 放行小写 get 被隐藏测试逮住，本项只得 2/5）。parse_line（logstats.py:28）单次 match 后从命名组取值，无 split 拼凑。",
+  "evidence": [
+   "logstats.py:14-21 单条预编译正则 + 命名组",
+   "logstats.py:18 method 字符类 [A-Z]+ 命中规格埋点",
+   "logstats.py:28 parse_line 单次 match"
+  ]
+ },
+ "streaming": {
+  "maxPoints": 4,
+  "criterion": "analyze 单遍流式处理任意可迭代对象，不把整个文件 list() 进内存",
+  "points": 4,
+  "verdict": "完全符合：单遍 for 迭代，计数器就地累加，无整表物化",
+  "reasoning": "analyze（logstats.py:61-98）签名接受任意 Iterable[str]，主循环 for line in lines 单遍推进，状态类计数、三个 Counter、bytes 合计全部就地累加，从不对 lines 调 list() 或多次迭代。唯一增长的容器是 durations 列表（logstats.py:71,97），这是分位数计算的必要保留，与参考实现一致。空行与畸形行在流中就地分类计数。",
+  "evidence": [
+   "logstats.py:61 签名接受 Iterable",
+   "logstats.py:73-97 单遍主循环就地累加",
+   "无 list(lines) 或二次迭代"
+  ]
+ },
+ "percentile_isolated": {
+  "maxPoints": 3,
+  "criterion": "分位数抽成独立函数，空列表与 n=1 的边界显式处理",
+  "points": 2,
+  "verdict": "大体符合：独立函数 + n=1 钳位显式处理，但空列表守卫在调用点而非函数内",
+  "reasoning": "logstats.py:53-58 的 _percentile 是独立函数，最近秩公式 ceil(p/100*n)-1 正确，max(0, min(index, n-1)) 双侧钳位显式覆盖 n=1（index=0）。判据三个要件命中两个。空列表的处理在调用点：logstats.py:104 的 if durations 守卫加 else 分支零值兜底（logstats.py:113-114），行为正确且隐藏测试全过；但函数自身对空表会在 sorted_values[0] 处 IndexError（n=0 时钳位产出 index=0），『空列表边界显式处理』这一要件没有落在被判定的函数内。对照：haiku 在函数内置守卫得 3/3（六模型中唯一），astra 连函数都未抽出得 1/3。kimi 居中得 2/3。",
+  "evidence": [
+   "logstats.py:53-58 独立函数 + 双侧钳位（n=1 显式覆盖）",
+   "logstats.py:104,113-114 空表守卫在调用点",
+   "函数自身传入空表会 IndexError"
+  ]
+ }
+}

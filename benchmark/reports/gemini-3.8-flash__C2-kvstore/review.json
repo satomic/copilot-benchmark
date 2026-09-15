@@ -1,0 +1,37 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "record_codec_declarative": {
+  "maxPoints": 5,
+  "criterion": "记录格式集中在 record.py，用 struct 或等价的声明式方式表达头部布局，不是散落各处的手工字节切片；编码与解码共用同一份字段定义",
+  "points": 4,
+  "verdict": "大体符合：格式声明共用，但头部长度硬编码 15 而非从格式派生",
+  "reasoning": "record.py:6 的 _HEADER_FORMAT = '>4sBHII' 一处声明，encode 的 pack（record.py:35）与 decode 的 unpack_from（record.py:46）共用，无手工切片。失分点：record.py:7 的 _HEADER_SIZE = 15 是硬编码字面量而非 struct.calcsize(_HEADER_FORMAT) 派生，格式一旦改动两处会失同步；主报告曾点名四个头部模型全部从格式派生长度、集体优于参考实现，此处 gemini 未达到该线。扣 1 分。",
+  "evidence": [
+   "record.py:6 单一格式声明双端共用",
+   "record.py:7 硬编码 15（失分点）"
+  ]
+ },
+ "truncation_vs_corruption": {
+  "maxPoints": 4,
+  "criterion": "截断与损坏的区分有明确且单一的判定点（IncompleteRecordError 与 CorruptRecordError 分开抛、由 scan 统一转译），不是靠散落的 try/except 兜住",
+  "points": 4,
+  "verdict": "完全符合：decode 分类抛出，scan 单点转译",
+  "reasoning": "record.py:43,60 两处 Incomplete（头部不足/负载不足），record.py:50-56 及 CRC/UTF-8 检查抛 Corrupt 且消息带实际值；segment.py:57-60 scan 单点转译。decode 单点分类（字节不足抛 Incomplete，其余缺陷抛 Corrupt），Segment.scan 单点转译：Incomplete 干净停止（尾部截断语义），Corrupt 转为带路径与偏移的 CorruptSegmentError 并 from 保链。『CRC 失败即使在最后一条也报损坏』的规格埋点测试通过。除此两处无散落 try/except。",
+  "evidence": [
+   "record.py:43,60 Incomplete 两处",
+   "segment.py:57-60 scan 单点转译"
+  ]
+ },
+ "atomic_compaction": {
+  "maxPoints": 3,
+  "criterion": "压实顺序正确：先写 tmp、再 os.replace、最后删旧段；tmp 名字不匹配段文件模式，且中途崩溃可恢复",
+  "points": 3,
+  "verdict": "完全符合：tmp 后缀避开段模式，os.replace 原子换名，旧段最后删",
+  "reasoning": "compact.py:29-30 tmp 为 <id>.seg.tmp（不匹配 *.seg 发现模式），compact.py:33 写满 tmp，compact.py:45 os.replace 原子换名，compact.py:48 起旧段删除在换名之后且跳过 final_path。崩溃任意时刻磁盘上不出现顶着合法段名的半成品。",
+  "evidence": [
+   "compact.py:29 tmp 命名",
+   "compact.py:45 os.replace",
+   "compact.py:48 旧段最后删"
+  ]
+ }
+}

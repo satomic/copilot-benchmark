@@ -1,0 +1,40 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "grammar_correspondence": {
+  "maxPoints": 5,
+  "criterion": "递归下降的函数与 task.md 的文法层级一一对应，命名可读，无手工回溯",
+  "points": 5,
+  "verdict": "完全符合：parse_expr 到 parse_primary 十个方法与文法层级一一对应",
+  "reasoning": "parser.py:110-176 的方法链 parse_expr -> parse_or -> parse_and -> parse_not -> parse_comparison -> parse_additive -> parse_multiplicative -> parse_unary -> parse_power -> parse_primary，与 task.md 的文法层级逐层对应，命名直接采用文法产生式名，可读性好。单 token 前瞻的标准递归下降，无手工回溯或 token 流倒带。^ 的右结合在 parse_power 内以递归自调用实现，not 与 unary 的层级关系正确（这两处都是规格的反直觉埋点，隐藏测试全过）。",
+  "evidence": [
+   "parser.py:110-176 十个 parse_* 方法逐层对应文法",
+   "隐藏套件 152/153，全部文法层级测试通过",
+   "无回溯或倒带逻辑"
+  ]
+ },
+ "named_ast": {
+  "maxPoints": 4,
+  "criterion": "AST 用具名节点（dataclass / NamedTuple / 类），不是裸 tuple 或 dict",
+  "points": 4,
+  "verdict": "完全符合：七种具名节点类，无裸 tuple 或 dict",
+  "reasoning": "parser.py:25-79 定义 _Node 基类与 Num/Str/Bool/Var/Call/Unary/Binary 七个具名节点类，各自显式 __init__ 与字段名，evaluator 按节点类型分派。整个 AST 不存在裸 tuple 或 dict 表示。判据允许 dataclass / NamedTuple / 普通类三种形态，kimi 用普通类符合要求。记录一个判据外的对照点不扣分：节点未携带源码位置字段（fable 让 AST 基类强制携带 position 拿到该任务唯一的判定满分组合），kimi 的位置信息只存在于 Token 层。",
+  "evidence": [
+   "parser.py:25-79 七个具名节点类",
+   "evaluator.py 按类型分派，无 tuple/dict 形态",
+   "节点无 position 字段（判据外记录）"
+  ]
+ },
+ "error_consistency": {
+  "maxPoints": 3,
+  "criterion": "三类错误消息风格一致且带位置信息，没有 except Exception 吞异常",
+  "points": 2,
+  "verdict": "大体符合：三类异常继承共同基类、风格一致、无吞异常，但求值错误不带位置信息",
+  "reasoning": "errors.py:4-29 的 MiniLangError 基类带 position 属性（0 基偏移，errors.py:7 注释明确语义），LexError/ParseError/EvalError 三类继承之，消息风格统一为小写陈述句 + f-string 带实际类型名（evaluator.py:19,25,87 等），符合规格第 29 条『消息不带位置前缀』的要求（errors.py:17 有对应注释）。异常捕获全部窄化：evaluator.py:109 只捕 (OverflowError, ZeroDivisionError) 且 from None，无 except Exception。失分点：EvalError 的全部 raise 站点（evaluator.py:19,25,35,38,53,60,87,98,101 等）均未传 position 实参，求值类错误的 position 恒为 None，『带位置信息』对三类中的一类未达成。对齐口径：sonnet 与 astra 因同类缺口各得 2/3，fable 三类全带位置得 3/3。",
+  "evidence": [
+   "errors.py:4-29 统一基类与三类继承",
+   "evaluator.py:109-110 窄捕获 + from None",
+   "EvalError 各 raise 站点未传 position（失分点）",
+   "errors.py:17 规格第 29 条的显式注释"
+  ]
+ }
+}

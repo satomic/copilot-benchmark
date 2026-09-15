@@ -1,0 +1,25 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "layering": {
+  "maxPoints": 6,
+  "criterion": "key 解析 / 值解引号 / 转义展开分成独立的辅助函数，主循环可读",
+  "points": 4,
+  "verdict": "大体符合：转义展开与未引值处理已抽出，key 解析仍内联",
+  "reasoning": "envparse.py:6 _expand_double_quoted（转义展开）与 envparse.py:27 _unquoted_value（未引值注释剥离）两个辅助函数职责清晰；判据点名的三项里 key 解析（export 前缀与校验）仍内联在 parse_env 主循环（envparse.py:34 起）。口径对齐：介于 sonnet（三项抽出、仅 key 内联，5/6）与 kimi（仅一项抽出，3/6）之间，两项抽出给 4/6。",
+  "evidence": [
+   "envparse.py:6,27 两个辅助函数",
+   "key 解析内联于主循环"
+  ]
+ },
+ "escape_single_pass": {
+  "maxPoints": 5,
+  "criterion": "转义用单次左到右扫描或查表，不是链式 .replace()（链式会引入顺序 bug）",
+  "points": 5,
+  "verdict": "完全符合：单次左到右 while 扫描",
+  "reasoning": "envparse.py:6-25 的 _expand_double_quoted 用索引 i 单遍左到右推进，向前看一位分派，未知转义保留两字符。无 .replace() 链。38 项隐藏测试全过。",
+  "evidence": [
+   "envparse.py:10 while 单遍扫描",
+   "隐藏套件 38/38"
+  ]
+ }
+}

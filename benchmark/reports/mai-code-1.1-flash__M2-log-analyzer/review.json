@@ -1,0 +1,36 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "regex_named_groups": {
+  "maxPoints": 5,
+  "criterion": "用一条预编译正则 + 命名组解析日志行，不是多次 split 拼凑",
+  "points": 5,
+  "verdict": "完全符合：单条预编译正则，7 个命名组，method 严格大写",
+  "reasoning": "logstats.py:38-41 单条预编译正则，ip/user/timestamp/method/path/protocol/status/bytes/duration 全部命名组，method 用 [A-Z]+ 命中规格埋点，行首行尾锚定。无 split 拼凑。44 项隐藏测试全过。",
+  "evidence": [
+   "logstats.py:38-41 命名组正则",
+   "method [A-Z]+"
+  ]
+ },
+ "streaming": {
+  "maxPoints": 4,
+  "criterion": "analyze 单遍流式处理任意可迭代对象，不把整个文件 list() 进内存",
+  "points": 2,
+  "verdict": "部分符合：单遍迭代且接受可迭代对象，但把全部解析记录物化成列表再聚合",
+  "reasoning": "analyze（logstats.py:154 起）对输入单遍推进且签名接受 Iterable，这部分符合；但它把每行解析出的完整 record 字典 append 进 records 列表（logstats.py:163『records: list[dict] = []』），聚合推迟到 _build_report 对整个列表二次遍历。内存占用 O(全部解析行)，与判据『不把整个文件物化进内存』的意图相悖：参考实现与其余八个模型都在流中就地累加计数器、只保留 durations。输入行本身未物化（扣分不到底），聚合结构物化（扣 2 分）。",
+  "evidence": [
+   "logstats.py:163 records 列表物化全部解析记录",
+   "_build_report 对列表二次遍历"
+  ]
+ },
+ "percentile_isolated": {
+  "maxPoints": 3,
+  "criterion": "分位数抽成独立函数，空列表与 n=1 的边界显式处理",
+  "points": 3,
+  "verdict": "完全符合：模块级独立函数，空表与 n=1 都在函数内显式处理",
+  "reasoning": "logstats.py:78-85 的 _nearest_rank 是模块级独立函数，函数内首行守卫空表返回 0.0，max/min 双侧钳位显式覆盖 n=1，最近秩公式正确。判据三要件全部落在函数内，与 haiku、grok 同为该项满分。",
+  "evidence": [
+   "logstats.py:79 函数内空表守卫",
+   "logstats.py:83 双侧钳位"
+  ]
+ }
+}

@@ -1,0 +1,40 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "record_codec_declarative": {
+  "maxPoints": 5,
+  "criterion": "记录格式集中在 record.py，用 struct 或等价的声明式方式表达头部布局，不是散落各处的手工字节切片；编码与解码共用同一份字段定义",
+  "points": 5,
+  "verdict": "完全符合：单一 struct.Struct 声明，编码解码共用，校验顺序集中",
+  "reasoning": "record.py:26 用 _HEADER = struct.Struct('>4sBHII') 一处声明头部布局，encode_record 的 pack（record.py:39）与 decode_record 的 unpack_from（record.py:56）共用同一对象，头部尺寸由 _HEADER.size 派生而非硬编码。解码校验顺序集中且有注释声明（record.py:49『structure, then CRC, then UTF-8』），结构类校验统一收拢在 _check_structure（record.py:77-85）。全模块无手工字节切片拼头部。判据外记录一个功能层缺口（已在功能分扣除，此处不重复扣分）：encode_record 未校验空键与超长键，空键被静默编码、超长键在 struct.pack 处以裸 struct.error 溢出，对应 3 项隐藏测试失败；该缺口属于输入校验缺失而非布局声明方式问题。",
+  "evidence": [
+   "record.py:26 单一 Struct 声明",
+   "record.py:39,56 编码解码共用 _HEADER",
+   "record.py:77-85 _check_structure 集中校验",
+   "encode 缺键校验（功能层已扣，判据外记录）"
+  ]
+ },
+ "truncation_vs_corruption": {
+  "maxPoints": 4,
+  "criterion": "截断与损坏的区分有明确且单一的判定点（IncompleteRecordError 与 CorruptRecordError 分开抛、由 scan 统一转译），不是靠散落的 try/except 兜住",
+  "points": 4,
+  "verdict": "完全符合：decode 分类抛出，scan 单点转译，语义与规格逐条对应",
+  "reasoning": "分类在 decode_record 单点完成：字节不足抛 IncompleteRecordError（record.py:53,60），其余一切缺陷（CRC 不匹配、坏 magic、未知 flags、非法长度、坏 UTF-8）抛 CorruptRecordError（record.py:68,73,79-85），两类共同继承 RecordError（errors.py:16-20）。转译在 Segment.scan 单点完成：segment.py:49 捕 Incomplete 干净停止（尾部截断语义），segment.py:51-52 捕 Corrupt 转译为带路径与偏移的 CorruptSegmentError 并 from 保链。规格埋点『CRC 失败即使在最后一条记录也报损坏』由该结构天然保证（CRC 检查在 Incomplete 判定之后才可能到达，隐藏测试通过）。除这两处外无散落 try/except。",
+  "evidence": [
+   "record.py:53,60 Incomplete 两处（头部不足/负载不足）",
+   "record.py:68 CRC 不匹配抛 Corrupt（最后一条记录同样适用）",
+   "segment.py:49-52 scan 单点转译，from 保链"
+  ]
+ },
+ "atomic_compaction": {
+  "maxPoints": 3,
+  "criterion": "压实顺序正确：先写 tmp、再 os.replace、最后删旧段；tmp 名字不匹配段文件模式，且中途崩溃可恢复",
+  "points": 3,
+  "verdict": "完全符合：tmp 后缀避开段模式，os.replace 原子换名，旧段最后删除",
+  "reasoning": "compact.py:35 tmp 路径为 <newid>.seg.tmp，.tmp 后缀不匹配段文件的 *.seg 发现模式，崩溃遗留的半成品不会被当作合法段加载；compact.py:36 先把全部存活记录写入 tmp；compact.py:38 用 os.replace 原子换名；旧段删除在换名之后。docstring（compact.py:26-29）逐句说明该顺序与崩溃可恢复性，表明是有意设计而非巧合。与 fable/astra 的满分实现同构（对照：haiku 无 tmp 无 replace 得 1/3）。判据外记录不加减分：未对新段做 fsync，规格未要求，astra 额外做了。",
+  "evidence": [
+   "compact.py:35 tmp 名 <id>.seg.tmp 不匹配 *.seg",
+   "compact.py:36-38 先写满、再 os.replace",
+   "compact.py:26-29 docstring 明示崩溃恢复设计意图"
+  ]
+ }
+}

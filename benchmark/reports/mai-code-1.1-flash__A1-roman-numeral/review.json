@@ -1,0 +1,26 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "algorithm": {
+  "maxPoints": 6,
+  "criterion": "查表 + 贪心（divmod / 循环减法）实现；不是按千百十个位写 if/elif 硬编码分支",
+  "points": 6,
+  "verdict": "完全符合：13 组查表 + divmod 贪心，remaining 变量避免改写入参",
+  "reasoning": "roman.py:1-15 模块级 _VALUES 元组 13 组含减法对从大到小。roman.py:22-26 单层循环 divmod 贪心，用独立的 remaining 变量而不改写参数 n（对比 astra 曾因复用参数名被记录风格点）。无位分支，数据与算法分离，与参考实现同构。",
+  "evidence": [
+   "roman.py:1-15 _VALUES 查表",
+   "roman.py:24 divmod 贪心，remaining 独立变量",
+   "roman.py:18 bool 先于 int 判定"
+  ]
+ },
+ "error_messages": {
+  "maxPoints": 4,
+  "criterion": "TypeError / ValueError 的消息可读且包含出错的实际值或类型，不是裸 raise",
+  "points": 3,
+  "verdict": "大体符合：措辞准确、区分两类异常，但两条消息都不含出错的实际值或类型",
+  "reasoning": "roman.py:19 的 TypeError 是固定字符串『n must be an int』，roman.py:21 的 ValueError 是『n must be in the range 1..3999』。两条都不是裸 raise、都准确说明约束、正确区分类型错误与取值错误，但『包含实际值或类型』这一核心要求未达到。口径对齐：与 kimi 的同形态消息一致给 3/4（gemini/sonnet/opus 用 f-string 带实际值得 4/4）。",
+  "evidence": [
+   "roman.py:19 TypeError 固定字符串",
+   "roman.py:21 ValueError 无越界实际值"
+  ]
+ }
+}

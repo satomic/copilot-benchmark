@@ -1,0 +1,238 @@
+........................................................................ [ 19%]
+..............................................................F......... [ 38%]
+................................................FF.F........F........... [ 57%]
+........................................................................ [ 76%]
+...........FFFF...........................F..F..FFFFFFFFFF.......F...... [ 95%]
+..F..F...........                                                        [100%]
+================================== FAILURES ===================================
+_________________ test_table_rejects_wrong_cell_type[BOOL-1] __________________
+_verify\test_c3.py:413: in test_table_rejects_wrong_cell_type
+    with pytest.raises(db.SchemaError):
+E   Failed: DID NOT RAISE <class 'microdb.errors.SchemaError'>
+_______________________ test_nested_aggregate_rejected ________________________
+_verify\test_c3.py:555: in test_nested_aggregate_rejected
+    with pytest.raises((db.ParseError, db.AggregateError)):
+E   Failed: DID NOT RAISE (<class 'microdb.errors.ParseError'>, <class 'microdb.errors.AggregateError'>)
+______________________ test_aggregate_in_where_rejected _______________________
+_verify\test_c3.py:560: in test_aggregate_in_where_rejected
+    with pytest.raises((db.AggregateError, db.ParseError)):
+E   Failed: DID NOT RAISE (<class 'microdb.errors.AggregateError'>, <class 'microdb.errors.ParseError'>)
+__________________________ test_select_star_columns ___________________________
+_verify\test_c3.py:574: in test_select_star_columns
+    assert run("SELECT * FROM p").columns == ["id", "name", "age", "score"]
+E   AssertionError: assert ['id', 'p.id'... 'p.age', ...] == ['id', 'name', 'age', 'score']
+E     
+E     At index 1 diff: 'p.id' != 'name'
+E     Left contains 4 more items, first extra item: 'age'
+E     Use -v to get more diff
+_________________________ test_unknown_table_in_from __________________________
+_verify\test_c3.py:614: in test_unknown_table_in_from
+    run("SELECT id FROM zz")
+_verify\test_c3.py:129: in go
+    return db.execute(query, tables if tables is not None else {"p": people})
+microdb\executor.py:23: in execute
+    return execute_plan(pipeline, tables)
+microdb\executor.py:31: in execute_plan
+    rows = _from_stage(stage, tables)
+microdb\executor.py:55: in _from_stage
+    table = tables[stage.table]
+E   KeyError: 'zz'
+____________ test_grouping_error_mixing_bare_column_with_aggregate ____________
+_verify\test_c3.py:862: in test_grouping_error_mixing_bare_column_with_aggregate
+    with pytest.raises(db.GroupingError):
+E   Failed: DID NOT RAISE <class 'microdb.errors.GroupingError'>
+_________________________ test_having_filters_groups __________________________
+_verify\test_c3.py:867: in test_having_filters_groups
+    out = run("SELECT age, count(*) FROM p GROUP BY age HAVING count(*) > 1").rows
+_verify\test_c3.py:129: in go
+    return db.execute(query, tables if tables is not None else {"p": people})
+microdb\executor.py:23: in execute
+    return execute_plan(pipeline, tables)
+microdb\executor.py:37: in execute_plan
+    rows = _group_stage(rows, stage)
+microdb\executor.py:133: in _group_stage
+    if stage.having is not None and not _predicate_true(evaluate(stage.having, ctx)):
+microdb\expr.py:17: in evaluate
+    return _eval_binary(expr.op, expr.left, expr.right, row)
+microdb\expr.py:60: in _eval_binary
+    lv = evaluate(left, row)
+microdb\expr.py:19: in evaluate
+    return _eval_call(expr, row)
+microdb\expr.py:112: in _eval_call
+    raise AggregateError(f"aggregate {name} not allowed here")
+E   microdb.errors.AggregateError: aggregate count not allowed here
+_______________________ test_having_unknown_drops_group _______________________
+_verify\test_c3.py:873: in test_having_unknown_drops_group
+    out = db.execute("SELECT a, sum(b) FROM t GROUP BY a HAVING sum(b) > 1", {"t": t}).rows
+microdb\executor.py:23: in execute
+    return execute_plan(pipeline, tables)
+microdb\executor.py:37: in execute_plan
+    rows = _group_stage(rows, stage)
+microdb\executor.py:133: in _group_stage
+    if stage.having is not None and not _predicate_true(evaluate(stage.having, ctx)):
+microdb\expr.py:17: in evaluate
+    return _eval_binary(expr.op, expr.left, expr.right, row)
+microdb\expr.py:60: in _eval_binary
+    lv = evaluate(left, row)
+microdb\expr.py:19: in evaluate
+    return _eval_call(expr, row)
+microdb\expr.py:112: in _eval_call
+    raise AggregateError(f"aggregate {name} not allowed here")
+E   microdb.errors.AggregateError: aggregate sum not allowed here
+______________ test_having_may_reference_aggregate_not_in_select ______________
+_verify\test_c3.py:878: in test_having_may_reference_aggregate_not_in_select
+    out = run("SELECT age FROM p GROUP BY age HAVING count(*) > 1").rows
+_verify\test_c3.py:129: in go
+    return db.execute(query, tables if tables is not None else {"p": people})
+microdb\executor.py:23: in execute
+    return execute_plan(pipeline, tables)
+microdb\executor.py:37: in execute_plan
+    rows = _group_stage(rows, stage)
+microdb\executor.py:133: in _group_stage
+    if stage.having is not None and not _predicate_true(evaluate(stage.having, ctx)):
+microdb\expr.py:17: in evaluate
+    return _eval_binary(expr.op, expr.left, expr.right, row)
+microdb\expr.py:60: in _eval_binary
+    lv = evaluate(left, row)
+microdb\expr.py:19: in evaluate
+    return _eval_call(expr, row)
+microdb\expr.py:112: in _eval_call
+    raise AggregateError(f"aggregate {name} not allowed here")
+E   microdb.errors.AggregateError: aggregate count not allowed here
+___________________________ test_join_column_order ____________________________
+_verify\test_c3.py:1020: in test_join_column_order
+    assert db.execute("SELECT * FROM l JOIN r ON l.id = r.lid", joined).columns == [
+E   AssertionError: assert ['id', 'l.id'... 'r.lid', ...] == ['id', 'n', 'lid', 'v']
+E     
+E     At index 1 diff: 'l.id' != 'n'
+E     Left contains 4 more items, first extra item: 'lid'
+E     Use -v to get more diff
+____________________________ test_ambiguous_column ____________________________
+_verify\test_c3.py:1044: in test_ambiguous_column
+    with pytest.raises(db.AmbiguousColumnError):
+E   Failed: DID NOT RAISE <class 'microdb.errors.AmbiguousColumnError'>
+____________________________ test_join_with_having ____________________________
+_verify\test_c3.py:1061: in test_join_with_having
+    out = db.execute(
+microdb\executor.py:23: in execute
+    return execute_plan(pipeline, tables)
+microdb\executor.py:37: in execute_plan
+    rows = _group_stage(rows, stage)
+microdb\executor.py:133: in _group_stage
+    if stage.having is not None and not _predicate_true(evaluate(stage.having, ctx)):
+microdb\expr.py:17: in evaluate
+    return _eval_binary(expr.op, expr.left, expr.right, row)
+microdb\expr.py:60: in _eval_binary
+    lv = evaluate(left, row)
+microdb\expr.py:19: in evaluate
+    return _eval_call(expr, row)
+microdb\expr.py:112: in _eval_call
+    raise AggregateError(f"aggregate {name} not allowed here")
+E   microdb.errors.AggregateError: aggregate sum not allowed here
+__________________________ test_star_table_qualified __________________________
+_verify\test_c3.py:1069: in test_star_table_qualified
+    assert db.execute("SELECT l.* FROM l JOIN r ON l.id = r.lid", joined).columns == ["id", "n"]
+E   AssertionError: assert ['id', 'l.id'... 'r.lid', ...] == ['id', 'n']
+E     
+E     At index 1 diff: 'l.id' != 'n'
+E     Left contains 6 more items, first extra item: 'n'
+E     Use -v to get more diff
+___________________________ test_join_unknown_table ___________________________
+_verify\test_c3.py:1074: in test_join_unknown_table
+    db.execute("SELECT l.id FROM l JOIN zz ON l.id = zz.x", joined)
+microdb\executor.py:23: in execute
+    return execute_plan(pipeline, tables)
+microdb\executor.py:33: in execute_plan
+    rows = _join_stage(rows, stage, tables)
+microdb\executor.py:68: in _join_stage
+    right_table = tables[stage.table]
+E   KeyError: 'zz'
+______________________________ test_plan_minimal ______________________________
+_verify\test_c3.py:1134: in test_plan_minimal
+    assert plan_roles(db, "SELECT a FROM t") == ["scan", "project"]
+E   AssertionError: assert ['scan', 'pro... 'limitstage'] == ['scan', 'project']
+E     
+E     Left contains one more item: 'limitstage'
+E     Use -v to get more diff
+________________________ test_plan_full_pipeline_order ________________________
+_verify\test_c3.py:1154: in test_plan_full_pipeline_order
+    assert role in roles, f"{role} missing from {roles}"
+E   AssertionError: join missing from ['scan', 'inner', 'filter', 'groupstage', 'project', 'distinct', 'orderstage', 'limitstage']
+E   assert 'join' in ['scan', 'inner', 'filter', 'groupstage', 'project', 'distinct', ...]
+________________________ test_plan_filter_before_group ________________________
+_verify\test_c3.py:1159: in test_plan_filter_before_group
+    assert _before(plan_roles(db, "SELECT a, count(*) FROM t WHERE a > 0 GROUP BY a"),
+_verify\test_c3.py:1129: in _before
+    assert b is not None, f"{second} missing from {roles}"
+E   AssertionError: group missing from ['scan', 'filter', 'groupstage', 'project', 'limitstage']
+E   assert None is not None
+________________________ test_plan_project_before_sort ________________________
+_verify\test_c3.py:1164: in test_plan_project_before_sort
+    assert _before(plan_roles(db, "SELECT a FROM t ORDER BY a"), "project", "sort")
+_verify\test_c3.py:1129: in _before
+    assert b is not None, f"{second} missing from {roles}"
+E   AssertionError: sort missing from ['scan', 'project', 'orderstage', 'limitstage']
+E   assert None is not None
+_______________________ test_plan_distinct_before_sort ________________________
+_verify\test_c3.py:1168: in test_plan_distinct_before_sort
+    assert _before(plan_roles(db, "SELECT DISTINCT a FROM t ORDER BY a"), "distinct", "sort")
+_verify\test_c3.py:1129: in _before
+    assert b is not None, f"{second} missing from {roles}"
+E   AssertionError: sort missing from ['scan', 'project', 'distinct', 'orderstage', 'limitstage']
+E   assert None is not None
+_________________________ test_plan_slice_after_sort __________________________
+_verify\test_c3.py:1173: in test_plan_slice_after_sort
+    assert _before(roles, "sort", "offset")
+_verify\test_c3.py:1128: in _before
+    assert a is not None, f"{first} missing from {roles}"
+E   AssertionError: sort missing from ['scan', 'project', 'orderstage', 'limitstage']
+E   assert None is not None
+_______________ test_plan_adds_aggregate_stage_without_group_by _______________
+_verify\test_c3.py:1179: in test_plan_adds_aggregate_stage_without_group_by
+    assert "aggregate" in roles or "group" in roles, roles
+E   AssertionError: ['scan', 'groupstage', 'project', 'limitstage']
+E   assert ('aggregate' in ['scan', 'groupstage', 'project', 'limitstage'] or 'group' in ['scan', 'groupstage', 'project', 'limitstage'])
+_____________________________ test_cli_two_tables _____________________________
+_verify\test_c3.py:1244: in test_cli_two_tables
+    assert done.stdout.splitlines() == ["id", "1"]
+E   AssertionError: assert ['l.id', '1'] == ['id', '1']
+E     
+E     At index 0 diff: 'l.id' != 'id'
+E     Use -v to get more diff
+_____________ test_cli_query_error_exit_three[SELECT id FROM zz] ______________
+_verify\test_c3.py:1280: in test_cli_query_error_exit_three
+    assert done.returncode == 3
+E   assert 1 == 3
+E    +  where 1 = CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...or.py", line 55, in _from_stage\n    table = tables[stage.table]\n            ~~~~~~^^^^^^^^^^^^^\nKeyError: \'zz\'\n').returncode
+_________ test_cli_query_error_exit_three[SELECT id, count(*) FROM t] _________
+_verify\test_c3.py:1280: in test_cli_query_error_exit_three
+    assert done.returncode == 3
+E   AssertionError: assert 0 == 3
+E    +  where 0 = CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...ery_error_exit_thre4\\people.csv', 'SELECT id, count(*) FROM t'], returncode=0, stdout='id,count(*)\n1,3\n', stderr='').returncode
+- generated xml file: C:\workspace\13_benchmark\GPT-6 in Coding\benchmark\reports\mai-code-1.1-flash__C3-microdb\tests\hidden.xml -
+=========================== short test summary info ===========================
+FAILED _verify/test_c3.py::test_table_rejects_wrong_cell_type[BOOL-1] - Faile...
+FAILED _verify/test_c3.py::test_nested_aggregate_rejected - Failed: DID NOT R...
+FAILED _verify/test_c3.py::test_aggregate_in_where_rejected - Failed: DID NOT...
+FAILED _verify/test_c3.py::test_select_star_columns - AssertionError: assert ...
+FAILED _verify/test_c3.py::test_unknown_table_in_from - KeyError: 'zz'
+FAILED _verify/test_c3.py::test_grouping_error_mixing_bare_column_with_aggregate
+FAILED _verify/test_c3.py::test_having_filters_groups - microdb.errors.Aggreg...
+FAILED _verify/test_c3.py::test_having_unknown_drops_group - microdb.errors.A...
+FAILED _verify/test_c3.py::test_having_may_reference_aggregate_not_in_select
+FAILED _verify/test_c3.py::test_join_column_order - AssertionError: assert ['...
+FAILED _verify/test_c3.py::test_ambiguous_column - Failed: DID NOT RAISE <cla...
+FAILED _verify/test_c3.py::test_join_with_having - microdb.errors.AggregateEr...
+FAILED _verify/test_c3.py::test_star_table_qualified - AssertionError: assert...
+FAILED _verify/test_c3.py::test_join_unknown_table - KeyError: 'zz'
+FAILED _verify/test_c3.py::test_plan_minimal - AssertionError: assert ['scan'...
+FAILED _verify/test_c3.py::test_plan_full_pipeline_order - AssertionError: jo...
+FAILED _verify/test_c3.py::test_plan_filter_before_group - AssertionError: gr...
+FAILED _verify/test_c3.py::test_plan_project_before_sort - AssertionError: so...
+FAILED _verify/test_c3.py::test_plan_distinct_before_sort - AssertionError: s...
+FAILED _verify/test_c3.py::test_plan_slice_after_sort - AssertionError: sort ...
+FAILED _verify/test_c3.py::test_plan_adds_aggregate_stage_without_group_by - ...
+FAILED _verify/test_c3.py::test_cli_two_tables - AssertionError: assert ['l.i...
+FAILED _verify/test_c3.py::test_cli_query_error_exit_three[SELECT id FROM zz]
+FAILED _verify/test_c3.py::test_cli_query_error_exit_three[SELECT id, count(*) FROM t]
+24 failed, 353 passed in 5.15s

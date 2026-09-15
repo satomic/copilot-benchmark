@@ -1,0 +1,23 @@
+........................................................................ [ 19%]
+........................................................................ [ 38%]
+.................................................F...................... [ 57%]
+........................................................................ [ 76%]
+.................................................................F...... [ 95%]
+.................                                                        [100%]
+================================== FAILURES ===================================
+______________________ test_aggregate_in_where_rejected _______________________
+_verify\test_c3.py:560: in test_aggregate_in_where_rejected
+    with pytest.raises((db.AggregateError, db.ParseError)):
+E   Failed: DID NOT RAISE (<class 'microdb.errors.AggregateError'>, <class 'microdb.errors.ParseError'>)
+_____________________________ test_cli_two_tables _____________________________
+_verify\test_c3.py:1244: in test_cli_two_tables
+    assert done.stdout.splitlines() == ["id", "1"]
+E   AssertionError: assert ['l.id', '1'] == ['id', '1']
+E     
+E     At index 0 diff: 'l.id' != 'id'
+E     Use -v to get more diff
+- generated xml file: C:\workspace\13_benchmark\GPT-6 in Coding\benchmark\reports\grok-4.6__C3-microdb\tests\hidden.xml -
+=========================== short test summary info ===========================
+FAILED _verify/test_c3.py::test_aggregate_in_where_rejected - Failed: DID NOT...
+FAILED _verify/test_c3.py::test_cli_two_tables - AssertionError: assert ['l.i...
+2 failed, 375 passed in 5.24s

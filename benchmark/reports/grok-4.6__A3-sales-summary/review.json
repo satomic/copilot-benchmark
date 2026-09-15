@@ -1,0 +1,27 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "grouping_efficiency": {
+  "maxPoints": 5,
+  "criterion": "单遍 dict 累加分组，不是对每个 region 重复扫描全表（O(n²)）",
+  "points": 5,
+  "verdict": "完全符合：单遍 dict 累加（列表槽位），O(n)",
+  "reasoning": "sales.py:3-23 对 rows 单次遍历，groups 字典的值用三元列表 [display, count, total] 就地累加，无重复扫描。均值在汇总阶段用未舍入 total 计算后才 round，17 项隐藏测试全过。",
+  "evidence": [
+   "sales.py:3 单遍主循环",
+   "sales.py:21-23 列表槽位累加",
+   "隐藏套件 17/17"
+  ]
+ },
+ "separation": {
+  "maxPoints": 5,
+  "criterion": "region/amount 的取值与校验抽成辅助函数，错误消息集中构造，聚合逻辑干净",
+  "points": 2,
+  "verdict": "不符合：零辅助函数，取值校验与聚合全部内联，且分组值用裸列表下标",
+  "reasoning": "整个模块只有 summarize 一个函数，两个字段的取值校验全部内联。分组值用位置下标的裸列表（groups[key][1] += 1、groups[key][2] += amount），比 dict 字段名可读性更差。错误消息为分散内联 f-string（格式一致）。口径对齐：与 astra/kimi/gemini 的单函数形态一致给 2/5。",
+  "evidence": [
+   "模块仅 1 个函数",
+   "sales.py:21-23 裸列表下标累加（可读性扣分点）",
+   "错误消息分散内联"
+  ]
+ }
+}

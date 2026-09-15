@@ -1,0 +1,27 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "root_cause_fix": {
+  "maxPoints": 7,
+  "criterion": "三个缺陷都从根因修（闭区间 +1、chunk 宽度 days-1、days<=0 前置校验）；不是在返回前特判补一个 chunk 之类的补丁",
+  "points": 7,
+  "verdict": "完全符合：三处全部根因修复，游标式循环整体替换缺陷载体结构",
+  "reasoning": "daterange.py 用 isinstance(days, int) 且显式排除 bool 的前置校验（isinstance(days, bool) 分支，超出判据要求），end < start 返回空表；核心循环改为游标推进：max_span = days-1 天，chunk_end 取 min(current + max_span, end)，步进 one_day。闭区间与末块截断一并根因解决，timedelta 常量提出循环。440 组性质检查全过。",
+  "evidence": [
+   "days 前置校验（ValueError）",
+   "end < start 返回空表",
+   "while 闭区间游标循环 + min 截断末块",
+   "隐藏 17 项 + 440 组性质检查全过"
+  ]
+ },
+ "minimal_diff": {
+  "maxPoints": 4,
+  "criterion": "diff 最小，未重写整个文件，未改动 docstring 的语义",
+  "points": 4,
+  "verdict": "完全符合：改动集中在函数体，docstring 与签名原样保留",
+  "reasoning": "对种子文件的净改动约 15 行，集中在函数体：校验两行加游标循环。docstring 与签名未动，无其他文件改动。",
+  "evidence": [
+   "docstring 与函数签名逐字保留",
+   "改动范围与三缺陷重合，无扩散"
+  ]
+ }
+}

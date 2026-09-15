@@ -1,0 +1,50 @@
+{
+  "task": "C3-microdb",
+  "model": "kimi-k3",
+  "functional": 69.69,
+  "functionalMax": 70.0,
+  "spec": 15,
+  "specMax": 15,
+  "quality": 14.0,
+  "qualityMax": 15.0,
+  "qualityAuto": 3.0,
+  "qualityReview": 11,
+  "total": 98.69,
+  "reviewPending": [],
+  "vetoTriggered": [],
+  "hidden": {
+    "total": 377,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 375,
+    "time": 5.22,
+    "bad": [
+      {
+        "name": "_verify.test_c3::test_aggregate_in_where_rejected",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE (<class 'microdb.errors.AggregateError'>, <class 'microdb.errors.ParseError'>)"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_plan_full_pipeline_order",
+        "kind": "failure",
+        "message": [
+          "AssertionError: join missing from ['scan', 'filter', 'group', 'aggregate', 'having', 'project', 'distinct', 'sort', 'offset', 'limit']",
+          "assert 'join' in ['scan', 'filter', 'group', 'aggregate', 'having', 'project', ...]"
+        ]
+      }
+    ]
+  },
+  "visible": null,
+  "own": {
+    "total": 98,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 98,
+    "time": 0.379,
+    "bad": []
+  }
+}

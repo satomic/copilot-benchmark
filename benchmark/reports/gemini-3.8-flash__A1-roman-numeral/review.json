@@ -1,0 +1,26 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "algorithm": {
+  "maxPoints": 6,
+  "criterion": "查表 + 贪心（divmod / 循环减法）实现；不是按千百十个位写 if/elif 硬编码分支",
+  "points": 6,
+  "verdict": "完全符合：13 组查表 + divmod 贪心，带类型标注的模块级常量",
+  "reasoning": "roman.py:3-18 模块级 _ROMAN_MAP 元组带完整类型标注，13 组（值, 符号）含 4 个减法对从大到小排列。roman.py:28-32 单层循环 divmod 贪心，count 为零时跳过 append（小优化），无任何位分支。数据与算法分离，与参考实现同构。",
+  "evidence": [
+   "roman.py:3-18 _ROMAN_MAP 查表（带类型标注）",
+   "roman.py:29 divmod 贪心",
+   "roman.py:22 bool 先于 int 判定"
+  ]
+ },
+ "error_messages": {
+  "maxPoints": 4,
+  "criterion": "TypeError / ValueError 的消息可读且包含出错的实际值或类型，不是裸 raise",
+  "points": 4,
+  "verdict": "完全符合：两条消息都用 f-string 携带实际类型或实际值",
+  "reasoning": "roman.py:23 的 TypeError 消息『n must be an integer, got {type(n).__name__}』带出错输入的实际类型名，roman.py:25 的 ValueError『n must be between 1 and 3999, got {n}』带越界的实际值。两条都不是裸 raise，措辞准确、约束清晰、可直接用于调试定位。达到判据全部要求，与 sonnet/opus 的满分实现同构。",
+  "evidence": [
+   "roman.py:23 TypeError 带 type(n).__name__",
+   "roman.py:25 ValueError 带实际值 n"
+  ]
+ }
+}

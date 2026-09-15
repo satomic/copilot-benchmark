@@ -1,0 +1,26 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "layering": {
+  "maxPoints": 6,
+  "criterion": "key 解析 / 值解引号 / 转义展开分成独立的辅助函数，主循环可读",
+  "points": 6,
+  "verdict": "完全符合：四个单一职责辅助函数，判据点名的三项关注点全部抽出",
+  "reasoning": "envparse.py:10 _expand_escapes（转义展开）、envparse.py:42 _strip_unquoted_comment（未引注释剥离）、envparse.py:71 _extract_key（key 解析含 export 前缀）、envparse.py:80 _parse_value（值形态分派与解引号），判据点名的三项关注点全部独立成函数且各有单一职责，parse_env 主循环（envparse.py:92 起）只做行遍历与装配，可读性好。分层完整度与 fable 的满分实现同级。",
+  "evidence": [
+   "envparse.py:10,42,71,80 四个辅助函数",
+   "envparse.py:92 主循环只做遍历与装配"
+  ]
+ },
+ "escape_single_pass": {
+  "maxPoints": 5,
+  "criterion": "转义用单次左到右扫描或查表，不是链式 .replace()（链式会引入顺序 bug）",
+  "points": 5,
+  "verdict": "完全符合：单次左到右 while 扫描，未知转义保留两字符",
+  "reasoning": "envparse.py:10-40 的 _expand_escapes 用索引 i 单遍左到右推进，反斜杠向前看一位，已知转义展开、未知转义按规格保留两字符，行尾孤立反斜杠原样输出。全模块无 .replace() 链。38 项隐藏测试全过（含单引号不展开与未知转义两个规格埋点）。",
+  "evidence": [
+   "envparse.py:14 while 单遍扫描",
+   "无 replace 链",
+   "隐藏套件 38/38"
+  ]
+ }
+}

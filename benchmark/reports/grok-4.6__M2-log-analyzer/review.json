@@ -1,0 +1,36 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "regex_named_groups": {
+  "maxPoints": 5,
+  "criterion": "用一条预编译正则 + 命名组解析日志行，不是多次 split 拼凑",
+  "points": 5,
+  "verdict": "完全符合：单条预编译正则分段拼接，8 个命名组，method 严格大写",
+  "reasoning": "logstats.py:16-25 单条预编译正则逐段注释式拼接，全部命名组，method 用 [A-Z]+ 命中规格埋点。无 split 拼凑。44 项隐藏测试全过。",
+  "evidence": [
+   "logstats.py:16-25 命名组正则",
+   "method [A-Z]+"
+  ]
+ },
+ "streaming": {
+  "maxPoints": 4,
+  "criterion": "analyze 单遍流式处理任意可迭代对象，不把整个文件 list() 进内存",
+  "points": 4,
+  "verdict": "完全符合：analyze 单遍流式，计数器就地累加",
+  "reasoning": "analyze（logstats.py:86 起）接受任意可迭代对象单遍推进，计数器与 Counter 就地累加，仅保留 durations。判据外记录不扣分：CLI 入口读文件用了 readlines（logstats.py:197），把整个日志文件读进内存后才传给 analyze，这发生在 analyze 之外、属 CLI 边界的选择，判据针对 analyze 本身。",
+  "evidence": [
+   "logstats.py:86 单遍主循环",
+   "logstats.py:197 CLI 边界 readlines（判据外记录）"
+  ]
+ },
+ "percentile_isolated": {
+  "maxPoints": 3,
+  "criterion": "分位数抽成独立函数，空列表与 n=1 的边界显式处理",
+  "points": 3,
+  "verdict": "完全符合：模块级独立函数，空表与 n=1 都在函数内显式处理",
+  "reasoning": "logstats.py:72-78 的 _percentile 是模块级独立函数，函数内 n==0 守卫返回 0.0，min/max 双侧钳位显式覆盖 n=1，最近秩公式正确。判据三要件全部落在函数内。",
+  "evidence": [
+   "logstats.py:74 函数内空表守卫",
+   "logstats.py:77 双侧钳位"
+  ]
+ }
+}

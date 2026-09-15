@@ -1,0 +1,36 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "record_codec_declarative": {
+  "maxPoints": 5,
+  "criterion": "记录格式集中在 record.py，用 struct 或等价的声明式方式表达头部布局，不是散落各处的手工字节切片；编码与解码共用同一份字段定义",
+  "points": 2,
+  "verdict": "不符合核心要求：编码五段拼接、解码手工切片，无共用格式定义",
+  "reasoning": "encode（record.py:29-31）用多个独立 struct.pack 调用拼接头部，decode（record.py:49-61）用手工字节切片 header[5:7]/header[7:11]/header[11:15] 逐字段 unpack，字段偏移量以魔数形式在编码与解码两侧各写一份，不存在判据要求的『同一份字段定义』；格式变更时至少要同步修改六处。给 2 分而非更低的依据：仍是 struct 显式字节序（非位运算拼字节）、字段顺序正确、功能测试全过。口径对照：grok/kimi 用单一 struct.Struct 双端共用得 5/5。",
+  "evidence": [
+   "record.py:29-31 编码分段 pack",
+   "record.py:49-61 解码手工切片魔数偏移（失分点）"
+  ]
+ },
+ "truncation_vs_corruption": {
+  "maxPoints": 4,
+  "criterion": "截断与损坏的区分有明确且单一的判定点（IncompleteRecordError 与 CorruptRecordError 分开抛、由 scan 统一转译），不是靠散落的 try/except 兜住",
+  "points": 4,
+  "verdict": "完全符合：decode 分类抛出，scan 单点转译",
+  "reasoning": "record.py:39,59 两处 Incomplete，record.py:43-81 其余缺陷抛 Corrupt（UTF-8 检查 from 保链）；segment.py:42-45 scan 单点转译。decode 单点分类（字节不足抛 Incomplete，其余缺陷抛 Corrupt），Segment.scan 单点转译：Incomplete 干净停止（尾部截断语义），Corrupt 转为带路径与偏移的 CorruptSegmentError 并 from 保链。『CRC 失败即使在最后一条也报损坏』的规格埋点测试通过。除此两处无散落 try/except。",
+  "evidence": [
+   "record.py:39,59 Incomplete 两处",
+   "segment.py:42-45 scan 单点转译"
+  ]
+ },
+ "atomic_compaction": {
+  "maxPoints": 3,
+  "criterion": "压实顺序正确：先写 tmp、再 os.replace、最后删旧段；tmp 名字不匹配段文件模式，且中途崩溃可恢复",
+  "points": 3,
+  "verdict": "完全符合：tmp 后缀避开段模式，os.replace 原子换名",
+  "reasoning": "compact.py:21 tmp 为 <id>.seg.tmp，compact.py:34 os.replace 原子换名，旧段删除在换名之后。崩溃可恢复。",
+  "evidence": [
+   "compact.py:21 tmp 命名",
+   "compact.py:34 os.replace"
+  ]
+ }
+}

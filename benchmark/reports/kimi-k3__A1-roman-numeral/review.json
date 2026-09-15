@@ -1,0 +1,27 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "algorithm": {
+  "maxPoints": 6,
+  "criterion": "查表 + 贪心（divmod / 循环减法）实现；不是按千百十个位写 if/elif 硬编码分支",
+  "points": 6,
+  "verdict": "完全符合：13 组值/符号查表 + divmod 贪心，无位分支",
+  "reasoning": "roman.py:3-18 模块级元组 _VALUE_SYMBOL_PAIRS 逐行列出全部 13 组（值, 符号），含 4 个减法对，从大到小排列。roman.py:29-31 单层循环 + divmod 同时取商余，parts 列表收集后 join，O(13) 与 n 无关，数据与算法完全分离。roman.py:23 有注释明确说明 bool 是 int 子类需按规格拒绝，显示对陷阱的显式意识。公共函数有 docstring（roman.py:21-22）。与 astra/sonnet/opus 的同项满分实现同构。",
+  "evidence": [
+   "roman.py:3-18 _VALUE_SYMBOL_PAIRS 查表（13 组含减法对）",
+   "roman.py:30 divmod 贪心",
+   "roman.py:23 bool 陷阱的显式注释"
+  ]
+ },
+ "error_messages": {
+  "maxPoints": 4,
+  "criterion": "TypeError / ValueError 的消息可读且包含出错的实际值或类型，不是裸 raise",
+  "points": 3,
+  "verdict": "大体符合：措辞准确、区分两类异常，但两条消息都不含出错的实际值或类型",
+  "reasoning": "roman.py:25 的 TypeError 消息是固定字符串『n must be an int』，roman.py:27 的 ValueError 是『n must be in the range 1..3999』。两条都不是裸 raise，都准确说明了约束，正确区分了类型错误与取值错误，且措辞没有误导（对比 astra 的『not bool』误导措辞被额外扣分）。判据要求『包含出错的实际值或类型』，两条消息都没有做到：sonnet 与 opus 在本项用 f-string 带上 type(n).__name__ 与 n 的实际值拿到 4/4。对齐口径：缺实际值/类型扣 1 分，无其他缺陷，得 3/4。",
+  "evidence": [
+   "roman.py:25 TypeError 固定字符串，无 type(n) 也无 n",
+   "roman.py:27 ValueError 说明区间但无越界实际值",
+   "两条消息措辞均准确无误导（对比 astra 同项）"
+  ]
+ }
+}

@@ -1,0 +1,27 @@
+.............................................FFF........................ [ 30%]
+........................................................................ [ 60%]
+........................................................................ [ 90%]
+......................                                                   [100%]
+================================== FAILURES ===================================
+________________________ test_encode_rejects_empty_key ________________________
+_verify\test_c2.py:232: in test_encode_rejects_empty_key
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE <class 'ValueError'>
+______________________ test_encode_rejects_oversize_key _______________________
+_verify\test_c2.py:238: in test_encode_rejects_oversize_key
+    kv.encode_record("a" * 70000, "v")
+kvstore\record.py:26: in encode_record
+    header = HEADER_STRUCT.pack(MAGIC, flags, len(key_bytes), len(value_bytes), crc)
+E   struct.error: 'H' format requires 0 <= number <= 65535
+_________________ test_encode_rejects_oversize_multibyte_key __________________
+_verify\test_c2.py:243: in test_encode_rejects_oversize_multibyte_key
+    kv.encode_record("中" * 30000, "v")
+kvstore\record.py:26: in encode_record
+    header = HEADER_STRUCT.pack(MAGIC, flags, len(key_bytes), len(value_bytes), crc)
+E   struct.error: 'H' format requires 0 <= number <= 65535
+- generated xml file: C:\workspace\13_benchmark\GPT-6 in Coding\benchmark\reports\grok-4.6__C2-kvstore\tests\hidden.xml -
+=========================== short test summary info ===========================
+FAILED _verify/test_c2.py::test_encode_rejects_empty_key - Failed: DID NOT RA...
+FAILED _verify/test_c2.py::test_encode_rejects_oversize_key - struct.error: '...
+FAILED _verify/test_c2.py::test_encode_rejects_oversize_multibyte_key - struc...
+3 failed, 235 passed in 12.05s

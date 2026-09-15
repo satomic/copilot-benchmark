@@ -1,0 +1,270 @@
+........................................................................ [ 19%]
+....................................................................FFFF [ 38%]
+FFFFFFFFFFFFFFFFFFFFFFFFFF.......................F...................... [ 57%]
+.....................................................................F.. [ 76%]
+.......F.........................................................F...... [ 95%]
+.............F...                                                        [100%]
+================================== FAILURES ===================================
+____________________________ test_tokenize_simple _____________________________
+_verify\test_c3.py:435: in test_tokenize_simple
+    assert len(texts(db.tokenize("SELECT a FROM t"))) == 4
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+_____________________ test_keywords_are_case_insensitive ______________________
+_verify\test_c3.py:440: in test_keywords_are_case_insensitive
+    got = texts(db.tokenize("select"))
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+_____________________ test_identifiers_are_case_sensitive _____________________
+_verify\test_c3.py:446: in test_identifiers_are_case_sensitive
+    assert texts(db.tokenize("Abc")) == ["Abc"]
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+___________________________ test_int_literals[1-1] ____________________________
+_verify\test_c3.py:451: in test_int_literals
+    tok = db.tokenize(src)[0]
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+__________________________ test_int_literals[42-42] ___________________________
+_verify\test_c3.py:451: in test_int_literals
+    tok = db.tokenize(src)[0]
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+___________________________ test_int_literals[0-0] ____________________________
+_verify\test_c3.py:451: in test_int_literals
+    tok = db.tokenize(src)[0]
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+________________________ test_float_literals[1.5-1.5] _________________________
+_verify\test_c3.py:458: in test_float_literals
+    tok = db.tokenize(src)[0]
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+_________________________ test_float_literals[1.-1.0] _________________________
+_verify\test_c3.py:458: in test_float_literals
+    tok = db.tokenize(src)[0]
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+_________________________ test_float_literals[.5-0.5] _________________________
+_verify\test_c3.py:458: in test_float_literals
+    tok = db.tokenize(src)[0]
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+_______________________ test_float_literals[1e3-1000.0] _______________________
+_verify\test_c3.py:458: in test_float_literals
+    tok = db.tokenize(src)[0]
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+______________________ test_float_literals[1.5E-2-0.015] ______________________
+_verify\test_c3.py:458: in test_float_literals
+    tok = db.tokenize(src)[0]
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+______________________________ test_text_literal ______________________________
+_verify\test_c3.py:463: in test_text_literal
+    tok = db.tokenize("'hi'")[0]
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+_______________________ test_text_literal_escaped_quote _______________________
+_verify\test_c3.py:468: in test_text_literal_escaped_quote
+    assert tok_field(db.tokenize("'a''b'")[0], "value", "text") == "a'b"
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+___________________________ test_text_literal_empty ___________________________
+_verify\test_c3.py:472: in test_text_literal_empty
+    assert tok_field(db.tokenize("''")[0], "value", "text") == ""
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+___________________________ test_comment_is_skipped ___________________________
+_verify\test_c3.py:476: in test_comment_is_skipped
+    assert texts(db.tokenize("a -- comment\nb")) == ["a", "b"]
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+______________________________ test_operators[=] ______________________________
+_verify\test_c3.py:482: in test_operators
+    toks = [t for t in db.tokenize(op)
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+_____________________________ test_operators[<>] ______________________________
+_verify\test_c3.py:482: in test_operators
+    toks = [t for t in db.tokenize(op)
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+______________________________ test_operators[<] ______________________________
+_verify\test_c3.py:482: in test_operators
+    toks = [t for t in db.tokenize(op)
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+_____________________________ test_operators[<=] ______________________________
+_verify\test_c3.py:482: in test_operators
+    toks = [t for t in db.tokenize(op)
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+______________________________ test_operators[>] ______________________________
+_verify\test_c3.py:482: in test_operators
+    toks = [t for t in db.tokenize(op)
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+_____________________________ test_operators[>=] ______________________________
+_verify\test_c3.py:482: in test_operators
+    toks = [t for t in db.tokenize(op)
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+______________________________ test_operators[+] ______________________________
+_verify\test_c3.py:482: in test_operators
+    toks = [t for t in db.tokenize(op)
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+______________________________ test_operators[-] ______________________________
+_verify\test_c3.py:482: in test_operators
+    toks = [t for t in db.tokenize(op)
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+______________________________ test_operators[*] ______________________________
+_verify\test_c3.py:482: in test_operators
+    toks = [t for t in db.tokenize(op)
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+______________________________ test_operators[/] ______________________________
+_verify\test_c3.py:482: in test_operators
+    toks = [t for t in db.tokenize(op)
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+______________________________ test_operators[%] ______________________________
+_verify\test_c3.py:482: in test_operators
+    toks = [t for t in db.tokenize(op)
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+________________________ test_unterminated_text_raises ________________________
+_verify\test_c3.py:490: in test_unterminated_text_raises
+    db.tokenize("'abc")
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+_________________________ test_lex_error_offset[#-0] __________________________
+_verify\test_c3.py:496: in test_lex_error_offset
+    db.tokenize(src)
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+________________________ test_lex_error_offset[a #-2] _________________________
+_verify\test_c3.py:496: in test_lex_error_offset
+    db.tokenize(src)
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+______________________ test_lex_error_offset[SELECT $-7] ______________________
+_verify\test_c3.py:496: in test_lex_error_offset
+    db.tokenize(src)
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+______________________ test_aggregate_in_where_rejected _______________________
+_verify\test_c3.py:560: in test_aggregate_in_where_rejected
+    with pytest.raises((db.AggregateError, db.ParseError)):
+E   Failed: DID NOT RAISE (<class 'microdb.errors.AggregateError'>, <class 'microdb.errors.ParseError'>)
+_______________________ test_min_max_reject_mixed_types _______________________
+_verify\test_c3.py:804: in test_min_max_reject_mixed_types
+    db.execute("SELECT min(coalesce(a, b)) FROM t", {"t": t})
+microdb\__init__.py:70: in execute
+    planned = plan(parsed_query)
+microdb\planner.py:120: in plan
+    aggs = _collect_aggregates(query)
+microdb\planner.py:99: in _collect_aggregates
+    return list(dict.fromkeys(aggs))
+<string>:3: in __hash__
+    ???
+<string>:3: in __hash__
+    ???
+E   TypeError: unhashable type: 'list'
+__________________________ test_group_by_expression ___________________________
+_verify\test_c3.py:841: in test_group_by_expression
+    out = run("SELECT length(name), count(*) FROM p GROUP BY length(name)").rows
+_verify\test_c3.py:129: in go
+    return db.execute(query, tables if tables is not None else {"p": people})
+microdb\__init__.py:71: in execute
+    return execute_plan(planned, tables)
+microdb\executor.py:384: in execute_plan
+    contexts = _exec_group_by_and_aggregate(query, cols, rows, flattened_aggs)
+microdb\executor.py:192: in _exec_group_by_and_aggregate
+    group_key_map = dict(zip(query.group_by, g_key))
+<string>:3: in __hash__
+    ???
+E   TypeError: unhashable type: 'list'
+_____________________________ test_cli_two_tables _____________________________
+_verify\test_c3.py:1244: in test_cli_two_tables
+    assert done.stdout.splitlines() == ["id", "1"]
+E   AssertionError: assert ['l.id', '1'] == ['id', '1']
+E     
+E     At index 0 diff: 'l.id' != 'id'
+E     Use -v to get more diff
+_____________________ test_positioned_errors_have_offset ______________________
+_verify\test_c3.py:1331: in test_positioned_errors_have_offset
+    db.tokenize("@")
+_verify\test_c3.py:43: in __getattr__
+    raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
+E   AttributeError: microdb exposes no tokenize in the package or its submodules
+- generated xml file: C:\workspace\13_benchmark\GPT-6 in Coding\benchmark\reports\gemini-3.8-flash__C3-microdb\tests\hidden.xml -
+=========================== short test summary info ===========================
+FAILED _verify/test_c3.py::test_tokenize_simple - AttributeError: microdb exp...
+FAILED _verify/test_c3.py::test_keywords_are_case_insensitive - AttributeErro...
+FAILED _verify/test_c3.py::test_identifiers_are_case_sensitive - AttributeErr...
+FAILED _verify/test_c3.py::test_int_literals[1-1] - AttributeError: microdb e...
+FAILED _verify/test_c3.py::test_int_literals[42-42] - AttributeError: microdb...
+FAILED _verify/test_c3.py::test_int_literals[0-0] - AttributeError: microdb e...
+FAILED _verify/test_c3.py::test_float_literals[1.5-1.5] - AttributeError: mic...
+FAILED _verify/test_c3.py::test_float_literals[1.-1.0] - AttributeError: micr...
+FAILED _verify/test_c3.py::test_float_literals[.5-0.5] - AttributeError: micr...
+FAILED _verify/test_c3.py::test_float_literals[1e3-1000.0] - AttributeError: ...
+FAILED _verify/test_c3.py::test_float_literals[1.5E-2-0.015] - AttributeError...
+FAILED _verify/test_c3.py::test_text_literal - AttributeError: microdb expose...
+FAILED _verify/test_c3.py::test_text_literal_escaped_quote - AttributeError: ...
+FAILED _verify/test_c3.py::test_text_literal_empty - AttributeError: microdb ...
+FAILED _verify/test_c3.py::test_comment_is_skipped - AttributeError: microdb ...
+FAILED _verify/test_c3.py::test_operators[=] - AttributeError: microdb expose...
+FAILED _verify/test_c3.py::test_operators[<>] - AttributeError: microdb expos...
+FAILED _verify/test_c3.py::test_operators[<] - AttributeError: microdb expose...
+FAILED _verify/test_c3.py::test_operators[<=] - AttributeError: microdb expos...
+FAILED _verify/test_c3.py::test_operators[>] - AttributeError: microdb expose...
+FAILED _verify/test_c3.py::test_operators[>=] - AttributeError: microdb expos...
+FAILED _verify/test_c3.py::test_operators[+] - AttributeError: microdb expose...
+FAILED _verify/test_c3.py::test_operators[-] - AttributeError: microdb expose...
+FAILED _verify/test_c3.py::test_operators[*] - AttributeError: microdb expose...
+FAILED _verify/test_c3.py::test_operators[/] - AttributeError: microdb expose...
+FAILED _verify/test_c3.py::test_operators[%] - AttributeError: microdb expose...
+FAILED _verify/test_c3.py::test_unterminated_text_raises - AttributeError: mi...
+FAILED _verify/test_c3.py::test_lex_error_offset[#-0] - AttributeError: micro...
+FAILED _verify/test_c3.py::test_lex_error_offset[a #-2] - AttributeError: mic...
+FAILED _verify/test_c3.py::test_lex_error_offset[SELECT $-7] - AttributeError...
+FAILED _verify/test_c3.py::test_aggregate_in_where_rejected - Failed: DID NOT...
+FAILED _verify/test_c3.py::test_min_max_reject_mixed_types - TypeError: unhas...
+FAILED _verify/test_c3.py::test_group_by_expression - TypeError: unhashable t...
+FAILED _verify/test_c3.py::test_cli_two_tables - AssertionError: assert ['l.i...
+FAILED _verify/test_c3.py::test_positioned_errors_have_offset - AttributeErro...
+35 failed, 342 passed in 6.83s

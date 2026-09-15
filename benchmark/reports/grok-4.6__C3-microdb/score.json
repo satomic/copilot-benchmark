@@ -1,0 +1,51 @@
+{
+  "task": "C3-microdb",
+  "model": "grok-4.6",
+  "functional": 69.69,
+  "functionalMax": 70.0,
+  "spec": 15,
+  "specMax": 15,
+  "quality": 15.0,
+  "qualityMax": 15.0,
+  "qualityAuto": 3.0,
+  "qualityReview": 12,
+  "total": 99.69,
+  "reviewPending": [],
+  "vetoTriggered": [],
+  "hidden": {
+    "total": 377,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 375,
+    "time": 5.204,
+    "bad": [
+      {
+        "name": "_verify.test_c3::test_aggregate_in_where_rejected",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE (<class 'microdb.errors.AggregateError'>, <class 'microdb.errors.ParseError'>)"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_cli_two_tables",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert ['l.id', '1'] == ['id', '1']",
+          "  ",
+          "  At index 0 diff: 'l.id' != 'id'"
+        ]
+      }
+    ]
+  },
+  "visible": null,
+  "own": {
+    "total": 61,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 61,
+    "time": 0.537,
+    "bad": []
+  }
+}

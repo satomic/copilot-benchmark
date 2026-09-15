@@ -1,0 +1,36 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "grammar_correspondence": {
+  "maxPoints": 5,
+  "criterion": "递归下降的函数与 task.md 的文法层级一一对应，命名可读，无手工回溯",
+  "points": 5,
+  "verdict": "完全符合：or_expr 到 primary 九级方法与文法一一对应",
+  "reasoning": "parser.py:75-144 的方法链 or_expr -> and_expr -> not_expr -> comparison -> additive -> multiplicative -> unary -> power -> primary 与 task.md 文法层级逐层对应（命名直接用产生式名，不带 parse_ 前缀同样可读），单 token 前瞻递归下降，无回溯。^ 右结合与 not 结合性两个反直觉埋点的隐藏测试通过（153/153 全过）。",
+  "evidence": [
+   "parser.py:75-144 九级方法",
+   "隐藏套件 153/153"
+  ]
+ },
+ "named_ast": {
+  "maxPoints": 4,
+  "criterion": "AST 用具名节点（dataclass / NamedTuple / 类），不是裸 tuple 或 dict",
+  "points": 4,
+  "verdict": "完全符合：dataclass 节点且全部携带 position 字段",
+  "reasoning": "parser.py:9-43 用 @dataclass 定义全部节点，每个节点都有 position: int 字段（parser.py:12,18,25,33,40），求值错误因此能在任何深度携带源位置。这是 fable 在该任务拿到唯一判定满分组合时被点名表扬的设计（『让正确的事成为容易的事』），gemini 是九个模型里第二个做到的。无裸 tuple 或 dict。",
+  "evidence": [
+   "parser.py:9-43 dataclass 节点",
+   "每节点 position 字段（fable 同款设计）"
+  ]
+ },
+ "error_consistency": {
+  "maxPoints": 3,
+  "criterion": "三类错误消息风格一致且带位置信息，没有 except Exception 吞异常",
+  "points": 2,
+  "verdict": "大体符合：三类异常带位置、风格统一，但幂运算分支用宽捕获 except Exception 转换",
+  "reasoning": "errors.py:5-8 基类带 position，evaluator 的 EvalError 全部 raise 站点携带 position=node.position（23 处，抽查 undefined variable 与 unsupported value 均带），消息风格统一小写陈述句，三类异常位置信息完备，这部分超过多数模型。失分点：evaluator.py:120-121 在幂运算处用 except Exception as e 把任意异常转成 EvalError(str(e))，虽然立即重抛不吞异常，但宽捕获会把实现自身的 bug（如 AttributeError）伪装成语言层错误，判据点名禁止的形态。扣 1 分。",
+  "evidence": [
+   "23 处 EvalError 全带 position",
+   "evaluator.py:120-121 except Exception 宽捕获转换（失分点）"
+  ]
+ }
+}

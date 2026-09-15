@@ -1,0 +1,38 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "o1_hotpath": {
+  "maxPoints": 5,
+  "criterion": "用 OrderedDict.move_to_end 或双向链表实现 O(1) 的 get/set，不是每次排序或线性查找",
+  "points": 5,
+  "verdict": "完全符合：OrderedDict + move_to_end，热路径 O(1)，性能伸缩测试通过",
+  "reasoning": "lru.py:39 OrderedDict 主存储，get 命中与 set 覆盖走 move_to_end（lru.py:94,113），容量满时 popitem(last=False) 淘汰 LRU 端（lru.py:119），热路径 O(1)。过期回收集中在 _purge_expired_locked（lru.py:76-80）的全表扫描，发生在回收时点而非每次读写，性能伸缩测试通过（与 kimi 的回收策略同型）。隐藏 45 项全过。",
+  "evidence": [
+   "lru.py:39 OrderedDict + lru.py:94,113 move_to_end",
+   "lru.py:76-80 回收时点全表扫描（kimi 同型）",
+   "隐藏套件 45/45"
+  ]
+ },
+ "module_separation": {
+  "maxPoints": 4,
+  "criterion": "三个模块职责清晰，__init__.py 只做再导出，不塞实现",
+  "points": 4,
+  "verdict": "完全符合：__init__ 纯再导出，stats 独立数据类，lru 承载实现",
+  "reasoning": "__init__.py 三行：两条相对导入加 __all__；stats.py 独立数据类；lru.py 承载全部实现。",
+  "evidence": [
+   "__init__.py 仅两条导入 + __all__",
+   "stats.py 独立数据类",
+   "lru.py 单文件实现"
+  ]
+ },
+ "sentinel": {
+  "maxPoints": 3,
+  "criterion": "区分 ttl=None 与省略 ttl 用私有模块级 sentinel（object()），不是 \"default\" 字符串或 -1 魔数",
+  "points": 3,
+  "verdict": "完全符合：私有模块级 object() 哨兵",
+  "reasoning": "lru.py:12 定义 _MISSING = object()，下划线私有、模块级，set 签名以它为默认值并用 is 比较分派，正确区分 ttl=None（永不过期）与省略 ttl（用缓存默认）。规格埋点的隐藏测试通过。",
+  "evidence": [
+   "lru.py:12 _MISSING = object()",
+   "set 签名以哨兵为默认值"
+  ]
+ }
+}

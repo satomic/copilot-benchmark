@@ -1,0 +1,49 @@
+{
+  "task": "C4-microvm",
+  "model": "mai-code-1.1-flash",
+  "functional": 69.61,
+  "functionalMax": 70.0,
+  "spec": 15,
+  "specMax": 15,
+  "quality": 12.0,
+  "qualityMax": 15.0,
+  "qualityAuto": 3.0,
+  "qualityReview": 9,
+  "total": 96.61,
+  "reviewPending": [],
+  "vetoTriggered": [],
+  "hidden": {
+    "total": 296,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 294,
+    "time": 6.486,
+    "bad": [
+      {
+        "name": "_verify.test_c4::test_parse_errors[if (true) print 1;]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE (<class 'microvm.errors.ParseError'>, <class 'microvm.errors.LexError'>)"
+        ]
+      },
+      {
+        "name": "_verify.test_c4::test_parse_errors[while (true) print 1;]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE (<class 'microvm.errors.ParseError'>, <class 'microvm.errors.LexError'>)"
+        ]
+      }
+    ]
+  },
+  "visible": null,
+  "own": {
+    "total": 57,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 57,
+    "time": 1.733,
+    "bad": []
+  }
+}

@@ -1,0 +1,26 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "algorithm": {
+  "maxPoints": 6,
+  "criterion": "查表 + 贪心（divmod / 循环减法）实现；不是按千百十个位写 if/elif 硬编码分支",
+  "points": 6,
+  "verdict": "完全符合：13 组查表 + divmod 贪心，type(n) is not int 一步排除 bool",
+  "reasoning": "roman.py:1-15 模块级 _VALUES 元组 13 组含减法对从大到小。roman.py:22-26 单层循环 divmod 贪心，remaining 独立变量，count 为零跳过 append。类型校验用 type(n) is not int（roman.py:18），精确类型比较天然排除 bool 子类，是六种合法写法之一，隐藏测试全过。无位分支。",
+  "evidence": [
+   "roman.py:1-15 _VALUES 查表",
+   "roman.py:24 divmod 贪心",
+   "roman.py:18 type(n) is not int 精确类型判定（bool 陷阱命中）"
+  ]
+ },
+ "error_messages": {
+  "maxPoints": 4,
+  "criterion": "TypeError / ValueError 的消息可读且包含出错的实际值或类型，不是裸 raise",
+  "points": 3,
+  "verdict": "大体符合：措辞准确、区分两类异常，但两条消息都不含出错的实际值或类型",
+  "reasoning": "roman.py:19 的 TypeError 是固定字符串『n must be an int』，roman.py:21 的 ValueError 是『n must be in the range 1..3999』。两条都不是裸 raise、约束表述清楚、异常类型区分正确，但都没有携带出错输入的实际值或类型。口径对齐：与 kimi、mai 的同形态消息一致给 3/4。",
+  "evidence": [
+   "roman.py:19 TypeError 固定字符串",
+   "roman.py:21 ValueError 无越界实际值"
+  ]
+ }
+}

@@ -1,0 +1,26 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "argparse_exit2": {
+  "maxPoints": 5,
+  "criterion": "用 argparse 的 type= 校验让退出码 2 自然产生，而不是散落的手写 sys.exit(2)",
+  "points": 1,
+  "verdict": "基本不符合：未用 argparse，完全手写解析器",
+  "reasoning": "wordfreq.py 全模块不导入 argparse。_parse_count（wordfreq.py:29-42）手写枚举参数形态：只接受无参、--top=X、以及 -n/--top 加独立值三种形态，-n5 连写形态与 -h 帮助均不支持；_coerce_count 手写整数与下限校验；退出码 2 由 main 捕获 ValueError 后手工 return（wordfreq.py:57-60）。功能测试全过是因为验收只用空格分隔形态，与 sonnet 的同型缺陷完全一致。口径对齐：sonnet 手写解析器得 1/5，mai 同分。给 1 而非 0 的依据：退出码 2 的产生收敛在单点且 usage 输出到 stderr，契约本身守住了。",
+  "evidence": [
+   "全模块无 argparse 导入",
+   "wordfreq.py:29-42 手写形态枚举（-n5 与 -h 不支持）",
+   "wordfreq.py:57-60 手工 return 2（单点）"
+  ]
+ },
+ "tokenize_single_regex": {
+  "maxPoints": 5,
+  "criterion": "分词用一条正则 + 统一 strip，不是多层 replace 或逐字符状态机",
+  "points": 5,
+  "verdict": "完全符合：单条正则 findall + 统一 strip 单引号",
+  "reasoning": "wordfreq.py:9 对 lower() 后全文一次 findall(r\"[a-z0-9']+\")，wordfreq.py:12 统一 strip(\"'\") 过滤空 token。零 replace 链。43 项隐藏测试全过。",
+  "evidence": [
+   "wordfreq.py:9 单条正则 findall",
+   "wordfreq.py:12 统一 strip"
+  ]
+ }
+}

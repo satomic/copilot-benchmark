@@ -1,0 +1,36 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "null_logic_centralised": {
+  "maxPoints": 5,
+  "criterion": "三值逻辑与 NULL 规则集中在 value.py，WHERE / 聚合 / 排序三处都复用它，没有各自重写一套 NULL 判断",
+  "points": 5,
+  "verdict": "完全符合：三值逻辑单点定义，WHERE/聚合/排序三处复用",
+  "reasoning": "value.py 集中定义 and_/or_/not_/compare_eq/compare_lt/arith 等，expr.py:6（WHERE 求值）、aggregate.py:4（聚合比较）、executor.py:11（排序与 DISTINCT）三处导入复用，无重复实现。NULL 语义类隐藏测试通过（本任务失败项为类型校验、错误类别与 JOIN 列序，与 NULL 真值表无关）。",
+  "evidence": [
+   "value.py 单点定义",
+   "expr/aggregate/executor 三处复用"
+  ]
+ },
+ "explicit_stage_order": {
+  "maxPoints": 4,
+  "criterion": "执行阶段顺序由 planner 显式表达为数据（可枚举的阶段序列），executor 按该顺序执行，不在控制流里隐式重排",
+  "points": 4,
+  "verdict": "完全符合：类型化阶段对象含一等 JoinStage，executor 顺序消费",
+  "reasoning": "planner.py:59-69 的 plan() 产出类型化阶段列表（FromStage/JoinStage/WhereStage/GroupStage/SelectStage 等），JOIN 是独立的一等阶段；executor.py:29 for stage in plan_data 逐阶段按类型分派执行，顺序完全由计划数据决定。计划形状类隐藏测试通过。",
+  "evidence": [
+   "planner.py:59-69 类型化阶段（含 JoinStage）",
+   "executor.py:29 顺序消费"
+  ]
+ },
+ "name_resolution_single_point": {
+  "maxPoints": 3,
+  "criterion": "名称解析（限定名、非限定名、别名优先、歧义报错）集中在一处，不是在投影与排序里各判一次",
+  "points": 3,
+  "verdict": "完全符合：expr 单点解析，歧义单点报错",
+  "reasoning": "expr.py:30-42 是唯一的列名解析点，限定/非限定/歧义三种形态集中处理，AmbiguousColumnError 两处 raise 均在该函数内。投影与排序共用同一求值路径。判据外记录（功能层已扣）：JOIN 后 SELECT * 的列名带了表前缀（test_select_star_columns 失败），属输出投影的列名构造问题而非解析点分裂。",
+  "evidence": [
+   "expr.py:30-42 单点解析",
+   "歧义集中报错"
+  ]
+ }
+}

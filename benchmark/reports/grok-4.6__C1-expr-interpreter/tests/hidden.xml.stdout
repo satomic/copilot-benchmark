@@ -1,0 +1,20 @@
+........................................................................ [ 47%]
+.................................................F...................... [ 94%]
+.........                                                                [100%]
+================================== FAILURES ===================================
+________________________ test_builtins[num("-2")--2.0] ________________________
+_verify\test_c1.py:394: in test_builtins
+    got = ev(src)
+minilang\evaluator.py:16: in evaluate
+    return eval_node(tree, env)
+minilang\evaluator.py:33: in eval_node
+    return _eval_call(node, env)
+minilang\evaluator.py:161: in _eval_call
+    return FUNCTIONS[name](args)
+minilang\builtins.py:128: in builtin_num
+    raise EvalError("cannot parse number")
+E   minilang.errors.EvalError: cannot parse number
+- generated xml file: C:\workspace\13_benchmark\GPT-6 in Coding\benchmark\reports\grok-4.6__C1-expr-interpreter\tests\hidden.xml -
+=========================== short test summary info ===========================
+FAILED _verify/test_c1.py::test_builtins[num("-2")--2.0] - minilang.errors.Ev...
+1 failed, 152 passed in 1.97s

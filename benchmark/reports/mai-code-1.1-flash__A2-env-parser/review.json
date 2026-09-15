@@ -1,0 +1,26 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "layering": {
+  "maxPoints": 6,
+  "criterion": "key 解析 / 值解引号 / 转义展开分成独立的辅助函数，主循环可读",
+  "points": 3,
+  "verdict": "部分符合：转义展开已抽出，但 key 解析与值解引号仍内联在主循环",
+  "reasoning": "envparse.py:7-43 的 _decode_double_quoted 是唯一辅助函数（转义展开）。key 解析（export 剥离与合法性校验）与三种值形态的解引号分派、未引值的注释剥离（envparse.py:73 起的内联 for）全部留在 parse_env 主循环里，主函数承担全部编排。口径对齐：kimi 同样只抽一项得 3/6，sonnet 抽三项得 5/6，gemini 四项全抽得 6/6。",
+  "evidence": [
+   "envparse.py:7 唯一辅助 _decode_double_quoted",
+   "envparse.py:45-90 主循环内联 key 解析与解引号",
+   "envparse.py:73 内联注释剥离"
+  ]
+ },
+ "escape_single_pass": {
+  "maxPoints": 5,
+  "criterion": "转义用单次左到右扫描或查表，不是链式 .replace()（链式会引入顺序 bug）",
+  "points": 5,
+  "verdict": "完全符合：单次左到右 while 扫描",
+  "reasoning": "envparse.py:10-43 用索引单遍推进，反斜杠向前看一位分派已知/未知转义，未知转义保留两字符。无 .replace() 链。38 项隐藏测试全过。",
+  "evidence": [
+   "envparse.py:10 while 单遍扫描",
+   "隐藏套件 38/38"
+  ]
+ }
+}

@@ -1,0 +1,39 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "null_logic_centralised": {
+  "maxPoints": 5,
+  "criterion": "三值逻辑与 NULL 规则集中在 value.py，WHERE / 聚合 / 排序三处都复用它，没有各自重写一套 NULL 判断",
+  "points": 5,
+  "verdict": "完全符合：三值逻辑单点定义，四个消费模块全部导入复用",
+  "reasoning": "value.py:40-93 集中定义三值逻辑全家桶：and_/or_/not_（Kleene 真值表，注释明示 None 即 UNKNOWN）、compare_eq/compare_lt（任一操作数为 NULL 即返回 UNKNOWN，docstring 逐条说明）。复用关系清晰可查：expr.py:26（WHERE 表达式求值）、aggregate.py:13（聚合的 NULL 跳过与比较）、executor.py:22（排序用 compare_lt）、schema.py:8 全部 from .value import，grep 全模块无第二处 NULL 真值表或比较实现。规格埋点『NULL=NULL 是 UNKNOWN』『NULL 在 GROUP BY/DISTINCT 中相等』『DESC 下 NULL 仍排最后』的隐藏测试全部通过，都由这一份实现支撑。",
+  "evidence": [
+   "value.py:40-93 三值逻辑与比较单点定义",
+   "expr.py:26 / aggregate.py:13 / executor.py:22 / schema.py:8 四处导入复用",
+   "全模块无重复 NULL 判断实现"
+  ]
+ },
+ "explicit_stage_order": {
+  "maxPoints": 4,
+  "criterion": "执行阶段顺序由 planner 显式表达为数据（可枚举的阶段序列），executor 按该顺序执行，不在控制流里隐式重排",
+  "points": 3,
+  "verdict": "大体符合：Plan 是真实被消费的数据序列，但 JOIN 未独立成可枚举阶段",
+  "reasoning": "planner.py:21-42 的 Plan 类把阶段序列表达为不可变元组数据，支持 len/下标/迭代/stage_names 枚举；executor.py:50 的 for stage in plan 逐阶段消费该序列执行，计划真实驱动执行而非摆设（对照：sonnet 的计划器产出正确序列但 executor 硬编码控制流不消费它，本项得 2/4）。失分点：JOIN 没有独立成阶段，而是折叠进 FROM 阶段的载荷（planner.py:59 的 Stage('FROM', (query.from_table, query.join))），阶段枚举里因此缺 join，被隐藏测试 test_plan_full_pipeline_order 抓住（该项功能分已扣，此处扣的是『可枚举的阶段序列』完整性这一设计要件本身）。其余阶段（WHERE/GROUP BY/AGGREGATE/HAVING/PROJECT/DISTINCT/ORDER/LIMIT）按规格顺序显式追加。",
+  "evidence": [
+   "planner.py:21-42 Plan 为不可变可枚举数据",
+   "executor.py:50 for stage in plan 真实消费",
+   "planner.py:59 JOIN 折叠进 FROM 载荷（失分点，对应 1 项隐藏测试失败）"
+  ]
+ },
+ "name_resolution_single_point": {
+  "maxPoints": 3,
+  "criterion": "名称解析（限定名、非限定名、别名优先、歧义报错）集中在一处，不是在投影与排序里各判一次",
+  "points": 3,
+  "verdict": "完全符合：resolve_column 单点解析，歧义单点报错",
+  "reasoning": "expr.py:74-90 的 resolve_column 是全模块唯一的列名解析点：限定名（表.列）直取、非限定名在行的可见列中查找、命中多于一个抛 AmbiguousColumnError（expr.py:90，消息带列名）。投影、WHERE、ORDER BY 的表达式求值都经由 expr 的同一条路径进入 resolve_column，无第二处解析逻辑。『ORDER BY 先看别名、WHERE 看不见别名』这条规格埋点的隐藏测试通过，别名可见性差异由调用方传入的行上下文承载而非在解析函数里特判，结构干净。",
+  "evidence": [
+   "expr.py:74-90 唯一解析点 + 歧义报错",
+   "投影/排序/过滤共用同一求值路径",
+   "别名可见性埋点测试通过"
+  ]
+ }
+}

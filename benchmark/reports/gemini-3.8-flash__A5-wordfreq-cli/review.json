@@ -1,0 +1,26 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "argparse_exit2": {
+  "maxPoints": 5,
+  "criterion": "用 argparse 的 type= 校验让退出码 2 自然产生，而不是散落的手写 sys.exit(2)",
+  "points": 3,
+  "verdict": "部分符合：用了 argparse 且退出码 2 收敛在单点，但绕开 type= 手动转换校验",
+  "reasoning": "wordfreq.py:33-37 自定义 _ArgumentParser 子类把 error 改抛 ValueError，wordfreq.py:62-71 的 main 单点捕获后 return 2，全模块没有散落的 sys.exit(2)，这部分符合判据精神。但 -n/--top 声明没有用 type=（wordfreq.py:44 default=10 且不设 type），整数转换与 n>=1 校验全部手写在 _parse_n 里（wordfreq.py:46-58 的 isinstance 分支），判据核心『让 argparse 的 type= 校验自然产生退出码 2』未达成；另 add_help=False 关闭了 -h。口径对齐：kimi 用 type=int 仅一处手写 return 2 得 4/5，sonnet 完全弃用 argparse 得 1/5，gemini 介于两者，3/5。",
+  "evidence": [
+   "wordfreq.py:33-37 argparse 子类 error 转 ValueError",
+   "wordfreq.py:44 未用 type=，wordfreq.py:46-58 手写转换校验",
+   "wordfreq.py:71 单点 return 2；add_help=False 关闭 -h"
+  ]
+ },
+ "tokenize_single_regex": {
+  "maxPoints": 5,
+  "criterion": "分词用一条正则 + 统一 strip，不是多层 replace 或逐字符状态机",
+  "points": 5,
+  "verdict": "完全符合：单条正则 findall + 统一 strip 单引号",
+  "reasoning": "wordfreq.py:14 对 lower() 后全文一次 findall(r\"[a-z0-9']+\")，字符类与规格逐字一致；wordfreq.py:17-19 统一 strip(\"'\") 并过滤空 token。零 replace 链、零状态机。43 项隐藏测试全过。",
+  "evidence": [
+   "wordfreq.py:14 单条正则 findall",
+   "wordfreq.py:17 统一 strip"
+  ]
+ }
+}

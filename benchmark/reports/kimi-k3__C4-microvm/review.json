@@ -1,0 +1,41 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "shared_type_rules": {
+  "maxPoints": 5,
+  "criterion": "运行时类型规则单一来源：VM 的算术/比较/布尔检查收在一处，优化器折叠复用同一套规则或直接调用它，编译期折叠与运行期语义不可能分叉",
+  "points": 5,
+  "verdict": "完全符合：优化器直接 import VM 的求值函数，语义分叉在物理上不可能",
+  "reasoning": "类型规则单一来源在 vm.py:26-95：eval_binop/eval_neg/eval_not 与 _require_bool 收拢全部算术/比较/布尔检查。optimizer.py:7 直接 from .vm import eval_binop, eval_neg, eval_not，折叠时调用运行期同一份函数求值（optimizer.py:21-36），这是判据理想形态『直接调用它』，编译期与运行期语义共享同一实现体。折叠遇到会在运行期报错的表达式时保持不折叠（optimizer.py:28 的 except 分支带注释『would fail at run time; leave unfolded』），规格埋点『1/0 不许折叠』『true and X 不得折成 X』的隐藏测试全部通过。296 项隐藏断言全过。",
+  "evidence": [
+   "vm.py:26-95 类型规则单点",
+   "optimizer.py:7 直接导入 VM 求值函数",
+   "optimizer.py:28 运行期错误保持不折叠",
+   "隐藏套件 296/296"
+  ]
+ },
+ "jump_patching_single_point": {
+  "maxPoints": 4,
+  "criterion": "前向跳转回填经由一个集中的 emit/patch 机制（标签或补丁表），不是散落各处的裸下标运算",
+  "points": 4,
+  "verdict": "完全符合：_emit 返回占位下标，_patch 单点回填，控制流站点只用这对机制",
+  "reasoning": "compiler.py:38-42 定义集中机制：_emit(op, arg=None) 追加指令并返回其下标（arg 为 None 即占位），_patch(at, target) 是唯一的回填写入点。if/else（compiler.py:85-93）与 while（compiler.py:98-100）的前向跳转全部走 jf = _emit('JUMP_IF_FALSE') 后 _patch(jf, len(self.code)) 的模式，编译器其余部分无任何对 self.code 的裸下标赋值。短路逻辑编译成跳转后保留类型检查的规格埋点（隐藏测试）通过，说明该机制正确支撑了最复杂的控制流生成。",
+  "evidence": [
+   "compiler.py:38-42 emit/patch 集中机制",
+   "compiler.py:85-93,98-100 控制流站点统一使用",
+   "无散落的 code[i] 裸赋值"
+  ]
+ },
+ "codec_discipline": {
+  "maxPoints": 3,
+  "criterion": "二进制布局用 struct 声明式表达且 dumps/loads 共用定义；loads 先验 CRC 再信任任何长度字段；读取有单一的越界检查点",
+  "points": 3,
+  "verdict": "完全符合：CRC 先于一切长度字段校验，_Reader 单点越界检查，标签常量双端共用",
+  "reasoning": "loads（serializer.py:115-130）的顺序纪律严格：先验 magic，再对整个 body 验 CRC（serializer.py:119-121），通过后才创建 _Reader 解析任何长度字段，docstring 明示『validating the checksum first』。_Reader（serializer.py:60-81）是唯一的读取游标，read() 单点越界检查抛 truncated data，所有 u8/u16/u32 经由它。布局用 struct.pack/unpack 声明式表达，_TAG_INT/_TAG_FLOAT/_TAG_STRING/_TAG_BOOL 常量（serializer.py:14-17）为 dumps 与 loads 共用；编码侧 bool 判定先于 int（serializer.py:22 在 26 之前），类型保持的常量池埋点（True 与 1 round-trip 不混淆）测试通过。末尾还有 trailing-bytes 检查（serializer.py:128-129）。",
+  "evidence": [
+   "serializer.py:119-121 CRC 先于任何解析",
+   "serializer.py:60-81 _Reader 单点越界检查",
+   "serializer.py:14-17 标签常量双端共用；bool 先于 int 判定",
+   "serializer.py:128-129 trailing 字节检查"
+  ]
+ }
+}

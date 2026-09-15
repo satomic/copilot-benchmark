@@ -1,0 +1,36 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "shared_type_rules": {
+  "maxPoints": 5,
+  "criterion": "运行时类型规则单一来源：VM 的算术/比较/布尔检查收在一处，优化器折叠复用同一套规则或直接调用它，编译期折叠与运行期语义不可能分叉",
+  "points": 3,
+  "verdict": "部分符合：VM 内规则集中，但优化器自带一套折叠语义",
+  "reasoning": "优化器不导入 vm 的求值函数，折叠所需的算术/比较/布尔语义在 optimizer 内部另写一套（与 vm 的运行期规则物理上是两份实现），判据的『单一来源、不可能分叉』未达成；两套语义当前等价（折叠类隐藏测试全过，1/0 不折叠与短路保类型检查的埋点命中），但格式上存在分叉风险。口径对齐：sonnet/opus/fable/astra/kimi 直接导入 VM 规则得 5/5，haiku 自带一套且叠加 141 行分派函数得 2/5；本实现自带一套但无叠加缺陷，给 3/5。",
+  "evidence": [
+   "optimizer.py 只从 parser 导入，不导入 vm",
+   "折叠语义在 optimizer 内独立实现",
+   "296 项隐藏断言全过（两套语义当前等价）"
+  ]
+ },
+ "jump_patching_single_point": {
+  "maxPoints": 4,
+  "criterion": "前向跳转回填经由一个集中的 emit/patch 机制（标签或补丁表），不是散落各处的裸下标运算",
+  "points": 4,
+  "verdict": "完全符合：emit/patch 成对集中机制",
+  "reasoning": "compiler.py:130 emit 返回占位下标，compiler.py:135 patch 是唯一回填写入点，控制流站点统一走这对机制，无散落裸下标赋值。短路编译保类型检查的埋点测试通过。",
+  "evidence": [
+   "compiler.py:130,135 emit/patch 机制"
+  ]
+ },
+ "codec_discipline": {
+  "maxPoints": 3,
+  "criterion": "二进制布局用 struct 声明式表达且 dumps/loads 共用定义；loads 先验 CRC 再信任任何长度字段；读取有单一的越界检查点",
+  "points": 2,
+  "verdict": "大体符合：CRC 先于一切解析，但无单一越界检查点",
+  "reasoning": "loads（serializer.py:163-175）顺序正确：长度下限、magic、CRC（对 data[4:-4] 全体）、版本，全部先于任何长度字段解析，判据的 CRC 纪律达成。失分点：解析阶段没有集中的越界检查读取器，pos 手工推进配 34 处分散的 SerializationError 检查，『单一的越界检查点』未达成。口径对照：grok/kimi 用 _Reader 单点检查得 3/3。",
+  "evidence": [
+   "serializer.py:167-170 CRC 先于解析",
+   "34 处分散越界检查（失分点）"
+  ]
+ }
+}

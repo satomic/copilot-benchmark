@@ -1,0 +1,56 @@
+{
+  "task": "C2-kvstore",
+  "model": "grok-4.6",
+  "functional": 69.27,
+  "functionalMax": 70.0,
+  "spec": 15,
+  "specMax": 15,
+  "quality": 15.0,
+  "qualityMax": 15.0,
+  "qualityAuto": 3.0,
+  "qualityReview": 12,
+  "total": 99.27,
+  "reviewPending": [],
+  "vetoTriggered": [],
+  "hidden": {
+    "total": 238,
+    "failures": 3,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 235,
+    "time": 11.99,
+    "bad": [
+      {
+        "name": "_verify.test_c2::test_encode_rejects_empty_key",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'ValueError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c2::test_encode_rejects_oversize_key",
+        "kind": "failure",
+        "message": [
+          "struct.error: 'H' format requires 0 <= number <= 65535"
+        ]
+      },
+      {
+        "name": "_verify.test_c2::test_encode_rejects_oversize_multibyte_key",
+        "kind": "failure",
+        "message": [
+          "struct.error: 'H' format requires 0 <= number <= 65535"
+        ]
+      }
+    ]
+  },
+  "visible": null,
+  "own": {
+    "total": 51,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 51,
+    "time": 0.684,
+    "bad": []
+  }
+}

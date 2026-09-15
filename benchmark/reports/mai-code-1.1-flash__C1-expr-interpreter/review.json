@@ -1,0 +1,35 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "grammar_correspondence": {
+  "maxPoints": 5,
+  "criterion": "递归下降的函数与 task.md 的文法层级一一对应，命名可读，无手工回溯",
+  "points": 5,
+  "verdict": "完全符合：parse_expr 到 parse_primary 十个方法与文法一一对应",
+  "reasoning": "parser.py:93-157 方法链 parse_expr -> parse_or -> parse_and -> parse_not -> parse_comparison -> parse_additive -> parse_multiplicative -> parse_unary -> parse_power -> parse_primary，与文法逐层对应，单 token 前瞻递归下降，无回溯。隐藏 152/153（唯一失败是内置函数 str 的引号行为，与文法无关）。",
+  "evidence": [
+   "parser.py:93-157 十级方法",
+   "隐藏 152/153"
+  ]
+ },
+ "named_ast": {
+  "maxPoints": 4,
+  "criterion": "AST 用具名节点（dataclass / NamedTuple / 类），不是裸 tuple 或 dict",
+  "points": 4,
+  "verdict": "完全符合：dataclass 具名节点",
+  "reasoning": "parser.py:7 起用 @dataclass 定义 NumberNode/StringNode/BoolNode 等全部节点，字段具名，无裸 tuple 或 dict。判据外记录不扣分：节点未携带 position 字段。",
+  "evidence": [
+   "parser.py:7-40 dataclass 节点"
+  ]
+ },
+ "error_consistency": {
+  "maxPoints": 3,
+  "criterion": "三类错误消息风格一致且带位置信息，没有 except Exception 吞异常",
+  "points": 2,
+  "verdict": "大体符合：基类带位置、风格统一、无吞异常，但求值错误的 raise 站点不传位置",
+  "reasoning": "errors.py:2-5 基类带 position 参数，Lex/Parse/Eval 三类继承，消息风格统一，无 except Exception。失分点：evaluator 的 25 处 EvalError raise 全部只传消息不传位置（grep position 零命中），求值类错误的位置信息恒缺失。口径对齐：kimi/sonnet/astra 同类缺口得 2/3。",
+  "evidence": [
+   "errors.py:2-5 基类支持 position",
+   "evaluator 25 处 raise 不传位置（失分点）"
+  ]
+ }
+}

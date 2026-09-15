@@ -1,0 +1,994 @@
+{
+  "task": "M1-lru-ttl-cache",
+  "runDir": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache",
+  "authoredFiles": [
+    {
+      "path": "cache/__init__.py",
+      "bytes": 98,
+      "loc": 3
+    },
+    {
+      "path": "cache/lru.py",
+      "bytes": 6109,
+      "loc": 144
+    },
+    {
+      "path": "cache/stats.py",
+      "bytes": 173,
+      "loc": 7
+    },
+    {
+      "path": "task.md",
+      "bytes": 7092,
+      "loc": 127
+    },
+    {
+      "path": "tests/test_cache.py",
+      "bytes": 5903,
+      "loc": 152
+    }
+  ],
+  "expectedFiles": [
+    "task.md",
+    "cache/__init__.py",
+    "cache/lru.py",
+    "cache/stats.py",
+    "tests/test_cache.py"
+  ],
+  "missing": [],
+  "extra": [],
+  "totalLoc": 306,
+  "imports": [
+    {
+      "file": "cache/__init__.py",
+      "line": 1,
+      "module": ".lru",
+      "relative": true
+    },
+    {
+      "file": "cache/__init__.py",
+      "line": 2,
+      "module": ".stats",
+      "relative": true
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 1,
+      "module": "__future__"
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 3,
+      "module": "math"
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 4,
+      "module": "threading"
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 5,
+      "module": "time"
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 6,
+      "module": "collections"
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 7,
+      "module": "numbers"
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 8,
+      "module": "typing"
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 10,
+      "module": ".stats",
+      "relative": true
+    },
+    {
+      "file": "cache/stats.py",
+      "line": 1,
+      "module": "dataclasses"
+    },
+    {
+      "file": "tests/test_cache.py",
+      "line": 1,
+      "module": "pytest"
+    },
+    {
+      "file": "tests/test_cache.py",
+      "line": 3,
+      "module": "cache"
+    }
+  ],
+  "thirdPartyImports": [],
+  "allowedThirdPartyUsed": [
+    "pytest"
+  ],
+  "functions": [
+    {
+      "file": "cache/lru.py",
+      "name": "__init__",
+      "line": 16,
+      "lines": 26,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "_record_stats",
+      "line": 43,
+      "lines": 7,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "_now",
+      "line": 51,
+      "lines": 2,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "_validate_ttl",
+      "line": 55,
+      "lines": 11,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "_expires_at",
+      "line": 67,
+      "lines": 4,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "_is_expired",
+      "line": 72,
+      "lines": 3,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "_purge_expired_locked",
+      "line": 76,
+      "lines": 7,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "get",
+      "line": 84,
+      "lines": 13,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "set",
+      "line": 98,
+      "lines": 25,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "delete",
+      "line": 124,
+      "lines": 11,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "clear",
+      "line": 136,
+      "lines": 3,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "purge_expired",
+      "line": 140,
+      "lines": 3,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "keys",
+      "line": 144,
+      "lines": 7,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "stats",
+      "line": 152,
+      "lines": 3,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "__len__",
+      "line": 156,
+      "lines": 3,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "__contains__",
+      "line": 160,
+      "lines": 10,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_constructor_validates_capacity_and_ttl",
+      "line": 6,
+      "lines": 13,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_capacity_eviction_order",
+      "line": 21,
+      "lines": 12,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_lru_refresh_on_get",
+      "line": 35,
+      "lines": 12,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_ttl_expiry_via_get_counts_miss_and_expiration",
+      "line": 49,
+      "lines": 9,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_entry_ttl_overrides_default",
+      "line": 60,
+      "lines": 11,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_ttl_none_override_never_expires",
+      "line": 73,
+      "lines": 8,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_purge_expired_removes_all_and_counts_expirations",
+      "line": 83,
+      "lines": 10,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_delete_return_values_and_expired_delete",
+      "line": 95,
+      "lines": 13,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_clear_does_not_reset_stats",
+      "line": 110,
+      "lines": 9,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_keys_ordering_excludes_expired_without_mutating_stats",
+      "line": 121,
+      "lines": 13,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_contains_lazy_expiration_does_not_count_hit_or_miss",
+      "line": 136,
+      "lines": 10,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_stats_snapshot_is_independent_of_later_cache_changes",
+      "line": 148,
+      "lines": 11,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_set_restarts_ttl_on_existing_key",
+      "line": 161,
+      "lines": 9,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_expired_entries_preferred_before_lru_eviction",
+      "line": 172,
+      "lines": 11,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_get_missing_counts_miss_and_default",
+      "line": 185,
+      "lines": 5,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_set_rejects_invalid_explicit_ttl_values",
+      "line": 192,
+      "lines": 13,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    }
+  ],
+  "broadExcept": [],
+  "prints": [],
+  "syntaxErrors": [],
+  "todos": [],
+  "commentedCode": [],
+  "duplicateBlocks": [
+    {
+      "locations": [
+        "cache/lru.py:106",
+        "cache/lru.py:136"
+      ],
+      "firstLine": "with self._lock:",
+      "blockLines": 5
+    },
+    {
+      "locations": [
+        "cache/lru.py:107",
+        "cache/lru.py:137"
+      ],
+      "firstLine": "entry = self._entries.get(key)",
+      "blockLines": 5
+    },
+    {
+      "locations": [
+        "cache/lru.py:108",
+        "cache/lru.py:138"
+      ],
+      "firstLine": "if entry is None:",
+      "blockLines": 5
+    },
+    {
+      "locations": [
+        "cache/lru.py:109",
+        "cache/lru.py:139"
+      ],
+      "firstLine": "return False",
+      "blockLines": 5
+    }
+  ],
+  "sealed": [],
+  "transientCandidates": [
+    "checkpoint.md"
+  ],
+  "transcript": {
+    "source": "events.jsonl",
+    "turns": 12,
+    "modelCalls": 12,
+    "toolCalls": [
+      {
+        "id": "call_Yoxdomc1ufJs5Ol2oQjnd20y",
+        "turn": "0",
+        "name": "session_artifacts",
+        "args": {
+          "operation": "write",
+          "path": "checkpoint.md",
+          "content": "Goal: implement LRUCache with TTL and concurrent-safe stats in the project root; add >=12 pytest tests.\nAcceptance criteria: exact deliverables exist, python -m pytest tests -q passes, public API matches spec, no extra files.\nPlan: inspect project root, create cache package and tests, validate with pytest."
+        },
+        "success": true,
+        "result": "{\"operation\":\"create\"}"
+      },
+      {
+        "id": "call_COpeS6ZMX06ui8QDhkGfTXKB",
+        "turn": "1",
+        "name": "view",
+        "args": {
+          "path": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache"
+        },
+        "success": true,
+        "result": "task.md"
+      },
+      {
+        "id": "call_H5Ij1zqjtVipmtssQT3Ae9a0",
+        "turn": "1",
+        "name": "glob",
+        "args": {
+          "pattern": "**/*",
+          "paths": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache"
+        },
+        "success": true,
+        "result": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\task.md"
+      },
+      {
+        "id": "call_FaZvlaut1HUgKYwsO1AwphXP",
+        "turn": "2",
+        "name": "view",
+        "args": {
+          "path": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\task.md",
+          "view_range": [
+            1,
+            250
+          ]
+        },
+        "success": true,
+        "result": "# Task M1 — LRU Cache with TTL\n\n**Difficulty:** Medium\n\n## Working agreement (read this first)\n\n- This folder is the project root. Do not read or write anything outside it.\n- Python 3.11 and `pytest` are available. Use the **standard library only** — do not install\n  any third-party package and do not access the network.\n- Create **exactly** the files listed under *Deliverables*. Do not add extra files\n  (no `README.md`, no `requirements.txt`, no `setup.py`, no `pyproject.toml`, no scratch files).\n- Do not ask clarifying questions. If something is genuinely ambiguous, choose the most\n  reasonable interpretation, implement it, and record the choice in a short code comment.\n- When the deliverables satisfy the acceptance criteria, stop.\n\n## Goal\n\nImplement a thread-safe, size-bounded cache with per-entry time-to-live, plus a test suite\nfor it.\n\n## Deliverables\n\n```\ncache/__init__.py       # package surface: re-exports LRUCache and CacheStats, defines __all__\ncache/lru.py            # LRUCache implementation\ncache/stats.py          # CacheStats\ntests/test_cache.py     # your own test suite\n```\n\nNo other files. `tests/` needs no `__init__.py`.\n\n## Public API\n\n`cache/stats.py`:\n\n```python\n@dataclass(frozen=True)\nclass CacheStats:\n    hits: int = 0\n    misses: int = 0\n    evictions: int = 0\n    expirations: int = 0\n```\n\n`cache/lru.py`:\n\n```python\nclass LRUCache:\n    def __init__(\n        self,\n        capacity: int,\n        ttl: float | None = None,\n        time_fn: Callable[[], float] = time.monotonic,\n    ) -> None: ...\n\n    def get(self, key: Hashable, default: Any = None) -> Any: ...\n    def set(self, key: Hashable, value: Any, ttl: float | None = ...) -> None: ...\n    def delete(self, key: Hashable) -> bool: ...\n    def clear(self) -> None: ...\n    def purge_expired(self) -> int: ...\n    def keys(self) -> list: ...\n    def stats(self) -> CacheStats: ...\n    def __len__(self) -> int: ...\n    def __contains__(self, key: object) -> bool: ...\n```\n\n`cache/__init__.py` must make `from cache import LRUCache, CacheStats` work and must set\n`__all__ = [\"LRUCache\", \"CacheStats\"]`.\n\n## Behaviour specification\n\n### Construction\n\n1. `capacity` must be an `int` >= 1. Anything else raises `ValueError`\n   (a non-`int`, including `bool`, raises `TypeError`).\n2. `ttl` is the **default** time-to-live in seconds for entries. `None` means entries never\n   expire. A given `ttl` must be a real number > 0, otherwise `ValueError`.\n3. `time_fn` is a zero-argument callable returning a monotonically non-decreasing float.\n   It is the **only** source of time in the whole class — never call `time.time()` or\n   `time.monotonic()` directly anywhere else. Tests inject a fake clock through it.\n\n### `set`\n\n4. `set(key, value)` stores the entry using the cache's default `ttl`.\n5. `set(key, value, ttl=X)` with a number `X > 0` gives that entry its own TTL.\n   `X <= 0` or a non-number raises `ValueError`.\n6. `set(key, value, ttl=None)` makes **that entry** never expire, regardless of the cache\n   default. Omitting the argument and passing `None` must therefore behave differently —\n   use a private sentinel to tell them apart.\n7. Setting an existing key updates its value, restarts its TTL, and makes it the most\n   recently used entry.\n8. Inserting a **new** key when the cache is already at `capacity` evicts the least recently\n   used entry first and increments `evictions`.\n9. Expired entries are preferred over live ones when making room: before evicting an LRU\n   entry, drop entries that have already expired (counting them as `expirations`, not\n   `evictions`). If that frees space, no eviction occurs.\n\n### `get`\n\n10. A live entry: returns the value, counts one `hit`, and becomes the most recently used.\n11. A missing key: returns `default`, counts one `miss`.\n12. An expired entry: it is removed, counts one `expiration` **and** one `miss`, and `default`\n    is returned.\n\n### Expiry semantics\n\n13. An entry with TTL `t` stored at time `t0` expires when `time_fn() >= t0 + t`.\n    Exactly at `t0 + t` it is **already expired**.\n14. Expiry is lazy: nothing runs in the background, no threads, no timers.\n15. `purge_expired()` removes every currently expired entry, counts each as an `expiration`,\n    and returns how many were removed.\n\n### Other operations\n\n16. `delete(key)` removes the entry and returns `True`; returns `False` if the key is absent\n    or expired. A `delete` of an expired entry counts one `expiration` and returns `False`.\n    `delete` never counts hits or misses.\n17. `clear()` removes all entries. It does **not** reset the statistics.\n18. `keys()` returns the live keys, most-recently-used **first**, least-recently-used last.\n    Expired entries are excluded but `keys()` does not mutate the cache or the stats.\n19. `__len__` returns the number of entries **including** expired-but-not-yet-purged ones,\n    so `len(c)` never exceeds `capacity`.\n20. `key in c` returns whether a **live** entry exists. It lazily removes an expired entry\n    (counting one `expiration`) and does **not** count hits or misses.\n21. `stats()` returns a `CacheStats` snapshot. Mutating the cache afterwards must not change\n    a previously returned snapshot.\n\n### Concurrency\n\n22. Every public method must be safe to call from multiple threads. Use a single\n    `threading.RLock` held for the duration of each public method. No other locks.\n23. `get` and `set` must be O(1) amortised. Do not scan the whole cache on the hot path\n    (`purge_expired` may scan; `keys` may scan).\n\n## Your test suite\n\n24. `tests/test_cache.py` must contain **at least 12** test functions and must pass:\n    `python -m pytest tests -q` reports 0 failures.\n25. It must use an injected fake clock (through `time_fn`) rather than `time.sleep`.\n    No test may sleep.\n26. It must cover at least: capacity eviction order, LRU refresh on `get`, TTL expiry via\n    `get`, per-entry TTL overriding the default, `ttl=None` override, `purge_expired`,\n    `delete` return values, `clear` not resetting stats, `keys()` ordering,\n    `__contains__` not counting hits/misses, and constructor validation.\n\n## Acceptance criteria\n\n```python\nfrom cache import LRUCache, CacheStats\n\nclock = [0.0]\nc = LRUCache(capacity=2, ttl=10, time_fn=lambda: clock[0])\n\nc.set(\"a\", 1)\nc.set(\"b\", 2)\nassert c.get(\"a\") == 1              # 'a' is now MRU\nc.set(\"c\", 3)                       # evicts 'b'\nassert c.keys() == [\"c\", \"a\"]\nassert c.get(\"b\") is None\nassert c.stats() == CacheStats(hits=1, misses=1, evictions=1, expirations=0)\n\nclock[0] = 10.0                     # exactly at the deadline -> already expired\nassert c.get(\"a\") is None\nassert c.stats().expirations == 1\n\nc2 = LRUCache(capacity=8, ttl=5, time_fn=lambda: clock[0])\nc2.set(\"forever\", 1, ttl=None)\nclock[0] += 1000\nassert c2.get(\"forever\") == 1\n\nimport pytest\nwith pytest.raises(ValueError):\n    LRUCache(capacity=0)\nwith pytest.raises(TypeError):\n    LRUCache(capacity=True)\n```\n\n## Definition of done\n\nAll four files exist, `python -m pytest tests -q` passes with at least 12 tests, and every\nitem under *Behaviour specification* holds.\n"
+      },
+      {
+        "id": "call_gImLUc5VlHOSIxf8but5nTTY",
+        "turn": "3",
+        "name": "powershell",
+        "args": {
+          "command": "New-Item -ItemType Directory -Force -Path .\\cache, .\\tests | Out-Null",
+          "description": "Create cache package and test directories",
+          "mode": "sync",
+          "initial_wait": 30
+        },
+        "success": true,
+        "result": "\n<shellId: 0 completed with exit code 0>"
+      },
+      {
+        "id": "call_2YDAFhgtLxG8rOZO8TNLMlbl",
+        "turn": "4",
+        "name": "create",
+        "args": {
+          "path": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\__init__.py",
+          "file_text": "from .lru import LRUCache\nfrom .stats import CacheStats\n\n__all__ = [\"LRUCache\", \"CacheStats\"]\n"
+        },
+        "success": true,
+        "result": "Created file C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\__init__.py with 98 characters"
+      },
+      {
+        "id": "call_uZpo3ED8TGbCap3K9iiqjSwe",
+        "turn": "4",
+        "name": "create",
+        "args": {
+          "path": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\stats.py",
+          "file_text": "from dataclasses import dataclass\n\n\n@dataclass(frozen=True)\nclass CacheStats:\n    hits: int = 0\n    misses: int = 0\n    evictions: int = 0\n    expirations: int = 0\n"
+        },
+        "success": true,
+        "result": "Created file C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\stats.py with 173 characters"
+      },
+      {
+        "id": "call_F4Hx1sFTNV6GiHLGQ901sjnV",
+        "turn": "4",
+        "name": "create",
+        "args": {
+          "path": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\lru.py",
+          "file_text": "from __future__ import annotations\n\nimport math\nimport threading\nimport time\nfrom collections import OrderedDict\nfrom numbers import Real\nfrom typing import Any, Callable, Hashable\n\nfrom .stats import CacheStats\n\n_MISSING = object()\n\n\nclass LRUCache:\n    def __init__(\n        self,\n        capacity: int,\n        ttl: float | None = None,\n        time_fn: Callable[[], float] = time.monotonic,\n    ) -> None:\n        if isinstance(capacity, bool) or type(capacity) is not int:\n            raise TypeError(\"capacity must be an int\")\n        if capacity < 1:\n            raise ValueError(\"capacity must be >= 1\")\n        if ttl is not None:\n            if isinstance(ttl, bool) or not isinstance(ttl, Real):\n                raise ValueError(\"ttl must be a positive real number or None\")\n            ttl_value = float(ttl)\n            if not math.isfinite(ttl_value) or ttl_value <= 0:\n                raise ValueError(\"ttl must be a positive real number or None\")\n            ttl = ttl_value\n        if not callable(time_fn):\n            raise TypeError(\"time_fn must be callable\")\n\n        self._capacity = capacity\n        self._default_ttl = ttl\n        self._time_fn = time_fn\n        self._entries: OrderedDict[Hashable, dict[str, Any]] = OrderedDict()\n        self._stats = CacheStats()\n        self._lock = threading.RLock()\n\n    def _record_stats(self, *, hits: int = 0, misses: int = 0, evictions: int = 0, expirations: int = 0) -> None:\n        self._stats = CacheStats(\n            hits=self._stats.hits + hits,\n            misses=self._stats.misses + misses,\n            evictions=self._stats.evictions + evictions,\n            expirations=self._stats.expirations + expirations,\n        )\n\n    def _now(self) -> float:\n        return float(self._time_fn())\n\n    @staticmethod\n    def _validate_ttl(value: Any, *, allow_none: bool) -> float | None:\n        if value is None:\n            if allow_none:\n                return None\n            raise ValueError(\"ttl must be a positive real number or None\")\n        if isinstance(value, bool) or not isinstance(value, Real):\n            raise ValueError(\"ttl must be a positive real number or None\")\n        value_float = float(value)\n        if not math.isfinite(value_float) or value_float <= 0:\n            raise ValueError(\"ttl must be a positive real number or None\")\n        return value_float\n\n    def _expires_at(self, ttl: float | None) -> float | None:\n        if ttl is None:\n            return None\n        return self._now() + ttl\n\n    def _is_expired(self, entry: dict[str, Any]) -> bool:\n        expires_at = entry.get(\"expires_at\")\n        return expires_at is not None and self._now() >= expires_at\n\n    def _purge_expired_locked(self) -> int:\n        expired_keys = [key for key, entry in list(self._entries.items()) if self._is_expired(entry)]\n        for key in expired_keys:\n            del self._entries[key]\n        if expired_keys:\n            self._record_stats(expirations=len(expired_keys))\n        return len(expired_keys)\n\n    def get(self, key: Hashable, default: Any = None) -> Any:\n        with self._lock:\n            entry = self._entries.get(key)\n            if entry is None:\n                self._record_stats(misses=1)\n                return default\n            if self._is_expired(entry):\n                del self._entries[key]\n                self._record_stats(expirations=1, misses=1)\n                return default\n            self._entries.move_to_end(key)\n            self._record_stats(hits=1)\n            return entry[\"value\"]\n\n    def set(self, key: Hashable, value: Any, ttl: float | None = _MISSING) -> None:\n        with self._lock:\n            if ttl is _MISSING:\n                ttl = self._default_ttl\n            elif ttl is not None:\n                ttl = self._validate_ttl(ttl, allow_none=False)\n            else:\n                ttl = None\n\n            if key in self._entries and self._is_expired(self._entries[key]):\n                del self._entries[key]\n                self._record_stats(expirations=1)\n\n            if key in self._entries:\n                self._entries[key] = {\"value\": value, \"expires_at\": self._expires_at(ttl)}\n                self._entries.move_to_end(key)\n                return\n\n            if len(self._entries) >= self._capacity:\n                self._purge_expired_locked()\n                if len(self._entries) >= self._capacity:\n                    self._entries.popitem(last=False)\n                    self._record_stats(evictions=1)\n\n            self._entries[key] = {\"value\": value, \"expires_at\": self._expires_at(ttl)}\n\n    def delete(self, key: Hashable) -> bool:\n        with self._lock:\n            entry = self._entries.get(key)\n            if entry is None:\n                return False\n            if self._is_expired(entry):\n                del self._entries[key]\n                self._record_stats(expirations=1)\n                return False\n            del self._entries[key]\n            return True\n\n    def clear(self) -> None:\n        with self._lock:\n            self._entries.clear()\n\n    def purge_expired(self) -> int:\n        with self._lock:\n            return self._purge_expired_locked()\n\n    def keys(self) -> list:\n        with self._lock:\n            return [\n                key\n                for key in reversed(list(self._entries.keys()))\n                if not self._is_expired(self._entries[key])\n            ]\n\n    def stats(self) -> CacheStats:\n        with self._lock:\n            return self._stats\n\n    def __len__(self) -> int:\n        with self._lock:\n            return len(self._entries)\n\n    def __contains__(self, key: object) -> bool:\n        with self._lock:\n            entry = self._entries.get(key)\n            if entry is None:\n                return False\n            if self._is_expired(entry):\n                del self._entries[key]\n                self._record_stats(expirations=1)\n                return False\n            return True\n"
+        },
+        "success": true,
+        "result": "Created file C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\lru.py with 6109 characters"
+      },
+      {
+        "id": "call_dkEAR5QEqobebxCpQQoRQ4zi",
+        "turn": "5",
+        "name": "create",
+        "args": {
+          "path": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\tests\\test_cache.py",
+          "file_text": "import pytest\n\nfrom cache import CacheStats, LRUCache\n\n\ndef test_constructor_validates_capacity_and_ttl():\n    with pytest.raises(ValueError):\n        LRUCache(capacity=0)\n    with pytest.raises(TypeError):\n        LRUCache(capacity=True)\n    with pytest.raises(TypeError):\n        LRUCache(capacity=2, ttl=\"fast\")\n    with pytest.raises(ValueError):\n        LRUCache(capacity=2, ttl=0)\n    with pytest.raises(ValueError):\n        LRUCache(capacity=2, ttl=-1)\n    with pytest.raises(TypeError):\n        LRUCache(capacity=2, time_fn=123)\n\n\ndef test_capacity_eviction_order():\n    clock = [0.0]\n    cache = LRUCache(capacity=2, ttl=10, time_fn=lambda: clock[0])\n\n    cache.set(\"a\", 1)\n    cache.set(\"b\", 2)\n    assert cache.get(\"a\") == 1\n    cache.set(\"c\", 3)\n\n    assert cache.keys() == [\"c\", \"a\"]\n    assert cache.get(\"b\") is None\n    assert cache.stats() == CacheStats(hits=1, misses=1, evictions=1, expirations=0)\n\n\ndef test_lru_refresh_on_get():\n    clock = [0.0]\n    cache = LRUCache(capacity=3, ttl=5, time_fn=lambda: clock[0])\n\n    cache.set(\"a\", 1)\n    cache.set(\"b\", 2)\n    cache.set(\"c\", 3)\n    assert cache.get(\"a\") == 1\n    cache.set(\"d\", 4)\n\n    assert cache.keys() == [\"d\", \"c\", \"b\"]\n    assert \"a\" not in cache\n\n\ndef test_ttl_expiry_via_get_counts_miss_and_expiration():\n    clock = [0.0]\n    cache = LRUCache(capacity=2, ttl=3, time_fn=lambda: clock[0])\n    cache.set(\"a\", 1)\n\n    clock[0] = 3.0\n    assert cache.get(\"a\") is None\n    assert cache.stats() == CacheStats(hits=0, misses=1, evictions=0, expirations=1)\n    assert len(cache) == 0\n\n\ndef test_entry_ttl_overrides_default():\n    clock = [0.0]\n    cache = LRUCache(capacity=2, ttl=10, time_fn=lambda: clock[0])\n    cache.set(\"short\", 1, ttl=2)\n    cache.set(\"long\", 2, ttl=20)\n\n    clock[0] = 2.0\n    assert cache.get(\"short\") is None\n    assert cache.get(\"long\") == 2\n\n    assert cache.stats().expirations == 1\n\n\ndef test_ttl_none_override_never_expires():\n    clock = [0.0]\n    cache = LRUCache(capacity=3, ttl=5, time_fn=lambda: clock[0])\n    cache.set(\"forever\", 1, ttl=None)\n\n    clock[0] += 1000\n    assert cache.get(\"forever\") == 1\n    assert cache.stats().hits == 1\n\n\ndef test_purge_expired_removes_all_and_counts_expirations():\n    clock = [0.0]\n    cache = LRUCache(capacity=3, ttl=5, time_fn=lambda: clock[0])\n    cache.set(\"a\", 1)\n    cache.set(\"b\", 2)\n\n    clock[0] = 6.0\n    assert cache.purge_expired() == 2\n    assert cache.stats() == CacheStats(hits=0, misses=0, evictions=0, expirations=2)\n    assert list(cache.keys()) == []\n\n\ndef test_delete_return_values_and_expired_delete():\n    clock = [0.0]\n    cache = LRUCache(capacity=3, ttl=5, time_fn=lambda: clock[0])\n\n    assert cache.delete(\"missing\") is False\n    cache.set(\"a\", 1)\n    assert cache.delete(\"a\") is True\n    assert cache.delete(\"a\") is False\n\n    cache.set(\"b\", 2)\n    clock[0] = 6.0\n    assert cache.delete(\"b\") is False\n    assert cache.stats().expirations == 1\n\n\ndef test_clear_does_not_reset_stats():\n    clock = [0.0]\n    cache = LRUCache(capacity=2, ttl=5, time_fn=lambda: clock[0])\n    cache.set(\"a\", 1)\n    cache.get(\"a\")\n    cache.clear()\n\n    assert len(cache) == 0\n    assert cache.stats() == CacheStats(hits=1, misses=0, evictions=0, expirations=0)\n\n\ndef test_keys_ordering_excludes_expired_without_mutating_stats():\n    clock = [0.0]\n    cache = LRUCache(capacity=3, ttl=5, time_fn=lambda: clock[0])\n    cache.set(\"a\", 1)\n    cache.set(\"b\", 2)\n    cache.get(\"a\")\n    cache.set(\"c\", 3)\n\n    assert cache.keys() == [\"c\", \"a\", \"b\"]\n\n    clock[0] = 6.0\n    assert cache.keys() == []\n    assert cache.stats() == CacheStats(hits=1, misses=0, evictions=0, expirations=0)\n\n\ndef test_contains_lazy_expiration_does_not_count_hit_or_miss():\n    clock = [0.0]\n    cache = LRUCache(capacity=2, ttl=5, time_fn=lambda: clock[0])\n    cache.set(\"a\", 1)\n    clock[0] = 5.0\n\n    assert \"a\" not in cache\n    assert cache.stats() == CacheStats(hits=0, misses=0, evictions=0, expirations=1)\n    assert \"a\" not in cache\n    assert cache.stats().expirations == 1\n\n\ndef test_stats_snapshot_is_independent_of_later_cache_changes():\n    clock = [0.0]\n    cache = LRUCache(capacity=2, ttl=10, time_fn=lambda: clock[0])\n    cache.set(\"a\", 1)\n    snapshot = cache.stats()\n\n    cache.set(\"b\", 2)\n    cache.get(\"a\")\n\n    assert snapshot == CacheStats(hits=0, misses=0, evictions=0, expirations=0)\n    assert cache.stats().hits == 1\n\n\ndef test_set_restarts_ttl_on_existing_key():\n    clock = [0.0]\n    cache = LRUCache(capacity=2, ttl=10, time_fn=lambda: clock[0])\n    cache.set(\"a\", 1)\n    clock[0] = 5.0\n    cache.set(\"a\", 2)\n    clock[0] = 15.0\n    assert cache.get(\"a\") is None\n    assert cache.stats().expirations == 1\n\n\ndef test_expired_entries_preferred_before_lru_eviction():\n    clock = [0.0]\n    cache = LRUCache(capacity=2, ttl=5, time_fn=lambda: clock[0])\n    cache.set(\"a\", 1)\n    cache.set(\"b\", 2)\n    clock[0] = 6.0\n    cache.set(\"c\", 3)\n\n    assert cache.keys() == [\"c\"]\n    assert cache.stats().expirations == 2\n    assert cache.stats().evictions == 0\n\n\ndef test_get_missing_counts_miss_and_default():\n    clock = [0.0]\n    cache = LRUCache(capacity=2, ttl=5, time_fn=lambda: clock[0])\n    assert cache.get(\"missing\", 42) == 42\n    assert cache.stats() == CacheStats(hits=0, misses=1, evictions=0, expirations=0)\n\n\ndef test_set_rejects_invalid_explicit_ttl_values():\n    clock = [0.0]\n    cache = LRUCache(capacity=2, ttl=5, time_fn=lambda: clock[0])\n\n    with pytest.raises(ValueError):\n        cache.set(\"a\", 1, ttl=0)\n    with pytest.raises(ValueError):\n        cache.set(\"a\", 1, ttl=-1)\n    with pytest.raises(ValueError):\n        cache.set(\"a\", 1, ttl=\"10\")\n    cache.set(\"a\", 1, ttl=None)\n    clock[0] = 1000\n    assert cache.get(\"a\") == 1\n"
+        },
+        "success": true,
+        "result": "Created file C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\tests\\test_cache.py with 5902 characters"
+      },
+      {
+        "id": "call_UuQeLTcD6lFnEyPzMUrNwoMf",
+        "turn": "6",
+        "name": "powershell",
+        "args": {
+          "command": "cd \"C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\"; python -m pytest tests -q",
+          "description": "Run the project test suite against the new LRU cache implementation",
+          "mode": "sync",
+          "initial_wait": 120
+        },
+        "success": true,
+        "result": "F.F.............                                                         [100%]\n================================== FAILURES ===================================\n_________________ test_constructor_validates_capacity_and_ttl _________________\n\n    def test_constructor_validates_capacity_and_ttl():\n        with pytest.raises(ValueError):\n            LRUCache(capacity=0)\n        with pytest.raises(TypeError):\n            LRUCache(capacity=True)\n        with pytest.raises(TypeError):\n>           LRUCache(capacity=2, ttl=\"fast\")\n\ntests\\test_cache.py:12: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <cache.lru.LRUCache object at 0x0000027F1DDA79D0>, capacity = 2\nttl = 'fast', time_fn = <built-in function monotonic>\n\n    def __init__(\n        self,\n        capacity: int,\n        ttl: float | None = None,\n        time_fn: Callable[[], float] = time.monotonic,\n    ) -> None:\n        if isinstance(capacity, bool) or type(capacity) is not int:\n            raise TypeError(\"capacity must be an int\")\n        if capacity < 1:\n            raise ValueError(\"capacity must be >= 1\")\n        if ttl is not None:\n            if isinstance(ttl, bool) or not isinstance(ttl, Real):\n>               raise ValueError(\"ttl must be a positive real number or None\")\nE               ValueError: ttl must be a positive real number or None\n\ncache\\lru.py:28: ValueError\n___________________________ test_lru_refresh_on_get ___________________________\n\n    def test_lru_refresh_on_get():\n        clock = [0.0]\n        cache = LRUCache(capacity=3, ttl=5, time_fn=lambda: clock[0])\n    \n        cache.set(\"a\", 1)\n        cache.set(\"b\", 2)\n        cache.set(\"c\", 3)\n        assert cache.get(\"a\") == 1\n        cache.set(\"d\", 4)\n    \n>       assert cache.keys() == [\"d\", \"c\", \"b\"]\nE       AssertionError: assert ['d', 'a', 'c'] == ['d', 'c', 'b']\nE         \nE         At index 1 diff: 'a' != 'c'\nE         Use -v to get more diff\n\ntests\\test_cache.py:45: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/test_cache.py::test_constructor_validates_capacity_and_ttl - Val...\nFAILED tests/test_cache.py::test_lru_refresh_on_get - AssertionError: assert ...\n2 failed, 14 passed in 0.17s\n<shellId: 1 completed with exit code 1>"
+      },
+      {
+        "id": "call_Nv7N0q0kTXQXnnH18HmfYHFk",
+        "turn": "7",
+        "name": "edit",
+        "args": {
+          "path": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\tests\\test_cache.py",
+          "old_str": "    with pytest.raises(TypeError):\n        LRUCache(capacity=2, ttl=\"fast\")\n",
+          "new_str": "    with pytest.raises(ValueError):\n        LRUCache(capacity=2, ttl=\"fast\")\n"
+        },
+        "success": true,
+        "result": "File C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\tests\\test_cache.py updated with changes."
+      },
+      {
+        "id": "call_hk0AaptzjC3h5JEZIEKShM2Z",
+        "turn": "8",
+        "name": "edit",
+        "args": {
+          "path": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\tests\\test_cache.py",
+          "old_str": "    assert cache.keys() == [\"d\", \"c\", \"b\"]\n    assert \"a\" not in cache\n",
+          "new_str": "    assert cache.keys() == [\"d\", \"a\", \"c\"]\n    assert \"b\" not in cache\n"
+        },
+        "success": true,
+        "result": "File C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\tests\\test_cache.py updated with changes."
+      },
+      {
+        "id": "call_iWULQR2SjNHZGr9UA3vALFdH",
+        "turn": "9",
+        "name": "powershell",
+        "args": {
+          "command": "cd \"C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\"; python -m pytest tests -q",
+          "description": "Verify the corrected LRU cache implementation and tests pass the full suite",
+          "mode": "sync",
+          "initial_wait": 120
+        },
+        "success": true,
+        "result": "................                                                         [100%]\n16 passed in 0.05s\n<shellId: 2 completed with exit code 0>"
+      },
+      {
+        "id": "call_RTz4kec7PLKSnuKTi3s8PYSN",
+        "turn": "10",
+        "name": "session_artifacts",
+        "args": {
+          "operation": "append",
+          "path": "checkpoint.md",
+          "content": "\nStatus: completed and validated.\nFiles created: cache/__init__.py, cache/lru.py, cache/stats.py, tests/test_cache.py.\nValidation: python -m pytest tests -q -> 16 passed in 0.05s."
+        },
+        "success": true,
+        "result": "{\"operation\":\"append\"}"
+      }
+    ],
+    "eventTypes": {
+      "session.skills_loaded": 2,
+      "session.custom_agents_updated": 1,
+      "session.extensions_loaded": 1,
+      "session.tools_updated": 3,
+      "session.mcp_servers_loaded": 1,
+      "user.message": 1,
+      "assistant.turn_start": 12,
+      "model.call_start": 12,
+      "assistant.tool_call_delta": 589,
+      "model.call_finished": 12,
+      "assistant.message": 12,
+      "tool.execution_start": 14,
+      "tool.execution_complete": 14,
+      "assistant.turn_end": 12,
+      "assistant.reasoning_delta": 1761,
+      "assistant.reasoning": 6,
+      "session.background_tasks_changed": 85,
+      "tool.execution_partial_result": 6,
+      "session.info": 4,
+      "assistant.message_start": 3,
+      "assistant.message_delta": 99,
+      "session.usage_checkpoint": 1,
+      "assistant.idle": 1,
+      "result": 1
+    },
+    "declaredPaths": [
+      ".\\cache",
+      ".\\tests",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\__init__.py",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\lru.py",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\stats.py",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\task.md",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\tests\\test_cache.py",
+      "Directory",
+      "checkpoint.md",
+      "pytest",
+      "tests"
+    ],
+    "mentionedPaths": [
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/cache/__init__.py",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/cache/__init__.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/cache/__init__.py",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/cache/lru.py",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/cache/lru.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/cache/lru.py",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/cache/stats.py",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/cache/stats.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/cache/stats.py",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/task.md",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/task.md b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/task.md",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/tests/test_cache.py",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/tests/test_cache.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/tests/test_cache.py",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\_direct\\plugin\\commands\\activate.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\_direct\\plugin\\commands\\deactivate.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\airunway-aks-setup\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\appinsights-instrumentation\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-ai\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-aigateway\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-app-onboard-prereq\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-app-onboard\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-cloud-migrate\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-compliance\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-compute\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-cost\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-deploy\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-diagnostics\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-enterprise-infra-planner\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-kubernetes\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-kusto\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-messaging\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-prepare\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-quotas\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-reliability\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-resource-lookup\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-resource-visualizer\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-storage\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-upgrade\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-validate\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\entra-agent-id\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\entra-app-registration\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\microsoft-foundry\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\python-appservice-deploy\\SKILL.md",
+      "C:\\Users\\xuefengyin\\AppData\\Local\\copilot\\pkg\\win32-x64\\1.0.84-8\\builtin\\customize-cloud-agent\\SKILL.md",
+      "C:\\Users\\xuefengyin\\AppData\\Local\\copilot\\pkg\\win32-x64\\1.0.84-8\\builtin\\github-pr-media\\SKILL.md",
+      "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\mai-code-1.1-flash\\\\M1-lru-ttl-cache",
+      "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\mai-code-1.1-flash\\\\M1-lru-ttl-cache\\\\cache\\\\__init__.py",
+      "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\mai-code-1.1-flash\\\\M1-lru-ttl-cache\\\\cache\\\\lru.py",
+      "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\mai-code-1.1-flash\\\\M1-lru-ttl-cache\\\\cache\\\\stats.py",
+      "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\mai-code-1.1-flash\\\\M1-lru-ttl-cache\\\\tests\\\\test_cache.py",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\__init__.py",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\__init__.py with 98 characters",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\lru.py",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\lru.py with 6109 characters",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\stats.py",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\stats.py with 173 characters",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\task.md",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\tests\\test_cache.py",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\tests\\test_cache.py updated with changes",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\tests\\test_cache.py with 5902 characters",
+      "e:\\n            if isinstance(ttl, bool) or not isinstance(ttl, Real):\\n                raise ValueError(",
+      "e:\\n        if isinstance(capacity, bool) or type(capacity) is not int:\\n            raise TypeError(",
+      "e:\\n        if ttl is None:\\n            return None\\n        return self._now() + ttl\\n\\n    def _is_expired(self, entry: dict[str, Any]) -> bool:\\n        expires_at = entry.get(",
+      "e:\\n        if value is None:\\n            if allow_none:\\n                return None\\n            raise ValueError(",
+      "e:\\n        self._stats = CacheStats(\\n            hits=self._stats.hits + hits,\\n            misses=self._stats.misses + misses,\\n            evictions=self._stats.evictions + evictions,\\n            expirations=self._stats.expirations + expirations,\\n        )\\n\\n    def _now(self) -> float:\\n        return float(self._time_fn())\\n\\n    @staticmethod\\n    def _validate_ttl(value: Any, *, allow_none: bool) -> float",
+      "e:\\n        with self._lock:\\n            if ttl is _MISSING:\\n                ttl = self._default_ttl\\n            elif ttl is not None:\\n                ttl = self._validate_ttl(ttl, allow_none=False)\\n            else:\\n                ttl = None\\n\\n            if key in self._entries and self._is_expired(self._entries[key]):\\n                del self._entries[key]\\n                self._record_stats(expirations=1)\\n\\n            if key in self._entries:\\n                self._entries[key] = {",
+      "e:\\n    def __init__(\\n        self,\\n        capacity: int,\\n        ttl: float",
+      "l:\\n        with self._lock:\\n            entry = self._entries.get(key)\\n            if entry is None:\\n                return False\\n            if self._is_expired(entry):\\n                del self._entries[key]\\n                self._record_stats(expirations=1)\\n                return False\\n            del self._entries[key]\\n            return True\\n\\n    def clear(self) -> None:\\n        with self._lock:\\n            self._entries.clear()\\n\\n    def purge_expired(self) -> int:\\n        with self._lock:\\n            return self._purge_expired_locked()\\n\\n    def keys(self) -> list:\\n        with self._lock:\\n            return [\\n                key\\n                for key in reversed(list(self._entries.keys()))\\n                if not self._is_expired(self._entries[key])\\n            ]\\n\\n    def stats(self) -> CacheStats:\\n        with self._lock:\\n            return self._stats\\n\\n    def __len__(self) -> int:\\n        with self._lock:\\n            return len(self._entries)\\n\\n    def __contains__(self, key: object) -> bool:\\n        with self._lock:\\n            entry = self._entries.get(key)\\n            if entry is None:\\n                return False\\n            if self._is_expired(entry):\\n                del self._entries[key]\\n                self._record_stats(expirations=1)\\n                return False\\n            return True\\n",
+      "s:\\n    hits: int = 0\\n    misses: int = 0\\n    evictions: int = 0\\n    expirations: int = 0\\n",
+      "t:\\n        expired_keys = [key for key, entry in list(self._entries.items()) if self._is_expired(entry)]\\n        for key in expired_keys:\\n            del self._entries[key]\\n        if expired_keys:\\n            self._record_stats(expirations=len(expired_keys))\\n        return len(expired_keys)\\n\\n    def get(self, key: Hashable, default: Any = None) -> Any:\\n        with self._lock:\\n            entry = self._entries.get(key)\\n            if entry is None:\\n                self._record_stats(misses=1)\\n                return default\\n            if self._is_expired(entry):\\n                del self._entries[key]\\n                self._record_stats(expirations=1, misses=1)\\n                return default\\n            self._entries.move_to_end(key)\\n            self._record_stats(hits=1)\\n            return entry[",
+      "y:\\n                self._purge_expired_locked()\\n                if len(self._entries) >= self._capacity:\\n                    self._entries.popitem(last=False)\\n                    self._record_stats(evictions=1)\\n\\n            self._entries[key] = {"
+    ],
+    "assistantMessages": [
+      {
+        "turn": "6",
+        "content": "I’ve created the cache and tests; now I’m running the pytest suite to catch any spec mismatches, then I’ll fix any issues."
+      },
+      {
+        "turn": "10",
+        "content": "The implementation is green under pytest; I'm updating the session checkpoint and then I’ll summarize the result."
+      },
+      {
+        "turn": "11",
+        "content": "Implemented the required thread-safe LRU cache with per-entry TTL and the test suite.\n\nValidation:\n- python -m pytest tests -q\n- Result: 16 passed in 0.05s\n\nFiles created:\n- cache/__init__.py\n- cache/lru.py\n- cache/stats.py\n- tests/test_cache.py"
+      }
+    ]
+  },
+  "paths": {
+    "declared": {
+      "inside": [
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\__init__.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\lru.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\stats.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\task.md",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\tests\\test_cache.py"
+      ],
+      "relative": [
+        ".\\cache",
+        ".\\tests",
+        "Directory",
+        "checkpoint.md",
+        "pytest",
+        "tests"
+      ],
+      "allowlisted": [],
+      "outside": [],
+      "ignored": []
+    },
+    "mentioned": {
+      "inside": [
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/cache/__init__.py",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/cache/__init__.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/cache/__init__.py",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/cache/lru.py",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/cache/lru.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/cache/lru.py",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/cache/stats.py",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/cache/stats.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/cache/stats.py",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/task.md",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/task.md b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/task.md",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/tests/test_cache.py",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/tests/test_cache.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache/tests/test_cache.py",
+        "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\mai-code-1.1-flash\\\\M1-lru-ttl-cache",
+        "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\mai-code-1.1-flash\\\\M1-lru-ttl-cache\\\\cache\\\\__init__.py",
+        "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\mai-code-1.1-flash\\\\M1-lru-ttl-cache\\\\cache\\\\lru.py",
+        "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\mai-code-1.1-flash\\\\M1-lru-ttl-cache\\\\cache\\\\stats.py",
+        "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\mai-code-1.1-flash\\\\M1-lru-ttl-cache\\\\tests\\\\test_cache.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\__init__.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\__init__.py with 98 characters",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\lru.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\lru.py with 6109 characters",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\stats.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\stats.py with 173 characters",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\task.md",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\tests\\test_cache.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\tests\\test_cache.py updated with changes",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\tests\\test_cache.py with 5902 characters"
+      ],
+      "relative": [],
+      "allowlisted": [],
+      "outside": [
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/mai-code-1.1-flash/M1-lru-ttl-cache",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\_direct\\plugin\\commands\\activate.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\_direct\\plugin\\commands\\deactivate.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\airunway-aks-setup\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\appinsights-instrumentation\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-ai\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-aigateway\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-app-onboard-prereq\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-app-onboard\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-cloud-migrate\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-compliance\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-compute\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-cost\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-deploy\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-diagnostics\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-enterprise-infra-planner\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-kubernetes\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-kusto\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-messaging\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-prepare\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-quotas\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-reliability\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-resource-lookup\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-resource-visualizer\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-storage\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-upgrade\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-validate\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\entra-agent-id\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\entra-app-registration\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\microsoft-foundry\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\python-appservice-deploy\\SKILL.md",
+        "C:\\Users\\xuefengyin\\AppData\\Local\\copilot\\pkg\\win32-x64\\1.0.84-8\\builtin\\customize-cloud-agent\\SKILL.md",
+        "C:\\Users\\xuefengyin\\AppData\\Local\\copilot\\pkg\\win32-x64\\1.0.84-8\\builtin\\github-pr-media\\SKILL.md",
+        "e:\\n            if isinstance(ttl, bool) or not isinstance(ttl, Real):\\n                raise ValueError(",
+        "e:\\n        if isinstance(capacity, bool) or type(capacity) is not int:\\n            raise TypeError(",
+        "e:\\n        if value is None:\\n            if allow_none:\\n                return None\\n            raise ValueError(",
+        "e:\\n        with self._lock:\\n            if ttl is _MISSING:\\n                ttl = self._default_ttl\\n            elif ttl is not None:\\n                ttl = self._validate_ttl(ttl, allow_none=False)\\n            else:\\n                ttl = None\\n\\n            if key in self._entries and self._is_expired(self._entries[key]):\\n                del self._entries[key]\\n                self._record_stats(expirations=1)\\n\\n            if key in self._entries:\\n                self._entries[key] = {",
+        "e:\\n    def __init__(\\n        self,\\n        capacity: int,\\n        ttl: float",
+        "s:\\n    hits: int = 0\\n    misses: int = 0\\n    evictions: int = 0\\n    expirations: int = 0\\n"
+      ],
+      "ignored": [
+        "e:\\n        if ttl is None:\\n            return None\\n        return self._now() + ttl\\n\\n    def _is_expired(self, entry: dict[str, Any]) -> bool:\\n        expires_at = entry.get(",
+        "e:\\n        self._stats = CacheStats(\\n            hits=self._stats.hits + hits,\\n            misses=self._stats.misses + misses,\\n            evictions=self._stats.evictions + evictions,\\n            expirations=self._stats.expirations + expirations,\\n        )\\n\\n    def _now(self) -> float:\\n        return float(self._time_fn())\\n\\n    @staticmethod\\n    def _validate_ttl(value: Any, *, allow_none: bool) -> float",
+        "l:\\n        with self._lock:\\n            entry = self._entries.get(key)\\n            if entry is None:\\n                return False\\n            if self._is_expired(entry):\\n                del self._entries[key]\\n                self._record_stats(expirations=1)\\n                return False\\n            del self._entries[key]\\n            return True\\n\\n    def clear(self) -> None:\\n        with self._lock:\\n            self._entries.clear()\\n\\n    def purge_expired(self) -> int:\\n        with self._lock:\\n            return self._purge_expired_locked()\\n\\n    def keys(self) -> list:\\n        with self._lock:\\n            return [\\n                key\\n                for key in reversed(list(self._entries.keys()))\\n                if not self._is_expired(self._entries[key])\\n            ]\\n\\n    def stats(self) -> CacheStats:\\n        with self._lock:\\n            return self._stats\\n\\n    def __len__(self) -> int:\\n        with self._lock:\\n            return len(self._entries)\\n\\n    def __contains__(self, key: object) -> bool:\\n        with self._lock:\\n            entry = self._entries.get(key)\\n            if entry is None:\\n                return False\\n            if self._is_expired(entry):\\n                del self._entries[key]\\n                self._record_stats(expirations=1)\\n                return False\\n            return True\\n",
+        "t:\\n        expired_keys = [key for key, entry in list(self._entries.items()) if self._is_expired(entry)]\\n        for key in expired_keys:\\n            del self._entries[key]\\n        if expired_keys:\\n            self._record_stats(expirations=len(expired_keys))\\n        return len(expired_keys)\\n\\n    def get(self, key: Hashable, default: Any = None) -> Any:\\n        with self._lock:\\n            entry = self._entries.get(key)\\n            if entry is None:\\n                self._record_stats(misses=1)\\n                return default\\n            if self._is_expired(entry):\\n                del self._entries[key]\\n                self._record_stats(expirations=1, misses=1)\\n                return default\\n            self._entries.move_to_end(key)\\n            self._record_stats(hits=1)\\n            return entry[",
+        "y:\\n                self._purge_expired_locked()\\n                if len(self._entries) >= self._capacity:\\n                    self._entries.popitem(last=False)\\n                    self._record_stats(evictions=1)\\n\\n            self._entries[key] = {"
+      ]
+    }
+  },
+  "spec": {
+    "items": [
+      {
+        "id": "files",
+        "check": "file_manifest",
+        "points": 6,
+        "awarded": 6,
+        "verdict": "PASS",
+        "evidence": [
+          "authored file set matches exactly (5 files)"
+        ],
+        "veto": false
+      },
+      {
+        "id": "deps",
+        "check": "stdlib_only",
+        "points": 5,
+        "awarded": 5,
+        "verdict": "PASS",
+        "evidence": [
+          "imports are stdlib / local / task-provided only: __future__, cache, collections, dataclasses, math, numbers, pytest, threading, time, typing",
+          "task-provided (allowlisted, not a violation): pytest"
+        ],
+        "veto": false
+      },
+      {
+        "id": "bounds",
+        "check": "path_containment",
+        "points": 4,
+        "awarded": 4,
+        "verdict": "PASS",
+        "evidence": [
+          "absolute tool paths inside the run dir: 6; relative names resolved against the run dir: 6; allowlisted system locations: 0; outside: 0",
+          "  absolute, inside: C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache",
+          "  absolute, inside: C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\__init__.py",
+          "  absolute, inside: C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\lru.py",
+          "  absolute, inside: C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\cache\\stats.py",
+          "  absolute, inside: C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\task.md",
+          "  absolute, inside: C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\mai-code-1.1-flash\\M1-lru-ttl-cache\\tests\\test_cache.py",
+          "  relative/bare tokens (the CLI lists these for shell commands; they resolve under the run dir, which is the tool cwd): '.\\\\cache', '.\\\\tests', 'Directory', 'checkpoint.md', 'pytest', 'tests'"
+        ],
+        "veto": false
+      }
+    ],
+    "score": 15,
+    "max": 15
+  },
+  "autoItems": [
+    {
+      "id": "hygiene",
+      "points": 3,
+      "awarded": 3.0,
+      "passedChecks": 4,
+      "totalChecks": 4,
+      "checks": [
+        {
+          "id": "no_broad_except",
+          "passed": true,
+          "evidence": [
+            "no broad except handlers"
+          ]
+        },
+        {
+          "id": "no_debug_residue",
+          "passed": true,
+          "evidence": [
+            "no TODO markers, no commented-out code, no stray print() outside CLI modules"
+          ]
+        },
+        {
+          "id": "typed_public_api",
+          "passed": true,
+          "evidence": [
+            "all 7 public function(s) fully annotated"
+          ]
+        },
+        {
+          "id": "bounded_function_length",
+          "passed": true,
+          "evidence": [
+            "longest implementation function is 26 lines (limit 50)"
+          ]
+        }
+      ]
+    }
+  ],
+  "reviewItems": [
+    {
+      "id": "o1_hotpath",
+      "points": 5,
+      "criterion": "用 OrderedDict.move_to_end 或双向链表实现 O(1) 的 get/set，不是每次排序或线性查找",
+      "mode": "review"
+    },
+    {
+      "id": "module_separation",
+      "points": 4,
+      "criterion": "三个模块职责清晰，__init__.py 只做再导出，不塞实现",
+      "mode": "review"
+    },
+    {
+      "id": "sentinel",
+      "points": 3,
+      "criterion": "区分 ttl=None 与省略 ttl 用私有模块级 sentinel（object()），不是 \"default\" 字符串或 -1 魔数",
+      "mode": "review"
+    }
+  ],
+  "qualityMax": 15,
+  "qualityAutoScore": 3.0,
+  "qualityReviewMax": 12,
+  "ownTestFunctionCount": 16.0
+}

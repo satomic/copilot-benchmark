@@ -1,0 +1,27 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "layering": {
+  "maxPoints": 6,
+  "criterion": "key 解析 / 值解引号 / 转义展开分成独立的辅助函数，主循环可读",
+  "points": 3,
+  "verdict": "部分符合：转义展开已抽出为独立辅助函数，但 key 解析与值解引号仍内联在主循环里",
+  "reasoning": "envparse.py:13-31 的 _expand_escapes 是干净的独立辅助函数，单一职责。但判据点名的三项关注点只抽出了这一项：key 解析（export 前缀剥离 + 正则校验，envparse.py:52-58）与值解引号及注释剥离（envparse.py:60-70 的三分支）全部内联在 parse_env 主循环中，主函数约 40 行承担了行遍历、CRLF 处理、key 解析、三种值形态分派的全部逻辑。可读性尚可（分支有注释），但结构上未达到判据要求的分层。口径对齐：astra 零辅助函数得 2/6，sonnet 抽出三项仅 key 内联得 5/6，kimi 抽出一项介于两者之间，得 3/6。",
+  "evidence": [
+   "envparse.py:13-31 _expand_escapes 独立辅助（唯一抽出项）",
+   "envparse.py:52-58 key 解析内联（export 剥离 + 正则）",
+   "envparse.py:60-70 解引号与注释剥离内联三分支"
+  ]
+ },
+ "escape_single_pass": {
+  "maxPoints": 5,
+  "criterion": "转义用单次左到右扫描或查表，不是链式 .replace()（链式会引入顺序 bug）",
+  "points": 5,
+  "verdict": "完全符合：单次左到右扫描 + 查表，未知转义正确保留两字符",
+  "reasoning": "envparse.py:16-30 用索引 i 单遍左到右扫描，遇反斜杠向前看一个字符，命中 _ESCAPES 查表（envparse.py:9 定义 n/t/r/双引号/反斜杠五项）则展开并 i+2，未命中则按规格保留反斜杠与后随字符两个字符原样输出（envparse.py:23-25 有注释说明）。行尾孤立反斜杠走 else 分支原样保留。零 .replace() 调用，不存在链式替换的顺序 bug。与参考实现同构。",
+  "evidence": [
+   "envparse.py:16-30 单遍扫描主循环",
+   "envparse.py:9 _ESCAPES 查表",
+   "envparse.py:23-25 未知转义保留两字符（规格埋点命中）"
+  ]
+ }
+}

@@ -1,0 +1,35 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "grammar_correspondence": {
+  "maxPoints": 5,
+  "criterion": "递归下降的函数与 task.md 的文法层级一一对应，命名可读，无手工回溯",
+  "points": 5,
+  "verdict": "完全符合：parse_expr 到 parse_primary 十个方法与文法一一对应",
+  "reasoning": "parser.py:85-170 方法链与文法逐层对应，单 token 前瞻递归下降，无回溯。隐藏 152/153（唯一失败是内置 num 不接受负号字符串，与文法无关）。",
+  "evidence": [
+   "parser.py:85-170 十级方法",
+   "隐藏 152/153"
+  ]
+ },
+ "named_ast": {
+  "maxPoints": 4,
+  "criterion": "AST 用具名节点（dataclass / NamedTuple / 类），不是裸 tuple 或 dict",
+  "points": 4,
+  "verdict": "完全符合：普通类具名节点",
+  "reasoning": "parser.py:5-43 定义 NumberLit/StringLit/BoolLit/Variable/Call/Unary/Binary 七个具名节点类，字段具名，无裸 tuple 或 dict。判据外记录不扣分：节点未携带 position 字段。",
+  "evidence": [
+   "parser.py:5-43 七个具名节点类"
+  ]
+ },
+ "error_consistency": {
+  "maxPoints": 3,
+  "criterion": "三类错误消息风格一致且带位置信息，没有 except Exception 吞异常",
+  "points": 2,
+  "verdict": "大体符合：基类带位置、风格统一、无吞异常，但求值错误的 raise 站点不传位置",
+  "reasoning": "errors.py:2-4 基类带 position 参数，三类继承，消息风格统一，无 except Exception。失分点：evaluator 的 21 处 EvalError raise 全部不传位置。口径对齐：与 kimi/mai 同类缺口得 2/3。",
+  "evidence": [
+   "errors.py:2-4 基类支持 position",
+   "evaluator 21 处 raise 不传位置（失分点）"
+  ]
+ }
+}

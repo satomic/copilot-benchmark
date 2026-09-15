@@ -1,0 +1,15 @@
+...............F........................................................ [ 47%]
+........................................................................ [ 94%]
+.........                                                                [100%]
+================================== FAILURES ===================================
+__________________________ test_comments_are_skipped __________________________
+_verify\test_c1.py:170: in test_comments_are_skipped
+    assert ml.tokenize("1 # trailing comment") == ml.tokenize("1")
+E   assert [Token(NUMBER, 1.0, 0)] == [Token(NUMBER, 1.0, 0)]
+E     
+E     At index 0 diff: Token(NUMBER, 1.0, 0) != Token(NUMBER, 1.0, 0)
+E     Use -v to get more diff
+- generated xml file: C:\workspace\13_benchmark\GPT-6 in Coding\benchmark\reports\kimi-k3__C1-expr-interpreter\tests\hidden.xml -
+=========================== short test summary info ===========================
+FAILED _verify/test_c1.py::test_comments_are_skipped - assert [Token(NUMBER, ...
+1 failed, 152 passed in 1.79s

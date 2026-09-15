@@ -1,0 +1,37 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "regex_named_groups": {
+  "maxPoints": 5,
+  "criterion": "用一条预编译正则 + 命名组解析日志行，不是多次 split 拼凑",
+  "points": 3,
+  "verdict": "部分符合：单条预编译正则且 method 严格大写，但全程位置组，无命名组",
+  "reasoning": "logstats.py:19 起的 _LINE_RE 是单条预编译正则，method 字符类 [A-Z]+（logstats.py:24）命中规格埋点，无 split 拼凑。但整条正则没有任何 (?P<name>) 命名组，解析靠位置解包（logstats.py:83 一行九元组 m.groups()），字段与位置的对应完全依赖计数，可维护性差，判据点名的『命名组』未达成。扣 2 分。",
+  "evidence": [
+   "logstats.py:19 单条预编译正则",
+   "logstats.py:24 method [A-Z]+",
+   "logstats.py:83 九元组位置解包（失分点）"
+  ]
+ },
+ "streaming": {
+  "maxPoints": 4,
+  "criterion": "analyze 单遍流式处理任意可迭代对象，不把整个文件 list() 进内存",
+  "points": 4,
+  "verdict": "完全符合：单遍迭代，计数器就地累加，仅保留 durations",
+  "reasoning": "analyze（logstats.py:108 起）接受任意可迭代对象单遍推进，状态类计数与 Counter 就地累加，唯一增长容器是分位数所需的 durations 列表，与参考实现一致。无 list(lines) 或 readlines。44 项隐藏测试全过。",
+  "evidence": [
+   "logstats.py:108 单遍主循环",
+   "无输入物化"
+  ]
+ },
+ "percentile_isolated": {
+  "maxPoints": 3,
+  "criterion": "分位数抽成独立函数，空列表与 n=1 的边界显式处理",
+  "points": 2,
+  "verdict": "大体符合：命名局部函数 + 双侧钳位，但未抽成模块级独立函数，空表守卫在外层分支",
+  "reasoning": "分位数逻辑在 analyze 内部的闭包 _calc_p（logstats.py:170-173），有名字、有 max/min 双侧钳位（n=1 显式覆盖），比 astra 的纯内联（1/3）强；但它不是模块级独立函数，不可独立测试，空表由外层 if/else 分支兜底（logstats.py:155-165 的零值字典）而非函数自身处理。口径：kimi 模块级函数但空表在调用点得 2/3，gemini 闭包形态同分。",
+  "evidence": [
+   "logstats.py:170-173 闭包 _calc_p 带钳位",
+   "空表在外层分支兜底"
+  ]
+ }
+}

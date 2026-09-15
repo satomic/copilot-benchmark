@@ -1,0 +1,19 @@
+....................................................................FF.. [ 24%]
+........................................................................ [ 48%]
+........................................................................ [ 72%]
+........................................................................ [ 97%]
+........                                                                 [100%]
+================================== FAILURES ===================================
+____________________ test_parse_errors[if (true) print 1;] ____________________
+_verify\test_c4.py:145: in test_parse_errors
+    with pytest.raises((mv.ParseError, mv.LexError)):
+E   Failed: DID NOT RAISE (<class 'microvm.errors.ParseError'>, <class 'microvm.errors.LexError'>)
+__________________ test_parse_errors[while (true) print 1;] ___________________
+_verify\test_c4.py:145: in test_parse_errors
+    with pytest.raises((mv.ParseError, mv.LexError)):
+E   Failed: DID NOT RAISE (<class 'microvm.errors.ParseError'>, <class 'microvm.errors.LexError'>)
+- generated xml file: C:\workspace\13_benchmark\GPT-6 in Coding\benchmark\reports\mai-code-1.1-flash__C4-microvm\tests\hidden.xml -
+=========================== short test summary info ===========================
+FAILED _verify/test_c4.py::test_parse_errors[if (true) print 1;] - Failed: DI...
+FAILED _verify/test_c4.py::test_parse_errors[while (true) print 1;] - Failed:...
+2 failed, 294 passed in 6.52s

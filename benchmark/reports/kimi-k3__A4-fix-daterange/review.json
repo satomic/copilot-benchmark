@@ -1,0 +1,28 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "root_cause_fix": {
+  "maxPoints": 7,
+  "criterion": "三个缺陷都从根因修（闭区间 +1、chunk 宽度 days-1、days<=0 前置校验）；不是在返回前特判补一个 chunk 之类的补丁",
+  "points": 7,
+  "verdict": "完全符合：三处全部根因修复，无补丁式特判",
+  "reasoning": "daterange.py:19 前置校验 days，不仅覆盖 days<=0 还显式排除 bool（isinstance(days, bool)），超出判据要求；daterange.py:21-22 用 end < start 返回空表处理反向区间。核心循环从种子的『整除计数 + 索引乘法』整体改为游标推进：daterange.py:25-29 while chunk_start <= end 闭区间条件，chunk_end 取 chunk_start + (days-1) 与 end 的 min（同时解决闭区间与末块截断两个缺陷），游标步进 chunk_end + 1 天。没有任何『返回前补一个 chunk』式的特判分支，440 组参数化性质检查全过。修法与参考实现同构，注释（daterange.py:26）解释了 days-1 的闭区间语义。",
+  "evidence": [
+   "daterange.py:19 days 前置校验含 bool 排除",
+   "daterange.py:21-22 反向区间返回空表",
+   "daterange.py:25-29 闭区间游标循环，min 截断末块",
+   "隐藏 17 项 + 440 组性质检查全过"
+  ]
+ },
+ "minimal_diff": {
+  "maxPoints": 4,
+  "criterion": "diff 最小，未重写整个文件，未改动 docstring 的语义",
+  "points": 4,
+  "verdict": "完全符合：净改动 14 行，docstring 与函数签名原样保留",
+  "reasoning": "对种子文件的 diff 为 +9/-5（单文件 14 行改动），全部集中在函数体内：新增校验两行、循环体重构五行。模块 docstring、函数 docstring（含 Returns/Raises 描述）、函数签名、导入语句全部未动。循环从索引式改为游标式属于修复三缺陷的最小必要重构（种子的 count 整除结构本身就是缺陷载体，保留它只能打补丁），不构成过度重写。除自测 test_daterange.py 外无多余文件改动。",
+  "evidence": [
+   "diff 统计：daterange.py +9/-5，无其他实现文件改动",
+   "docstring 与签名逐字保留",
+   "重构范围与缺陷范围重合，无扩散"
+  ]
+ }
+}

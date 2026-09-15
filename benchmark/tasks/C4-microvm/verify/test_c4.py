@@ -890,6 +890,12 @@ def test_no_eval_or_exec():
                 at = stripped.find(bad)
                 if at > 0 and (stripped[at - 1].isalnum() or stripped[at - 1] in "._"):
                     continue  # method call or longer name such as compile_source(
+                # `def compile(self, ...)` defines a method; it neither calls nor
+                # shadows the builtin in a way this rule targets. First hit:
+                # grok-4.6 C4 (2026-09-16) — same false-positive class as
+                # `import dis` matching `import disassemble` (AGENTS.md §8.1).
+                if at >= 0 and stripped[:at].rstrip().endswith("def"):
+                    continue
                 if at >= 0:
                     hits.append(f"{path}: {stripped[:60]}")
     assert hits == []

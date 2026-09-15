@@ -1,0 +1,27 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "argparse_exit2": {
+  "maxPoints": 5,
+  "criterion": "用 argparse 的 type= 校验让退出码 2 自然产生，而不是散落的手写 sys.exit(2)",
+  "points": 4,
+  "verdict": "大体符合：非整数经 type=int 自然退出 2；但 n<1 用了一处手写 return 2 而非 parser.error()",
+  "reasoning": "wordfreq.py:36-38 的 -n/--top 声明 type=int，非整数输入由 argparse 原生打印 usage 到 stderr 并退出码 2（wordfreq.py:47 有注释说明这一点），主路径符合判据。但 n<1 的校验（wordfreq.py:49-51）没有走 argparse：既没有用自定义 type 函数抛 ArgumentTypeError，也没有调 parser.error()，而是在 main 里手写消息 + return 2。该 return 是单点而非散落，消息格式模仿了 argparse 风格（prog 前缀 + error: 前缀 + 实际值），功能测试全过；但『让退出码 2 自然产生』这一判据核心在此分支未达成，扣 1 分。对齐口径：astra 与 fable 全部校验走 argparse 原生机制得 5/5。",
+  "evidence": [
+   "wordfreq.py:36-38 type=int 声明，非整数自然退出 2",
+   "wordfreq.py:49-51 n<1 手写 return 2（单点，消息带实际值）",
+   "未使用 parser.error() 或 ArgumentTypeError"
+  ]
+ },
+ "tokenize_single_regex": {
+  "maxPoints": 5,
+  "criterion": "分词用一条正则 + 统一 strip，不是多层 replace 或逐字符状态机",
+  "points": 5,
+  "verdict": "完全符合：单条正则 findall + 统一 strip 单引号，一行推导式完成",
+  "reasoning": "wordfreq.py:8 模块级预编译 _TOKEN_RE = [a-z0-9']+，与规格钉死的字符类逐字一致（规格埋点：不是 \\w）。wordfreq.py:13 对 lower() 后的全文一次 findall，海象表达式在同一行推导式里统一 strip 首尾单引号并过滤空 token。零 replace 链、零状态机、零多遍扫描。排序键（-count, word）在 top_words 中一次完成（wordfreq.py:24）。与参考实现同构，是六个模型中最紧凑的实现之一。",
+  "evidence": [
+   "wordfreq.py:8 单条预编译正则，字符类与规格逐字一致",
+   "wordfreq.py:13 findall + strip 单行推导式",
+   "无 replace 链或状态机"
+  ]
+ }
+}

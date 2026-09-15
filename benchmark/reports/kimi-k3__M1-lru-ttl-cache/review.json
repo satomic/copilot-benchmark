@@ -1,0 +1,39 @@
+{
+ "_instructions": "points 必须在 0..maxPoints；reasoning 必填。",
+ "o1_hotpath": {
+  "maxPoints": 5,
+  "criterion": "用 OrderedDict.move_to_end 或双向链表实现 O(1) 的 get/set，不是每次排序或线性查找",
+  "points": 5,
+  "verdict": "完全符合：OrderedDict + move_to_end，get/set 热路径 O(1)",
+  "reasoning": "lru.py:47 用 OrderedDict 存 key -> (value, expires_at)，get 命中走 lru.py:69 的 move_to_end，set 覆盖已有键走 lru.py:84-85 的赋值 + move_to_end，均为 O(1)，无每操作排序或线性查找。容量满且插入新键时（lru.py:88-95）先对全表做一次过期项列表推导再决定淘汰：这是规格『先回收任意位置的过期项再淘汰』的直接实现（回收策略与 fable 的堆、astra 的基数树同属完整回收阵营，实现取舍不同），只发生在淘汰事件上而非每次读写，隐藏套件的性能伸缩测试通过（对照：haiku 因每次读写线性扫描被同一测试逮住）。判据针对 get/set 热路径，完全达成。",
+  "evidence": [
+   "lru.py:47 OrderedDict 主存储",
+   "lru.py:69,85 move_to_end 维护 LRU 序",
+   "lru.py:88-95 淘汰事件时的过期回收（规格要求，非热路径）",
+   "隐藏性能测试通过（45/45）"
+  ]
+ },
+ "module_separation": {
+  "maxPoints": 4,
+  "criterion": "三个模块职责清晰，__init__.py 只做再导出，不塞实现",
+  "points": 4,
+  "verdict": "完全符合：__init__ 纯再导出，stats 独立数据类，lru 承载实现",
+  "reasoning": "__init__.py 共 6 行，只有两条 from 导入与 __all__ 声明，零实现代码。stats.py 是 11 行的 frozen dataclass CacheStats，单一职责。lru.py 承载全部缓存逻辑（154 行），内部辅助（_validate_ttl、_is_expired）就近放在使用模块内。三模块边界与参考实现一致。",
+  "evidence": [
+   "__init__.py:1-6 纯再导出 + __all__",
+   "stats.py:1-11 frozen dataclass",
+   "lru.py 单文件承载实现，无跨模块泄漏"
+  ]
+ },
+ "sentinel": {
+  "maxPoints": 3,
+  "criterion": "区分 ttl=None 与省略 ttl 用私有模块级 sentinel（object()），不是 \"default\" 字符串或 -1 魔数",
+  "points": 3,
+  "verdict": "完全符合：私有模块级 object() 哨兵，带语义注释",
+  "reasoning": "lru.py:14-16 定义 _DEFAULT_TTL = object()，下划线前缀私有、模块级、纯 object() 实例，注释逐字说明『ttl 省略用缓存默认值，显式 ttl=None 表示永不过期』两种语义的区分（规格埋点）。set 签名（lru.py:73）以 _DEFAULT_TTL 为默认值，用 is 比较分派。无字符串或魔数方案。",
+  "evidence": [
+   "lru.py:14-16 _DEFAULT_TTL = object() 与语义注释",
+   "lru.py:73 set 签名以哨兵为默认值"
+  ]
+ }
+}
