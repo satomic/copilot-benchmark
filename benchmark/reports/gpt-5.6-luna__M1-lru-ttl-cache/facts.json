@@ -1,0 +1,885 @@
+{
+  "task": "M1-lru-ttl-cache",
+  "runDir": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache",
+  "authoredFiles": [
+    {
+      "path": "cache/__init__.py",
+      "bytes": 98,
+      "loc": 3
+    },
+    {
+      "path": "cache/lru.py",
+      "bytes": 5534,
+      "loc": 136
+    },
+    {
+      "path": "cache/stats.py",
+      "bytes": 173,
+      "loc": 7
+    },
+    {
+      "path": "task.md",
+      "bytes": 7092,
+      "loc": 127
+    },
+    {
+      "path": "tests/test_cache.py",
+      "bytes": 3656,
+      "loc": 106
+    }
+  ],
+  "expectedFiles": [
+    "task.md",
+    "cache/__init__.py",
+    "cache/lru.py",
+    "cache/stats.py",
+    "tests/test_cache.py"
+  ],
+  "missing": [],
+  "extra": [],
+  "totalLoc": 252,
+  "imports": [
+    {
+      "file": "cache/__init__.py",
+      "line": 1,
+      "module": ".lru",
+      "relative": true
+    },
+    {
+      "file": "cache/__init__.py",
+      "line": 2,
+      "module": ".stats",
+      "relative": true
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 1,
+      "module": "collections"
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 2,
+      "module": "dataclasses"
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 3,
+      "module": "heapq"
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 4,
+      "module": "numbers"
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 5,
+      "module": "threading"
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 6,
+      "module": "time"
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 7,
+      "module": "typing"
+    },
+    {
+      "file": "cache/lru.py",
+      "line": 9,
+      "module": ".stats",
+      "relative": true
+    },
+    {
+      "file": "cache/stats.py",
+      "line": 1,
+      "module": "dataclasses"
+    },
+    {
+      "file": "tests/test_cache.py",
+      "line": 1,
+      "module": "pytest"
+    },
+    {
+      "file": "tests/test_cache.py",
+      "line": 3,
+      "module": "cache"
+    }
+  ],
+  "thirdPartyImports": [],
+  "allowedThirdPartyUsed": [
+    "pytest"
+  ],
+  "functions": [
+    {
+      "file": "cache/lru.py",
+      "name": "__init__",
+      "line": 23,
+      "lines": 25,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "_validate_ttl",
+      "line": 50,
+      "lines": 5,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "_remove_expired_locked",
+      "line": 56,
+      "lines": 10,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "_expiry_for",
+      "line": 67,
+      "lines": 2,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "get",
+      "line": 70,
+      "lines": 14,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "set",
+      "line": 85,
+      "lines": 24,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "delete",
+      "line": 110,
+      "lines": 11,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "clear",
+      "line": 122,
+      "lines": 4,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "purge_expired",
+      "line": 127,
+      "lines": 3,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "keys",
+      "line": 131,
+      "lines": 8,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "stats",
+      "line": 140,
+      "lines": 3,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "__len__",
+      "line": 144,
+      "lines": 3,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "cache/lru.py",
+      "name": "__contains__",
+      "line": 148,
+      "lines": 10,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "make_cache",
+      "line": 6,
+      "lines": 3,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [
+        "capacity",
+        "ttl"
+      ],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_capacity_eviction_order",
+      "line": 11,
+      "lines": 7,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_get_refreshes_lru_order",
+      "line": 20,
+      "lines": 6,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_get_expiration_at_deadline",
+      "line": 28,
+      "lines": 6,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_per_entry_ttl_overrides_default",
+      "line": 36,
+      "lines": 5,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_none_ttl_override_never_expires",
+      "line": 43,
+      "lines": 5,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_purge_expired_removes_all_and_counts",
+      "line": 50,
+      "lines": 8,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_delete_return_values_and_expired_count",
+      "line": 60,
+      "lines": 9,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_clear_does_not_reset_stats",
+      "line": 71,
+      "lines": 7,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_keys_are_mru_first_and_exclude_expired_without_mutation",
+      "line": 80,
+      "lines": 10,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_contains_does_not_count_hits_or_misses",
+      "line": 92,
+      "lines": 6,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_contains_expired_counts_only_expiration",
+      "line": 100,
+      "lines": 6,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_constructor_validation",
+      "line": 108,
+      "lines": 9,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_set_validation_and_snapshot",
+      "line": 119,
+      "lines": 8,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    },
+    {
+      "file": "tests/test_cache.py",
+      "name": "test_expired_entries_preferred_before_live_eviction",
+      "line": 129,
+      "lines": 9,
+      "public": true,
+      "annotated": false,
+      "unannotated_args": [],
+      "returns_annotated": false
+    }
+  ],
+  "broadExcept": [],
+  "prints": [],
+  "syntaxErrors": [],
+  "todos": [],
+  "commentedCode": [],
+  "duplicateBlocks": [
+    {
+      "locations": [
+        "cache/lru.py:96",
+        "cache/lru.py:128"
+      ],
+      "firstLine": "with self._lock:",
+      "blockLines": 5
+    }
+  ],
+  "sealed": [],
+  "transientCandidates": [
+    "checkpoint.md"
+  ],
+  "transcript": {
+    "source": "events.jsonl",
+    "turns": 10,
+    "modelCalls": 10,
+    "toolCalls": [
+      {
+        "id": "call_PsjpJAe5qjsps4LWajZqWxvo",
+        "turn": "0",
+        "name": "session_artifacts",
+        "args": {
+          "operation": "write",
+          "path": "checkpoint.md",
+          "content": "Task: Implement exactly cache/__init__.py, cache/lru.py, cache/stats.py, tests/test_cache.py for thread-safe size-bounded LRU cache with per-entry TTL, standard library only.\nAcceptance: all behavior items, >=12 pytest tests, no extra files, pytest passes.\nConstraints: work only in project root, preserve unrelated files, no network/install. Initial plan: inspect existing tree; implement package and tests; run targeted pytest and verify deliverables.\nNext action: inspect repository files and git status."
+        },
+        "success": true,
+        "result": "{\"operation\":\"create\"}"
+      },
+      {
+        "id": "call_Loab9WbcEmmRYou4XR8tkYRT",
+        "turn": "1",
+        "name": "session_artifacts",
+        "args": {
+          "operation": "read",
+          "path": "checkpoint.md"
+        },
+        "success": true,
+        "result": "{\"content\":\"Task: Implement exactly cache/__init__.py, cache/lru.py, cache/stats.py, tests/test_cache.py for thread-safe size-bounded LRU cache with per-entry TTL, standard library only.\\nAcceptance: all behavior items, >=12 pytest tests, no extra files, pytest passes.\\nConstraints: work only in project root, preserve unrelated files, no network/install. Initial plan: inspect existing tree; implement package and tests; run targeted pytest and verify deliverables.\\nNext action: inspect repository files and git status.\"}"
+      },
+      {
+        "id": "call_gCDZPDxrSbCNmA1tTZ89cbqI",
+        "turn": "2",
+        "name": "glob",
+        "args": {
+          "pattern": "**/*",
+          "paths": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache"
+        },
+        "success": true,
+        "result": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\task.md"
+      },
+      {
+        "id": "call_SItFMMO1IJy1BqVFDWCXJlwT",
+        "turn": "2",
+        "name": "powershell",
+        "args": {
+          "command": "git status --short --untracked-files=all",
+          "description": "Check worktree status"
+        },
+        "success": true,
+        "result": "M ../../../models.txt\n M ../../../reports/_reference__A1-roman-numeral/score.json\n M ../../../reports/_reference__A1-roman-numeral/tests/hidden.xml\n M ../../../reports/_reference__A1-roman-numeral/tests/hidden.xml.stdout\n M ../../../reports/_reference__A2-env-parser/score.json\n M ../../../reports/_reference__A2-env-parser/tests/hidden.xml\n M ../../../reports/_reference__A2-env-parser/tests/hidden.xml.stdout\n M ../../../reports/_reference__A3-sales-summary/score.json\n M ../../../reports/_reference__A3-sales-summary/tests/hidden.xml\n M ../../../reports/_reference__A3-sales-summary/tests/hidden.xml.stdout\n M ../../../reports/_reference__A4-fix-daterange/score.json\n M ../../../reports/_reference__A4-fix-daterange/tests/hidden.xml\n M ../../../reports/_reference__A4-fix-daterange/tests/hidden.xml.stdout\n M ../../../reports/_reference__A4-fix-daterange/tests/visible.xml\n M ../../../reports/_reference__A4-fix-daterange/tests/visible.xml.stdout\n M ../../../reports/_reference__A5-wordfreq-cli/score.json\n M ../../../reports/_reference__A5-wordfreq-cli/tests/hidden.xml\n M ../../../reports/_reference__A5-wordfreq-cli/tests/hidden.xml.stdout\n M ../../../reports/_reference__C1-expr-interpreter/score.json\n M ../../../reports/_reference__C1-expr-interpreter/tests/hidden.xml\n M ../../../reports/_reference__C1-expr-interpreter/tests/hidden.xml.stdout\n M ../../../reports/_reference__C1-expr-interpreter/tests/own.xml\n M ../../../reports/_reference__C1-expr-interpreter/tests/own.xml.stdout\n M ../../../reports/_reference__C2-kvstore/score.json\n M ../../../reports/_reference__C2-kvstore/tests/hidden.xml\n M ../../../reports/_reference__C2-kvstore/tests/hidden.xml.stdout\n M ../../../reports/_reference__C2-kvstore/tests/own.xml\n M ../../../reports/_reference__C2-kvstore/tests/own.xml.stdout\n M ../../../reports/_reference__C3-microdb/score.json\n M ../../../reports/_reference__C3-microdb/tests/hidden.xml\n M ../../../reports/_reference__C3-microdb/tests/hidden.xml.stdout\n M ../../../reports/_reference__C3-microdb/tests/own.xml\n M ../../../reports/_reference__C3-microdb/tests/own.xml.stdout\n M ../../../reports/_reference__C4-microvm/score.json\n M ../../../reports/_reference__C4-microvm/tests/hidden.xml\n M ../../../reports/_reference__C4-microvm/tests/hidden.xml.stdout\n M ../../../reports/_reference__C4-microvm/tests/own.xml\n M ../../../reports/_reference__C4-microvm/tests/own.xml.stdout\n M ../../../reports/_reference__M1-lru-ttl-cache/score.json\n M ../../../reports/_reference__M1-lru-ttl-cache/tests/hidden.xml\n M ../../../reports/_reference__M1-lru-ttl-cache/tests/hidden.xml.stdout\n M ../../../reports/_reference__M1-lru-ttl-cache/tests/own.xml\n M ../../../reports/_reference__M1-lru-ttl-cache/tests/own.xml.stdout\n M ../../../reports/_reference__M2-log-analyzer/score.json\n M ../../../reports/_reference__M2-log-analyzer/tests/hidden.xml\n M ../../../reports/_reference__M2-log-analyzer/tests/hidden.xml.stdout\n M ../../../reports/_reference__M2-log-analyzer/tests/own.xml\n M ../../../reports/_reference__M2-log-analyzer/tests/own.xml.stdout\n M ../../../reports/claude-fable-5.1__C3-microdb/score.json\n M ../../../reports/claude-fable-5.1__C3-microdb/tests/hidden.xml\n M ../../../reports/claude-fable-5.1__C3-microdb/tests/hidden.xml.stdout\n M ../../../reports/claude-fable-5.1__C3-microdb/tests/own.xml\n M ../../../reports/claude-fable-5.1__C3-microdb/tests/own.xml.stdout\n M ../../../reports/claude-haiku-4.5__C3-microdb/score.json\n M ../../../reports/claude-haiku-4.5__C3-microdb/tests/hidden.xml\n M ../../../reports/claude-haiku-4.5__C3-microdb/tests/hidden.xml.stdout\n M ../../../reports/claude-haiku-4.5__C3-microdb/tests/own.xml\n M ../../../reports/claude-haiku-4.5__C3-microdb/tests/own.xml.stdout\n M ../../../reports/claude-opus-5__C3-microdb/score.json\n M ../../../reports/claude-opus-5__C3-microdb/tests/hidden.xml\n M ../../../reports/claude-opus-5__C3-microdb/tests/hidden.xml.stdout\n M ../../../reports/claude-opus-5__C3-microdb/tests/own.xml\n M ../../../reports/claude-opus-5__C3-microdb/tests/own.xml.stdout\n M ../../../reports/claude-sonnet-5__C3-microdb/score.json\n M ../../../reports/claude-sonnet-5__C3-microdb/tests/hidden.xml\n M ../../../reports/claude-sonnet-5__C3-microdb/tests/hidden.xml.stdout\n M ../../../reports/claude-sonnet-5__C3-microdb/tests/own.xml\n M ../../../reports/claude-sonnet-5__C3-microdb/tests/own.xml.stdout\n M ../../../reports/gemini-3.8-flash__C3-microdb/score.json\n M ../../../reports/gemini-3.8-flash__C3-microdb/tests/hidden.xml\n M ../../../reports/gemini-3.8-flash__C3-microdb/tests/hidden.xml.stdout\n M ../../../reports/gemini-3.8-flash__C3-microdb/tests/own.xml\n M ../../../reports/gemini-3.8-flash__C3-microdb/tests/own.xml.stdout\n M ../../../reports/gemini-3.8-flash__M2-log-analyzer/facts.json\n M ../../../reports/gpt-6-astra__C3-microdb/score.json\n M ../../../reports/gpt-6-astra__C3-microdb/tests/hidden.xml\n M ../../../reports/gpt-6-astra__C3-microdb/tests/hidden.xml.stdout\n M ../../../reports/gpt-6-astra__C3-microdb/tests/own.xml\n M ../../../reports/gpt-6-astra__C3-microdb/tests/own.xml.stdout\n M ../../../reports/grok-4.6__C3-microdb/score.json\n M ../../../reports/grok-4.6__C3-microdb/tests/hidden.xml\n M ../../../reports/grok-4.6__C3-microdb/tests/hidden.xml.stdout\n M ../../../reports/grok-4.6__C3-microdb/tests/own.xml\n M ../../../reports/grok-4.6__C3-microdb/tests/own.xml.stdout\n M ../../../reports/kimi-k3__C3-microdb/score.json\n M ../../../reports/kimi-k3__C3-microdb/tests/hidden.xml\n M ../../../reports/kimi-k3__C3-microdb/tests/hidden.xml.stdout\n M ../../../reports/kimi-k3__C3-microdb/tests/own.xml\n M ../../../reports/kimi-k3__C3-microdb/tests/own.xml.stdout\n M ../../../reports/mai-code-1.1-flash__C3-microdb/score.json\n M ../../../reports/mai-code-1.1-flash__C3-microdb/tests/hidden.xml\n M ../../../reports/mai-code-1.1-flash__C3-microdb/tests/hidden.xml.stdout\n M ../../../reports/mai-code-1.1-flash__C3-microdb/tests/own.xml\n M ../../../reports/mai-code-1.1-flash__C3-microdb/tests/own.xml.stdout\n M ../../../tasks/C3-microdb/verify/test_c3.py\n?? ../../../reports/gpt-5.6-luna__A1-roman-numeral/events.jsonl\n?? ../../../reports/gpt-5.6-luna__A1-roman-numeral/facts.json\n?? ../../../reports/gpt-5.6-luna__A1-roman-numeral/output/roman.py\n?? ../../../reports/gpt-5.6-luna__A1-roman-numeral/output/task.md\n?? ../../../reports/gpt-5.6-luna__A1-roman-numeral/review.json\n?? ../../../reports/gpt-5.6-luna__A1-roman-numeral/run.json\n?? ../../../reports/gpt-5.6-luna__A1-roman-numeral/score.json\n?? ../../../reports/gpt-5.6-luna__A1-roman-numeral/session.md\n?? ../../../reports/gpt-5.6-luna__A1-roman-numeral/tests/hidden.xml\n?? ../../../reports/gpt-5.6-luna__A1-roman-numeral/tests/hidden.xml.stderr\n?? ../../../reports/gpt-5.6-luna__A1-roman-numeral/tests/hidden.xml.stdout\n?? ../../../reports/gpt-5.6-luna__A1-roman-numeral/usage.json\n?? ../../../reports/gpt-5.6-luna__A2-env-parser/events.jsonl\n?? ../../../reports/gpt-5.6-luna__A2-env-parser/facts.json\n?? ../../../reports/gpt-5.6-luna__A2-env-parser/output/envparse.py\n?? ../../../reports/gpt-5.6-luna__A2-env-parser/output/task.md\n?? ../../../reports/gpt-5.6-luna__A2-env-parser/review.json\n?? ../../../reports/gpt-5.6-luna__A2-env-parser/run.json\n?? ../../../reports/gpt-5.6-luna__A2-env-parser/score.json\n?? ../../../reports/gpt-5.6-luna__A2-env-parser/session.md\n?? ../../../reports/gpt-5.6-luna__A2-env-parser/tests/hidden.xml\n?? ../../../reports/gpt-5.6-luna__A2-env-parser/tests/hidden.xml.stderr\n?? ../../../reports/gpt-5.6-luna__A2-env-parser/tests/hidden.xml.stdout\n?? ../../../reports/gpt-5.6-luna__A2-env-parser/usage.json\n?? ../../../reports/gpt-5.6-luna__A3-sales-summary/events.jsonl\n?? ../../../reports/gpt-5.6-luna__A3-sales-summary/facts.json\n?? ../../../reports/gpt-5.6-luna__A3-sales-summary/output/sales.py\n?? ../../../reports/gpt-5.6-luna__A3-sales-summary/output/task.md\n?? ../../../reports/gpt-5.6-luna__A3-sales-summary/review.json\n?? ../../../reports/gpt-5.6-luna__A3-sales-summary/run.json\n?? ../../../reports/gpt-5.6-luna__A3-sales-summary/score.json\n?? ../../../reports/gpt-5.6-luna__A3-sales-summary/session.md\n?? ../../../reports/gpt-5.6-luna__A3-sales-summary/tests/hidden.xml\n?? ../../../reports/gpt-5.6-luna__A3-sales-summary/tests/hidden.xml.stderr\n?? ../../../reports/gpt-5.6-luna__A3-sales-summary/tests/hidden.xml.stdout\n?? ../../../reports/gpt-5.6-luna__A3-sales-summary/usage.json\n?? ../../../reports/gpt-5.6-luna__A4-fix-daterange/events.jsonl\n?? ../../../reports/gpt-5.6-luna__A4-fix-daterange/facts.json\n?? ../../../reports/gpt-5.6-luna__A4-fix-daterange/output/daterange.py\n?? ../../../reports/gpt-5.6-luna__A4-fix-daterange/output/task.md\n?? ../../../reports/gpt-5.6-luna__A4-fix-daterange/output/test_daterange.py\n?? ../../../reports/gpt-5.6-luna__A4-fix-daterange/review.json\n?? ../../../reports/gpt-5.6-luna__A4-fix-daterange/run.json\n?? ../../../reports/gpt-5.6-luna__A4-fix-daterange/score.json\n?? ../../../reports/gpt-5.6-luna__A4-fix-daterange/session.md\n?? ../../../reports/gpt-5.6-luna__A4-fix-daterange/tests/hidden.xml\n?? ../../../reports/gpt-5.6-luna__A4-fix-daterange/tests/hidden.xml.stderr\n?? ../../../reports/gpt-5.6-luna__A4-fix-daterange/tests/hidden.xml.stdout\n?? ../../../reports/gpt-5.6-luna__A4-fix-daterange/tests/visible.xml\n?? ../../../reports/gpt-5.6-luna__A4-fix-daterange/tests/visible.xml.stderr\n?? ../../../reports/gpt-5.6-luna__A4-fix-daterange/tests/visible.xml.stdout\n?? ../../../reports/gpt-5.6-luna__A4-fix-daterange/usage.json\n?? ../../../reports/gpt-5.6-luna__A5-wordfreq-cli/events.jsonl\n?? ../../../reports/gpt-5.6-luna__A5-wordfreq-cli/facts.json\n?? ../../../reports/gpt-5.6-luna__A5-wordfreq-cli/output/task.md\n?? ../../../reports/gpt-5.6-luna__A5-wordfreq-cli/output/wordfreq.py\n?? ../../../reports/gpt-5.6-luna__A5-wordfreq-cli/review.json\n?? ../../../reports/gpt-5.6-luna__A5-wordfreq-cli/run.json\n?? ../../../reports/gpt-5.6-luna__A5-wordfreq-cli/score.json\n?? ../../../reports/gpt-5.6-luna__A5-wordfreq-cli/session.md\n?? ../../../reports/gpt-5.6-luna__A5-wordfreq-cli/tests/hidden.xml\n?? ../../../reports/gpt-5.6-luna__A5-wordfreq-cli/tests/hidden.xml.stderr\n?? ../../../reports/gpt-5.6-luna__A5-wordfreq-cli/tests/hidden.xml.stdout\n?? ../../../reports/gpt-5.6-luna__A5-wordfreq-cli/usage.json\n?? ../../../reports/gpt-5.6-luna__C1-expr-interpreter/events.jsonl\n?? ../../../reports/gpt-5.6-luna__C1-expr-interpreter/facts.json\n?? ../../../reports/gpt-5.6-luna__C1-expr-interpreter/output/minilang/__init__.py\n?? ../../../reports/gpt-5.6-luna__C1-expr-interpreter/output/minilang/__main__.py\n?? ../../../reports/gpt-5.6-luna__C1-expr-interpreter/output/minilang/builtins.py\n?? ../../../reports/gpt-5.6-luna__C1-expr-interpreter/output/minilang/errors.py\n?? ../../../reports/gpt-5.6-luna__C1-expr-interpreter/output/minilang/evaluator.py\n?? ../../../reports/gpt-5.6-luna__C1-expr-interpreter/output/minilang/lexer.py\n?? ../../../reports/gpt-5.6-luna__C1-expr-interpreter/output/minilang/parser.py\n?? ../../../reports/gpt-5.6-luna__C1-expr-interpreter/output/task.md\n?? ../../../reports/gpt-5.6-luna__C1-expr-interpreter/output/tests/test_minilang.py\n?? ../../../reports/gpt-5.6-luna__C1-expr-interpreter/review.json\n?? ../../../reports/gpt-5.6-luna__C1-expr-interpreter/run.json\n?? ../../../reports/gpt-5.6-luna__C1-expr-interpreter/score.json\n?? ../../../reports/gpt-5.6-luna__C1-expr-interpreter/session.md\n?? ../../../reports/gpt-5.6-luna__C1-expr-interpreter/tests/hidden.xml\n?? ../../../reports/gpt-5.6-luna__C1-expr-interpreter/tests/hidden.xml.stderr\n?? ../../../reports/gpt-5.6-luna__C1-expr-interpreter/tests/hidden.xml.stdout\n?? ../../../reports/gpt-5.6-luna__C1-expr-interpreter/tests/own.xml\n?? ../../../reports/gpt-5.6-luna__C1-expr-interpreter/tests/own.xml.stderr\n?? ../../../reports/gpt-5.6-luna__C1-expr-interpreter/tests/own.xml.stdout\n?? ../../../reports/gpt-5.6-luna__C1-expr-interpreter/usage.json\n?? ../../../reports/gpt-5.6-luna__C2-kvstore/events.jsonl\n?? ../../../reports/gpt-5.6-luna__C2-kvstore/facts.json\n?? ../../../reports/gpt-5.6-luna__C2-kvstore/output/kvstore/__init__.py\n?? ../../../reports/gpt-5.6-luna__C2-kvstore/output/kvstore/__main__.py\n?? ../../../reports/gpt-5.6-luna__C2-kvstore/output/kvstore/compact.py\n?? ../../../reports/gpt-5.6-luna__C2-kvstore/output/kvstore/errors.py\n?? ../../../reports/gpt-5.6-luna__C2-kvstore/output/kvstore/index.py\n?? ../../../reports/gpt-5.6-luna__C2-kvstore/output/kvstore/record.py\n?? ../../../reports/gpt-5.6-luna__C2-kvstore/output/kvstore/segment.py\n?? ../../../reports/gpt-5.6-luna__C2-kvstore/output/kvstore/store.py\n?? ../../../reports/gpt-5.6-luna__C2-kvstore/output/task.md\n?? ../../../reports/gpt-5.6-luna__C2-kvstore/output/tests/test_kvstore.py\n?? ../../../reports/gpt-5.6-luna__C2-kvstore/review.json\n?? ../../../reports/gpt-5.6-luna__C2-kvstore/run.json\n?? ../../../reports/gpt-5.6-luna__C2-kvstore/score.json\n?? ../../../reports/gpt-5.6-luna__C2-kvstore/session.md\n?? ../../../reports/gpt-5.6-luna__C2-kvstore/tests/hidden.xml\n?? ../../../reports/gpt-5.6-luna__C2-kvstore/tests/hidden.xml.stderr\n?? ../../../reports/gpt-5.6-luna__C2-kvstore/tests/hidden.xml.stdout\n?? ../../../reports/gpt-5.6-luna__C2-kvstore/tests/own.xml\n?? ../../../reports/gpt-5.6-luna__C2-kvstore/tests/own.xml.stderr\n?? ../../../reports/gpt-5.6-luna__C2-kvstore/tests/own.xml.stdout\n?? ../../../reports/gpt-5.6-luna__C2-kvstore/usage.json\n?? ../../../reports/gpt-5.6-luna__C3-microdb/events.jsonl\n?? ../../../reports/gpt-5.6-luna__C3-microdb/facts.json\n?? ../../../reports/gpt-5.6-luna__C3-microdb/output/microdb/__init__.py\n?? ../../../reports/gpt-5.6-luna__C3-microdb/output/microdb/__main__.py\n?? ../../../reports/gpt-5.6-luna__C3-microdb/output/microdb/aggregate.py\n?? ../../../reports/gpt-5.6-luna__C3-microdb/output/microdb/errors.py\n?? ../../../reports/gpt-5.6-luna__C3-microdb/output/microdb/executor.py\n?? ../../../reports/gpt-5.6-luna__C3-microdb/output/microdb/expr.py\n?? ../../../reports/gpt-5.6-luna__C3-microdb/output/microdb/lexer.py\n?? ../../../reports/gpt-5.6-luna__C3-microdb/output/microdb/parser.py\n?? ../../../reports/gpt-5.6-luna__C3-microdb/output/microdb/planner.py\n?? ../../../reports/gpt-5.6-luna__C3-microdb/output/microdb/schema.py\n?? ../../../reports/gpt-5.6-luna__C3-microdb/output/microdb/value.py\n?? ../../../reports/gpt-5.6-luna__C3-microdb/output/task.md\n?? ../../../reports/gpt-5.6-luna__C3-microdb/output/tests/test_microdb.py\n?? ../../../reports/gpt-5.6-luna__C3-microdb/review.json\n?? ../../../reports/gpt-5.6-luna__C3-microdb/run.json\n?? ../../../reports/gpt-5.6-luna__C3-microdb/score.json\n?? ../../../reports/gpt-5.6-luna__C3-microdb/session.md\n?? ../../../reports/gpt-5.6-luna__C3-microdb/tests/hidden.xml\n?? ../../../reports/gpt-5.6-luna__C3-microdb/tests/hidden.xml.stderr\n?? ../../../reports/gpt-5.6-luna__C3-microdb/tests/hidden.xml.stdout\n?? ../../../reports/gpt-5.6-luna__C3-microdb/tests/own.xml\n?? ../../../reports/gpt-5.6-luna__C3-microdb/tests/own.xml.stderr\n?? ../../../reports/gpt-5.6-luna__C3-microdb/tests/own.xml.stdout\n?? ../../../reports/gpt-5.6-luna__C3-microdb/usage.json\n?? ../../../reports/gpt-5.6-luna__C4-microvm/events.jsonl\n?? ../../../reports/gpt-5.6-luna__C4-microvm/facts.json\n?? ../../../reports/gpt-5.6-luna__C4-microvm/output/microvm/__init__.py\n?? ../../../reports/gpt-5.6-luna__C4-microvm/output/microvm/__main__.py\n?? ../../../reports/gpt-5.6-luna__C4-microvm/output/microvm/compiler.py\n?? ../../../reports/gpt-5.6-luna__C4-microvm/output/microvm/disassembler.py\n?? ../../../reports/gpt-5.6-luna__C4-microvm/output/microvm/errors.py\n?? ../../../reports/gpt-5.6-luna__C4-microvm/output/microvm/lexer.py\n?? ../../../reports/gpt-5.6-luna__C4-microvm/output/microvm/opcodes.py\n?? ../../../reports/gpt-5.6-luna__C4-microvm/output/microvm/optimizer.py\n?? ../../../reports/gpt-5.6-luna__C4-microvm/output/microvm/parser.py\n?? ../../../reports/gpt-5.6-luna__C4-microvm/output/microvm/serializer.py\n?? ../../../reports/gpt-5.6-luna__C4-microvm/output/microvm/vm.py\n?? ../../../reports/gpt-5.6-luna__C4-microvm/output/task.md\n?? ../../../reports/gpt-5.6-luna__C4-microvm/output/tests/test_microvm.py\n?? ../../../reports/gpt-5.6-luna__C4-microvm/review.json\n?? ../../../reports/gpt-5.6-luna__C4-microvm/run.json\n?? ../../../reports/gpt-5.6-luna__C4-microvm/score.json\n?? ../../../reports/gpt-5.6-luna__C4-microvm/session.md\n?? ../../../reports/gpt-5.6-luna__C4-microvm/tests/hidden.xml\n?? ../../../reports/gpt-5.6-luna__C4-microvm/tests/hidden.xml.stderr\n?? ../../../reports/gpt-5.6-luna__C4-microvm/tests/hidden.xml.stdout\n?? ../../../reports/gpt-5.6-luna__C4-microvm/tests/own.xml\n?? ../../../reports/gpt-5.6-luna__C4-microvm/tests/own.xml.stderr\n?? ../../../reports/gpt-5.6-luna__C4-microvm/tests/own.xml.stdout\n?? ../../../reports/gpt-5.6-luna__C4-microvm/usage.json\n?? ../../../reports/gpt-5.6-luna__M1-lru-ttl-cache/events.jsonl\n<shellId: 0 completed with exit code 0>"
+      },
+      {
+        "id": "custom_call_6xYdcxpj2yZZOWKqsWNHiOZA",
+        "turn": "3",
+        "name": "apply_patch",
+        "args": {
+          "_raw": "*** Begin Patch\n*** Add File: C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\__init__.py\n+from .lru import LRUCache\n+from .stats import CacheStats\n+\n+__all__ = [\"LRUCache\", \"CacheStats\"]\n*** Add File: C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\stats.py\n+from dataclasses import dataclass\n+\n+\n+@dataclass(frozen=True)\n+class CacheStats:\n+    hits: int = 0\n+    misses: int = 0\n+    evictions: int = 0\n+    expirations: int = 0\n*** Add File: C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\lru.py\n+from collections import OrderedDict\n+from dataclasses import dataclass\n+import heapq\n+import numbers\n+import threading\n+import time\n+from typing import Any, Callable, Hashable\n+\n+from .stats import CacheStats\n+\n+\n+_DEFAULT = object()\n+\n+\n+@dataclass\n+class _Entry:\n+    value: Any\n+    expires_at: float | None\n+    token: int\n+\n+\n+class LRUCache:\n+    def __init__(\n+        self,\n+        capacity: int,\n+        ttl: float | None = None,\n+        time_fn: Callable[[], float] = time.monotonic,\n+    ) -> None:\n+        if isinstance(capacity, bool) or not isinstance(capacity, int):\n+            raise TypeError(\"capacity must be an int\")\n+        if capacity < 1:\n+            raise ValueError(\"capacity must be at least 1\")\n+        self._validate_ttl(ttl)\n+        if not callable(time_fn):\n+            raise TypeError(\"time_fn must be callable\")\n+\n+        self._capacity = capacity\n+        self._ttl = ttl\n+        self._time_fn = time_fn\n+        self._entries: OrderedDict[Hashable, _Entry] = OrderedDict()\n+        self._expiry_heap: list[tuple[float, int, Hashable]] = []\n+        self._next_token = 0\n+        self._hits = 0\n+        self._misses = 0\n+        self._evictions = 0\n+        self._expirations = 0\n+        self._lock = threading.RLock()\n+\n+    @staticmethod\n+    def _validate_ttl(ttl: float | None) -> None:\n+        if ttl is not None and (\n+            isinstance(ttl, bool) or not isinstance(ttl, numbers.Real) or ttl <= 0\n+        ):\n+            raise ValueError(\"ttl must be a real number greater than zero or None\")\n+\n+    def _remove_expired_locked(self, now: float) -> int:\n+        removed = 0\n+        while self._expiry_heap and self._expiry_heap[0][0] <= now:\n+            deadline, token, key = heapq.heappop(self._expiry_heap)\n+            entry = self._entries.get(key)\n+            if entry is not None and entry.token == token and entry.expires_at == deadline:\n+                del self._entries[key]\n+                removed += 1\n+        self._expirations += removed\n+        return removed\n+\n+    def _expiry_for(self, ttl: float | None, now: float) -> float | None:\n+        return None if ttl is None else now + ttl\n+\n+    def get(self, key: Hashable, default: Any = None) -> Any:\n+        with self._lock:\n+            entry = self._entries.get(key)\n+            if entry is None:\n+                self._misses += 1\n+                return default\n+            if entry.expires_at is not None and self._time_fn() >= entry.expires_at:\n+                del self._entries[key]\n+                self._expirations += 1\n+                self._misses += 1\n+                return default\n+            self._entries.move_to_end(key)\n+            self._hits += 1\n+            return entry.value\n+\n+    def set(self, key: Hashable, value: Any, ttl: float | None | object = _DEFAULT) -> None:\n+        with self._lock:\n+            if ttl is not _DEFAULT:\n+                self._validate_ttl(ttl)  # type: ignore[arg-type]\n+                entry_ttl = ttl\n+            else:\n+                entry_ttl = self._ttl\n+\n+            now = self._time_fn()\n+            expires_at = self._expiry_for(entry_ttl, now)  # type: ignore[arg-type]\n+            self._next_token += 1\n+            entry = _Entry(value, expires_at, self._next_token)\n+            if key in self._entries:\n+                self._entries[key] = entry\n+                self._entries.move_to_end(key)\n+            else:\n+                if len(self._entries) >= self._capacity:\n+                    self._remove_expired_locked(now)\n+                if len(self._entries) >= self._capacity:\n+                    self._entries.popitem(last=False)\n+                    self._evictions += 1\n+                self._entries[key] = entry\n+            if expires_at is not None:\n+                heapq.heappush(self._expiry_heap, (expires_at, entry.token, key))\n+\n+    def delete(self, key: Hashable) -> bool:\n+        with self._lock:\n+            entry = self._entries.get(key)\n+            if entry is None:\n+                return False\n+            if entry.expires_at is not None and self._time_fn() >= entry.expires_at:\n+                del self._entries[key]\n+                self._expirations += 1\n+                return False\n+            del self._entries[key]\n+            return True\n+\n+    def clear(self) -> None:\n+        with self._lock:\n+            self._entries.clear()\n+            self._expiry_heap.clear()\n+\n+    def purge_expired(self) -> int:\n+        with self._lock:\n+            return self._remove_expired_locked(self._time_fn())\n+\n+    def keys(self) -> list:\n+        with self._lock:\n+            now = self._time_fn()\n+            return [\n+                key\n+                for key, entry in reversed(self._entries.items())\n+                if entry.expires_at is None or now < entry.expires_at\n+            ]\n+\n+    def stats(self) -> CacheStats:\n+        with self._lock:\n+            return CacheStats(self._hits, self._misses, self._evictions, self._expirations)\n+\n+    def __len__(self) -> int:\n+        with self._lock:\n+            return len(self._entries)\n+\n+    def __contains__(self, key: object) -> bool:\n+        with self._lock:\n+            entry = self._entries.get(key)\n+            if entry is None:\n+                return False\n+            if entry.expires_at is not None and self._time_fn() >= entry.expires_at:\n+                del self._entries[key]  # type: ignore[arg-type]\n+                self._expirations += 1\n+                return False\n+            return True\n*** Add File: C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\tests\\test_cache.py\n+import pytest\n+\n+from cache import CacheStats, LRUCache\n+\n+\n+def make_cache(capacity=3, ttl=10):\n+    clock = [0.0]\n+    return LRUCache(capacity, ttl, lambda: clock[0]), clock\n+\n+\n+def test_capacity_eviction_order():\n+    cache, _ = make_cache(2)\n+    cache.set(\"a\", 1)\n+    cache.set(\"b\", 2)\n+    cache.set(\"c\", 3)\n+    assert cache.keys() == [\"c\", \"b\"]\n+    assert cache.stats().evictions == 1\n+\n+\n+def test_get_refreshes_lru_order():\n+    cache, _ = make_cache(3)\n+    for key in \"abc\":\n+        cache.set(key, key)\n+    assert cache.get(\"a\") == \"a\"\n+    assert cache.keys() == [\"a\", \"c\", \"b\"]\n+\n+\n+def test_get_expiration_at_deadline():\n+    cache, clock = make_cache(ttl=5)\n+    cache.set(\"a\", 1)\n+    clock[0] = 5\n+    assert cache.get(\"a\", \"missing\") == \"missing\"\n+    assert cache.stats() == CacheStats(misses=1, expirations=1)\n+\n+\n+def test_per_entry_ttl_overrides_default():\n+    cache, clock = make_cache(ttl=10)\n+    cache.set(\"short\", 1, ttl=2)\n+    clock[0] = 2\n+    assert \"short\" not in cache\n+\n+\n+def test_none_ttl_override_never_expires():\n+    cache, clock = make_cache(ttl=1)\n+    cache.set(\"forever\", 1, ttl=None)\n+    clock[0] = 100\n+    assert cache.get(\"forever\") == 1\n+\n+\n+def test_purge_expired_removes_all_and_counts():\n+    cache, clock = make_cache(ttl=2)\n+    cache.set(\"a\", 1)\n+    cache.set(\"b\", 2, ttl=4)\n+    clock[0] = 4\n+    assert cache.purge_expired() == 2\n+    assert len(cache) == 0\n+    assert cache.stats().expirations == 2\n+\n+\n+def test_delete_return_values_and_expired_count():\n+    cache, clock = make_cache(ttl=2)\n+    cache.set(\"a\", 1)\n+    assert cache.delete(\"a\") is True\n+    assert cache.delete(\"a\") is False\n+    cache.set(\"b\", 2)\n+    clock[0] = 2\n+    assert cache.delete(\"b\") is False\n+    assert cache.stats().expirations == 1\n+\n+\n+def test_clear_does_not_reset_stats():\n+    cache, _ = make_cache(1)\n+    cache.set(\"a\", 1)\n+    cache.get(\"missing\")\n+    cache.clear()\n+    assert len(cache) == 0\n+    assert cache.stats().misses == 1\n+\n+\n+def test_keys_are_mru_first_and_exclude_expired_without_mutation():\n+    cache, clock = make_cache(ttl=3)\n+    cache.set(\"a\", 1)\n+    cache.set(\"b\", 2, ttl=1)\n+    cache.get(\"a\")\n+    clock[0] = 1\n+    before = cache.stats()\n+    assert cache.keys() == [\"a\"]\n+    assert cache.stats() == before\n+    assert len(cache) == 2\n+\n+\n+def test_contains_does_not_count_hits_or_misses():\n+    cache, _ = make_cache()\n+    cache.set(\"a\", 1)\n+    assert \"a\" in cache\n+    assert \"missing\" not in cache\n+    assert cache.stats() == CacheStats()\n+\n+\n+def test_contains_expired_counts_only_expiration():\n+    cache, clock = make_cache(ttl=1)\n+    cache.set(\"a\", 1)\n+    clock[0] = 1\n+    assert (\"a\" in cache) is False\n+    assert cache.stats() == CacheStats(expirations=1)\n+\n+\n+def test_constructor_validation():\n+    with pytest.raises(ValueError):\n+        LRUCache(0)\n+    with pytest.raises(TypeError):\n+        LRUCache(True)\n+    with pytest.raises(ValueError):\n+        LRUCache(1, ttl=0)\n+    with pytest.raises(ValueError):\n+        LRUCache(1, ttl=\"bad\")\n+\n+\n+def test_set_validation_and_snapshot():\n+    cache, _ = make_cache()\n+    with pytest.raises(ValueError):\n+        cache.set(\"a\", 1, ttl=0)\n+    snapshot = cache.stats()\n+    cache.set(\"a\", 1)\n+    assert snapshot == CacheStats()\n+    assert cache.stats().hits == 0\n+\n+\n+def test_expired_entries_preferred_before_live_eviction():\n+    cache, clock = make_cache(2, ttl=1)\n+    cache.set(\"old\", 1)\n+    cache.set(\"live\", 2, ttl=10)\n+    clock[0] = 1\n+    cache.set(\"new\", 3)\n+    assert cache.keys() == [\"new\", \"live\"]\n+    assert cache.stats().evictions == 0\n+    assert cache.stats().expirations == 1\n*** End Patch\n"
+        },
+        "success": true,
+        "result": "Added 4 file(s): C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\__init__.py, C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\stats.py, C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\lru.py, C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\tests\\test_cache.py"
+      },
+      {
+        "id": "call_cxbSoo2XSi7coPpaygxaAlE9",
+        "turn": "4",
+        "name": "session_artifacts",
+        "args": {
+          "operation": "append",
+          "path": "checkpoint.md",
+          "content": "Diagnosis: directory contained only task.md; unrelated parent worktree changes ignored. Implemented four deliverables with OrderedDict LRU, expiry min-heap for O(1)-amortized set/get, RLock, immutable stats, and 14 fake-clock tests. Next action: run pytest and inspect exact deliverable list/status."
+        },
+        "success": true,
+        "result": "{\"operation\":\"append\"}"
+      },
+      {
+        "id": "call_UQvZQqwJLEGnEU2Svwm9R8lh",
+        "turn": "5",
+        "name": "powershell",
+        "args": {
+          "command": "python -m pytest tests -q",
+          "description": "Run cache test suite",
+          "initial_wait": 120
+        },
+        "success": true,
+        "result": "..............                                                           [100%]\n14 passed in 0.07s\n<shellId: 1 completed with exit code 0>"
+      },
+      {
+        "id": "call_cySmsSEnW1qfCdObC8StSzal",
+        "turn": "5",
+        "name": "glob",
+        "args": {
+          "pattern": "**/*",
+          "paths": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache"
+        },
+        "success": true,
+        "result": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\tests\\test_cache.py\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\task.md\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\__init__.py\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\stats.py\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\lru.py"
+      },
+      {
+        "id": "call_pr9HpMVvEnaaCUPb5jYHcEiH",
+        "turn": "5",
+        "name": "powershell",
+        "args": {
+          "command": "git status --short --untracked-files=all -- cache tests",
+          "description": "Check deliverable status"
+        },
+        "success": true,
+        "result": "\n<shellId: 2 completed with exit code 0>"
+      },
+      {
+        "id": "call_TgIGasZAfVKiGwGSiMFPCG2K",
+        "turn": "6",
+        "name": "powershell",
+        "args": {
+          "command": "Get-ChildItem -Force -Recurse -File | Select-Object -ExpandProperty FullName",
+          "description": "List all files in task folder"
+        },
+        "success": true,
+        "result": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\task.md\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\.pytest_cache\\.gitignore\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\.pytest_cache\\CACHEDIR.TAG\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\.pytest_cache\\README.md\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\.pytest_cache\\v\\cache\\nodeids\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\.pytest_cache\\v\\cache\\stepwise\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\__init__.py\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\lru.py\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\stats.py\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\__pycache__\\__init__.cpython-311.pyc\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\__pycache__\\lru.cpython-311.pyc\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\__pycache__\\stats.cpython-311.pyc\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\tests\\test_cache.py\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\tests\\__pycache__\\test_cache.cpython-311-pytest-8.3.4.pyc\n<shellId: 3 completed with exit code 0>"
+      },
+      {
+        "id": "call_jVI1lEnoSZEUIAsLDSx2jHIW",
+        "turn": "6",
+        "name": "view",
+        "args": {
+          "path": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\lru.py",
+          "view_range": [
+            1,
+            240
+          ]
+        },
+        "success": true,
+        "result": "from collections import OrderedDict\r\nfrom dataclasses import dataclass\r\nimport heapq\r\nimport numbers\r\nimport threading\r\nimport time\r\nfrom typing import Any, Callable, Hashable\r\n\r\nfrom .stats import CacheStats\r\n\r\n\r\n_DEFAULT = object()\r\n\r\n\r\n@dataclass\r\nclass _Entry:\r\n    value: Any\r\n    expires_at: float | None\r\n    token: int\r\n\r\n\r\nclass LRUCache:\r\n    def __init__(\r\n        self,\r\n        capacity: int,\r\n        ttl: float | None = None,\r\n        time_fn: Callable[[], float] = time.monotonic,\r\n    ) -> None:\r\n        if isinstance(capacity, bool) or not isinstance(capacity, int):\r\n            raise TypeError(\"capacity must be an int\")\r\n        if capacity < 1:\r\n            raise ValueError(\"capacity must be at least 1\")\r\n        self._validate_ttl(ttl)\r\n        if not callable(time_fn):\r\n            raise TypeError(\"time_fn must be callable\")\r\n\r\n        self._capacity = capacity\r\n        self._ttl = ttl\r\n        self._time_fn = time_fn\r\n        self._entries: OrderedDict[Hashable, _Entry] = OrderedDict()\r\n        self._expiry_heap: list[tuple[float, int, Hashable]] = []\r\n        self._next_token = 0\r\n        self._hits = 0\r\n        self._misses = 0\r\n        self._evictions = 0\r\n        self._expirations = 0\r\n        self._lock = threading.RLock()\r\n\r\n    @staticmethod\r\n    def _validate_ttl(ttl: float | None) -> None:\r\n        if ttl is not None and (\r\n            isinstance(ttl, bool) or not isinstance(ttl, numbers.Real) or ttl <= 0\r\n        ):\r\n            raise ValueError(\"ttl must be a real number greater than zero or None\")\r\n\r\n    def _remove_expired_locked(self, now: float) -> int:\r\n        removed = 0\r\n        while self._expiry_heap and self._expiry_heap[0][0] <= now:\r\n            deadline, token, key = heapq.heappop(self._expiry_heap)\r\n            entry = self._entries.get(key)\r\n            if entry is not None and entry.token == token and entry.expires_at == deadline:\r\n                del self._entries[key]\r\n                removed += 1\r\n        self._expirations += removed\r\n        return removed\r\n\r\n    def _expiry_for(self, ttl: float | None, now: float) -> float | None:\r\n        return None if ttl is None else now + ttl\r\n\r\n    def get(self, key: Hashable, default: Any = None) -> Any:\r\n        with self._lock:\r\n            entry = self._entries.get(key)\r\n            if entry is None:\r\n                self._misses += 1\r\n                return default\r\n            if entry.expires_at is not None and self._time_fn() >= entry.expires_at:\r\n                del self._entries[key]\r\n                self._expirations += 1\r\n                self._misses += 1\r\n                return default\r\n            self._entries.move_to_end(key)\r\n            self._hits += 1\r\n            return entry.value\r\n\r\n    def set(self, key: Hashable, value: Any, ttl: float | None | object = _DEFAULT) -> None:\r\n        with self._lock:\r\n            if ttl is not _DEFAULT:\r\n                self._validate_ttl(ttl)  # type: ignore[arg-type]\r\n                entry_ttl = ttl\r\n            else:\r\n                entry_ttl = self._ttl\r\n\r\n            now = self._time_fn()\r\n            expires_at = self._expiry_for(entry_ttl, now)  # type: ignore[arg-type]\r\n            self._next_token += 1\r\n            entry = _Entry(value, expires_at, self._next_token)\r\n            if key in self._entries:\r\n                self._entries[key] = entry\r\n                self._entries.move_to_end(key)\r\n            else:\r\n                if len(self._entries) >= self._capacity:\r\n                    self._remove_expired_locked(now)\r\n                if len(self._entries) >= self._capacity:\r\n                    self._entries.popitem(last=False)\r\n                    self._evictions += 1\r\n                self._entries[key] = entry\r\n            if expires_at is not None:\r\n                heapq.heappush(self._expiry_heap, (expires_at, entry.token, key))\r\n\r\n    def delete(self, key: Hashable) -> bool:\r\n        with self._lock:\r\n            entry = self._entries.get(key)\r\n            if entry is None:\r\n                return False\r\n            if entry.expires_at is not None and self._time_fn() >= entry.expires_at:\r\n                del self._entries[key]\r\n                self._expirations += 1\r\n                return False\r\n            del self._entries[key]\r\n            return True\r\n\r\n    def clear(self) -> None:\r\n        with self._lock:\r\n            self._entries.clear()\r\n            self._expiry_heap.clear()\r\n\r\n    def purge_expired(self) -> int:\r\n        with self._lock:\r\n            return self._remove_expired_locked(self._time_fn())\r\n\r\n    def keys(self) -> list:\r\n        with self._lock:\r\n            now = self._time_fn()\r\n            return [\r\n                key\r\n                for key, entry in reversed(self._entries.items())\r\n                if entry.expires_at is None or now < entry.expires_at\r\n            ]\r\n\r\n    def stats(self) -> CacheStats:\r\n        with self._lock:\r\n            return CacheStats(self._hits, self._misses, self._evictions, self._expirations)\r\n\r\n    def __len__(self) -> int:\r\n        with self._lock:\r\n            return len(self._entries)\r\n\r\n    def __contains__(self, key: object) -> bool:\r\n        with self._lock:\r\n            entry = self._entries.get(key)\r\n            if entry is None:\r\n                return False\r\n            if entry.expires_at is not None and self._time_fn() >= entry.expires_at:\r\n                del self._entries[key]  # type: ignore[arg-type]\r\n                self._expirations += 1\r\n                return False\r\n            return True\r\n"
+      },
+      {
+        "id": "call_A5hAWNA3A6RaLsudRtzdkw3q",
+        "turn": "7",
+        "name": "powershell",
+        "args": {
+          "command": "Remove-Item -LiteralPath '.pytest_cache','cache\\__pycache__','tests\\__pycache__' -Recurse -Force; Get-ChildItem -Force -Recurse -File | Select-Object -ExpandProperty FullName",
+          "description": "Remove generated test cache files"
+        },
+        "success": true,
+        "result": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\task.md\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\__init__.py\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\lru.py\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\stats.py\nC:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\tests\\test_cache.py\n<shellId: 4 completed with exit code 0>"
+      },
+      {
+        "id": "call_IUWYvTtE3LLtA3E4eGHpjsQJ",
+        "turn": "8",
+        "name": "session_artifacts",
+        "args": {
+          "operation": "write",
+          "path": "checkpoint.md",
+          "content": "Task complete. Added exactly requested deliverables: cache/__init__.py, cache/stats.py, cache/lru.py, tests/test_cache.py. LRUCache validates inputs, uses one RLock, OrderedDict MRU ordering, expiry min-heap for expired-first capacity handling, lazy TTL semantics, immutable CacheStats snapshots, and all required operations. Test suite has 14 tests using fake clocks; `python -m pytest tests -q` passed: 14 passed in 0.07s. Removed generated .pytest_cache and __pycache__ directories. Existing unrelated parent worktree changes were untouched. Stopping criterion met: all acceptance criteria verified."
+        },
+        "success": true,
+        "result": "{\"operation\":\"update\"}"
+      }
+    ],
+    "eventTypes": {
+      "session.skills_loaded": 2,
+      "session.custom_agents_updated": 1,
+      "session.extensions_loaded": 1,
+      "session.tools_updated": 3,
+      "session.mcp_servers_loaded": 1,
+      "user.message": 1,
+      "assistant.turn_start": 10,
+      "model.call_start": 10,
+      "assistant.reasoning_delta": 956,
+      "assistant.tool_call_delta": 3306,
+      "model.call_finished": 10,
+      "assistant.message": 11,
+      "assistant.reasoning": 7,
+      "tool.execution_start": 13,
+      "tool.execution_complete": 13,
+      "assistant.turn_end": 10,
+      "assistant.message_start": 3,
+      "assistant.message_delta": 176,
+      "session.background_tasks_changed": 136,
+      "tool.execution_partial_result": 11,
+      "session.usage_checkpoint": 1,
+      "assistant.idle": 1,
+      "result": 1
+    },
+    "declaredPaths": [
+      ".pytest_cache",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\lru.py",
+      "cache",
+      "cache\\__pycache__",
+      "checkpoint.md",
+      "pytest",
+      "status",
+      "tests",
+      "tests\\__pycache__"
+    ],
+    "mentionedPaths": [
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-5.6-luna/M1-lru-ttl-cache/cache/__init__.py",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-5.6-luna/M1-lru-ttl-cache/cache/__init__.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-5.6-luna/M1-lru-ttl-cache/cache/__init__.py",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-5.6-luna/M1-lru-ttl-cache/cache/lru.py",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-5.6-luna/M1-lru-ttl-cache/cache/lru.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-5.6-luna/M1-lru-ttl-cache/cache/lru.py",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-5.6-luna/M1-lru-ttl-cache/cache/stats.py",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-5.6-luna/M1-lru-ttl-cache/cache/stats.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-5.6-luna/M1-lru-ttl-cache/cache/stats.py",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-5.6-luna/M1-lru-ttl-cache/tests/test_cache.py",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-5.6-luna/M1-lru-ttl-cache/tests/test_cache.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-5.6-luna/M1-lru-ttl-cache/tests/test_cache.py",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\_direct\\plugin\\commands\\activate.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\_direct\\plugin\\commands\\deactivate.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\airunway-aks-setup\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\appinsights-instrumentation\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-ai\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-aigateway\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-app-onboard-prereq\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-app-onboard\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-cloud-migrate\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-compliance\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-compute\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-cost\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-deploy\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-diagnostics\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-enterprise-infra-planner\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-kubernetes\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-kusto\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-messaging\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-prepare\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-quotas\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-reliability\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-resource-lookup\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-resource-visualizer\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-storage\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-upgrade\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-validate\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\entra-agent-id\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\entra-app-registration\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\microsoft-foundry\\SKILL.md",
+      "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\python-appservice-deploy\\SKILL.md",
+      "C:\\Users\\xuefengyin\\AppData\\Local\\copilot\\pkg\\win32-x64\\1.0.84-8\\builtin\\customize-cloud-agent\\SKILL.md",
+      "C:\\Users\\xuefengyin\\AppData\\Local\\copilot\\pkg\\win32-x64\\1.0.84-8\\builtin\\github-pr-media\\SKILL.md",
+      "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\gpt-5.6-luna\\\\M1-lru-ttl-cache",
+      "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\gpt-5.6-luna\\\\M1-lru-ttl-cache\\\\cache\\\\__init__.py",
+      "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\gpt-5.6-luna\\\\M1-lru-ttl-cache\\\\cache\\\\lru.py",
+      "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\gpt-5.6-luna\\\\M1-lru-ttl-cache\\\\cache\\\\stats.py",
+      "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\gpt-5.6-luna\\\\M1-lru-ttl-cache\\\\tests\\\\test_cache.py",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\.pytest_cache\\.gitignore",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\.pytest_cache\\CACHEDIR.TAG",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\.pytest_cache\\README.md",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\.pytest_cache\\v\\cache\\nodeids",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\.pytest_cache\\v\\cache\\stepwise",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\__init__.py",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\__init__.py, C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\stats.py, C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\lru.py, C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\tests\\test_cache.py",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\__pycache__\\__init__.cpython-311.pyc",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\__pycache__\\lru.cpython-311.pyc",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\__pycache__\\stats.cpython-311.pyc",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\lru.py",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\stats.py",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\task.md",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\tests\\__pycache__\\test_cache.cpython-311-pytest-8.3.4.pyc",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\tests\\test_cache.py",
+      "s:/responses"
+    ],
+    "assistantMessages": [
+      {
+        "turn": "2",
+        "content": "I’ll inspect the existing project state, then add only the four requested deliverables and validate the full test command."
+      },
+      {
+        "turn": "5",
+        "content": "The implementation now uses an expiry heap so expired entries can be reclaimed before LRU eviction without scanning the cache on `set`; I’m running the required suite and checking that only the four deliverables were added."
+      },
+      {
+        "turn": "9",
+        "content": "Implemented the thread-safe LRU cache with per-entry TTL support.\n\n- Added `cache/__init__.py`, `cache/lru.py`, and `cache/stats.py`.\n- Added 14 fake-clock tests in `tests/test_cache.py`.\n- Supports LRU ordering, lazy expiration, per-entry TTL overrides, expired-entry preference, statistics snapshots, and concurrency via `RLock`.\n- Verified with `python -m pytest tests -q`: **14 passed**.\n- Removed generated test cache and bytecode files; no extra deliverable files remain."
+      }
+    ]
+  },
+  "paths": {
+    "declared": {
+      "inside": [
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\lru.py"
+      ],
+      "relative": [
+        ".pytest_cache",
+        "cache",
+        "cache\\__pycache__",
+        "checkpoint.md",
+        "pytest",
+        "status",
+        "tests",
+        "tests\\__pycache__"
+      ],
+      "allowlisted": [],
+      "outside": [],
+      "ignored": []
+    },
+    "mentioned": {
+      "inside": [
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-5.6-luna/M1-lru-ttl-cache/cache/__init__.py",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-5.6-luna/M1-lru-ttl-cache/cache/__init__.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-5.6-luna/M1-lru-ttl-cache/cache/__init__.py",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-5.6-luna/M1-lru-ttl-cache/cache/lru.py",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-5.6-luna/M1-lru-ttl-cache/cache/lru.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-5.6-luna/M1-lru-ttl-cache/cache/lru.py",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-5.6-luna/M1-lru-ttl-cache/cache/stats.py",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-5.6-luna/M1-lru-ttl-cache/cache/stats.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-5.6-luna/M1-lru-ttl-cache/cache/stats.py",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-5.6-luna/M1-lru-ttl-cache/tests/test_cache.py",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-5.6-luna/M1-lru-ttl-cache/tests/test_cache.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/gpt-5.6-luna/M1-lru-ttl-cache/tests/test_cache.py",
+        "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\gpt-5.6-luna\\\\M1-lru-ttl-cache",
+        "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\gpt-5.6-luna\\\\M1-lru-ttl-cache\\\\cache\\\\__init__.py",
+        "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\gpt-5.6-luna\\\\M1-lru-ttl-cache\\\\cache\\\\lru.py",
+        "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\gpt-5.6-luna\\\\M1-lru-ttl-cache\\\\cache\\\\stats.py",
+        "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\gpt-5.6-luna\\\\M1-lru-ttl-cache\\\\tests\\\\test_cache.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\.pytest_cache\\.gitignore",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\.pytest_cache\\CACHEDIR.TAG",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\.pytest_cache\\README.md",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\.pytest_cache\\v\\cache\\nodeids",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\.pytest_cache\\v\\cache\\stepwise",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\__init__.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\__init__.py, C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\stats.py, C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\lru.py, C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\tests\\test_cache.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\__pycache__\\__init__.cpython-311.pyc",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\__pycache__\\lru.cpython-311.pyc",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\__pycache__\\stats.cpython-311.pyc",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\lru.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\stats.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\task.md",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\tests\\__pycache__\\test_cache.cpython-311-pytest-8.3.4.pyc",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\tests\\test_cache.py"
+      ],
+      "relative": [],
+      "allowlisted": [],
+      "outside": [
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\_direct\\plugin\\commands\\activate.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\_direct\\plugin\\commands\\deactivate.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\airunway-aks-setup\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\appinsights-instrumentation\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-ai\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-aigateway\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-app-onboard-prereq\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-app-onboard\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-cloud-migrate\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-compliance\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-compute\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-cost\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-deploy\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-diagnostics\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-enterprise-infra-planner\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-kubernetes\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-kusto\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-messaging\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-prepare\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-quotas\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-reliability\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-resource-lookup\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-resource-visualizer\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-storage\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-upgrade\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\azure-validate\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\entra-agent-id\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\entra-app-registration\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\microsoft-foundry\\SKILL.md",
+        "C:\\Users\\xuefengyin\\.copilot\\installed-plugins\\awesome-copilot\\azure\\skills\\python-appservice-deploy\\SKILL.md",
+        "C:\\Users\\xuefengyin\\AppData\\Local\\copilot\\pkg\\win32-x64\\1.0.84-8\\builtin\\customize-cloud-agent\\SKILL.md",
+        "C:\\Users\\xuefengyin\\AppData\\Local\\copilot\\pkg\\win32-x64\\1.0.84-8\\builtin\\github-pr-media\\SKILL.md",
+        "s:/responses"
+      ],
+      "ignored": []
+    }
+  },
+  "spec": {
+    "items": [
+      {
+        "id": "files",
+        "check": "file_manifest",
+        "points": 6,
+        "awarded": 6,
+        "verdict": "PASS",
+        "evidence": [
+          "authored file set matches exactly (5 files)"
+        ],
+        "veto": false
+      },
+      {
+        "id": "deps",
+        "check": "stdlib_only",
+        "points": 5,
+        "awarded": 5,
+        "verdict": "PASS",
+        "evidence": [
+          "imports are stdlib / local / task-provided only: cache, collections, dataclasses, heapq, numbers, pytest, threading, time, typing",
+          "task-provided (allowlisted, not a violation): pytest"
+        ],
+        "veto": false
+      },
+      {
+        "id": "bounds",
+        "check": "path_containment",
+        "points": 4,
+        "awarded": 4,
+        "verdict": "PASS",
+        "evidence": [
+          "absolute tool paths inside the run dir: 1; relative names resolved against the run dir: 8; allowlisted system locations: 0; outside: 0",
+          "  absolute, inside: C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\gpt-5.6-luna\\M1-lru-ttl-cache\\cache\\lru.py",
+          "  relative/bare tokens (the CLI lists these for shell commands; they resolve under the run dir, which is the tool cwd): '.pytest_cache', 'cache', 'cache\\\\__pycache__', 'checkpoint.md', 'pytest', 'status', 'tests', 'tests\\\\__pycache__'"
+        ],
+        "veto": false
+      }
+    ],
+    "score": 15,
+    "max": 15
+  },
+  "autoItems": [
+    {
+      "id": "hygiene",
+      "points": 3,
+      "awarded": 3.0,
+      "passedChecks": 4,
+      "totalChecks": 4,
+      "checks": [
+        {
+          "id": "no_broad_except",
+          "passed": true,
+          "evidence": [
+            "no broad except handlers"
+          ]
+        },
+        {
+          "id": "no_debug_residue",
+          "passed": true,
+          "evidence": [
+            "no TODO markers, no commented-out code, no stray print() outside CLI modules"
+          ]
+        },
+        {
+          "id": "typed_public_api",
+          "passed": true,
+          "evidence": [
+            "all 7 public function(s) fully annotated"
+          ]
+        },
+        {
+          "id": "bounded_function_length",
+          "passed": true,
+          "evidence": [
+            "longest implementation function is 25 lines (limit 50)"
+          ]
+        }
+      ]
+    }
+  ],
+  "reviewItems": [
+    {
+      "id": "o1_hotpath",
+      "points": 5,
+      "criterion": "用 OrderedDict.move_to_end 或双向链表实现 O(1) 的 get/set，不是每次排序或线性查找",
+      "mode": "review"
+    },
+    {
+      "id": "module_separation",
+      "points": 4,
+      "criterion": "三个模块职责清晰，__init__.py 只做再导出，不塞实现",
+      "mode": "review"
+    },
+    {
+      "id": "sentinel",
+      "points": 3,
+      "criterion": "区分 ttl=None 与省略 ttl 用私有模块级 sentinel（object()），不是 \"default\" 字符串或 -1 魔数",
+      "mode": "review"
+    }
+  ],
+  "qualityMax": 15,
+  "qualityAutoScore": 3.0,
+  "qualityReviewMax": 12,
+  "ownTestFunctionCount": 14.0
+}

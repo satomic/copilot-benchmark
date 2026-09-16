@@ -1,0 +1,33 @@
+........................................................................ [ 30%]
+..............................................F......................... [ 60%]
+...................................................................F.... [ 90%]
+......................                                                   [100%]
+================================== FAILURES ===================================
+__________________ test_writes_after_truncated_tail_recovery __________________
+kvstore\segment.py:35: in scan
+    key, value, size = decode_record(data, offset)
+kvstore\record.py:50: in decode_record
+    raise CorruptRecordError("CRC mismatch")
+E   kvstore.errors.CorruptRecordError: CRC mismatch
+
+The above exception was the direct cause of the following exception:
+_verify\test_c2.py:725: in test_writes_after_truncated_tail_recovery
+    assert store.get("c") == "3"
+kvstore\store.py:100: in get
+    for found_key, value, offset in self._segments[loc.seg_id].scan():
+kvstore\segment.py:39: in scan
+    raise CorruptSegmentError(self._path, offset, str(exc)) from exc
+E   kvstore.errors.CorruptSegmentError: 000001.seg at offset 17: CRC mismatch
+_____________________________ test_cli_list_empty _____________________________
+_verify\test_c2.py:1286: in test_cli_list_empty
+    assert cli(tmp_path / "db", "list").stdout == ""
+E   AssertionError: assert '\n' == ''
+E     
+E     Strings contain only whitespace, escaping them using repr()
+E     - ''
+E     + '\n'
+- generated xml file: C:\workspace\13_benchmark\GPT-6 in Coding\benchmark\reports\gpt-5.6-luna__C2-kvstore\tests\hidden.xml -
+=========================== short test summary info ===========================
+FAILED _verify/test_c2.py::test_writes_after_truncated_tail_recovery - kvstor...
+FAILED _verify/test_c2.py::test_cli_list_empty - AssertionError: assert '\n' ...
+2 failed, 236 passed in 26.57s

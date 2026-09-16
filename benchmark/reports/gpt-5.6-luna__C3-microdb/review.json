@@ -1,0 +1,26 @@
+{
+ "null_logic_centralised": {
+  "maxPoints": 5,
+  "criterion": "三值逻辑与 NULL 规则集中在 value.py，WHERE / 聚合 / 排序三处都复用它，没有各自重写一套 NULL 判断",
+  "points": 5,
+  "verdict": "完全符合：三值逻辑单点定义，expr / aggregate / executor 三处导入复用",
+  "reasoning": "value.py:22-81 集中定义 and_ / or_ / not_ 三值逻辑、compare_eq / compare_lt 的 NULL 传播与 arith / negate 的 NULL 短路；expr.py:5、aggregate.py:3、executor.py:10 三个消费模块全部从 value 导入，全库没有第二套 NULL 判断。与此前四个新模型的满分结构同型。",
+  "evidence": ["value.py:22-81", "expr.py:5", "aggregate.py:3", "executor.py:10"]
+ },
+ "explicit_stage_order": {
+  "maxPoints": 4,
+  "criterion": "执行阶段顺序由 planner 显式表达为数据（可枚举的阶段序列），executor 按该顺序执行，不在控制流里隐式重排",
+  "points": 1,
+  "verdict": "基本不符合：Plan 是装饰性数据，阶段序列固定不随查询变化，executor 从不消费它",
+  "reasoning": "planner.py:18-20 对任何查询都返回同一份九个阶段名的静态元组，不反映查询形态（这也是隐藏套件计划类断言失败的根因之一）；executor.py:23-51 的 execute_plan 只取 pl.query，从不迭代 pl.stages，阶段顺序完全由函数体内的隐式控制流决定。比 gemini-3.8-flash 的 3 分形态（真实数据序列、executor 按名字捞取）再低两档：这里的序列既不真实也不被消费，判 1 分。",
+  "evidence": ["planner.py:18-20", "executor.py:23-51"]
+ },
+ "name_resolution_single_point": {
+  "maxPoints": 3,
+  "criterion": "名称解析（限定名、非限定名、别名优先、歧义报错）集中在一处，不是在投影与排序里各判一次",
+  "points": 3,
+  "verdict": "完全符合：ColumnRef.eval 单点解析，歧义单点报错",
+  "reasoning": "expr.py:27-39 的 ColumnRef.eval 是唯一解析点：限定名直查、非限定名唯一匹配、多匹配抛 AmbiguousColumnError、无匹配抛 UnknownColumnError 全部集中于此；投影与排序都通过表达式节点复用它，排序的别名优先在 executor.py:187-188 用已投影行做一次字典查找而非重写解析。与此前四个新模型的满分口径一致。",
+  "evidence": ["expr.py:27-39", "executor.py:187-188"]
+ }
+}

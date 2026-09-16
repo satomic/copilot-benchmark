@@ -1356,11 +1356,21 @@ def test_no_eval_or_exec():
     for path in Path(".").rglob("*.py"):
         if any(part in _IGNORED_DIRS for part in path.parts):
             continue
-        text = path.read_text(encoding="utf-8", errors="replace")
-        for bad in ("eval(", "exec("):
-            for line in text.splitlines():
-                stripped = line.strip()
-                if bad in stripped and not stripped.startswith(("#", "def ", '"')):
-                    if f"def {bad[:-1]}" not in stripped:
-                        hits.append(f"{path}: {stripped[:60]}")
+        for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+            stripped = line.strip()
+            if stripped.startswith("#"):
+                continue
+            for bad in ("eval(", "exec("):
+                at = stripped.find(bad)
+                if at > 0 and (stripped[at - 1].isalnum() or stripped[at - 1] in "._"):
+                    continue  # method call or longer name such as node.eval(
+                # `def eval(self, row)` defines a method on the model's own AST
+                # node; it neither calls nor shadows the builtin this rule
+                # targets. First hit: gpt-5.6-luna C3 (2026-09-16), whose expr
+                # nodes carry an eval(row) method — same false-positive class
+                # as `def compile(` in C4 (AGENTS.md §8.1 substring matching).
+                if at >= 0 and stripped[:at].rstrip().endswith("def"):
+                    continue
+                if at >= 0:
+                    hits.append(f"{path}: {stripped[:60]}")
     assert hits == []

@@ -1,0 +1,170 @@
+........................................................................ [ 19%]
+...............................................F........................ [ 38%]
+.................................................F...................... [ 57%]
+........................................................................ [ 76%]
+..........FF..........................F..FFF.FF..FFFF.....F......F.....F [ 95%]
+.....F...........                                                        [100%]
+================================== FAILURES ===================================
+_______________________ test_table_column_index_unknown _______________________
+microdb\schema.py:55: in column_index
+    return [c.name for c in self._columns].index(name)
+E   ValueError: 'zz' is not in list
+
+The above exception was the direct cause of the following exception:
+_verify\test_c3.py:377: in test_table_column_index_unknown
+    t.column_index("zz")
+microdb\schema.py:57: in column_index
+    raise UnknownColumnError(name) from exc
+E   microdb.errors.UnknownColumnError: zz
+______________________ test_aggregate_in_where_rejected _______________________
+_verify\test_c3.py:560: in test_aggregate_in_where_rejected
+    with pytest.raises((db.AggregateError, db.ParseError)):
+E   Failed: DID NOT RAISE (<class 'microdb.errors.AggregateError'>, <class 'microdb.errors.ParseError'>)
+________________________ test_grouping_error_for_star _________________________
+_verify\test_c3.py:857: in test_grouping_error_for_star
+    with pytest.raises(db.GroupingError):
+E   Failed: DID NOT RAISE <class 'microdb.errors.GroupingError'>
+____________ test_grouping_error_mixing_bare_column_with_aggregate ____________
+_verify\test_c3.py:862: in test_grouping_error_mixing_bare_column_with_aggregate
+    with pytest.raises(db.GroupingError):
+E   Failed: DID NOT RAISE <class 'microdb.errors.GroupingError'>
+_______________________________ test_inner_join _______________________________
+_verify\test_c3.py:1000: in test_inner_join
+    out = db.execute("SELECT l.n, r.v FROM l JOIN r ON l.id = r.lid", joined).rows
+microdb\executor.py:20: in execute
+    return execute_plan(plan(parse(query)), tables)
+microdb\parser.py:152: in parse
+    return Parser(source).parse()
+microdb\parser.py:61: in parse
+    if self.cur().kind != "EOF": raise ParseError("unexpected token", self.cur().offset)
+E   microdb.errors.ParseError: unexpected token
+______________________ test_join_row_order_is_left_major ______________________
+_verify\test_c3.py:1015: in test_join_row_order_is_left_major
+    out = db.execute("SELECT l.id, r.v FROM l JOIN r ON l.id = r.lid", joined).rows
+microdb\executor.py:20: in execute
+    return execute_plan(plan(parse(query)), tables)
+microdb\parser.py:152: in parse
+    return Parser(source).parse()
+microdb\parser.py:61: in parse
+    if self.cur().kind != "EOF": raise ParseError("unexpected token", self.cur().offset)
+E   microdb.errors.ParseError: unexpected token
+___________________________ test_join_column_order ____________________________
+_verify\test_c3.py:1020: in test_join_column_order
+    assert db.execute("SELECT * FROM l JOIN r ON l.id = r.lid", joined).columns == [
+microdb\executor.py:20: in execute
+    return execute_plan(plan(parse(query)), tables)
+microdb\parser.py:152: in parse
+    return Parser(source).parse()
+microdb\parser.py:61: in parse
+    if self.cur().kind != "EOF": raise ParseError("unexpected token", self.cur().offset)
+E   microdb.errors.ParseError: unexpected token
+____________________ test_join_unknown_condition_drops_row ____________________
+_verify\test_c3.py:1028: in test_join_unknown_condition_drops_row
+    out = db.execute("SELECT l.id FROM l JOIN r ON l.id = r.lid", {"l": left, "r": right}).rows
+microdb\executor.py:20: in execute
+    return execute_plan(plan(parse(query)), tables)
+microdb\parser.py:152: in parse
+    return Parser(source).parse()
+microdb\parser.py:61: in parse
+    if self.cur().kind != "EOF": raise ParseError("unexpected token", self.cur().offset)
+E   microdb.errors.ParseError: unexpected token
+____________________________ test_ambiguous_column ____________________________
+_verify\test_c3.py:1045: in test_ambiguous_column
+    db.execute("SELECT x FROM a JOIN b ON a.x = b.x", {"a": a, "b": b})
+microdb\executor.py:20: in execute
+    return execute_plan(plan(parse(query)), tables)
+microdb\parser.py:152: in parse
+    return Parser(source).parse()
+microdb\parser.py:61: in parse
+    if self.cur().kind != "EOF": raise ParseError("unexpected token", self.cur().offset)
+E   microdb.errors.ParseError: unexpected token
+___________________ test_unqualified_unique_column_resolves ___________________
+_verify\test_c3.py:1049: in test_unqualified_unique_column_resolves
+    out = db.execute("SELECT n FROM l JOIN r ON l.id = r.lid", joined).rows
+microdb\executor.py:20: in execute
+    return execute_plan(plan(parse(query)), tables)
+microdb\parser.py:152: in parse
+    return Parser(source).parse()
+microdb\parser.py:61: in parse
+    if self.cur().kind != "EOF": raise ParseError("unexpected token", self.cur().offset)
+E   microdb.errors.ParseError: unexpected token
+__________________________ test_star_table_qualified __________________________
+_verify\test_c3.py:1069: in test_star_table_qualified
+    assert db.execute("SELECT l.* FROM l JOIN r ON l.id = r.lid", joined).columns == ["id", "n"]
+microdb\executor.py:20: in execute
+    return execute_plan(plan(parse(query)), tables)
+microdb\parser.py:152: in parse
+    return Parser(source).parse()
+microdb\parser.py:61: in parse
+    if self.cur().kind != "EOF": raise ParseError("unexpected token", self.cur().offset)
+E   microdb.errors.ParseError: unexpected token
+___________________________ test_join_unknown_table ___________________________
+_verify\test_c3.py:1074: in test_join_unknown_table
+    db.execute("SELECT l.id FROM l JOIN zz ON l.id = zz.x", joined)
+microdb\executor.py:20: in execute
+    return execute_plan(plan(parse(query)), tables)
+microdb\parser.py:152: in parse
+    return Parser(source).parse()
+microdb\parser.py:61: in parse
+    if self.cur().kind != "EOF": raise ParseError("unexpected token", self.cur().offset)
+E   microdb.errors.ParseError: unexpected token
+______________________________ test_plan_minimal ______________________________
+_verify\test_c3.py:1134: in test_plan_minimal
+    assert plan_roles(db, "SELECT a FROM t") == ["scan", "project"]
+E   AssertionError: assert ['from_join',...project', ...] == ['scan', 'project']
+E     
+E     At index 0 diff: 'from_join' != 'scan'
+E     Left contains 7 more items, first extra item: 'group'
+E     Use -v to get more diff
+________________________ test_plan_full_pipeline_order ________________________
+_verify\test_c3.py:1144: in test_plan_full_pipeline_order
+    roles = plan_roles(
+_verify\test_c3.py:1103: in plan_roles
+    obj = db.plan(db.parse(sql))
+microdb\parser.py:152: in parse
+    return Parser(source).parse()
+microdb\parser.py:61: in parse
+    if self.cur().kind != "EOF": raise ParseError("unexpected token", self.cur().offset)
+E   microdb.errors.ParseError: unexpected token
+________________ test_plan_has_no_group_stage_for_plain_query _________________
+_verify\test_c3.py:1183: in test_plan_has_no_group_stage_for_plain_query
+    assert "group" not in plan_roles(db, "SELECT a FROM t")
+E   AssertionError: assert 'group' not in ['from_join', 'filter', 'group', 'aggregate', 'having', 'project', ...]
+E    +  where ['from_join', 'filter', 'group', 'aggregate', 'having', 'project', ...] = plan_roles(<test_c3._Facade object at 0x000001AA19E2C4D0>, 'SELECT a FROM t')
+_____________________________ test_cli_two_tables _____________________________
+_verify\test_c3.py:1243: in test_cli_two_tables
+    assert done.returncode == 0
+E   AssertionError: assert 3 == 0
+E    +  where 3 = CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...wo_tables0\\r.csv', 'SELECT l.id FROM l JOIN r ON l.id = r.lid'], returncode=3, stdout='', stderr='unexpected token\n').returncode
+________________________ test_cli_bad_header_exit_two _________________________
+_verify\test_c3.py:1264: in test_cli_bad_header_exit_two
+    assert cli("--table", f"t={path}", "SELECT id FROM t").returncode == 2
+E   AssertionError: assert 1 == 2
+E    +  where 1 = CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: Column.__init__() missing 1 required positional argument: \'type\'\n').returncode
+E    +    where CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: Column.__init__() missing 1 required positional argument: \'type\'\n') = cli('--table', 't=C:\\Users\\xuefengyin\\AppData\\Local\\Temp\\pytest-of-xuefengyin\\pytest-385\\test_cli_bad_header_exit_two0\\bad.csv', 'SELECT id FROM t')
+_________ test_cli_query_error_exit_three[SELECT id, count(*) FROM t] _________
+_verify\test_c3.py:1280: in test_cli_query_error_exit_three
+    assert done.returncode == 3
+E   AssertionError: assert 0 == 3
+E    +  where 0 = CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...ery_error_exit_thre4\\people.csv', 'SELECT id, count(*) FROM t'], returncode=0, stdout='id,count(*)\n1,3\n', stderr='').returncode
+- generated xml file: C:\workspace\13_benchmark\GPT-6 in Coding\benchmark\reports\gpt-5.6-luna__C3-microdb\tests\hidden.xml -
+=========================== short test summary info ===========================
+FAILED _verify/test_c3.py::test_table_column_index_unknown - microdb.errors.U...
+FAILED _verify/test_c3.py::test_aggregate_in_where_rejected - Failed: DID NOT...
+FAILED _verify/test_c3.py::test_grouping_error_for_star - Failed: DID NOT RAI...
+FAILED _verify/test_c3.py::test_grouping_error_mixing_bare_column_with_aggregate
+FAILED _verify/test_c3.py::test_inner_join - microdb.errors.ParseError: unexp...
+FAILED _verify/test_c3.py::test_join_row_order_is_left_major - microdb.errors...
+FAILED _verify/test_c3.py::test_join_column_order - microdb.errors.ParseError...
+FAILED _verify/test_c3.py::test_join_unknown_condition_drops_row - microdb.er...
+FAILED _verify/test_c3.py::test_ambiguous_column - microdb.errors.ParseError:...
+FAILED _verify/test_c3.py::test_unqualified_unique_column_resolves - microdb....
+FAILED _verify/test_c3.py::test_star_table_qualified - microdb.errors.ParseEr...
+FAILED _verify/test_c3.py::test_join_unknown_table - microdb.errors.ParseErro...
+FAILED _verify/test_c3.py::test_plan_minimal - AssertionError: assert ['from_...
+FAILED _verify/test_c3.py::test_plan_full_pipeline_order - microdb.errors.Par...
+FAILED _verify/test_c3.py::test_plan_has_no_group_stage_for_plain_query - Ass...
+FAILED _verify/test_c3.py::test_cli_two_tables - AssertionError: assert 3 == 0
+FAILED _verify/test_c3.py::test_cli_bad_header_exit_two - AssertionError: ass...
+FAILED _verify/test_c3.py::test_cli_query_error_exit_three[SELECT id, count(*) FROM t]
+18 failed, 359 passed in 10.96s

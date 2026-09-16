@@ -1,0 +1,26 @@
+{
+ "shared_type_rules": {
+  "maxPoints": 5,
+  "criterion": "运行时类型规则单一来源：VM 的算术/比较/布尔检查收在一处，优化器折叠复用同一套规则或直接调用它，编译期折叠与运行期语义不可能分叉",
+  "points": 3,
+  "verdict": "部分符合：VM 内规则集中于 _binary 单点，但优化器自带一套折叠语义",
+  "reasoning": "vm.py:9 的 _binary 把运行期算术 / 比较 / 布尔检查收在一处（vm.py:60 唯一调用点）；但 optimizer.py:8-23 的 _eval 是独立实现的第二套折叠语义（以返回 None 表示放弃折叠），并未导入或复用 VM 规则，编译期与运行期语义理论上可分叉。与 grok-4.6 / mai-code-1.1-flash / gemini-3.8-flash 的同型结构一致判 3 分（kimi-k3 因优化器直接 import VM 求值函数拿 5 分）。",
+  "evidence": ["vm.py:9", "vm.py:60", "optimizer.py:8-23"]
+ },
+ "jump_patching_single_point": {
+  "maxPoints": 4,
+  "criterion": "前向跳转回填经由一个集中的 emit/patch 机制（标签或补丁表），不是散落各处的裸下标运算",
+  "points": 2,
+  "verdict": "部分符合：emit 返回下标，但回填是散落的裸下标整指令重建，无 patch 机制",
+  "reasoning": "compiler.py:26 的 emit 返回指令下标，但所有前向跳转回填都是散落在 and / or / if / while 各站点的裸下标整指令重建（compiler.py:74-76、compiler.py:82、compiler.py:90-92、compiler.py:112-118 共八处 self.p.instructions[i] = Instr(...)），没有集中的 patch 函数或标签表。与 grok-4.6 的同型结构对齐判 2 分。",
+  "evidence": ["compiler.py:26", "compiler.py:74-76", "compiler.py:112-118"]
+ },
+ "codec_discipline": {
+  "maxPoints": 3,
+  "criterion": "二进制布局用 struct 声明式表达且 dumps/loads 共用定义；loads 先验 CRC 再信任任何长度字段；读取有单一的越界检查点",
+  "points": 3,
+  "verdict": "完全符合：CRC 先于一切解析，take 闭包单点越界检查",
+  "reasoning": "serializer.py:39 在解析任何长度字段之前先验 CRC；serializer.py:40-43 的 take 闭包是唯一读取通道，越界检查单点收敛，后续所有字段（names / constants / instructions）都经 take 读取；双端布局均用 struct 声明（dumps 的 pack 与 loads 的 unpack 逐字段镜像）。与 grok-4.6 / kimi-k3 的满分口径一致。",
+  "evidence": ["serializer.py:39", "serializer.py:40-43"]
+ }
+}

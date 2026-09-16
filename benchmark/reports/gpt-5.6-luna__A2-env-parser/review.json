@@ -1,0 +1,18 @@
+{
+ "layering": {
+  "maxPoints": 6,
+  "criterion": "key 解析 / 值解引号 / 转义展开分成独立的辅助函数，主循环可读",
+  "points": 4,
+  "verdict": "大体符合：转义展开与未引值处理已抽出，key 解析与解引号仍内联",
+  "reasoning": "envparse.py:46-58 的 _expand_double_quoted 与 envparse.py:61-65 的 _remove_trailing_comment 是两个单一职责辅助函数，但 key 解析（export 剥离与校验，envparse.py:26-31）和值解引号分发（envparse.py:33-39）仍内联在主循环里。抽出的职责数量与 grok-4.6 完全相同（转义展开 + 未引值处理），对齐判 4 分；kimi-k3 / mai-code-1.1-flash 只抽出转义展开一项判 3 分。",
+  "evidence": ["envparse.py:46-58", "envparse.py:61-65", "envparse.py:26-39"]
+ },
+ "escape_single_pass": {
+  "maxPoints": 5,
+  "criterion": "转义用单次左到右扫描或查表，不是链式 .replace()（链式会引入顺序 bug）",
+  "points": 5,
+  "verdict": "完全符合：单次左到右 while 扫描 + 查表，未知转义保留两字符",
+  "reasoning": "envparse.py:49-57 是单次左到右 while 扫描，envparse.py:5-11 的 _ESCAPES 查表，envparse.py:53 对未知转义用 dict.get 默认值保留反斜杠加原字符，无任何链式 .replace()。与四个此前新模型的满分实现同型。",
+  "evidence": ["envparse.py:49-57", "envparse.py:5-11"]
+ }
+}

@@ -1,0 +1,168 @@
+{
+  "task": "C3-microdb",
+  "model": "gpt-5.6-luna",
+  "functional": 67.23,
+  "functionalMax": 70.0,
+  "spec": 15,
+  "specMax": 15,
+  "quality": 12.0,
+  "qualityMax": 15.0,
+  "qualityAuto": 3.0,
+  "qualityReview": 9,
+  "total": 94.23,
+  "reviewPending": [],
+  "vetoTriggered": [],
+  "hidden": {
+    "total": 377,
+    "failures": 18,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 359,
+    "time": 10.888,
+    "bad": [
+      {
+        "name": "_verify.test_c3::test_table_column_index_unknown",
+        "kind": "failure",
+        "message": [
+          "microdb.errors.UnknownColumnError: zz"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_aggregate_in_where_rejected",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE (<class 'microdb.errors.AggregateError'>, <class 'microdb.errors.ParseError'>)"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_grouping_error_for_star",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'microdb.errors.GroupingError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_grouping_error_mixing_bare_column_with_aggregate",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'microdb.errors.GroupingError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_inner_join",
+        "kind": "failure",
+        "message": [
+          "microdb.errors.ParseError: unexpected token"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_join_row_order_is_left_major",
+        "kind": "failure",
+        "message": [
+          "microdb.errors.ParseError: unexpected token"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_join_column_order",
+        "kind": "failure",
+        "message": [
+          "microdb.errors.ParseError: unexpected token"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_join_unknown_condition_drops_row",
+        "kind": "failure",
+        "message": [
+          "microdb.errors.ParseError: unexpected token"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_ambiguous_column",
+        "kind": "failure",
+        "message": [
+          "microdb.errors.ParseError: unexpected token"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_unqualified_unique_column_resolves",
+        "kind": "failure",
+        "message": [
+          "microdb.errors.ParseError: unexpected token"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_star_table_qualified",
+        "kind": "failure",
+        "message": [
+          "microdb.errors.ParseError: unexpected token"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_join_unknown_table",
+        "kind": "failure",
+        "message": [
+          "microdb.errors.ParseError: unexpected token"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_plan_minimal",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert ['from_join',...project', ...] == ['scan', 'project']",
+          "  ",
+          "  At index 0 diff: 'from_join' != 'scan'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_plan_full_pipeline_order",
+        "kind": "failure",
+        "message": [
+          "microdb.errors.ParseError: unexpected token"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_plan_has_no_group_stage_for_plain_query",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert 'group' not in ['from_join', 'filter', 'group', 'aggregate', 'having', 'project', ...]",
+          " +  where ['from_join', 'filter', 'group', 'aggregate', 'having', 'project', ...] = plan_roles(<test_c3._Facade object at 0x000001AA19E2C4D0>, 'SELECT a FROM t')"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_cli_two_tables",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert 3 == 0",
+          " +  where 3 = CompletedProcess(args=['C:\\\\Users\\\\xuefengyin\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\\\\PythonSoftwareFoundation.Python...wo_tables0\\\\r.csv', 'SELECT l.id FROM l JOIN r ON l.id = r.lid'], returncode=3, stdout='', stderr='unexpected token\\n').returncode"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_cli_bad_header_exit_two",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert 1 == 2",
+          " +  where 1 = CompletedProcess(args=['C:\\\\Users\\\\xuefengyin\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\\\\PythonSoftwareFoundation.Python...        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nTypeError: Column.__init__() missing 1 required positional argument: \\'type\\'\\n').returncode",
+          " +    where CompletedProcess(args=['C:\\\\Users\\\\xuefengyin\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\\\\PythonSoftwareFoundation.Python...        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nTypeError: Column.__init__() missing 1 required positional argument: \\'type\\'\\n') = cli('--table', 't=C:\\\\Users\\\\xuefengyin\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-xuefengyin\\\\pytest-385\\\\test_cli_bad_header_exit_two0\\\\bad.csv', 'SELECT id FROM t')"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_cli_query_error_exit_three[SELECT id, count(*) FROM t]",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert 0 == 3",
+          " +  where 0 = CompletedProcess(args=['C:\\\\Users\\\\xuefengyin\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\\\\PythonSoftwareFoundation.Python...ery_error_exit_thre4\\\\people.csv', 'SELECT id, count(*) FROM t'], returncode=0, stdout='id,count(*)\\n1,3\\n', stderr='').returncode"
+        ]
+      }
+    ]
+  },
+  "visible": null,
+  "own": {
+    "total": 50,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 50,
+    "time": 0.313,
+    "bad": []
+  }
+}

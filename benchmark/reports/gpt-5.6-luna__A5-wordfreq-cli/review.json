@@ -1,0 +1,18 @@
+{
+ "argparse_exit2": {
+  "maxPoints": 5,
+  "criterion": "用 argparse 的 type= 校验让退出码 2 自然产生，而不是散落的手写 sys.exit(2)",
+  "points": 3,
+  "verdict": "部分符合：用了 argparse 且退出码 2 收敛在 parser.error 单点，但绕开 type= 手动转换校验",
+  "reasoning": "wordfreq.py:27-28 用 argparse 但 -n 声明为默认字符串，wordfreq.py:31-36 手动 int 转换与 n<1 校验后调用 parser.error（该方法自然产生退出码 2 且两类错误收敛在同一点），没有散落的手写 sys.exit(2)，但判据点名的 type= 校验被绕开。与 gemini-3.8-flash / grok-4.6 的同型实现对齐判 3 分（kimi-k3 用了 type=int 判 4 分）。",
+  "evidence": ["wordfreq.py:27-28", "wordfreq.py:31-36"]
+ },
+ "tokenize_single_regex": {
+  "maxPoints": 5,
+  "criterion": "分词用一条正则 + 统一 strip，不是多层 replace 或逐字符状态机",
+  "points": 5,
+  "verdict": "完全符合：单条正则 findall + 统一 strip 单引号，一行推导式完成",
+  "reasoning": "wordfreq.py:9-12 用单条正则 [a-z0-9']+ 对 lower 后文本 findall，统一 strip 单引号并过滤空 token，整个分词是一个推导式，无多层 replace 与状态机。与四个此前新模型的满分实现同型。",
+  "evidence": ["wordfreq.py:9-12"]
+ }
+}

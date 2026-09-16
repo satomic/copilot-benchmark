@@ -1,0 +1,26 @@
+{
+ "grammar_correspondence": {
+  "maxPoints": 5,
+  "criterion": "递归下降的函数与 task.md 的文法层级一一对应，命名可读，无手工回溯",
+  "points": 5,
+  "verdict": "完全符合：or_expr 到 primary 九级方法与文法层级一一对应",
+  "reasoning": "parser.py:63-151 的 or_expr / and_expr / not_expr / comparison / additive / multiplicative / unary / power / primary 九个方法与规格文法逐级对应，幂运算通过 parser.py:117 递归 unary 实现右结合，比较不可结合在 parser.py:88-90 显式报错，全程单 token 前瞻无手工回溯。与 gemini-3.8-flash 的九级满分结构同型。",
+  "evidence": ["parser.py:63-151", "parser.py:113-118", "parser.py:88-90"]
+ },
+ "named_ast": {
+  "maxPoints": 4,
+  "criterion": "AST 用具名节点（dataclass / NamedTuple / 类），不是裸 tuple 或 dict",
+  "points": 4,
+  "verdict": "完全符合：五种 frozen dataclass 具名节点",
+  "reasoning": "parser.py:6-33 定义 Literal / Variable / Unary / Binary / Call 五种 frozen dataclass 节点，字段具名，无裸 tuple 或 dict 表达 AST。与 mai-code-1.1-flash / gemini-3.8-flash 的 dataclass 满分形态一致。",
+  "evidence": ["parser.py:6-33"]
+ },
+ "error_consistency": {
+  "maxPoints": 3,
+  "criterion": "三类错误消息风格一致且带位置信息，没有 except Exception 吞异常",
+  "points": 2,
+  "verdict": "大体符合：基类带位置、风格统一、无吞异常，但求值错误的 raise 站点不传位置",
+  "reasoning": "errors.py:1-16 三类异常继承共同基类 MiniLangError 且基类携带 position 字段，词法与语法错误站点均传实际位置（parser.py:60、parser.py:151），消息风格统一为小写短句；evaluator.py:64-68 只窄捕获三类数值异常并转换，无 except Exception 吞异常。但 evaluator.py 全部 EvalError 站点（如 evaluator.py:24、evaluator.py:63）都不传位置。与 kimi-k3 / grok-4.6 / mai-code-1.1-flash 同型判 2 分。",
+  "evidence": ["errors.py:1-16", "parser.py:151", "evaluator.py:24", "evaluator.py:64-68"]
+ }
+}

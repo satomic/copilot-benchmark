@@ -1,0 +1,18 @@
+{
+ "grouping_efficiency": {
+  "maxPoints": 5,
+  "criterion": "单遍 dict 累加分组，不是对每个 region 重复扫描全表（O(n²)）",
+  "points": 5,
+  "verdict": "完全符合：单遍 dict 累加（列表槽位），O(n)",
+  "reasoning": "sales.py:4-28 对 rows 只扫描一遍，sales.py:24-28 用 dict 按 region.lower() 键累加计数与总额，无重复扫描全表。与 grok-4.6 的满分实现同型（分组值同为列表槽位）。",
+  "evidence": ["sales.py:4-28", "sales.py:24-28"]
+ },
+ "separation": {
+  "maxPoints": 5,
+  "criterion": "region/amount 的取值与校验抽成辅助函数，错误消息集中构造，聚合逻辑干净",
+  "points": 2,
+  "verdict": "不符合：零辅助函数，取值校验与聚合全部内联，且分组值用裸列表下标",
+  "reasoning": "整个实现是单个 summarize 函数（sales.py:1-43），region 校验（sales.py:5-10）、amount 转换（sales.py:12-21）与聚合（sales.py:23-28）全部内联，没有任何辅助函数；分组值是裸列表下标 group[1] / group[2]（sales.py:27-28）。错误消息前缀统一是仅有的亮点。与 grok-4.6 / kimi-k3 / gemini-3.8-flash 的同型内联实现对齐判 2 分。",
+  "evidence": ["sales.py:1-43", "sales.py:27-28"]
+ }
+}

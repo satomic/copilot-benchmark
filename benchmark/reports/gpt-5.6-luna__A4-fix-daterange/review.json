@@ -1,0 +1,18 @@
+{
+ "root_cause_fix": {
+  "maxPoints": 7,
+  "criterion": "三个缺陷都从根因修（闭区间 +1、chunk 宽度 days-1、days<=0 前置校验）；不是在返回前特判补一个 chunk 之类的补丁",
+  "points": 7,
+  "verdict": "完全符合：三处全部根因修复，游标式循环整体替换缺陷载体结构",
+  "reasoning": "daterange.py:19-20 前置校验 days 为正整数（含 bool 排除），daterange.py:28 的 (end - chunk_start).days + 1 是闭区间根因修，daterange.py:29-30 的 chunk_length - 1 修正 chunk 宽度；缺陷载体的 count 预算式循环被游标式 while 整体替换（daterange.py:26-34），无返回前特判补丁。与四个此前新模型的满分修复同型。",
+  "evidence": ["daterange.py:19-20", "daterange.py:26-34"]
+ },
+ "minimal_diff": {
+  "maxPoints": 4,
+  "criterion": "diff 最小，未重写整个文件，未改动 docstring 的语义",
+  "points": 4,
+  "verdict": "完全符合：改动集中在函数体，docstring 与签名原样保留",
+  "reasoning": "对照 seed 的 diff 只落在 split_range 函数体内（替换 2 段共约 12 行），函数签名、docstring、模块头与既有导入原样保留，未新建文件。与 grok-4.6 / mai-code-1.1-flash 的判定口径一致。",
+  "evidence": ["daterange.py:19-34"]
+ }
+}

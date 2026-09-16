@@ -1,0 +1,51 @@
+{
+  "task": "C2-kvstore",
+  "model": "gpt-5.6-luna",
+  "functional": 69.51,
+  "functionalMax": 70.0,
+  "spec": 15,
+  "specMax": 15,
+  "quality": 13.0,
+  "qualityMax": 15.0,
+  "qualityAuto": 3.0,
+  "qualityReview": 10,
+  "total": 97.51,
+  "reviewPending": [],
+  "vetoTriggered": [],
+  "hidden": {
+    "total": 238,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 236,
+    "time": 26.463,
+    "bad": [
+      {
+        "name": "_verify.test_c2::test_writes_after_truncated_tail_recovery",
+        "kind": "failure",
+        "message": [
+          "kvstore.errors.CorruptSegmentError: 000001.seg at offset 17: CRC mismatch"
+        ]
+      },
+      {
+        "name": "_verify.test_c2::test_cli_list_empty",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert '\\n' == ''",
+          "  ",
+          "  Strings contain only whitespace, escaping them using repr()"
+        ]
+      }
+    ]
+  },
+  "visible": null,
+  "own": {
+    "total": 40,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 40,
+    "time": 9.271,
+    "bad": []
+  }
+}

@@ -1,0 +1,18 @@
+{
+ "algorithm": {
+  "maxPoints": 6,
+  "criterion": "查表 + 贪心（divmod / 循环减法）实现；不是按千百十个位写 if/elif 硬编码分支",
+  "points": 6,
+  "verdict": "完全符合：13 组查表 + divmod 贪心，isinstance 排除 bool",
+  "reasoning": "roman.py:1-15 是 13 组 (value, numeral) 模块级元组，roman.py:25-27 对其做 divmod 贪心累积，无任何按位 if/elif 分支。roman.py:19 用 isinstance(n, bool) 显式排除布尔，形态与 kimi-k3 / grok-4.6 的满分实现一致。",
+  "evidence": ["roman.py:1-15", "roman.py:25-27"]
+ },
+ "error_messages": {
+  "maxPoints": 4,
+  "criterion": "TypeError / ValueError 的消息可读且包含出错的实际值或类型，不是裸 raise",
+  "points": 3,
+  "verdict": "大体符合：措辞准确、区分两类异常，但两条消息都不含出错的实际值或类型",
+  "reasoning": "roman.py:20 的『n must be an int』与 roman.py:22 的『n must be between 1 and 3999』可读且异常类型选择正确，但都没有携带实际传入的值或类型。与 kimi-k3 / grok-4.6 / mai-code-1.1-flash 同型判 3 分（gemini-3.8-flash 因 f-string 携带实际值拿 4 分）。",
+  "evidence": ["roman.py:20", "roman.py:22"]
+ }
+}

@@ -1,0 +1,26 @@
+{
+ "record_codec_declarative": {
+  "maxPoints": 5,
+  "criterion": "记录格式集中在 record.py，用 struct 或等价的声明式方式表达头部布局，不是散落各处的手工字节切片；编码与解码共用同一份字段定义",
+  "points": 3,
+  "verdict": "部分符合：双端都用 struct 声明式表达，但格式串重复两份且头部长度硬编码",
+  "reasoning": "格式集中在 record.py 且编码（record.py:25 struct.pack）与解码（record.py:35 struct.unpack_from）都是声明式，无手工字节切片；但格式串『>4sBHI I』在两处各写一份字面量而非共用同一个 Struct 常量，_HEADER 也在 record.py:6 硬编码 15 而非 struct.calcsize 派生。比 gemini-3.8-flash（声明共用、仅头长硬编码，4 分）多一处重复定义，比 mai-code-1.1-flash（全手工切片，2 分）好一档，判 3 分。",
+  "evidence": ["record.py:25", "record.py:35", "record.py:6"]
+ },
+ "truncation_vs_corruption": {
+  "maxPoints": 4,
+  "criterion": "截断与损坏的区分有明确且单一的判定点（IncompleteRecordError 与 CorruptRecordError 分开抛、由 scan 统一转译），不是靠散落的 try/except 兜住",
+  "points": 4,
+  "verdict": "完全符合：decode 分类抛出，scan 单点转译",
+  "reasoning": "record.py:30-56 的 decode_record 是唯一判定点，头部或载荷不足抛 IncompleteRecordError（record.py:33-34、record.py:45-46），magic / flags / CRC / UTF-8 类损坏抛 CorruptRecordError；segment.py:33-39 的 scan 是唯一转译点，截断静默止读、损坏升格为带路径与偏移的 CorruptSegmentError。与四个此前新模型的满分结构同型。",
+  "evidence": ["record.py:30-56", "segment.py:33-39"]
+ },
+ "atomic_compaction": {
+  "maxPoints": 3,
+  "criterion": "压实顺序正确：先写 tmp、再 os.replace、最后删旧段；tmp 名字不匹配段文件模式，且中途崩溃可恢复",
+  "points": 3,
+  "verdict": "完全符合：tmp 后缀避开段模式，os.replace 原子换名，旧段最后删除",
+  "reasoning": "compact.py:21 的 .seg.tmp 后缀不匹配 *.seg 段文件模式，compact.py:24-26 先写满 tmp，compact.py:30 用 os.replace 原子换名，compact.py:31-32 最后才删旧段，中途崩溃时旧段仍完整可恢复。记录写入复用 Segment.append 与 encode_record，无重复实现。与此前四个新模型的满分顺序一致。",
+  "evidence": ["compact.py:21", "compact.py:24-32"]
+ }
+}

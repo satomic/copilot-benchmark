@@ -1,0 +1,26 @@
+{
+ "regex_named_groups": {
+  "maxPoints": 5,
+  "criterion": "用一条预编译正则 + 命名组解析日志行，不是多次 split 拼凑",
+  "points": 5,
+  "verdict": "完全符合：单条预编译正则，9 个命名组，method 严格大写",
+  "reasoning": "logstats.py:13-17 是单条预编译正则，ip / user / timestamp / method / path / protocol / status / bytes / duration 全部命名组，method 用 [A-Z]+ 严格大写字符类，解析无 split 拼凑。与 grok-4.6 / kimi-k3 的满分实现同型。",
+  "evidence": ["logstats.py:13-17"]
+ },
+ "streaming": {
+  "maxPoints": 4,
+  "criterion": "analyze 单遍流式处理任意可迭代对象，不把整个文件 list() 进内存",
+  "points": 4,
+  "verdict": "完全符合：单遍迭代，计数器就地累加，仅保留 durations",
+  "reasoning": "logstats.py:67 的 analyze 接受任意 Iterable[str]，logstats.py:78-93 单遍 for 迭代，Counter 与状态类计数就地累加，只有分位数所需的 durations 列表被保留，无整表物化。与 gemini-3.8-flash 的满分口径一致。",
+  "evidence": ["logstats.py:67", "logstats.py:78-93"]
+ },
+ "percentile_isolated": {
+  "maxPoints": 3,
+  "criterion": "分位数抽成独立函数，空列表与 n=1 的边界显式处理",
+  "points": 2,
+  "verdict": "大体符合：独立函数 + n=1 钳位显式处理，但空列表守卫在调用点而非函数内",
+  "reasoning": "logstats.py:57-59 的 _percentile 是模块级独立函数，max/min 钳位显式覆盖 n=1 边界；但空列表由调用点 logstats.py:95-105 的 if durations 分支守卫，函数本身对空表会下标越界。与 kimi-k3 的同型结构对齐判 2 分。",
+  "evidence": ["logstats.py:57-59", "logstats.py:95-105"]
+ }
+}
