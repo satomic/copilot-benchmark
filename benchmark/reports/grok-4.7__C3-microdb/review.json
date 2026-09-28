@@ -1,0 +1,26 @@
+{
+ "null_logic_centralised": {
+  "maxPoints": 5,
+  "criterion": "三值逻辑与 NULL 规则集中在 value.py，WHERE / 聚合 / 排序三处都复用它，没有各自重写一套 NULL 判断",
+  "points": 5,
+  "verdict": "完全符合：三值逻辑单点定义，expr / aggregate / executor 三处导入复用",
+  "reasoning": "value.py 集中定义三值逻辑与 NULL 传播，expr.py:26 与 expr.py:186、aggregate.py:6、executor.py:44 全部从 value 导入复用，全库没有第二套 NULL 判断。与此前新模型的满分结构同型。",
+  "evidence": ["expr.py:26", "aggregate.py:6", "executor.py:44"]
+ },
+ "explicit_stage_order": {
+  "maxPoints": 4,
+  "criterion": "执行阶段顺序由 planner 显式表达为数据（可枚举的阶段序列），executor 按该顺序执行，不在控制流里隐式重排",
+  "points": 4,
+  "verdict": "完全符合：类型化阶段对象携带各自载荷，executor 逐阶段消费",
+  "reasoning": "planner.py:16-40 起为每个阶段定义独立的 frozen dataclass（Scan / Join / Where / GroupBy / Aggregate 等）并携带真实载荷，注释点名对应规格第 8 节的阶段清单；executor.py:246 的 for stage in plan 逐阶段消费该序列，阶段顺序由数据而非隐式控制流决定。与 mai-code-1.1-flash / grok-4.6 的满分形态同型。",
+  "evidence": ["planner.py:16-40", "executor.py:246"]
+ },
+ "name_resolution_single_point": {
+  "maxPoints": 3,
+  "criterion": "名称解析（限定名、非限定名、别名优先、歧义报错）集中在一处，不是在投影与排序里各判一次",
+  "points": 3,
+  "verdict": "完全符合：resolve_value 单点解析，歧义单点报错",
+  "reasoning": "resolve_value 是唯一解析点，投影 / WHERE / 分组 / 排序全部经闭包委托它（executor.py:300、executor.py:332、executor.py:414），排序的别名分支（executor.py:224-232）也最终回落到 resolve_value 而非重写解析。与此前新模型的满分口径一致。",
+  "evidence": ["executor.py:300", "executor.py:332", "executor.py:224-232"]
+ }
+}

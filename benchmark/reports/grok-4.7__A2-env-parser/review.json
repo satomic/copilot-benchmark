@@ -1,0 +1,18 @@
+{
+ "layering": {
+  "maxPoints": 6,
+  "criterion": "key 解析 / 值解引号 / 转义展开分成独立的辅助函数，主循环可读",
+  "points": 6,
+  "verdict": "完全符合：七个单一职责辅助函数，判据点名的三项关注点全部抽出",
+  "reasoning": "envparse.py:20-100 把行解析（_parse_line）、错误构造（_fail）、key 解析与校验（_normalize_key / _is_valid_key）、值解引号分发（_parse_value）、转义展开（_expand_double_quoted）、未引值注释剥离（_strip_unquoted_comment）全部抽成独立函数，主循环 parse_env 只剩迭代与分发。判据点名的三项关注点全部独立成函数，与 gemini-3.8-flash 的满分分层同型且更细。",
+  "evidence": ["envparse.py:20-100", "envparse.py:4-17"]
+ },
+ "escape_single_pass": {
+  "maxPoints": 5,
+  "criterion": "转义用单次左到右扫描或查表，不是链式 .replace()（链式会引入顺序 bug）",
+  "points": 5,
+  "verdict": "完全符合：单次左到右 while 扫描，未知转义保留两字符",
+  "reasoning": "envparse.py:72-97 的 _expand_double_quoted 是单次左到右 while 扫描（envparse.py:76 起），已知转义映射、未知转义保留反斜杠加原字符，全文无链式 .replace()。与此前新模型的满分实现同型。",
+  "evidence": ["envparse.py:72-97"]
+ }
+}

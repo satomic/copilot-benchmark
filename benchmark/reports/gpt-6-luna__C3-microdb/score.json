@@ -1,0 +1,272 @@
+{
+  "task": "C3-microdb",
+  "model": "gpt-6-luna",
+  "functional": 64.92,
+  "functionalMax": 70.0,
+  "spec": 15,
+  "specMax": 15,
+  "quality": 12.0,
+  "qualityMax": 15.0,
+  "qualityAuto": 3.0,
+  "qualityReview": 9,
+  "total": 91.92,
+  "reviewPending": [],
+  "vetoTriggered": [],
+  "hidden": {
+    "total": 377,
+    "failures": 33,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 344,
+    "time": 6.874,
+    "bad": [
+      {
+        "name": "_verify.test_c3::test_aggregate_in_where_rejected",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE (<class 'microdb.errors.AggregateError'>, <class 'microdb.errors.ParseError'>)"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_scalar_expressions[1 + 2-3]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_scalar_expressions[2 * 3-6]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_scalar_expressions[7 / 2-3.5]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_scalar_expressions[7 % 2-1]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_scalar_expressions[- 3--3]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_scalar_expressions[(1 + 2) * 3-9]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_scalar_expressions[1 + 2 * 3-7]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_scalar_expressions[abs(- 4)-4]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_scalar_expressions[length('abc')-3]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_scalar_expressions[upper('ab')-AB]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_scalar_expressions[lower('AB')-ab]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_scalar_expressions[concat('a', 'b')-ab]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_scalar_expressions[concat('a', 'b', 'c')-abc]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_scalar_expressions[coalesce(NULL, 2)-2]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_scalar_expressions[coalesce(NULL, NULL)-None]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_scalar_expressions[coalesce(1, 2)-1]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_scalar_null_propagation[upper(NULL)]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_scalar_null_propagation[lower(NULL)]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_scalar_null_propagation[length(NULL)]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_scalar_null_propagation[abs(NULL)]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_scalar_null_propagation[concat('a', NULL)]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_scalar_null_propagation[concat(NULL, 'a')]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_function_names_case_insensitive[UPPER]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_function_names_case_insensitive[Upper]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_function_names_case_insensitive[upper]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_limit_offset[LIMIT 2-expected0]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_limit_offset[LIMIT 0-expected1]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_limit_offset[LIMIT 10-expected5]",
+        "kind": "failure",
+        "message": [
+          "TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_plan_minimal",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert ['from/join',...project', ...] == ['scan', 'project']",
+          "  ",
+          "  At index 0 diff: 'from/join' != 'scan'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_plan_full_pipeline_order",
+        "kind": "failure",
+        "message": [
+          "AssertionError: scan missing from ['from/join', 'filter', 'group', 'aggregate', 'having', 'project', 'distinct', 'sort', 'offset', 'limit']",
+          "assert 'scan' in ['from/join', 'filter', 'group', 'aggregate', 'having', 'project', ...]"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_plan_has_no_group_stage_for_plain_query",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert 'group' not in ['from/join', 'filter', 'group', 'aggregate', 'having', 'project', ...]",
+          " +  where ['from/join', 'filter', 'group', 'aggregate', 'having', 'project', ...] = plan_roles(<test_c3._Facade object at 0x0000024AA4D4C4D0>, 'SELECT a FROM t')"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_cli_header_names",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert [] == ['id,name', '1,ann']",
+          "  ",
+          "  Right contains 2 more items, first extra item: 'id,name'"
+        ]
+      }
+    ]
+  },
+  "visible": null,
+  "own": {
+    "total": 69,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 69,
+    "time": 0.213,
+    "bad": []
+  }
+}

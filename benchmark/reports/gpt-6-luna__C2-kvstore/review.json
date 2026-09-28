@@ -1,0 +1,26 @@
+{
+ "record_codec_declarative": {
+  "maxPoints": 5,
+  "criterion": "记录格式集中在 record.py，用 struct 或等价的声明式方式表达头部布局，不是散落各处的手工字节切片；编码与解码共用同一份字段定义",
+  "points": 5,
+  "verdict": "完全符合：单一 struct.Struct 常量双端共用，头长从定义派生",
+  "reasoning": "record.py:8 的 _HEADER = struct.Struct('>4sB H I I') 是唯一格式定义，编码（record.py:26 _HEADER.pack）与解码（record.py:37 _HEADER.unpack_from）共用同一对象，头部长度全部经 _HEADER.size 派生（record.py:35、record.py:46、record.py:49），无手工字节切片与重复字面量。与 kimi-k3 / grok-4.6 的满分结构同型，优于 gpt-5.6-luna 的格式串双写形态。",
+  "evidence": ["record.py:8", "record.py:26", "record.py:37", "record.py:46"]
+ },
+ "truncation_vs_corruption": {
+  "maxPoints": 4,
+  "criterion": "截断与损坏的区分有明确且单一的判定点（IncompleteRecordError 与 CorruptRecordError 分开抛、由 scan 统一转译），不是靠散落的 try/except 兜住",
+  "points": 4,
+  "verdict": "完全符合：decode 分类抛出，scan 单点转译",
+  "reasoning": "decode_record 是唯一判定点（头部或载荷不足抛 IncompleteRecordError，magic / CRC 类损坏抛 CorruptRecordError），segment.py:46-49 的 scan 是唯一转译点：截断静默止读、损坏升格为带路径与偏移的 CorruptSegmentError。与此前新模型的满分结构同型。",
+  "evidence": ["segment.py:46-49", "record.py:35-49"]
+ },
+ "atomic_compaction": {
+  "maxPoints": 3,
+  "criterion": "压实顺序正确：先写 tmp、再 os.replace、最后删旧段；tmp 名字不匹配段文件模式，且中途崩溃可恢复",
+  "points": 3,
+  "verdict": "完全符合：tmp 后缀避开段模式，os.replace 原子换名，旧段最后删除",
+  "reasoning": "compact.py:27 的 .seg.tmp 后缀不匹配 *.seg 段文件模式（compact.py:29 还先清理了残留 tmp），compact.py:45 用 os.replace 原子换名，compact.py:49 最后才删旧段，中途崩溃时旧段仍完整可恢复。与此前新模型的满分顺序一致。",
+  "evidence": ["compact.py:27", "compact.py:45", "compact.py:49"]
+ }
+}

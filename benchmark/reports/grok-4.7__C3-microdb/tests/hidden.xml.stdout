@@ -1,0 +1,138 @@
+........................................................................ [ 19%]
+........................................................................ [ 38%]
+.................................................F...................... [ 57%]
+........................................................................ [ 76%]
+......................................F..FFF.FF..FF.F............F...... [ 95%]
+.................                                                        [100%]
+================================== FAILURES ===================================
+______________________ test_aggregate_in_where_rejected _______________________
+_verify\test_c3.py:560: in test_aggregate_in_where_rejected
+    with pytest.raises((db.AggregateError, db.ParseError)):
+E   Failed: DID NOT RAISE (<class 'microdb.errors.AggregateError'>, <class 'microdb.errors.ParseError'>)
+_______________________________ test_inner_join _______________________________
+_verify\test_c3.py:1000: in test_inner_join
+    out = db.execute("SELECT l.n, r.v FROM l JOIN r ON l.id = r.lid", joined).rows
+microdb\executor.py:240: in execute
+    return execute_plan(build_plan(parse(query)), tables)
+microdb\parser.py:103: in parse
+    return _Parser(tokenize(sql), sql).parse_query()
+microdb\parser.py:126: in parse_query
+    self._expect_eof()
+microdb\parser.py:395: in _expect_eof
+    raise ParseError("unexpected token", tok.start)
+E   microdb.errors.ParseError: unexpected token
+______________________ test_join_row_order_is_left_major ______________________
+_verify\test_c3.py:1015: in test_join_row_order_is_left_major
+    out = db.execute("SELECT l.id, r.v FROM l JOIN r ON l.id = r.lid", joined).rows
+microdb\executor.py:240: in execute
+    return execute_plan(build_plan(parse(query)), tables)
+microdb\parser.py:103: in parse
+    return _Parser(tokenize(sql), sql).parse_query()
+microdb\parser.py:126: in parse_query
+    self._expect_eof()
+microdb\parser.py:395: in _expect_eof
+    raise ParseError("unexpected token", tok.start)
+E   microdb.errors.ParseError: unexpected token
+___________________________ test_join_column_order ____________________________
+_verify\test_c3.py:1020: in test_join_column_order
+    assert db.execute("SELECT * FROM l JOIN r ON l.id = r.lid", joined).columns == [
+microdb\executor.py:240: in execute
+    return execute_plan(build_plan(parse(query)), tables)
+microdb\parser.py:103: in parse
+    return _Parser(tokenize(sql), sql).parse_query()
+microdb\parser.py:126: in parse_query
+    self._expect_eof()
+microdb\parser.py:395: in _expect_eof
+    raise ParseError("unexpected token", tok.start)
+E   microdb.errors.ParseError: unexpected token
+____________________ test_join_unknown_condition_drops_row ____________________
+_verify\test_c3.py:1028: in test_join_unknown_condition_drops_row
+    out = db.execute("SELECT l.id FROM l JOIN r ON l.id = r.lid", {"l": left, "r": right}).rows
+microdb\executor.py:240: in execute
+    return execute_plan(build_plan(parse(query)), tables)
+microdb\parser.py:103: in parse
+    return _Parser(tokenize(sql), sql).parse_query()
+microdb\parser.py:126: in parse_query
+    self._expect_eof()
+microdb\parser.py:395: in _expect_eof
+    raise ParseError("unexpected token", tok.start)
+E   microdb.errors.ParseError: unexpected token
+____________________________ test_ambiguous_column ____________________________
+_verify\test_c3.py:1045: in test_ambiguous_column
+    db.execute("SELECT x FROM a JOIN b ON a.x = b.x", {"a": a, "b": b})
+microdb\executor.py:240: in execute
+    return execute_plan(build_plan(parse(query)), tables)
+microdb\parser.py:103: in parse
+    return _Parser(tokenize(sql), sql).parse_query()
+microdb\parser.py:126: in parse_query
+    self._expect_eof()
+microdb\parser.py:395: in _expect_eof
+    raise ParseError("unexpected token", tok.start)
+E   microdb.errors.ParseError: unexpected token
+___________________ test_unqualified_unique_column_resolves ___________________
+_verify\test_c3.py:1049: in test_unqualified_unique_column_resolves
+    out = db.execute("SELECT n FROM l JOIN r ON l.id = r.lid", joined).rows
+microdb\executor.py:240: in execute
+    return execute_plan(build_plan(parse(query)), tables)
+microdb\parser.py:103: in parse
+    return _Parser(tokenize(sql), sql).parse_query()
+microdb\parser.py:126: in parse_query
+    self._expect_eof()
+microdb\parser.py:395: in _expect_eof
+    raise ParseError("unexpected token", tok.start)
+E   microdb.errors.ParseError: unexpected token
+__________________________ test_star_table_qualified __________________________
+_verify\test_c3.py:1069: in test_star_table_qualified
+    assert db.execute("SELECT l.* FROM l JOIN r ON l.id = r.lid", joined).columns == ["id", "n"]
+microdb\executor.py:240: in execute
+    return execute_plan(build_plan(parse(query)), tables)
+microdb\parser.py:103: in parse
+    return _Parser(tokenize(sql), sql).parse_query()
+microdb\parser.py:126: in parse_query
+    self._expect_eof()
+microdb\parser.py:395: in _expect_eof
+    raise ParseError("unexpected token", tok.start)
+E   microdb.errors.ParseError: unexpected token
+___________________________ test_join_unknown_table ___________________________
+_verify\test_c3.py:1074: in test_join_unknown_table
+    db.execute("SELECT l.id FROM l JOIN zz ON l.id = zz.x", joined)
+microdb\executor.py:240: in execute
+    return execute_plan(build_plan(parse(query)), tables)
+microdb\parser.py:103: in parse
+    return _Parser(tokenize(sql), sql).parse_query()
+microdb\parser.py:126: in parse_query
+    self._expect_eof()
+microdb\parser.py:395: in _expect_eof
+    raise ParseError("unexpected token", tok.start)
+E   microdb.errors.ParseError: unexpected token
+________________________ test_plan_full_pipeline_order ________________________
+_verify\test_c3.py:1144: in test_plan_full_pipeline_order
+    roles = plan_roles(
+_verify\test_c3.py:1103: in plan_roles
+    obj = db.plan(db.parse(sql))
+microdb\parser.py:103: in parse
+    return _Parser(tokenize(sql), sql).parse_query()
+microdb\parser.py:126: in parse_query
+    self._expect_eof()
+microdb\parser.py:395: in _expect_eof
+    raise ParseError("unexpected token", tok.start)
+E   microdb.errors.ParseError: unexpected token
+_____________________________ test_cli_two_tables _____________________________
+_verify\test_c3.py:1243: in test_cli_two_tables
+    assert done.returncode == 0
+E   AssertionError: assert 3 == 0
+E    +  where 3 = CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...wo_tables0\\r.csv', 'SELECT l.id FROM l JOIN r ON l.id = r.lid'], returncode=3, stdout='', stderr='unexpected token\n').returncode
+- generated xml file: C:\workspace\13_benchmark\GPT-6 in Coding\benchmark\reports\grok-4.7__C3-microdb\tests\hidden.xml -
+=========================== short test summary info ===========================
+FAILED _verify/test_c3.py::test_aggregate_in_where_rejected - Failed: DID NOT...
+FAILED _verify/test_c3.py::test_inner_join - microdb.errors.ParseError: unexp...
+FAILED _verify/test_c3.py::test_join_row_order_is_left_major - microdb.errors...
+FAILED _verify/test_c3.py::test_join_column_order - microdb.errors.ParseError...
+FAILED _verify/test_c3.py::test_join_unknown_condition_drops_row - microdb.er...
+FAILED _verify/test_c3.py::test_ambiguous_column - microdb.errors.ParseError:...
+FAILED _verify/test_c3.py::test_unqualified_unique_column_resolves - microdb....
+FAILED _verify/test_c3.py::test_star_table_qualified - microdb.errors.ParseEr...
+FAILED _verify/test_c3.py::test_join_unknown_table - microdb.errors.ParseErro...
+FAILED _verify/test_c3.py::test_plan_full_pipeline_order - microdb.errors.Par...
+FAILED _verify/test_c3.py::test_cli_two_tables - AssertionError: assert 3 == 0
+11 failed, 366 passed in 6.86s

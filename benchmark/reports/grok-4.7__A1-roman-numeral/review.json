@@ -1,0 +1,18 @@
+{
+ "algorithm": {
+  "maxPoints": 6,
+  "criterion": "查表 + 贪心（divmod / 循环减法）实现；不是按千百十个位写 if/elif 硬编码分支",
+  "points": 6,
+  "verdict": "完全符合：13 组查表 + divmod 贪心，remaining 变量避免改写入参",
+  "reasoning": "roman.py:4-18 是 13 组 (value, symbol) 模块级元组，roman.py:34-37 对其做 divmod 贪心累积且用 remaining 局部变量不改写入参，无任何按位 if/elif 分支。roman.py:27 显式排除布尔。与 grok-4.6 / mai-code-1.1-flash 的满分实现同型。",
+  "evidence": ["roman.py:4-18", "roman.py:34-37"]
+ },
+ "error_messages": {
+  "maxPoints": 4,
+  "criterion": "TypeError / ValueError 的消息可读且包含出错的实际值或类型，不是裸 raise",
+  "points": 3,
+  "verdict": "大体符合：措辞准确、区分两类异常，但两条消息都不含出错的实际值或类型",
+  "reasoning": "roman.py:28 的『n must be an int』与 roman.py:30 的『n must be in 1..3999』可读且异常类型选择正确，docstring 还写明了两类异常的触发条件，但消息都没有携带实际传入的值或类型。与 grok-4.6 / kimi-k3 同型判 3 分。",
+  "evidence": ["roman.py:28", "roman.py:30"]
+ }
+}

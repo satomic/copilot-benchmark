@@ -1,0 +1,26 @@
+{
+ "shared_type_rules": {
+  "maxPoints": 5,
+  "criterion": "运行时类型规则单一来源：VM 的算术/比较/布尔检查收在一处，优化器折叠复用同一套规则或直接调用它，编译期折叠与运行期语义不可能分叉",
+  "points": 3,
+  "verdict": "部分符合：VM 内规则集中于 _binary 单点，但优化器自带一套折叠语义",
+  "reasoning": "vm.py:92 的 _binary 把运行期算术 / 比较 / 布尔检查收在一处；但 optimizer.py:55 的 _fold_binary 与 _fold_unary 是独立实现的第二套折叠语义（以 _NO_FOLD 哨兵表示放弃折叠），并未导入或复用 VM 规则，编译期与运行期语义理论上可分叉。与 grok-4.6 / gpt-5.6-luna 等的同型结构一致判 3 分（kimi-k3 因优化器直接 import VM 求值函数拿 5 分）。",
+  "evidence": ["vm.py:92", "optimizer.py:55", "optimizer.py:6-21"]
+ },
+ "jump_patching_single_point": {
+  "maxPoints": 4,
+  "criterion": "前向跳转回填经由一个集中的 emit/patch 机制（标签或补丁表），不是散落各处的裸下标运算",
+  "points": 4,
+  "verdict": "完全符合：emit 返回下标，patch 单点回填，控制流站点只用这对机制",
+  "reasoning": "compiler.py:151 的 emit 返回指令下标，compiler.py:157-158 的 patch(index, target) 是唯一回填通道，and / or / if / while 全部控制流站点（compiler.py:84-137 共七处）都经这对机制回填，无散落的裸下标整指令重建。与 kimi-k3 / mai-code-1.1-flash 的满分结构同型。",
+  "evidence": ["compiler.py:151", "compiler.py:157-158", "compiler.py:84-137"]
+ },
+ "codec_discipline": {
+  "maxPoints": 3,
+  "criterion": "二进制布局用 struct 声明式表达且 dumps/loads 共用定义；loads 先验 CRC 再信任任何长度字段；读取有单一的越界检查点",
+  "points": 3,
+  "verdict": "完全符合：CRC 先于一切解析，_Reader.read 单点越界检查",
+  "reasoning": "serializer.py:52-53 在解析任何长度字段之前先验 CRC；serializer.py:140-149 的 _Reader.read 是唯一读取通道，越界检查单点收敛，u8 / u32 等类型读取全部经 read；双端布局均用 struct 声明。与 grok-4.6 / kimi-k3 / gpt-5.6-luna 的满分口径一致。",
+  "evidence": ["serializer.py:52-53", "serializer.py:140-149"]
+ }
+}

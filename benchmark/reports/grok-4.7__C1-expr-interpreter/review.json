@@ -1,0 +1,26 @@
+{
+ "grammar_correspondence": {
+  "maxPoints": 5,
+  "criterion": "递归下降的函数与 task.md 的文法层级一一对应，命名可读，无手工回溯",
+  "points": 5,
+  "verdict": "完全符合：parse_or 到 parse_primary 十个方法与文法一一对应",
+  "reasoning": "parser.py:84-164 的 parse_expr / parse_or / parse_and / parse_not / parse_comparison / parse_additive / parse_multiplicative / parse_unary / parse_power / parse_primary 与规格文法逐级对应，命名可读，单 token 前瞻无手工回溯。与 grok-4.6 / kimi-k3 的满分结构同型。",
+  "evidence": ["parser.py:84-164"]
+ },
+ "named_ast": {
+  "maxPoints": 4,
+  "criterion": "AST 用具名节点（dataclass / NamedTuple / 类），不是裸 tuple 或 dict",
+  "points": 4,
+  "verdict": "完全符合：七种普通类具名节点，全部携带 position 字段",
+  "reasoning": "parser.py:9-53 定义 Number / StringLit / BoolLit / Name / UnaryOp / BinaryOp / Call 七种具名节点类，字段具名且每个节点都携带 position，无裸 tuple 或 dict 表达 AST。与 grok-4.6 的普通类满分形态一致。",
+  "evidence": ["parser.py:9-53"]
+ },
+ "error_consistency": {
+  "maxPoints": 3,
+  "criterion": "三类错误消息风格一致且带位置信息，没有 except Exception 吞异常",
+  "points": 3,
+  "verdict": "完全符合：三类异常全部带位置，求值站点逐一传 node.position，无吞异常",
+  "reasoning": "errors.py:5-9 的基类携带 position 且 docstring 写明语义；与此前所有新模型不同，evaluator.py 的 EvalError 站点逐一传入 node.position（evaluator.py:32、evaluator.py:37、evaluator.py:51 等），AST 节点为此全部携带位置字段，三类错误的消息风格统一为小写短句；全库无 except Exception 与裸 except。判据三项全部满足，判 3 分（此前新模型因求值错误不带位置均为 2 分）。",
+  "evidence": ["errors.py:5-9", "evaluator.py:32", "evaluator.py:37", "evaluator.py:51"]
+ }
+}

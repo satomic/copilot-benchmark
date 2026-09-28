@@ -1,0 +1,18 @@
+{
+ "argparse_exit2": {
+  "maxPoints": 5,
+  "criterion": "用 argparse 的 type= 校验让退出码 2 自然产生，而不是散落的手写 sys.exit(2)",
+  "points": 5,
+  "verdict": "完全符合：type=int 自然产生退出码 2，n<1 经 parser.error 单点收敛",
+  "reasoning": "wordfreq.py:22 用 type=int 声明 -n，非整数由 argparse 自然以退出码 2 拒绝；wordfreq.py:24-25 的 n<1 走 parser.error（同样产生退出码 2），全文无手写 sys.exit。判据点名的 type= 校验与单点错误出口同时满足，优于 kimi-k3 的 4 分形态（其 n<1 用了手写 return 2）与 gpt-5.6-luna 的 3 分形态（绕开 type= 手动转换）。",
+  "evidence": ["wordfreq.py:22", "wordfreq.py:24-25"]
+ },
+ "tokenize_single_regex": {
+  "maxPoints": 5,
+  "criterion": "分词用一条正则 + 统一 strip，不是多层 replace 或逐字符状态机",
+  "points": 5,
+  "verdict": "完全符合：单条正则 findall + 统一 strip 单引号，一行推导式完成",
+  "reasoning": "wordfreq.py:8-9 用单条正则 [a-z0-9']+ 对 lower 后文本 findall，统一 strip 单引号并过滤空 token，无多层 replace 与状态机。与此前新模型的满分实现同型。",
+  "evidence": ["wordfreq.py:8-9"]
+ }
+}

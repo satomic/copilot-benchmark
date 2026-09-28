@@ -1,0 +1,26 @@
+{
+ "null_logic_centralised": {
+  "maxPoints": 5,
+  "criterion": "三值逻辑与 NULL 规则集中在 value.py，WHERE / 聚合 / 排序三处都复用它，没有各自重写一套 NULL 判断",
+  "points": 5,
+  "verdict": "完全符合：三值逻辑单点定义，expr / aggregate / executor 三处导入复用",
+  "reasoning": "value.py 集中定义 and_ / or_ / not_ 三值逻辑与 compare / arith / negate 的 NULL 传播；expr.py:7、aggregate.py:7、executor.py:14 三个消费模块全部从 value 导入，全库没有第二套 NULL 判断。与 gpt-5.6-luna 等此前模型的满分结构同型。",
+  "evidence": ["expr.py:7", "aggregate.py:7", "executor.py:14"]
+ },
+ "explicit_stage_order": {
+  "maxPoints": 4,
+  "criterion": "执行阶段顺序由 planner 显式表达为数据（可枚举的阶段序列），executor 按该顺序执行，不在控制流里隐式重排",
+  "points": 1,
+  "verdict": "基本不符合：Plan 是装饰性数据，阶段序列固定不随查询变化，executor 从不消费它",
+  "reasoning": "planner.py:29-32 对任何查询都返回同一份十个阶段名的静态元组，不反映查询形态（这也是隐藏套件三条计划断言失败的根因）；execute_plan 只取 plan.query，阶段顺序完全由 executor 函数体内的隐式控制流决定（executor.py:55-61 的投影 / 去重 / 排序 / 切片顺序写死），从不迭代 plan.stages。与 gpt-5.6-luna 的同型装饰性 Plan 对齐判 1 分。",
+  "evidence": ["planner.py:29-32", "executor.py:55-61"]
+ },
+ "name_resolution_single_point": {
+  "maxPoints": 3,
+  "criterion": "名称解析（限定名、非限定名、别名优先、歧义报错）集中在一处，不是在投影与排序里各判一次",
+  "points": 3,
+  "verdict": "完全符合：_column_index 单点解析，歧义单点报错",
+  "reasoning": "executor.py:149-164 的 _column_index 是唯一解析点：限定名校验表名、非限定名唯一匹配、无匹配抛 UnknownColumnError、多匹配抛 AmbiguousColumnError 全部集中于此；投影与排序都经 executor.py:140-146 的 resolve 闭包复用它，未在别处重写解析。与此前新模型的满分口径一致。",
+  "evidence": ["executor.py:149-164", "executor.py:140-146"]
+ }
+}

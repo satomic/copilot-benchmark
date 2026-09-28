@@ -1,0 +1,26 @@
+{
+ "record_codec_declarative": {
+  "maxPoints": 5,
+  "criterion": "记录格式集中在 record.py，用 struct 或等价的声明式方式表达头部布局，不是散落各处的手工字节切片；编码与解码共用同一份字段定义",
+  "points": 5,
+  "verdict": "完全符合：单一 struct.Struct 常量双端共用",
+  "reasoning": "record.py:14 的 _HEADER = struct.Struct('>4sBHII') 是唯一格式定义，编码（record.py:26 _HEADER.pack）与解码（record.py:41 _HEADER.unpack_from）共用同一对象，无手工字节切片与重复字面量，docstring 还写明了校验顺序（结构先于 CRC、CRC 先于载荷）。与 grok-4.6 / kimi-k3 的满分结构同型。",
+  "evidence": ["record.py:14", "record.py:26", "record.py:41"]
+ },
+ "truncation_vs_corruption": {
+  "maxPoints": 4,
+  "criterion": "截断与损坏的区分有明确且单一的判定点（IncompleteRecordError 与 CorruptRecordError 分开抛、由 scan 统一转译），不是靠散落的 try/except 兜住",
+  "points": 4,
+  "verdict": "完全符合：decode 分类抛出，scan 单点转译，恢复截断点是第二个职责明确的消费者",
+  "reasoning": "decode_record 是唯一分类判定点，segment.py:61-65 的 scan 统一转译（截断止读、损坏升格为带路径与偏移的 CorruptSegmentError）；segment.py:113-124 的 _logical_end 是另一个职责明确的消费者（计算截断尾恢复的逻辑终点），复用同一套分类而非散落的防御性 try/except。与 grok-4.6 的满分口径一致。",
+  "evidence": ["segment.py:61-65", "segment.py:113-124", "record.py:41"]
+ },
+ "atomic_compaction": {
+  "maxPoints": 3,
+  "criterion": "压实顺序正确：先写 tmp、再 os.replace、最后删旧段；tmp 名字不匹配段文件模式，且中途崩溃可恢复",
+  "points": 3,
+  "verdict": "完全符合：tmp 后缀避开段模式，os.replace 原子换名，旧段最后删除",
+  "reasoning": "compact.py:34 的 .seg.tmp 后缀不匹配 *.seg 段文件模式，compact.py:35 先写满 tmp，compact.py:36 用 os.replace 原子换名，compact.py:61 最后才删旧段，中途崩溃时旧段仍完整可恢复，写入抽为独立的 _write_segment。与此前新模型的满分顺序一致。",
+  "evidence": ["compact.py:34-36", "compact.py:61"]
+ }
+}

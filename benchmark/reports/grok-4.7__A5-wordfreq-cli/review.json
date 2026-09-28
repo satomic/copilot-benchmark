@@ -1,0 +1,18 @@
+{
+ "argparse_exit2": {
+  "maxPoints": 5,
+  "criterion": "用 argparse 的 type= 校验让退出码 2 自然产生，而不是散落的手写 sys.exit(2)",
+  "points": 1,
+  "verdict": "基本不符合：未用 argparse，完全手写解析器",
+  "reasoning": "wordfreq.py:35-68 的 _parse_n 是完全手写的参数解析器（自建 _UsageError 异常与逐参数 while 循环），退出码 2 由 main 的单点 return 2 产生（wordfreq.py:88-90）。错误出口虽然收敛在一处且无散落 sys.exit，但判据点名的 argparse type= 机制完全未用。与 mai-code-1.1-flash 的同型手写解析器对齐判 1 分。",
+  "evidence": ["wordfreq.py:35-68", "wordfreq.py:88-90"]
+ },
+ "tokenize_single_regex": {
+  "maxPoints": 5,
+  "criterion": "分词用一条正则 + 统一 strip，不是多层 replace 或逐字符状态机",
+  "points": 5,
+  "verdict": "完全符合：单条预编译正则 findall + 统一 strip 单引号",
+  "reasoning": "wordfreq.py:10 的模块级预编译正则 [a-z0-9']+ 对 lower 后文本 findall，wordfreq.py:19-22 统一 strip 单引号并过滤空 token，无多层 replace 与状态机。与此前新模型的满分实现同型。",
+  "evidence": ["wordfreq.py:10", "wordfreq.py:19-22"]
+ }
+}
