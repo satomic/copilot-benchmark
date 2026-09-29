@@ -1,0 +1,57 @@
+............................FFFFF...........                             [100%]
+================================== FAILURES ===================================
+__________________________ test_cli_sample_log_json ___________________________
+_verify\test_m2.py:241: in test_cli_sample_log_json
+    report = json.loads(p.stdout)
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\json\__init__.py:346: in loads
+    return _default_decoder.decode(s)
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\json\decoder.py:337: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\json\decoder.py:355: in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+E   json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+_____________ test_cli_json_is_indented_two_and_ends_with_newline _____________
+_verify\test_m2.py:268: in test_cli_json_is_indented_two_and_ends_with_newline
+    assert p.stdout.endswith("}\n")
+E   AssertionError: assert False
+E    +  where False = <built-in method endswith of str object at 0x00007FF871FAC6E0>('}\n')
+E    +    where <built-in method endswith of str object at 0x00007FF871FAC6E0> = ''.endswith
+E    +      where '' = CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\python.exe', 'logstats.py', 'access.log'], returncode=0, stdout='', stderr='').stdout
+____________________________ test_cli_table_format ____________________________
+_verify\test_m2.py:277: in test_cli_table_format
+    assert token in p.stdout, f"table output missing {token!r}"
+E   AssertionError: table output missing 'lines_total'
+E   assert 'lines_total' in ''
+E    +  where '' = CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\python.exe', 'logstats.py', 'access.log', '--format', 'table'], returncode=0, stdout='', stderr='').stdout
+___________________________ test_cli_strict_exits_2 ___________________________
+_verify\test_m2.py:283: in test_cli_strict_exits_2
+    p = run_cli("access.log", "--strict")
+_verify\test_m2.py:59: in run_cli
+    return subprocess.run(
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\subprocess.py:550: in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\subprocess.py:1209: in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\subprocess.py:1630: in _communicate
+    raise TimeoutExpired(self.args, orig_timeout)
+E   subprocess.TimeoutExpired: Command '['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\python.exe', 'logstats.py', 'access.log', '--strict']' timed out after 60 seconds
+_____________________ test_cli_strict_clean_file_exits_0 ______________________
+_verify\test_m2.py:292: in test_cli_strict_clean_file_exits_0
+    p = run_cli(str(clean), "--strict")
+_verify\test_m2.py:59: in run_cli
+    return subprocess.run(
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\subprocess.py:550: in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\subprocess.py:1209: in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\subprocess.py:1630: in _communicate
+    raise TimeoutExpired(self.args, orig_timeout)
+E   subprocess.TimeoutExpired: Command '['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\python.exe', 'logstats.py', 'C:\\Users\\xuefengyin\\AppData\\Local\\Temp\\pytest-of-xuefengyin\\pytest-480\\test_cli_strict_clean_file_exi0\\clean.log', '--strict']' timed out after 60 seconds
+- generated xml file: C:\workspace\13_benchmark\GPT-6 in Coding\benchmark\reports\deepseek-v4-flash__M2-log-analyzer\tests\hidden.xml -
+=========================== short test summary info ===========================
+FAILED _verify/test_m2.py::test_cli_sample_log_json - json.decoder.JSONDecode...
+FAILED _verify/test_m2.py::test_cli_json_is_indented_two_and_ends_with_newline
+FAILED _verify/test_m2.py::test_cli_table_format - AssertionError: table outp...
+FAILED _verify/test_m2.py::test_cli_strict_exits_2 - subprocess.TimeoutExpire...
+FAILED _verify/test_m2.py::test_cli_strict_clean_file_exits_0 - subprocess.Ti...
+5 failed, 39 passed in 122.11s (0:02:02)

@@ -1,0 +1,114 @@
+{
+  "task": "C2-kvstore",
+  "model": "deepseek-v4-flash",
+  "functional": 67.32,
+  "functionalMax": 70.0,
+  "spec": 15,
+  "specMax": 15,
+  "quality": 15.0,
+  "qualityMax": 15.0,
+  "qualityAuto": 3.0,
+  "qualityReview": 12,
+  "total": 97.32,
+  "reviewPending": [],
+  "vetoTriggered": [],
+  "hidden": {
+    "total": 238,
+    "failures": 11,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 227,
+    "time": 13.008,
+    "bad": [
+      {
+        "name": "_verify.test_c2::test_encode_rejects_empty_key",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'ValueError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c2::test_encode_rejects_oversize_key",
+        "kind": "failure",
+        "message": [
+          "struct.error: 'H' format requires 0 <= number <= 65535"
+        ]
+      },
+      {
+        "name": "_verify.test_c2::test_encode_rejects_oversize_multibyte_key",
+        "kind": "failure",
+        "message": [
+          "struct.error: 'H' format requires 0 <= number <= 65535"
+        ]
+      },
+      {
+        "name": "_verify.test_c2::test_get_rejects_non_str_key[bytes]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'TypeError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c2::test_get_rejects_non_str_key[1]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'TypeError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c2::test_get_rejects_non_str_key[None]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'TypeError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c2::test_delete_rejects_non_str_key[bytes]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'TypeError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c2::test_delete_rejects_non_str_key[1]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'TypeError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c2::test_delete_rejects_non_str_key[None]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'TypeError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c2::test_stats_field_order",
+        "kind": "failure",
+        "message": [
+          "TypeError: must be called with a dataclass type or instance"
+        ]
+      },
+      {
+        "name": "_verify.test_c2::test_cli_bad_max_segment_bytes_exit_two",
+        "kind": "failure",
+        "message": [
+          "assert 1 == 2",
+          " +  where 1 = CompletedProcess(args=['C:\\\\Users\\\\xuefengyin\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\\\\PythonSoftwareFoundation.Python...\\\\store.py\", line 53, in __init__\\n    raise ValueError(\\nValueError: max_segment_bytes must be an int >= 16, got 4\\n').returncode",
+          " +    where CompletedProcess(args=['C:\\\\Users\\\\xuefengyin\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\\\\PythonSoftwareFoundation.Python...\\\\store.py\", line 53, in __init__\\n    raise ValueError(\\nValueError: max_segment_bytes must be an int >= 16, got 4\\n') = cli((WindowsPath('C:/Users/xuefengyin/AppData/Local/Temp/pytest-of-xuefengyin/pytest-475/test_cli_bad_max_segment_bytes0') / 'db'), '--max-segment-bytes', '4', 'set', 'a', '1')"
+        ]
+      }
+    ]
+  },
+  "visible": null,
+  "own": {
+    "total": 56,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 56,
+    "time": 4.375,
+    "bad": []
+  }
+}

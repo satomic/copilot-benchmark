@@ -1,0 +1,26 @@
+{
+ "shared_type_rules": {
+  "maxPoints": 5,
+  "criterion": "运行时类型规则单一来源：VM 的算术/比较/布尔检查收在一处，优化器折叠复用同一套规则或直接调用它，编译期折叠与运行期语义不可能分叉",
+  "points": 5,
+  "verdict": "完全符合：优化器直接导入并调用 VM 的求值规则",
+  "reasoning": "optimizer.py:10 的 from .vm import binary_op, unary_op 直接把 VM 的运行期类型规则拿来做编译期折叠，两期语义物理上同一份实现，判据要求的『不可能分叉』达成。1/0 不折叠、true and X 不折叠成 X、短路保类型检查的埋点全部通过。与 claude-sonnet-5 / claude-opus-5 / claude-fable-5.1 的满分结构同型，是三个新增配置里唯一做到单一来源的（另两个自带副本判 3 分）。",
+  "evidence": ["optimizer.py:10", "vm.py 的 binary_op/unary_op"]
+ },
+ "jump_patching_single_point": {
+  "maxPoints": 4,
+  "criterion": "前向跳转回填经由一个集中的 emit/patch 机制（标签或补丁表），不是散落各处的裸下标运算",
+  "points": 4,
+  "verdict": "完全符合：集中的 emit 返回下标 + patch 方法回填",
+  "reasoning": "compiler.py:81 的 emit 返回占位下标，compiler.py:85-86 的 patch(index) 是唯一回填点（语义固定为指向下一条待发射指令），while（compiler.py:111-114）、if/else（compiler.py:120-125）与短路站点全部经由它，无散落的裸下标赋值。与此前满分实现同型。",
+  "evidence": ["compiler.py:81-86", "compiler.py:111-125"]
+ },
+ "codec_discipline": {
+  "maxPoints": 3,
+  "criterion": "二进制布局用 struct 声明式表达且 dumps/loads 共用定义；loads 先验 CRC 再信任任何长度字段；读取有单一的越界检查点",
+  "points": 3,
+  "verdict": "完全符合：CRC 先行（注释写明），_Reader 单一检查点",
+  "reasoning": "serializer.py:154-157 的 loads 先经 _verified_body 验 magic 与 CRC 再构造 _Reader（156 行注释原文『The checksum is verified before any length field is read』），字段读取经 _Reader 的单一越界检查点，serializer.py:165 还在读指令数组前做 count*5 的总量预检；布局经 struct 在 dumps/loads 两侧共用。类型保持的常量池埋点通过。与此前满分实现同型。",
+  "evidence": ["serializer.py:154-166"]
+ }
+}

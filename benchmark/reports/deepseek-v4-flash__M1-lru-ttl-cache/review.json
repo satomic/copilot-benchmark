@@ -1,0 +1,26 @@
+{
+ "o1_hotpath": {
+  "maxPoints": 5,
+  "criterion": "用 OrderedDict.move_to_end 或双向链表实现 O(1) 的 get/set，不是每次排序或线性查找",
+  "points": 5,
+  "verdict": "完全符合：手写双向链表 + dict，热路径 O(1)",
+  "reasoning": "lru.py:15-25 的 _Node（__slots__ 双向链表节点）配合 lru.py:71 的 dict 映射，get / set 命中路径经 _move_to_head（lru.py:113-116）与 _add_to_head 常数时间重排，无排序与线性查找（lru.py:126-142 的全量过期回收只在 set 腾位时触发，是判据允许的回收路径）。判据点名的两种形态之一，性能伸缩测试通过。",
+  "evidence": ["lru.py:15-25", "lru.py:90-116", "lru.py:148-171"]
+ },
+ "module_separation": {
+  "maxPoints": 4,
+  "criterion": "三个模块职责清晰，__init__.py 只做再导出，不塞实现",
+  "points": 4,
+  "verdict": "完全符合：__init__ 纯再导出，stats 独立数据类",
+  "reasoning": "__init__.py 共 4 行只做再导出并声明 __all__，stats.py 是独立的 frozen dataclass，lru.py 承载全部实现。与此前新模型的满分划分一致。",
+  "evidence": ["__init__.py:1-4", "stats.py", "lru.py"]
+ },
+ "sentinel": {
+  "maxPoints": 3,
+  "criterion": "区分 ttl=None 与省略 ttl 用私有模块级 sentinel（object()），不是 \"default\" 字符串或 -1 魔数",
+  "points": 3,
+  "verdict": "完全符合：私有模块级 object() 哨兵",
+  "reasoning": "lru.py:12 的 _UNSET = object() 是私有模块级哨兵（lru.py:9-11 的注释还写明了语义），set 的 ttl 参数默认取它（lru.py:177），lru.py:186-192 用 is 判定三分支区分『省略』『显式 None』『显式数值』。与此前新模型的满分口径一致。",
+  "evidence": ["lru.py:9-12", "lru.py:177", "lru.py:186-192"]
+ }
+}

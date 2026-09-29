@@ -1,0 +1,26 @@
+{
+ "record_codec_declarative": {
+  "maxPoints": 5,
+  "criterion": "记录格式集中在 record.py，用 struct 或等价的声明式方式表达头部布局，不是散落各处的手工字节切片；编码与解码共用同一份字段定义",
+  "points": 5,
+  "verdict": "完全符合：唯一 struct 定义，编解码共用",
+  "reasoning": "record.py:9 的 _HEADER = struct.Struct('>4sBHII') 是唯一格式定义，编码（record.py:28 pack）与解码（record.py:39 unpack_from）共用同一对象，键校验集中在 record.py:12-18 的 _encode_key（空键与 65535 字节上限都有）。与 gpt-6-luna / kimi-k3 的满分结构同型。",
+  "evidence": ["record.py:9", "record.py:12-18", "record.py:28", "record.py:39"]
+ },
+ "truncation_vs_corruption": {
+  "maxPoints": 4,
+  "criterion": "截断与损坏的区分有明确且单一的判定点（IncompleteRecordError 与 CorruptRecordError 分开抛、由 scan 统一转译），不是靠散落的 try/except 兜住",
+  "points": 4,
+  "verdict": "完全符合：decode 单一判定点，scan 单一转译点",
+  "reasoning": "decode_record 是唯一判定点（record.py:37-38 与 49-50 头部或载荷不足抛 IncompleteRecordError，magic / flags / CRC / UTF-8 类损坏抛 CorruptRecordError），segment.py:38-49 的 scan 是唯一转译点：截断静默止读，损坏升格为带路径与偏移的 CorruptSegmentError。与此前新模型的满分结构同型。",
+  "evidence": ["record.py:37-55", "segment.py:38-49"]
+ },
+ "atomic_compaction": {
+  "maxPoints": 3,
+  "criterion": "压实顺序正确：先写 tmp、再 os.replace、最后删旧段；tmp 名字不匹配段文件模式，且中途崩溃可恢复",
+  "points": 3,
+  "verdict": "完全符合：tmp 带 fsync、os.replace、后删旧段",
+  "reasoning": "compact.py:41 的 .seg.tmp 后缀不匹配 store.py 的 _SEGMENT_RE（^\\d{6}\\.seg$），compact.py:16-29 的 _write_temp 落盘并 fsync，compact.py:45 os.replace 原子换名后 compact.py:46-47 才删旧段，异常分支（compact.py:48-54）还把活跃段恢复到可用状态。与此前新模型的满分顺序一致。",
+  "evidence": ["compact.py:16-29", "compact.py:40-54", "store.py 的 _SEGMENT_RE"]
+ }
+}

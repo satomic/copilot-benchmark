@@ -1,0 +1,26 @@
+{
+ "grammar_correspondence": {
+  "maxPoints": 5,
+  "criterion": "递归下降的函数与 task.md 的文法层级一一对应，命名可读，无手工回溯",
+  "points": 5,
+  "verdict": "完全符合：方法链与文法逐级对应",
+  "reasoning": "parser.py 的 expr / or_expr / and_expr / not_expr / comparison / additive / multiplicative / unary / power / primary 与规格文法逐级对应，单 token 前瞻（peek / at / advance / expect_op）无手工回溯。与 grok-4.7 的满分结构同型。",
+  "evidence": ["parser.py 的 _Parser 方法链"]
+ },
+ "named_ast": {
+  "maxPoints": 4,
+  "criterion": "AST 用具名节点（dataclass / NamedTuple / 类），不是裸 tuple 或 dict",
+  "points": 4,
+  "verdict": "完全符合：七种 frozen dataclass 节点，全部携带 position",
+  "reasoning": "parser.py:8-53 定义 Number / String / Boolean / Name / Call / Unary / Binary 七种 frozen dataclass，字段具名且每个节点都携带 position，无裸 tuple 或 dict。与 grok-4.7 的满分形态一致。",
+  "evidence": ["parser.py:8-53"]
+ },
+ "error_consistency": {
+  "maxPoints": 3,
+  "criterion": "三类错误消息风格一致且带位置信息，没有 except Exception 吞异常",
+  "points": 3,
+  "verdict": "完全符合：三类错误统一带位置，无吞异常",
+  "reasoning": "errors.py:4-14 的基类携带 position 且 str() 返回纯消息（规格第 29 条），三个子类继承；evaluator 的 EvalError 站点逐一传入 node.position（undefined variable / undefined function / not / unary / 二元类型错误等站点），消息统一为『<语境> requires <类型>, got <类型>』的小写短句形态；全库无 except Exception（自动检查 no_broad_except 通过）。与 grok-4.7 的满分口径一致（唯一不带位置的站点是 env 值合法性检查，属宿主输入校验而非表达式求值错误）。",
+  "evidence": ["errors.py:4-14", "evaluator.py 的 EvalError 站点"]
+ }
+}

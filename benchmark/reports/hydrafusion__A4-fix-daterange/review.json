@@ -1,0 +1,18 @@
+{
+ "root_cause_fix": {
+  "maxPoints": 7,
+  "criterion": "三个缺陷都从根因修（闭区间 +1、chunk 宽度 days-1、days<=0 前置校验）；不是在返回前特判补一个 chunk 之类的补丁",
+  "points": 7,
+  "verdict": "完全符合：三处缺陷全部根因修复",
+  "reasoning": "daterange.py:19-20 前置校验 days（isinstance 排除 bool 与非 int，days <= 0 抛 ValueError），daterange.py:21-22 的 end < start 提前返回空表，daterange.py:25-29 用 while chunk_start <= end 闭区间推进、chunk_end 取 min(chunk_start + days-1, end) 使末段自然截短，无任何返回前特判补 chunk 的补丁。与此前全部满分实现同型。",
+  "evidence": ["daterange.py:19-29"]
+ },
+ "minimal_diff": {
+  "maxPoints": 4,
+  "criterion": "diff 最小，未重写整个文件，未改动 docstring 的语义",
+  "points": 4,
+  "verdict": "完全符合：改动局限在函数体，docstring 未动",
+  "reasoning": "对照 seed 的 diff 只落在 split_range 函数体内（-6 +9 行），docstring 与文件其余部分逐字未动。循环形态从 for-range 换成 while 推进是根因修复的必要重写，不是无谓重构。与此前满分实现同型。",
+  "evidence": ["daterange.py:19-30"]
+ }
+}

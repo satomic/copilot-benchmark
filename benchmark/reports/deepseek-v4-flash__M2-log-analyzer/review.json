@@ -1,0 +1,26 @@
+{
+ "regex_named_groups": {
+  "maxPoints": 5,
+  "criterion": "用一条预编译正则 + 命名组解析日志行，不是多次 split 拼凑",
+  "points": 3,
+  "verdict": "单条预编译正则达标，但用位置组而非命名组",
+  "reasoning": "logstats.py:17-25 是单条模块级预编译正则且锚定全行，无 split 拼凑，这半条达标；但九个字段全部是位置组，logstats.py:38-40 靠 m.groups() 按位置解包，字段与组的对应关系只能靠数括号维护，判据点名的命名组完全未用。另 IP 八位组无值域校验（\\d{1,3} 接受 999）由功能分处置。十二个已测模型在本项全部使用命名组，无先例可齐，按判据两要素满足其一判 3 分。",
+  "evidence": ["logstats.py:17-25", "logstats.py:38-40"]
+ },
+ "streaming": {
+  "maxPoints": 4,
+  "criterion": "analyze 单遍流式处理任意可迭代对象，不把整个文件 list() 进内存",
+  "points": 4,
+  "verdict": "analyze 本体完全流式",
+  "reasoning": "logstats.py:83-110 的 analyze 对 lines 只有一层 for 循环，接受任意可迭代对象，Counter 就地累加，唯一内存累积是分位数所需的 durations 列表（固有代价）。判据针对 analyze 本体，与 gpt-6-luna 的满分口径一致。CLI 侧 --strict 的 fh.seek(0) 缩进缺陷属功能问题，由隐藏套件处置。",
+  "evidence": ["logstats.py:83-110"]
+ },
+ "percentile_isolated": {
+  "maxPoints": 3,
+  "criterion": "分位数抽成独立函数，空列表与 n=1 的边界显式处理",
+  "points": 3,
+  "verdict": "完全符合：独立函数内置空表守卫与 n=1 钳位",
+  "reasoning": "logstats.py:74-80 的 _percentile 是模块级独立函数，logstats.py:76-77 在函数首两行显式处理空列表（返回 0.0），logstats.py:79 的 max/min 双侧钳位覆盖 n=1。这是全库十五个配置里第一个把空表守卫收进分位数函数内的实现（此前四模型五次实现无一做到，参考实现同款守卫），判据三要素全满足。",
+  "evidence": ["logstats.py:74-80"]
+ }
+}

@@ -1,0 +1,26 @@
+{
+ "grammar_correspondence": {
+  "maxPoints": 5,
+  "criterion": "递归下降的函数与 task.md 的文法层级一一对应，命名可读，无手工回溯",
+  "points": 5,
+  "verdict": "完全符合：九级方法与文法逐级对应",
+  "reasoning": "parser.py:64-155 的 expression / or_expression / and_expression / not_expression / comparison / additive / multiplicative / unary / power / primary 与规格文法逐级对应，单 token 前瞻无手工回溯；comparison（parser.py:84-99）显式检测第二个比较算符抛非结合错误，power（parser.py:122-126）右操作数递归 unary 实现右结合与 -2^2 优先级埋点。与 grok-4.7 的满分结构同型。",
+  "evidence": ["parser.py:64-155"]
+ },
+ "named_ast": {
+  "maxPoints": 4,
+  "criterion": "AST 用具名节点（dataclass / NamedTuple / 类），不是裸 tuple 或 dict",
+  "points": 4,
+  "verdict": "完全符合：五种 frozen slots dataclass 节点",
+  "reasoning": "parser.py:7-33 定义 Literal / Variable / Call / Unary / Binary 五种 frozen slots dataclass，字段具名，无裸 tuple 或 dict 表达 AST。节点不携带位置字段（求值错误因此无位置，在 error_consistency 项扣），具名性本身达标，与 grok-4.6 的满分形态一致。",
+  "evidence": ["parser.py:7-33"]
+ },
+ "error_consistency": {
+  "maxPoints": 3,
+  "criterion": "三类错误消息风格一致且带位置信息，没有 except Exception 吞异常",
+  "points": 2,
+  "verdict": "风格一致无吞异常，但求值错误不带位置",
+  "reasoning": "errors.py:1-18 的基类携带 position，Lex / Parse 两类错误全部传入位置；但 evaluator.py 的全部 EvalError（如 evaluator.py:15、21、35、89）都不传 position（AST 节点也没有位置字段可传），求值错误无位置信息。消息风格统一为小写短句，全库无 except Exception。与此前『求值错误不带位置均为 2 分』的口径一致（grok-4.7 因逐站点传位置拿 3 分）。",
+  "evidence": ["errors.py:1-18", "evaluator.py:13-21", "evaluator.py:84-127"]
+ }
+}

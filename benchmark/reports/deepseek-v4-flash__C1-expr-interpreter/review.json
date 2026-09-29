@@ -1,0 +1,26 @@
+{
+ "grammar_correspondence": {
+  "maxPoints": 5,
+  "criterion": "递归下降的函数与 task.md 的文法层级一一对应，命名可读，无手工回溯",
+  "points": 5,
+  "verdict": "完全符合：九级方法与文法逐级对应",
+  "reasoning": "parser.py 的 _expr / _or_expr / _and_expr / _not_expr / _comparison / _additive / _multiplicative / _unary / _power / _primary 与规格文法逐级对应，单 token 前瞻（peek / advance / expect）无手工回溯。功能层的 13 项隐藏失分在语义细节而非文法结构，与本判据无关。与 grok-4.7 的满分结构同型。",
+  "evidence": ["parser.py:54 起的 Parser 方法链"]
+ },
+ "named_ast": {
+  "maxPoints": 4,
+  "criterion": "AST 用具名节点（dataclass / NamedTuple / 类），不是裸 tuple 或 dict",
+  "points": 4,
+  "verdict": "完全符合：七种具名节点类，全部携带 position",
+  "reasoning": "parser.py:7-53 定义 NumberLiteral / StringLiteral / BooleanLiteral / Identifier / UnaryOp / BinaryOp / FunctionCall 七种具名节点类，字段具名且每个节点都携带 position，无裸 tuple 或 dict。与 grok-4.6 的普通类满分形态一致。",
+  "evidence": ["parser.py:7-53"]
+ },
+ "error_consistency": {
+  "maxPoints": 3,
+  "criterion": "三类错误消息风格一致且带位置信息，没有 except Exception 吞异常",
+  "points": 3,
+  "verdict": "完全符合：三类错误统一带位置，无吞异常",
+  "reasoning": "errors.py 的基类携带 position 且三个子类继承；evaluator 的 EvalError 站点逐一传入 node.position（如 unary / not / 未知算符处），AST 节点为此全部携带位置字段，消息风格统一为小写短句；全库 grep 无 except Exception 与裸 except。与 grok-4.7 的满分口径一致（唯一例外是内部不变量『unknown AST node』不带位置，不属于用户可触发的三类错误）。",
+  "evidence": ["errors.py:1-20", "evaluator.py 的 EvalError 站点"]
+ }
+}

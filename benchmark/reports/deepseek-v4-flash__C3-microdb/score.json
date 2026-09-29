@@ -1,0 +1,188 @@
+{
+  "task": "C3-microdb",
+  "model": "deepseek-v4-flash",
+  "functional": 67.08,
+  "functionalMax": 70.0,
+  "spec": 15,
+  "specMax": 15,
+  "quality": 15.0,
+  "qualityMax": 15.0,
+  "qualityAuto": 3.0,
+  "qualityReview": 12,
+  "total": 97.08,
+  "reviewPending": [],
+  "vetoTriggered": [],
+  "hidden": {
+    "total": 377,
+    "failures": 19,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 358,
+    "time": 5.645,
+    "bad": [
+      {
+        "name": "_verify.test_c3::test_float_literals[1e3-1000.0]",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert 1.0 == 1000.0",
+          " +  where 1.0 = float(1)",
+          " +    where 1 = tok_field(Token(INT, 1, 0), 'value', 'text')"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_nested_aggregate_rejected",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE (<class 'microdb.errors.ParseError'>, <class 'microdb.errors.AggregateError'>)"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_select_star_columns",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert ['*'] == ['id', 'name', 'age', 'score']",
+          "  ",
+          "  At index 0 diff: '*' != 'id'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_unknown_table_in_from",
+        "kind": "failure",
+        "message": [
+          "KeyError: 'zz'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_group_by_over_empty_yields_no_rows",
+        "kind": "failure",
+        "message": [
+          "assert [[0]] == []",
+          "  ",
+          "  Left contains one more item: [0]"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_grouping_error_for_star",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'microdb.errors.GroupingError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_grouping_error_mixing_bare_column_with_aggregate",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'microdb.errors.GroupingError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_order_by_expression",
+        "kind": "failure",
+        "message": [
+          "IndexError: list index out of range"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_order_by_type_mismatch",
+        "kind": "failure",
+        "message": [
+          "TypeError: '<' not supported between instances of 'int' and 'str'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_join_column_order",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert ['*'] == ['id', 'n', 'lid', 'v']",
+          "  ",
+          "  At index 0 diff: '*' != 'id'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_star_table_qualified",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert ['l.*'] == ['id', 'n']",
+          "  ",
+          "  At index 0 diff: 'l.*' != 'id'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_plan_minimal",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert ['scanstage', 'project'] == ['scan', 'project']",
+          "  ",
+          "  At index 0 diff: 'scanstage' != 'scan'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_plan_full_pipeline_order",
+        "kind": "failure",
+        "message": [
+          "AssertionError: scan missing from ['scanstage', 'join', 'filterstage', 'group', 'filterstage', 'project', 'distinct', 'sort', 'offsetstage', 'limitstage']",
+          "assert 'scan' in ['scanstage', 'join', 'filterstage', 'group', 'filterstage', 'project', ...]"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_plan_filter_before_group",
+        "kind": "failure",
+        "message": [
+          "AssertionError: filter missing from ['scanstage', 'filterstage', 'group', 'project']",
+          "assert None is not None"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_plan_slice_after_sort",
+        "kind": "failure",
+        "message": [
+          "AssertionError: offset missing from ['scanstage', 'project', 'sort', 'offsetstage', 'limitstage']",
+          "assert None is not None"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_plan_adds_aggregate_stage_without_group_by",
+        "kind": "failure",
+        "message": [
+          "AssertionError: ['scanstage', 'project']",
+          "assert ('aggregate' in ['scanstage', 'project'] or 'group' in ['scanstage', 'project'])"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_cli_two_tables",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert ['l.id', '1'] == ['id', '1']",
+          "  ",
+          "  At index 0 diff: 'l.id' != 'id'"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_cli_query_error_exit_three[SELECT id FROM zz]",
+        "kind": "failure",
+        "message": [
+          "assert 1 == 3",
+          " +  where 1 = CompletedProcess(args=['C:\\\\Users\\\\xuefengyin\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\\\\PythonSoftwareFoundation.Python...or.py\", line 167, in _exec_scan\\n    table = tables[stage.table]\\n            ~~~~~~^^^^^^^^^^^^^\\nKeyError: \\'zz\\'\\n').returncode"
+        ]
+      },
+      {
+        "name": "_verify.test_c3::test_cli_query_error_exit_three[SELECT id, count(*) FROM t]",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert 0 == 3",
+          " +  where 0 = CompletedProcess(args=['C:\\\\Users\\\\xuefengyin\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\\\\PythonSoftwareFoundation.Python...ery_error_exit_thre4\\\\people.csv', 'SELECT id, count(*) FROM t'], returncode=0, stdout='id,count(*)\\n1,3\\n', stderr='').returncode"
+        ]
+      }
+    ]
+  },
+  "visible": null,
+  "own": {
+    "total": 96,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 96,
+    "time": 0.316,
+    "bad": []
+  }
+}

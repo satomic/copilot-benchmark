@@ -1,0 +1,95 @@
+..................................F.................................FF.. [ 24%]
+...........................................................F..FF........ [ 48%]
+........................................................................ [ 72%]
+.....................FF.F.....F..........FF............................. [ 97%]
+........                                                                 [100%]
+================================== FAILURES ===================================
+_______________________ test_string_lex_errors["a\nb"] ________________________
+_verify\test_c4.py:89: in test_string_lex_errors
+    with pytest.raises(mv.LexError):
+E   Failed: DID NOT RAISE <class 'microvm.errors.LexError'>
+____________________ test_parse_errors[if (true) print 1;] ____________________
+_verify\test_c4.py:145: in test_parse_errors
+    with pytest.raises((mv.ParseError, mv.LexError)):
+E   Failed: DID NOT RAISE (<class 'microvm.errors.ParseError'>, <class 'microvm.errors.LexError'>)
+__________________ test_parse_errors[while (true) print 1;] ___________________
+_verify\test_c4.py:145: in test_parse_errors
+    with pytest.raises((mv.ParseError, mv.LexError)):
+E   Failed: DID NOT RAISE (<class 'microvm.errors.ParseError'>, <class 'microvm.errors.LexError'>)
+________________ test_arithmetic_type_errors[print "a" - "b";] ________________
+_verify\test_c4.py:327: in test_arithmetic_type_errors
+    run(src)
+_verify\test_c4.py:28: in go
+    return mv.execute(mv.compile_source(src, optimize=optimize), step_limit=step_limit)
+microvm\vm.py:179: in execute
+    if not _exec_instr(instr.op, instr.arg, ctx):
+microvm\vm.py:119: in _exec_instr
+    stack.append(_exec_op_arith(op, l, r))
+microvm\vm.py:63: in _exec_op_arith
+    return l - r  # type: ignore
+E   TypeError: unsupported operand type(s) for -: 'str' and 'str'
+_________________ test_arithmetic_type_errors[print "a" * 2;] _________________
+_verify\test_c4.py:326: in test_arithmetic_type_errors
+    with pytest.raises(mv.VMRuntimeError):
+E   Failed: DID NOT RAISE <class 'microvm.errors.VMRuntimeError'>
+_________________________ test_negate_requires_number _________________________
+_verify\test_c4.py:334: in test_negate_requires_number
+    run('print -"a";')
+_verify\test_c4.py:28: in go
+    return mv.execute(mv.compile_source(src, optimize=optimize), step_limit=step_limit)
+microvm\vm.py:179: in execute
+    if not _exec_instr(instr.op, instr.arg, ctx):
+microvm\vm.py:123: in _exec_instr
+    stack.append(-v)  # type: ignore
+E   TypeError: bad operand type for unary -: 'str'
+_______ test_round_trip_behaviour[print 1.5; print true; print false;] ________
+_verify\test_c4.py:646: in test_round_trip_behaviour
+    assert mv.execute(again) == mv.execute(program)
+E   AssertionError: assert ['1.5', '1', '0'] == ['1.5', 'true', 'false']
+E     
+E     At index 1 diff: '1' != 'true'
+E     Use -v to get more diff
+___ test_round_trip_behaviour[if (true) { print "a"; } else { print "b"; }] ___
+_verify\test_c4.py:646: in test_round_trip_behaviour
+    assert mv.execute(again) == mv.execute(program)
+microvm\vm.py:179: in execute
+    if not _exec_instr(instr.op, instr.arg, ctx):
+microvm\vm.py:139: in _exec_instr
+    raise VMRuntimeError("Type error: condition must be BOOL")
+E   microvm.errors.VMRuntimeError: Type error: condition must be BOOL
+__________________ test_round_trip_preserves_constant_types ___________________
+_verify\test_c4.py:661: in test_round_trip_preserves_constant_types
+    assert [type(c) for c in again.constants] == [type(c) for c in program.constants]
+E   AssertionError: assert [<class 'int'...<class 'int'>] == [<class 'int'...class 'bool'>]
+E     
+E     At index 2 diff: <class 'int'> != <class 'bool'>
+E     Use -v to get more diff
+_________________________ test_bool_constant_encoding _________________________
+_verify\test_c4.py:692: in test_bool_constant_encoding
+    assert struct.pack(">BB", 0x04, 1) in data
+E   AssertionError: assert b'\x04\x01' in b'MVM1\x01\x00\x00\x00\x01\x01\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x03\x01\x00\x00\x00\x00\x13\xff\xff\xff\xff\x15\xff\xff\xff\xffx\xbc3\xb0'
+E    +  where b'\x04\x01' = <built-in function pack>('>BB', 4, 1)
+E    +    where <built-in function pack> = struct.pack
+_____________________ test_unknown_constant_tag_rejected ______________________
+_verify\test_c4.py:772: in test_unknown_constant_tag_rejected
+    index = body.index(bytes([0x04]))
+E   ValueError: subsection not found
+____________________ test_bool_payload_must_be_zero_or_one ____________________
+_verify\test_c4.py:781: in test_bool_payload_must_be_zero_or_one
+    index = body.index(struct.pack(">BB", 0x04, 1))
+E   ValueError: subsection not found
+- generated xml file: C:\workspace\13_benchmark\GPT-6 in Coding\benchmark\reports\deepseek-v4-flash__C4-microvm\tests\hidden.xml -
+=========================== short test summary info ===========================
+FAILED _verify/test_c4.py::test_string_lex_errors["a\nb"] - Failed: DID NOT R...
+FAILED _verify/test_c4.py::test_parse_errors[if (true) print 1;] - Failed: DI...
+FAILED _verify/test_c4.py::test_parse_errors[while (true) print 1;] - Failed:...
+FAILED _verify/test_c4.py::test_arithmetic_type_errors[print "a" - "b";] - Ty...
+FAILED _verify/test_c4.py::test_arithmetic_type_errors[print "a" * 2;] - Fail...
+FAILED _verify/test_c4.py::test_negate_requires_number - TypeError: bad opera...
+FAILED _verify/test_c4.py::test_round_trip_behaviour[print 1.5; print true; print false;]
+FAILED _verify/test_c4.py::test_round_trip_behaviour[if (true) { print "a"; } else { print "b"; }]
+FAILED _verify/test_c4.py::test_round_trip_preserves_constant_types - Asserti...
+FAILED _verify/test_c4.py::test_bool_constant_encoding - AssertionError: asse...
+FAILED _verify/test_c4.py::test_unknown_constant_tag_rejected - ValueError: s...
+FAILED _verify/test_c4.py::test_bool_payload_must_be_zero_or_one - ValueError...
+12 failed, 284 passed in 6.43s

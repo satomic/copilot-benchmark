@@ -1,0 +1,18 @@
+{
+ "algorithm": {
+  "maxPoints": 6,
+  "criterion": "查表 + 贪心（divmod / 循环减法）实现；不是按千百十个位写 if/elif 硬编码分支",
+  "points": 6,
+  "verdict": "完全符合：模块级 13 组查表 + divmod 贪心",
+  "reasoning": "roman.py:1-15 是模块级 13 组 (value, numeral) 元组，roman.py:24-28 对其 divmod 贪心累积，无任何按位 if/elif 分支。与 grok-4.7 / grok-4.6 的满分实现同型。",
+  "evidence": ["roman.py:1-15", "roman.py:24-28"]
+ },
+ "error_messages": {
+  "maxPoints": 4,
+  "criterion": "TypeError / ValueError 的消息可读且包含出错的实际值或类型，不是裸 raise",
+  "points": 3,
+  "verdict": "大体符合：措辞准确、异常类型正确，但消息不含出错的实际值或类型",
+  "reasoning": "roman.py:20 的『n must be an int』与 roman.py:22 的『n must be between 1 and 3999』可读且两类异常选择正确（19 行显式排除 bool），但都没有携带实际传入的值或类型。与 grok-4.7 / grok-4.6 / kimi-k3 同型判 3 分。",
+  "evidence": ["roman.py:19-22"]
+ }
+}

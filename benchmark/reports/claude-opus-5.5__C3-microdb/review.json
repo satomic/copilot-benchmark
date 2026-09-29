@@ -1,0 +1,26 @@
+{
+ "null_logic_centralised": {
+  "maxPoints": 5,
+  "criterion": "三值逻辑与 NULL 规则集中在 value.py，WHERE / 聚合 / 排序三处都复用它，没有各自重写一套 NULL 判断",
+  "points": 5,
+  "verdict": "完全符合：value.py 单一来源，六个模块复用",
+  "reasoning": "value.py 集中定义三值逻辑与 NULL 规则，__init__.py:24、__main__.py:11、aggregate.py:6、executor.py:40、expr.py:29、schema.py:8 六处全部 from .value import 复用，全库无第二套 NULL 判断。与 claude-fable-5.1 的满分结构同型。",
+  "evidence": ["value.py", "aggregate.py:6", "executor.py:40", "expr.py:29", "schema.py:8"]
+ },
+ "explicit_stage_order": {
+  "maxPoints": 4,
+  "criterion": "执行阶段顺序由 planner 显式表达为数据（可枚举的阶段序列），executor 按该顺序执行，不在控制流里隐式重排",
+  "points": 4,
+  "verdict": "完全符合：阶段是数据，executor 查表分派逐阶段执行",
+  "reasoning": "planner.py:15-90 为每个阶段定义 Stage 子类（scan / join / filter / group / aggregate / having / project / distinct 等，每类携带 name 属性与真实载荷）；executor.py:314-316 的 _HANDLERS 是类型到 runner 的注册表，executor.py:329-337 的 execute_plan 遍历计划逐阶段查表调用，顺序完全由 planner 的数据决定。这是 claude-fable-5.1 同款的『顺序是数据、执行是查表』理想形态。",
+  "evidence": ["planner.py:15-90", "executor.py:314-337"]
+ },
+ "name_resolution_single_point": {
+  "maxPoints": 3,
+  "criterion": "名称解析（限定名、非限定名、别名优先、歧义报错）集中在一处，不是在投影与排序里各判一次",
+  "points": 3,
+  "verdict": "完全符合：Scope.resolve 唯一入口",
+  "reasoning": "expr.py:83-95 的 resolve 是唯一解析入口（限定名、非限定名、歧义抛 AmbiguousColumnError 都在这里），投影与排序经 executor.py:142 的 _resolve_outputs 走同一路径，别名优先由作用域组合而非排序路径的特判承载。『ORDER BY 别名优先、WHERE 看不到别名』的隐藏埋点通过。与 claude-fable-5.1 的满分口径一致。",
+  "evidence": ["expr.py:83-95", "executor.py:142"]
+ }
+}

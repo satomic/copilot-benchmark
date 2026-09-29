@@ -1,0 +1,26 @@
+{
+ "record_codec_declarative": {
+  "maxPoints": 5,
+  "criterion": "记录格式集中在 record.py，用 struct 或等价的声明式方式表达头部布局，不是散落各处的手工字节切片；编码与解码共用同一份字段定义",
+  "points": 5,
+  "verdict": "完全符合：唯一 struct 定义，编解码共用",
+  "reasoning": "record.py:10 的 _HEADER_FMT = struct.Struct('!4s B H I I') 是唯一格式定义，编码（record.py:28 pack）与解码（record.py:43 unpack_from）共用同一对象，头部长度经 _HEADER_FMT.size 派生（record.py:11）。与 gpt-6-luna / kimi-k3 的满分结构同型。记判据外观察不扣分：encode_record 不做键长校验（校验在 store.set，store.py:92-98），隐藏套件直接测 encode 的空键与超长键因此失分，该缺陷计入功能分，与本判据的『格式集中且共用』无关。",
+  "evidence": ["record.py:10-11", "record.py:28", "record.py:43"]
+ },
+ "truncation_vs_corruption": {
+  "maxPoints": 4,
+  "criterion": "截断与损坏的区分有明确且单一的判定点（IncompleteRecordError 与 CorruptRecordError 分开抛、由 scan 统一转译），不是靠散落的 try/except 兜住",
+  "points": 4,
+  "verdict": "完全符合：decode 单一判定点，scan 单一转译点",
+  "reasoning": "decode_record 是唯一判定点（record.py:38-41 与 55-58 不足抛 IncompleteRecordError，magic / flags / CRC / UTF-8 类损坏抛 CorruptRecordError），segment.py:45-67 的 scan 是唯一转译点：截断静默止读（63 行），损坏升格为 CorruptSegmentError（66-67 行）。与此前新模型的满分结构同型。",
+  "evidence": ["record.py:37-58", "segment.py:45-67"]
+ },
+ "atomic_compaction": {
+  "maxPoints": 3,
+  "criterion": "压实顺序正确：先写 tmp、再 os.replace、最后删旧段；tmp 名字不匹配段文件模式，且中途崩溃可恢复",
+  "points": 3,
+  "verdict": "顺序正确：tmp、os.replace、后删旧段",
+  "reasoning": "compact.py:75 的 .seg.tmp 后缀不匹配段文件模式，compact.py:78 先写完 tmp，compact.py:79 os.replace 原子换名，compact.py:82 之后才关闭并删除旧段（_remove_old_segments），中途崩溃时旧段仍完整。与此前新模型的满分顺序一致。记判据外观察不扣分：compact 直接操作 store 的 _segments_ref 等私有成员重建索引（compact.py:56-65），层间耦合偏紧，但不属本判据范围。",
+  "evidence": ["compact.py:75-86", "compact.py:39-53"]
+ }
+}

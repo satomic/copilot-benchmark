@@ -1,0 +1,26 @@
+{
+ "shared_type_rules": {
+  "maxPoints": 5,
+  "criterion": "运行时类型规则单一来源：VM 的算术/比较/布尔检查收在一处，优化器折叠复用同一套规则或直接调用它，编译期折叠与运行期语义不可能分叉",
+  "points": 3,
+  "verdict": "优化器自带一套与 VM 平行的折叠语义，物理上两份来源",
+  "reasoning": "optimizer.py 不导入 vm 的求值函数，折叠所需的算术 / 比较 / 布尔语义在 _fold_binary_values / _fold_unary 内另写一套，与 vm 的运行期规则物理上是两份实现；两套语义当前等价（1/0 不折叠、true and X 不折叠成 X、短路保类型检查的埋点全部通过）。另 optimizer.py:43 的 except Exception: pass 兜住折叠失败改为不折叠，行为安全但由自动检查计分。与 grok-4.6 的同型结构对齐判 3 分（对照：claude-opus-5.5 直接导入 VM 规则得 5 分）。",
+  "evidence": ["optimizer.py:7-45", "vm.py 的运行期规则"]
+ },
+ "jump_patching_single_point": {
+  "maxPoints": 4,
+  "criterion": "前向跳转回填经由一个集中的 emit/patch 机制（标签或补丁表），不是散落各处的裸下标运算",
+  "points": 4,
+  "verdict": "完全符合：集中的标签表机制",
+  "reasoning": "compiler.py:32-34 的 pending_labels / label_positions / next_label 构成集中补丁表，fresh_label（compiler.py:62-64）造标签、emit_jump（compiler.py:70-73）登记待回填站点、mark_label（compiler.py:75 起）统一回填，控制流各站点只操作标签不做裸下标运算。是判据点名的标签机制的标准实现，与此前满分实现同型。",
+  "evidence": ["compiler.py:32-34", "compiler.py:62-75", "compiler.py:125-127"]
+ },
+ "codec_discipline": {
+  "maxPoints": 3,
+  "criterion": "二进制布局用 struct 声明式表达且 dumps/loads 共用定义；loads 先验 CRC 再信任任何长度字段；读取有单一的越界检查点",
+  "points": 3,
+  "verdict": "完全符合：CRC 先行再解析字段",
+  "reasoning": "serializer.py:170-184 的 loads 先验长度下限、magic、版本与 CRC（覆盖版本字节到校验和之间的全部 payload）再解析任何长度字段；字段读取经统一的偏移推进与逐字段 Truncated 检查（serializer.py:80-119 的单一读取路径），dumps（serializer.py:56-73）与 loads 共用 MAGIC / VERSION / struct 格式常量。类型保持的常量池埋点通过。与此前满分实现同型。",
+  "evidence": ["serializer.py:170-184", "serializer.py:56-73", "serializer.py:80-119"]
+ }
+}

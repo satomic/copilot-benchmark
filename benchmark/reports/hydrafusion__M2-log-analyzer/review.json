@@ -1,0 +1,26 @@
+{
+ "regex_named_groups": {
+  "maxPoints": 5,
+  "criterion": "用一条预编译正则 + 命名组解析日志行，不是多次 split 拼凑",
+  "points": 5,
+  "verdict": "完全符合：单条预编译正则，九个字段全命名组",
+  "reasoning": "logstats.py:13-22 是单条模块级预编译正则，ip / user / timestamp / method / path / protocol / status / bytes / duration 全部命名组，method 用 [A-Z]+ 严格大写，parse_line（logstats.py:39-67）fullmatch 后只做取组与类型转换；另有 logstats.py:34-36 的 _valid_ip 做八位组值域校验，比裸正则更严。与此前新模型的满分实现同型。",
+  "evidence": ["logstats.py:13-22", "logstats.py:39-67"]
+ },
+ "streaming": {
+  "maxPoints": 4,
+  "criterion": "analyze 单遍流式处理任意可迭代对象，不把整个文件 list() 进内存",
+  "points": 4,
+  "verdict": "analyze 本体完全流式；CLI 侧因 --strict 预检 list 了文件",
+  "reasoning": "logstats.py:80-112 的 analyze 对 lines 只有一层 for 循环，接受任意可迭代对象，计数器就地累加，唯一内存累积是分位数所需的 durations 列表（固有代价）。判据针对 analyze 本体，与 gpt-6-luna 的满分口径一致。记判据外观察不扣分：main 的 logstats.py:188 为 --strict 预检把整个文件 list() 进内存，两遍处理，参考实现用单遍带早退的方式避免了这次物化。",
+  "evidence": ["logstats.py:80-112", "logstats.py:188"]
+ },
+ "percentile_isolated": {
+  "maxPoints": 3,
+  "criterion": "分位数抽成独立函数，空列表与 n=1 的边界显式处理",
+  "points": 2,
+  "verdict": "独立函数与 n=1 钳位达标，空列表守卫在函数外",
+  "reasoning": "logstats.py:70-72 的 _nearest_rank 是模块级独立函数，max/min 双侧钳位覆盖 n=1；但空列表未在函数内处理（n=0 时 values[0] 抛 IndexError），守卫在 logstats.py:115 的 if durations 分支。与 claude-fable-5.1 / claude-sonnet-5 的同型结构对齐判 2 分（此前四模型五次实现无一把空表守卫收进函数内，本实现延续同一盲点）。",
+  "evidence": ["logstats.py:70-72", "logstats.py:115-124"]
+ }
+}

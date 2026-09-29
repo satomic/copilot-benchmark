@@ -1,0 +1,18 @@
+{
+ "layering": {
+  "maxPoints": 6,
+  "criterion": "key 解析 / 值解引号 / 转义展开分成独立的辅助函数，主循环可读",
+  "points": 5,
+  "verdict": "值侧三层辅助齐备，key 解析以正则内联在主循环",
+  "reasoning": "envparse.py:12-28 的 _unescape、envparse.py:31-35 的 _strip_comment、envparse.py:38-44 的 _parse_value 构成值侧完整分层（解引号分发独立成函数）；key 侧用 _EXPORT_RE.sub 与 _KEY_RE.match 两条预编译正则在主循环内联完成（envparse.py:60-62），逻辑收敛但未独立成函数。比 gpt-6-luna 的 4 分形态（值分发也内联）多抽出一层，key 解析一层未抽，判 5 分。",
+  "evidence": ["envparse.py:12-44", "envparse.py:60-62"]
+ },
+ "escape_single_pass": {
+  "maxPoints": 5,
+  "criterion": "转义用单次左到右扫描或查表，不是链式 .replace()（链式会引入顺序 bug）",
+  "points": 5,
+  "verdict": "完全符合：单次左到右扫描 + 模块级查表",
+  "reasoning": "envparse.py:9 的 _ESCAPES 模块级查表，envparse.py:12-28 单次 while 左到右扫描，未知转义在 22-23 行保留反斜杠与后随字符，无链式 .replace()。与此前新模型的满分实现同型。",
+  "evidence": ["envparse.py:9", "envparse.py:12-28"]
+ }
+}

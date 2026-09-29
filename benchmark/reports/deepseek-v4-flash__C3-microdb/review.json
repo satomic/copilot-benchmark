@@ -1,0 +1,26 @@
+{
+ "null_logic_centralised": {
+  "maxPoints": 5,
+  "criterion": "三值逻辑与 NULL 规则集中在 value.py，WHERE / 聚合 / 排序三处都复用它，没有各自重写一套 NULL 判断",
+  "points": 5,
+  "verdict": "完全符合：value.py 单一来源，全库复用",
+  "reasoning": "value.py:29-51 的 and_/or_/not_（Kleene 真值表）、value.py:57-76 的 compare_eq/compare_lt（NULL 即 UNKNOWN）、value.py:118-160 的 arith（NULL 传播与除零回 NULL）集中定义；expr.py:16、aggregate.py:3 与 103、executor.py:46 及各站点、schema.py:7 全部 from microdb.value import 复用（executor 内多处函数级局部导入，来源仍是同一模块），全库无第二套 NULL 判断。与此前新模型的满分结构同型。",
+  "evidence": ["value.py:29-160", "expr.py:16", "aggregate.py:3", "executor.py:46", "schema.py:7"]
+ },
+ "explicit_stage_order": {
+  "maxPoints": 4,
+  "criterion": "执行阶段顺序由 planner 显式表达为数据（可枚举的阶段序列），executor 按该顺序执行，不在控制流里隐式重排",
+  "points": 4,
+  "verdict": "完全符合：阶段是数据，executor 逐阶段消费",
+  "reasoning": "planner.py:12-69 为每个阶段定义独立 dataclass（ScanStage / JoinStage / FilterStage / GroupByStage / SelectStage / DistinctStage / SortStage / OffsetStage / LimitStage）并携带真实载荷，planner.py:72-124 按规格顺序组装序列；executor.py:66 的 for stage in plan 逐阶段 isinstance 分派执行，顺序由数据而非隐式控制流决定。与 grok-4.7 / mai-code-1.1-flash 的满分形态同型。功能层的静态计划失分是阶段命名与规格钉死名不符，属功能分范畴。",
+  "evidence": ["planner.py:12-124", "executor.py:56-70"]
+ },
+ "name_resolution_single_point": {
+  "maxPoints": 3,
+  "criterion": "名称解析（限定名、非限定名、别名优先、歧义报错）集中在一处，不是在投影与排序里各判一次",
+  "points": 3,
+  "verdict": "完全符合：expr.py 单一解析路径",
+  "reasoning": "expr.py:117-141 的 _resolve_column（非限定名，含歧义与未知列报错）与 _resolve_qualified（限定名，含未知表报错）是全模块唯一的解析路径，投影 / WHERE / 分组 / 排序的表达式求值全部经 expr.py:75 的 evaluate 进入同一路径，无第二处解析逻辑。与 kimi-k3 的满分口径一致。",
+  "evidence": ["expr.py:75-141"]
+ }
+}

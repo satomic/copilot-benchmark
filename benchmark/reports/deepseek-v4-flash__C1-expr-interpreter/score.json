@@ -1,0 +1,148 @@
+{
+  "task": "C1-expr-interpreter",
+  "model": "deepseek-v4-flash",
+  "functional": 65.07,
+  "functionalMax": 70.0,
+  "spec": 15,
+  "specMax": 15,
+  "quality": 14.25,
+  "qualityMax": 15.0,
+  "qualityAuto": 2.25,
+  "qualityReview": 12,
+  "total": 94.32,
+  "reviewPending": [],
+  "vetoTriggered": [],
+  "hidden": {
+    "total": 153,
+    "failures": 13,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 140,
+    "time": 2.35,
+    "bad": [
+      {
+        "name": "_verify.test_c1::test_token_kinds_and_positions",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert [('IDENT', 'a...ER', '12', 5)] == [('IDENT', 'a...ER', 12.0, 5)]",
+          "  ",
+          "  At index 2 diff: ('NUMBER', '12', 5) != ('NUMBER', 12.0, 5)"
+        ]
+      },
+      {
+        "name": "_verify.test_c1::test_number_forms[123-123.0]",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert '123' == 123.0 ± 1.2e-04",
+          "  ",
+          "  comparison failed"
+        ]
+      },
+      {
+        "name": "_verify.test_c1::test_number_forms[1.5-1.5]",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert '1.5' == 1.5 ± 1.5e-06",
+          "  ",
+          "  comparison failed"
+        ]
+      },
+      {
+        "name": "_verify.test_c1::test_number_forms[.5-0.5]",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert '.5' == 0.5 ± 5.0e-07",
+          "  ",
+          "  comparison failed"
+        ]
+      },
+      {
+        "name": "_verify.test_c1::test_number_forms[1e3-1000.0]",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert '1e3' == 1000.0 ± 1.0e-03",
+          "  ",
+          "  comparison failed"
+        ]
+      },
+      {
+        "name": "_verify.test_c1::test_number_forms[1.2e-4-0.00012]",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert '1.2e-4' == 0.00012 ± 1.2e-10",
+          "  ",
+          "  comparison failed"
+        ]
+      },
+      {
+        "name": "_verify.test_c1::test_number_forms[2E+8-200000000.0]",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert '2E+8' == 200000000.0 ± 2.0e+02",
+          "  ",
+          "  comparison failed"
+        ]
+      },
+      {
+        "name": "_verify.test_c1::test_comments_are_skipped",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert [Token(NUMBER, '1', 0)] == [Token(NUMBER, '1', 0)]",
+          "  ",
+          "  At index 0 diff: Token(NUMBER, '1', 0) != Token(NUMBER, '1', 0)"
+        ]
+      },
+      {
+        "name": "_verify.test_c1::test_all_numbers_are_floats",
+        "kind": "failure",
+        "message": [
+          "AssertionError: round(1.4) must yield a float",
+          "assert False",
+          " +  where False = isinstance(1, float)"
+        ]
+      },
+      {
+        "name": "_verify.test_c1::test_type_errors[-true]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE <class 'minilang.errors.EvalError'>"
+        ]
+      },
+      {
+        "name": "_verify.test_c1::test_builtins[round(1.4)-1.0]",
+        "kind": "failure",
+        "message": [
+          "AssertionError: round(1.4) -> int",
+          "assert <class 'int'> is <class 'float'>",
+          " +  where <class 'int'> = type(1)"
+        ]
+      },
+      {
+        "name": "_verify.test_c1::test_builtins[round(1.6)-2.0]",
+        "kind": "failure",
+        "message": [
+          "AssertionError: round(1.6) -> int",
+          "assert <class 'int'> is <class 'float'>",
+          " +  where <class 'int'> = type(2)"
+        ]
+      },
+      {
+        "name": "_verify.test_c1::test_builtin_errors[round()]",
+        "kind": "failure",
+        "message": [
+          "IndexError: list index out of range"
+        ]
+      }
+    ]
+  },
+  "visible": null,
+  "own": {
+    "total": 111,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 111,
+    "time": 2.358,
+    "bad": []
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "task": "M2-log-analyzer",
+  "model": "deepseek-v4-flash",
+  "functional": 48.75,
+  "functionalMax": 70.0,
+  "spec": 15,
+  "specMax": 15,
+  "quality": 12.25,
+  "qualityMax": 15.0,
+  "qualityAuto": 2.25,
+  "qualityReview": 10,
+  "total": 76.0,
+  "reviewPending": [],
+  "vetoTriggered": [],
+  "hidden": {
+    "total": 44,
+    "failures": 5,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 39,
+    "time": 122.07,
+    "bad": [
+      {
+        "name": "_verify.test_m2::test_cli_sample_log_json",
+        "kind": "failure",
+        "message": [
+          "json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)"
+        ]
+      },
+      {
+        "name": "_verify.test_m2::test_cli_json_is_indented_two_and_ends_with_newline",
+        "kind": "failure",
+        "message": [
+          "AssertionError: assert False",
+          " +  where False = <built-in method endswith of str object at 0x00007FF871FAC6E0>('}\\n')",
+          " +    where <built-in method endswith of str object at 0x00007FF871FAC6E0> = ''.endswith"
+        ]
+      },
+      {
+        "name": "_verify.test_m2::test_cli_table_format",
+        "kind": "failure",
+        "message": [
+          "AssertionError: table output missing 'lines_total'",
+          "assert 'lines_total' in ''",
+          " +  where '' = CompletedProcess(args=['C:\\\\Users\\\\xuefengyin\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\\\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\\\python.exe', 'logstats.py', 'access.log', '--format', 'table'], returncode=0, stdout='', stderr='').stdout"
+        ]
+      },
+      {
+        "name": "_verify.test_m2::test_cli_strict_exits_2",
+        "kind": "failure",
+        "message": [
+          "subprocess.TimeoutExpired: Command '['C:\\\\Users\\\\xuefengyin\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\\\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\\\python.exe', 'logstats.py', 'access.log', '--strict']' timed out after 60 seconds"
+        ]
+      },
+      {
+        "name": "_verify.test_m2::test_cli_strict_clean_file_exits_0",
+        "kind": "failure",
+        "message": [
+          "subprocess.TimeoutExpired: Command '['C:\\\\Users\\\\xuefengyin\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\\\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\\\python.exe', 'logstats.py', 'C:\\\\Users\\\\xuefengyin\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-xuefengyin\\\\pytest-480\\\\test_cli_strict_clean_file_exi0\\\\clean.log', '--strict']' timed out after 60 seconds"
+        ]
+      }
+    ]
+  },
+  "visible": null,
+  "own": null
+}

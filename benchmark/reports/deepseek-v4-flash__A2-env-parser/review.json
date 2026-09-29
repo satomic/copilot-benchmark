@@ -1,0 +1,18 @@
+{
+ "layering": {
+  "maxPoints": 6,
+  "criterion": "key 解析 / 值解引号 / 转义展开分成独立的辅助函数，主循环可读",
+  "points": 4,
+  "verdict": "两个辅助函数达标，key 解析与值分发内联且 key 校验有冗余分支",
+  "reasoning": "envparse.py:1-31 的 _expand_escapes 与 envparse.py:34-42 的 _strip_comment 是两个单一职责辅助；但 key 解析（export 剥离 envparse.py:71-72 与校验 envparse.py:75-83）和值解引号分发（envparse.py:86-97）都内联在主循环，且 key 校验写了三条重复的 raise 分支（75-80 行的三个 if 全抛同一条消息，82-83 行又重复首字符检查一次）。抽出的职责数量与 gpt-6-luna / grok-4.6 相同，对齐判 4 分。",
+  "evidence": ["envparse.py:1-31", "envparse.py:34-42", "envparse.py:71-97"]
+ },
+ "escape_single_pass": {
+  "maxPoints": 5,
+  "criterion": "转义用单次左到右扫描或查表，不是链式 .replace()（链式会引入顺序 bug）",
+  "points": 5,
+  "verdict": "完全符合：单次左到右扫描",
+  "reasoning": "envparse.py:3-31 是单次左到右 while 扫描（if/elif 分支代替查表，但同样是单遍语义），envparse.py:23-27 对未知转义保留反斜杠与后随字符，无链式 .replace()。与此前新模型的满分口径一致。",
+  "evidence": ["envparse.py:3-31"]
+ }
+}

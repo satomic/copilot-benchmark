@@ -1,0 +1,18 @@
+{
+ "argparse_exit2": {
+  "maxPoints": 5,
+  "criterion": "用 argparse 的 type= 校验让退出码 2 自然产生，而不是散落的手写 sys.exit(2)",
+  "points": 5,
+  "verdict": "完全符合：argparse type= 校验，退出码 2 自然产生",
+  "reasoning": "wordfreq.py:30-37 的 _positive_int 抛 ArgumentTypeError（消息带实际值），wordfreq.py:64-67 经 type=_positive_int 挂入 argparse，退出码 2 由 argparse 自身产生并在 wordfreq.py:68-72 经 SystemExit 捕获转为返回值，无散落的手写 sys.exit(2)。与此前新模型的满分实现同型。",
+  "evidence": ["wordfreq.py:30-37", "wordfreq.py:64-72"]
+ },
+ "tokenize_single_regex": {
+  "maxPoints": 5,
+  "criterion": "分词用一条正则 + 统一 strip，不是多层 replace 或逐字符状态机",
+  "points": 5,
+  "verdict": "完全符合：单条预编译正则 + 统一 strip",
+  "reasoning": "wordfreq.py:11 的模块级预编译 [a-z0-9']+ 对 lower 后文本 findall，wordfreq.py:14-20 统一 strip 单引号并过滤空 token，无多层 replace 与状态机。与此前新模型的满分实现同型。",
+  "evidence": ["wordfreq.py:11", "wordfreq.py:14-20"]
+ }
+}

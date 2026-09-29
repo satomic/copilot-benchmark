@@ -1,0 +1,354 @@
+{
+  "task": "A2-env-parser",
+  "runDir": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\deepseek-v4-flash\\A2-env-parser",
+  "authoredFiles": [
+    {
+      "path": "envparse.py",
+      "bytes": 3410,
+      "loc": 75
+    },
+    {
+      "path": "task.md",
+      "bytes": 4068,
+      "loc": 63
+    }
+  ],
+  "expectedFiles": [
+    "task.md",
+    "envparse.py"
+  ],
+  "missing": [],
+  "extra": [],
+  "totalLoc": 75,
+  "imports": [],
+  "thirdPartyImports": [],
+  "allowedThirdPartyUsed": [],
+  "functions": [
+    {
+      "file": "envparse.py",
+      "name": "_expand_escapes",
+      "line": 1,
+      "lines": 31,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "envparse.py",
+      "name": "_strip_comment",
+      "line": 34,
+      "lines": 9,
+      "public": false,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    },
+    {
+      "file": "envparse.py",
+      "name": "parse_env",
+      "line": 45,
+      "lines": 59,
+      "public": true,
+      "annotated": true,
+      "unannotated_args": [],
+      "returns_annotated": true
+    }
+  ],
+  "broadExcept": [],
+  "prints": [],
+  "syntaxErrors": [],
+  "todos": [],
+  "commentedCode": [],
+  "duplicateBlocks": [],
+  "sealed": [],
+  "transientCandidates": [],
+  "transcript": {
+    "source": "events.jsonl",
+    "turns": 6,
+    "modelCalls": 6,
+    "toolCalls": [
+      {
+        "id": "call_60bc0482483c4b7d9a00f5d5",
+        "turn": "0",
+        "name": "create",
+        "args": {
+          "path": "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\deepseek-v4-flash\\A2-env-parser\\envparse.py",
+          "file_text": "def _expand_escapes(s: str) -> str:\n    \"\"\"Expand \\\\n, \\\\t, \\\\r, \\\\\\\", \\\\\\\\ escape sequences in a double-quoted string.\"\"\"\n    result = []\n    i = 0\n    while i < len(s):\n        if s[i] == \"\\\\\" and i + 1 < len(s):\n            nxt = s[i + 1]\n            if nxt == \"n\":\n                result.append(\"\\n\")\n                i += 2\n            elif nxt == \"t\":\n                result.append(\"\\t\")\n                i += 2\n            elif nxt == \"r\":\n                result.append(\"\\r\")\n                i += 2\n            elif nxt == '\"':\n                result.append('\"')\n                i += 2\n            elif nxt == \"\\\\\":\n                result.append(\"\\\\\")\n                i += 2\n            else:\n                # Any other \\\\x sequence left as-is (both characters)\n                result.append(s[i])\n                result.append(s[i + 1])\n                i += 2\n        else:\n            result.append(s[i])\n            i += 1\n    return \"\".join(result)\n\n\ndef _strip_comment(value: str) -> str:\n    \"\"\"Remove an unquoted trailing comment: a '#' preceded by whitespace.\"\"\"\n    # Find '#' that is preceded by at least one whitespace character.\n    i = 0\n    while i < len(value):\n        if value[i] == \"#\" and i > 0 and value[i - 1] in \" \\t\":\n            return value[:i].rstrip()\n        i += 1\n    return value\n\n\ndef parse_env(text: str) -> dict[str, str]:\n    result: dict[str, str] = {}\n    order: list[str] = []\n    lines = text.split(\"\\n\")\n    for lineno, raw_line in enumerate(lines, start=1):\n        line = raw_line.rstrip(\"\\r\")\n\n        # Skip empty/whitespace-only lines\n        if not line or line.strip() == \"\":\n            continue\n\n        # Skip comment lines\n        stripped = line.lstrip()\n        if stripped and stripped[0] == \"#\":\n            continue\n\n        # Line must contain '='\n        if \"=\" not in line:\n            raise ValueError(f\"invalid line {lineno}: {raw_line}\")\n\n        raw_key, raw_val = line.split(\"=\", 1)\n\n        # Strip key\n        key = raw_key.strip()\n\n        # Strip optional 'export ' prefix (with at least one space)\n        if key.startswith(\"export \") and len(key) > 7:\n            key = key[7:].lstrip()\n\n        # Validate key\n        if not key or not all(c.isalnum() or c == \"_\" for c in key):\n            if not key:\n                raise ValueError(f\"invalid line {lineno}: {raw_line}\")\n            if not (key[0].isalpha() or key[0] == \"_\"):\n                raise ValueError(f\"invalid line {lineno}: {raw_line}\")\n            raise ValueError(f\"invalid line {lineno}: {raw_line}\")\n\n        if not (key[0].isalpha() or key[0] == \"_\"):\n            raise ValueError(f\"invalid line {lineno}: {raw_line}\")\n\n        # Process value\n        value = raw_val.strip()\n\n        if len(value) >= 2 and value[0] == '\"' and value[-1] == '\"':\n            # Double-quoted\n            inner = value[1:-1]\n            value = _expand_escapes(inner)\n        elif len(value) >= 2 and value[0] == \"'\" and value[-1] == \"'\":\n            # Single-quoted - literal, no escape expansion\n            value = value[1:-1]\n        else:\n            # Unquoted: strip trailing comment, then strip again\n            value = _strip_comment(value)\n\n        if key not in result:\n            order.append(key)\n        result[key] = value\n\n    return {k: result[k] for k in order}"
+        },
+        "success": true,
+        "result": "Created file C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\deepseek-v4-flash\\A2-env-parser\\envparse.py with 3410 characters"
+      },
+      {
+        "id": "call_967281a8cc8347a7be55f2e4",
+        "turn": "1",
+        "name": "powershell",
+        "args": {
+          "command": "cd C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\deepseek-v4-flash\\A2-env-parser && python -c \"\nfrom envparse import parse_env\n\n# Basic tests\nassert parse_env('A=1\\nB = 2 \\n') == {'A': '1', 'B': '2'}, 'Test 1 failed'\nassert parse_env('# c\\n\\n   \\nA=1') == {'A': '1'}, 'Test 2 failed'\nassert parse_env('A=\\\"x\\\\ny\\\"') == {'A': 'x\\ny'}, 'Test 3 failed'\nassert parse_env(\\\"A='x\\\\\\\\ny'\\\") == {'A': 'x\\\\\\\\ny'}, 'Test 4 failed'\nassert parse_env('A=hello  # trailing') == {'A': 'hello'}, 'Test 5 failed'\nassert parse_env('A=a#b') == {'A': 'a#b'}, 'Test 6 failed'\nassert parse_env('export FOO=bar') == {'FOO': 'bar'}, 'Test 7 failed'\nassert parse_env('A=1\\nA=2') == {'A': '2'}, 'Test 8 failed'\nassert parse_env('A=') == {'A': ''}, 'Test 9 failed'\nassert parse_env('A=\\\"  padded  \\\"') == {'A': '  padded  '}, 'Test 10 failed'\nassert parse_env('URL=https://x/y?a=b') == {'URL': 'https://x/y?a=b'}, 'Test 11 failed'\n\n# Error tests\ntry:\n    parse_env('A=1\\nnope\\n')\n    assert False, 'Should have raised ValueError'\nexcept ValueError as e:\n    assert str(e) == 'invalid line 2: nope', f'Got: {e}'\n\ntry:\n    parse_env('1BAD=x')\n    assert False, 'Should have raised ValueError'\nexcept ValueError as e:\n    assert str(e) == 'invalid line 1: 1BAD=x', f'Got: {e}'\n\ntry:\n    parse_env('=x')\n    assert False, 'Should have raised ValueError'\nexcept ValueError as e:\n    assert str(e) == 'invalid line 1: =x', f'Got: {e}'\n\nprint('All acceptance criteria pass!')\n\"",
+          "description": "Run acceptance tests"
+        },
+        "success": true,
+        "result": "Set-Location: \nLine |\n   2 |  cd C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\deepseek- …\n     |  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n     | 找不到接受自变量 'in' 的位置参数。\n<shellId: 0 completed with exit code 1>"
+      },
+      {
+        "id": "call_8eaed7df571e4c2b95d231dc",
+        "turn": "2",
+        "name": "powershell",
+        "args": {
+          "command": "Set-Location \"C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\deepseek-v4-flash\\A2-env-parser\"; python -c @'\nfrom envparse import parse_env\n\n# Basic tests\nassert parse_env('A=1\\nB = 2 \\n') == {'A': '1', 'B': '2'}, 'Test 1 failed'\nassert parse_env('# c\\n\\n   \\nA=1') == {'A': '1'}, 'Test 2 failed'\nassert parse_env('A=\"x\\ny\"') == {'A': 'x\\ny'}, 'Test 3 failed'\nassert parse_env(\"A='x\\\\ny'\") == {'A': 'x\\\\ny'}, 'Test 4 failed'\nassert parse_env('A=hello  # trailing') == {'A': 'hello'}, 'Test 5 failed'\nassert parse_env('A=a#b') == {'A': 'a#b'}, 'Test 6 failed'\nassert parse_env('export FOO=bar') == {'FOO': 'bar'}, 'Test 7 failed'\nassert parse_env('A=1\\nA=2') == {'A': '2'}, 'Test 8 failed'\nassert parse_env('A=') == {'A': ''}, 'Test 9 failed'\nassert parse_env('A=\"  padded  \"') == {'A': '  padded  '}, 'Test 10 failed'\nassert parse_env('URL=https://x/y?a=b') == {'URL': 'https://x/y?a=b'}, 'Test 11 failed'\n\n# Error tests\ntry:\n    parse_env('A=1\\nnope\\n')\n    assert False, 'Should have raised ValueError'\nexcept ValueError as e:\n    assert str(e) == 'invalid line 2: nope', f'Got: {e}'\n\ntry:\n    parse_env('1BAD=x')\n    assert False, 'Should have raised ValueError'\nexcept ValueError as e:\n    assert str(e) == 'invalid line 1: 1BAD=x', f'Got: {e}'\n\ntry:\n    parse_env('=x')\n    assert False, 'Should have raised ValueError'\nexcept ValueError as e:\n    assert str(e) == 'invalid line 1: =x', f'Got: {e}'\n\nprint('All acceptance criteria pass!')\n'@",
+          "description": "Run acceptance tests for envparse"
+        },
+        "success": true,
+        "result": "Traceback (most recent call last):\n  File \"<string>\", line 6, in <module>\n  File \"C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\deepseek-v4-flash\\A2-env-parser\\envparse.py\", line 63, in parse_env\n    raise ValueError(f\"invalid line {lineno}: {raw_line}\")\nValueError: invalid line 2: y\"\n<shellId: 1 completed with exit code 1>"
+      },
+      {
+        "id": "call_bfa0bbde86d1498095c7f207",
+        "turn": "3",
+        "name": "powershell",
+        "args": {
+          "command": "Set-Location \"C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\deepseek-v4-flash\\A2-env-parser\"; python -c @'\nfrom envparse import parse_env\n\n# Basic tests\nassert parse_env(\"A=1\\nB = 2 \\n\") == {\"A\": \"1\", \"B\": \"2\"}, \"Test 1 failed\"\nassert parse_env(\"# c\\n\\n   \\nA=1\") == {\"A\": \"1\"}, \"Test 2 failed\"\nassert parse_env(\"A=\\\"x\\\\ny\\\"\") == {\"A\": \"x\\ny\"}, \"Test 3 failed\"\nassert parse_env(\"A='x\\\\ny'\") == {\"A\": \"x\\\\ny\"}, \"Test 4 failed\"\nassert parse_env(\"A=hello  # trailing\") == {\"A\": \"hello\"}, \"Test 5 failed\"\nassert parse_env(\"A=a#b\") == {\"A\": \"a#b\"}, \"Test 6 failed\"\nassert parse_env(\"export FOO=bar\") == {\"FOO\": \"bar\"}, \"Test 7 failed\"\nassert parse_env(\"A=1\\nA=2\") == {\"A\": \"2\"}, \"Test 8 failed\"\nassert parse_env(\"A=\") == {\"A\": \"\"}, \"Test 9 failed\"\nassert parse_env(\"A=\\\"  padded  \\\"\") == {\"A\": \"  padded  \"}, \"Test 10 failed\"\nassert parse_env(\"URL=https://x/y?a=b\") == {\"URL\": \"https://x/y?a=b\"}, \"Test 11 failed\"\n\n# Error tests\ntry:\n    parse_env(\"A=1\\nnope\\n\")\n    assert False, \"Should have raised ValueError\"\nexcept ValueError as e:\n    assert str(e) == \"invalid line 2: nope\", f\"Got: {e}\"\n\ntry:\n    parse_env(\"1BAD=x\")\n    assert False, \"Should have raised ValueError\"\nexcept ValueError as e:\n    assert str(e) == \"invalid line 1: 1BAD=x\", f\"Got: {e}\"\n\ntry:\n    parse_env(\"=x\")\n    assert False, \"Should have raised ValueError\"\nexcept ValueError as e:\n    assert str(e) == \"invalid line 1: =x\", f\"Got: {e}\"\n\nprint(\"All acceptance criteria pass!\")\n'@",
+          "description": "Run acceptance tests for envparse"
+        },
+        "success": true,
+        "result": "All acceptance criteria pass!\n<shellId: 2 completed with exit code 0>"
+      },
+      {
+        "id": "call_e2b87c9de3d74fffa724c9c2",
+        "turn": "4",
+        "name": "powershell",
+        "args": {
+          "command": "Set-Location \"C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\deepseek-v4-flash\\A2-env-parser\"; python -c @'\nimport envparse\n# Verify no side effects on import\nprint(\"parse_env\" in dir(envparse))\n# Verify no unexpected public names\npublic = [n for n in dir(envparse) if not n.startswith(\"_\")]\nprint(public)\n'@",
+          "description": "Verify module contract"
+        },
+        "success": true,
+        "result": "True\n['parse_env']\n<shellId: 3 completed with exit code 0>"
+      }
+    ],
+    "eventTypes": {
+      "session.extensions_loaded": 1,
+      "session.tools_updated": 3,
+      "session.mcp_servers_loaded": 1,
+      "user.message": 1,
+      "assistant.turn_start": 6,
+      "model.call_start": 6,
+      "assistant.reasoning_delta": 653,
+      "assistant.tool_call_delta": 903,
+      "model.call_finished": 6,
+      "assistant.message": 6,
+      "assistant.reasoning": 6,
+      "tool.execution_start": 5,
+      "session.info": 1,
+      "tool.execution_complete": 5,
+      "assistant.turn_end": 6,
+      "assistant.message_start": 3,
+      "assistant.message_delta": 45,
+      "session.background_tasks_changed": 113,
+      "tool.execution_partial_result": 8,
+      "assistant.idle": 1,
+      "result": 1
+    },
+    "declaredPaths": [
+      "  padded  ",
+      "C:\\workspace\\13_benchmark\\GPT-6",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\deepseek-v4-flash\\A2-env-parser",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\deepseek-v4-flash\\A2-env-parser\\envparse.py",
+      "Coding\\benchmark\\runs\\deepseek-v4-flash\\A2-env-parser",
+      "Test 10 failed",
+      "Test 4 failed",
+      "Test 6 failed",
+      "Test 8 failed",
+      "ValueError",
+      "e:",
+      "failed'",
+      "parse_env",
+      "str",
+      "x\\\\\\\\ny"
+    ],
+    "mentionedPaths": [
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/deepseek-v4-flash/A2-env-parser/envparse.py",
+      "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/deepseek-v4-flash/A2-env-parser/envparse.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/deepseek-v4-flash/A2-env-parser/envparse.py",
+      "C:\\\\works",
+      "C:\\\\workspac",
+      "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\deepseek-v4-flash\\\\A2-env-parser\\\\envparse.py",
+      "C:\\workspace\\13_benchmark\\GPT-6",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\deepseek- …",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\deepseek-v4-flash\\A2-env-parser",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\deepseek-v4-flash\\A2-env-parser && python -c",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\deepseek-v4-flash\\A2-env-parser\\envparse.py",
+      "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\deepseek-v4-flash\\A2-env-parser\\envparse.py with 3410 characters",
+      "e:\\n                #",
+      "e:\\n            #",
+      "e:\\n    ass",
+      "s://x",
+      "s://x/y",
+      "s://x/y?a=b"
+    ],
+    "assistantMessages": [
+      {
+        "turn": "1",
+        "content": "Now let me verify against all acceptance criteria"
+      },
+      {
+        "turn": "4",
+        "content": "All 14 acceptance criteria pass. Let me also quickly verify the module-level contract (no side effects, no extra public names):\n\n"
+      },
+      {
+        "turn": "5",
+        "content": "Done. `envparse.py` is complete with:\n\n- **Single public API** `parse_env(text) → dict[str, str]`\n- **No side effects** on import\n- **All 14 acceptance criteria** verified passing\n- **Helper functions** prefixed with `_` as required"
+      }
+    ]
+  },
+  "paths": {
+    "declared": {
+      "inside": [
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\deepseek-v4-flash\\A2-env-parser",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\deepseek-v4-flash\\A2-env-parser\\envparse.py"
+      ],
+      "relative": [
+        "  padded  ",
+        "Coding\\benchmark\\runs\\deepseek-v4-flash\\A2-env-parser",
+        "Test 10 failed",
+        "Test 4 failed",
+        "Test 6 failed",
+        "Test 8 failed",
+        "ValueError",
+        "failed'",
+        "parse_env",
+        "str",
+        "x\\\\\\\\ny"
+      ],
+      "allowlisted": [],
+      "outside": [],
+      "ignored": [
+        "C:\\workspace\\13_benchmark\\GPT-6",
+        "e:"
+      ]
+    },
+    "mentioned": {
+      "inside": [
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/deepseek-v4-flash/A2-env-parser/envparse.py",
+        "C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/deepseek-v4-flash/A2-env-parser/envparse.py b/C:/workspace/13_benchmark/GPT-6 in Coding/benchmark/runs/deepseek-v4-flash/A2-env-parser/envparse.py",
+        "C:\\\\workspace\\\\13_benchmark\\\\GPT-6 in Coding\\\\benchmark\\\\runs\\\\deepseek-v4-flash\\\\A2-env-parser\\\\envparse.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\deepseek-v4-flash\\A2-env-parser",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\deepseek-v4-flash\\A2-env-parser\\envparse.py",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\deepseek-v4-flash\\A2-env-parser\\envparse.py with 3410 characters"
+      ],
+      "relative": [],
+      "allowlisted": [],
+      "outside": [
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\deepseek- …",
+        "C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\deepseek-v4-flash\\A2-env-parser && python -c",
+        "e:\\n                #",
+        "e:\\n            #",
+        "e:\\n    ass",
+        "s://x",
+        "s://x/y"
+      ],
+      "ignored": [
+        "C:\\\\works",
+        "C:\\\\workspac",
+        "C:\\workspace\\13_benchmark\\GPT-6",
+        "s://x/y?a=b"
+      ]
+    }
+  },
+  "spec": {
+    "items": [
+      {
+        "id": "files",
+        "check": "file_manifest",
+        "points": 8,
+        "awarded": 8,
+        "verdict": "PASS",
+        "evidence": [
+          "authored file set matches exactly (2 files)"
+        ],
+        "veto": false
+      },
+      {
+        "id": "deps",
+        "check": "stdlib_only",
+        "points": 4,
+        "awarded": 4,
+        "verdict": "PASS",
+        "evidence": [
+          "imports are stdlib / local / task-provided only: (none)"
+        ],
+        "veto": false
+      },
+      {
+        "id": "bounds",
+        "check": "path_containment",
+        "points": 3,
+        "awarded": 3,
+        "verdict": "PASS",
+        "evidence": [
+          "absolute tool paths inside the run dir: 2; relative names resolved against the run dir: 11; allowlisted system locations: 0; outside: 0",
+          "  absolute, inside: C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\deepseek-v4-flash\\A2-env-parser",
+          "  absolute, inside: C:\\workspace\\13_benchmark\\GPT-6 in Coding\\benchmark\\runs\\deepseek-v4-flash\\A2-env-parser\\envparse.py",
+          "  relative/bare tokens (the CLI lists these for shell commands; they resolve under the run dir, which is the tool cwd): '  padded  ', 'Coding\\\\benchmark\\\\runs\\\\deepseek-v4-flash\\\\A2-env-parser', 'Test 10 failed', 'Test 4 failed', 'Test 6 failed', 'Test 8 failed', 'ValueError', \"failed'\", 'parse_env', 'str'"
+        ],
+        "veto": false
+      }
+    ],
+    "score": 15,
+    "max": 15
+  },
+  "autoItems": [
+    {
+      "id": "hygiene",
+      "points": 4,
+      "awarded": 3.0,
+      "passedChecks": 3,
+      "totalChecks": 4,
+      "checks": [
+        {
+          "id": "no_broad_except",
+          "passed": true,
+          "evidence": [
+            "no broad except handlers"
+          ]
+        },
+        {
+          "id": "no_debug_residue",
+          "passed": true,
+          "evidence": [
+            "no TODO markers, no commented-out code, no stray print() outside CLI modules"
+          ]
+        },
+        {
+          "id": "typed_public_api",
+          "passed": true,
+          "evidence": [
+            "all 1 public function(s) fully annotated"
+          ]
+        },
+        {
+          "id": "bounded_function_length",
+          "passed": false,
+          "evidence": [
+            "envparse.py:45 parse_env() is 59 lines (limit 45)"
+          ]
+        }
+      ]
+    }
+  ],
+  "reviewItems": [
+    {
+      "id": "layering",
+      "points": 6,
+      "criterion": "key 解析 / 值解引号 / 转义展开分成独立的辅助函数，主循环可读",
+      "mode": "review"
+    },
+    {
+      "id": "escape_single_pass",
+      "points": 5,
+      "criterion": "转义用单次左到右扫描或查表，不是链式 .replace()（链式会引入顺序 bug）",
+      "mode": "review"
+    }
+  ],
+  "qualityMax": 15,
+  "qualityAutoScore": 3.0,
+  "qualityReviewMax": 11,
+  "ownTestFunctionCount": 0
+}

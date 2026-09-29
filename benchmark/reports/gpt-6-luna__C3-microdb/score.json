@@ -1,7 +1,7 @@
 {
   "task": "C3-microdb",
   "model": "gpt-6-luna",
-  "functional": 64.92,
+  "functional": 65.08,
   "functionalMax": 70.0,
   "spec": 15,
   "specMax": 15,
@@ -9,24 +9,17 @@
   "qualityMax": 15.0,
   "qualityAuto": 3.0,
   "qualityReview": 9,
-  "total": 91.92,
+  "total": 92.08,
   "reviewPending": [],
   "vetoTriggered": [],
   "hidden": {
     "total": 377,
-    "failures": 33,
+    "failures": 32,
     "errors": 0,
     "skipped": 0,
-    "passed": 344,
-    "time": 6.874,
+    "passed": 345,
+    "time": 6.382,
     "bad": [
-      {
-        "name": "_verify.test_c3::test_aggregate_in_where_rejected",
-        "kind": "failure",
-        "message": [
-          "Failed: DID NOT RAISE (<class 'microdb.errors.AggregateError'>, <class 'microdb.errors.ParseError'>)"
-        ]
-      },
       {
         "name": "_verify.test_c3::test_scalar_expressions[1 + 2-3]",
         "kind": "failure",
@@ -245,7 +238,7 @@
         "kind": "failure",
         "message": [
           "AssertionError: assert 'group' not in ['from/join', 'filter', 'group', 'aggregate', 'having', 'project', ...]",
-          " +  where ['from/join', 'filter', 'group', 'aggregate', 'having', 'project', ...] = plan_roles(<test_c3._Facade object at 0x0000024AA4D4C4D0>, 'SELECT a FROM t')"
+          " +  where ['from/join', 'filter', 'group', 'aggregate', 'having', 'project', ...] = plan_roles(<test_c3._Facade object at 0x000001A64CE8A490>, 'SELECT a FROM t')"
         ]
       },
       {
@@ -266,7 +259,7 @@
     "errors": 0,
     "skipped": 0,
     "passed": 69,
-    "time": 0.213,
+    "time": 0.29,
     "bad": []
   }
 }

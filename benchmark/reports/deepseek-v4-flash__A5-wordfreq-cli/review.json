@@ -1,0 +1,18 @@
+{
+ "argparse_exit2": {
+  "maxPoints": 5,
+  "criterion": "用 argparse 的 type= 校验让退出码 2 自然产生，而不是散落的手写 sys.exit(2)",
+  "points": 1,
+  "verdict": "未用 argparse：完全手写的参数循环，三处散落 return 2",
+  "reasoning": "wordfreq.py:52-78 是完全手写的 while 参数解析循环，argparse 未被使用，退出码 2 由 wordfreq.py:60、68、74、77 四处独立的 print + return 2 产生，属判据点名的散落形态（比 grok-4.7 / mai-code-1.1-flash 的单点收敛更散）。功能上退出码正确（隐藏套件通过），机制完全不符。与 grok-4.7 / mai-code-1.1-flash 的手写解析器口径对齐判 1 分。",
+  "evidence": ["wordfreq.py:52-78"]
+ },
+ "tokenize_single_regex": {
+  "maxPoints": 5,
+  "criterion": "分词用一条正则 + 统一 strip，不是多层 replace 或逐字符状态机",
+  "points": 5,
+  "verdict": "完全符合：单条正则 + 统一 strip",
+  "reasoning": "wordfreq.py:16 用单条 [a-z0-9']+ 正则对 lower 后文本 findall（未预编译，语义等价），wordfreq.py:18-21 统一 strip 单引号并过滤空 token，无多层 replace 与状态机。与此前新模型的满分口径一致。",
+  "evidence": ["wordfreq.py:15-22"]
+ }
+}

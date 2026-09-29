@@ -556,9 +556,19 @@ def test_nested_aggregate_rejected(db):
         db.parse("SELECT sum(count(a)) FROM t")
 
 
-def test_aggregate_in_where_rejected(db):
+def test_aggregate_in_where_rejected(db, mk):
+    # The spec (section 8 rule 4) pins the ERROR TYPE, not the layer it is
+    # raised from: rejecting at parse time and rejecting when the query is
+    # executed are both spec-compliant forms. The original parse-only call
+    # baked the reference's parse-time choice into the suite; hydrafusion
+    # (2026-09-29) is the first implementation to enforce the rule at
+    # execution time and was wrongly failed by it. Models that skip the rule
+    # entirely still fail: parse succeeds and execute returns rows normally.
+    t = mk("t", [("a", "INT")], [[1]])
     with pytest.raises((db.AggregateError, db.ParseError)):
-        db.parse("SELECT a FROM t WHERE count(a) > 0")
+        query = "SELECT a FROM t WHERE count(a) > 0"
+        db.parse(query)
+        db.execute(query, {"t": t})
 
 
 def test_column_named_keyword_rejected(db):

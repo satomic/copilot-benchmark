@@ -1,0 +1,18 @@
+{
+ "root_cause_fix": {
+  "maxPoints": 7,
+  "criterion": "三个缺陷都从根因修（闭区间 +1、chunk 宽度 days-1、days<=0 前置校验）；不是在返回前特判补一个 chunk 之类的补丁",
+  "points": 7,
+  "verdict": "完全符合：三处缺陷全部根因修复，另防了 date.max 溢出",
+  "reasoning": "daterange.py 的修复：isinstance 排除 bool 与非 int 且 days <= 0 前置抛 ValueError（消息带实际值），end < start 提前返回空表，while 闭区间推进且 chunk 宽度经 min(days, remaining) - 1 自然截短末段；比较用剩余天数而非日期加法，注释写明是为避免 date.max 溢出，这是十五个配置里唯一考虑该边界的实现。无任何返回前特判补丁。",
+  "evidence": ["daterange.py 的 split_range 函数体"]
+ },
+ "minimal_diff": {
+  "maxPoints": 4,
+  "criterion": "diff 最小，未重写整个文件，未改动 docstring 的语义",
+  "points": 4,
+  "verdict": "完全符合：改动局限在函数体，docstring 未动",
+  "reasoning": "对照 seed 的 diff 只落在 split_range 函数体内（-6 +15 行，多出的行是两条解释根因的注释），docstring 与文件其余部分逐字未动。与此前满分实现同型。",
+  "evidence": ["daterange.py 对 seed 的 diff"]
+ }
+}

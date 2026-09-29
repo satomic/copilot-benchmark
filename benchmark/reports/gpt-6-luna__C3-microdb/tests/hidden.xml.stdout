@@ -1,16 +1,12 @@
 ........................................................................ [ 19%]
 ........................................................................ [ 38%]
-.................................................F...........FFFFFFFFFFF [ 57%]
+.............................................................FFFFFFFFFFF [ 57%]
 FFFFFFFFFFF..............FFF............................................ [ 76%]
 ...............................FF...F..............FF.....F..F.......... [ 95%]
 .................                                                        [100%]
 ================================== FAILURES ===================================
-______________________ test_aggregate_in_where_rejected _______________________
-_verify\test_c3.py:560: in test_aggregate_in_where_rejected
-    with pytest.raises((db.AggregateError, db.ParseError)):
-E   Failed: DID NOT RAISE (<class 'microdb.errors.AggregateError'>, <class 'microdb.errors.ParseError'>)
 ______________________ test_scalar_expressions[1 + 2-3] _______________________
-_verify\test_c3.py:626: in test_scalar_expressions
+_verify\test_c3.py:636: in test_scalar_expressions
     assert run(f"SELECT {expr} FROM p LIMIT 1").rows[0][0] == expected
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -20,7 +16,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 ______________________ test_scalar_expressions[2 * 3-6] _______________________
-_verify\test_c3.py:626: in test_scalar_expressions
+_verify\test_c3.py:636: in test_scalar_expressions
     assert run(f"SELECT {expr} FROM p LIMIT 1").rows[0][0] == expected
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -30,7 +26,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 _____________________ test_scalar_expressions[7 / 2-3.5] ______________________
-_verify\test_c3.py:626: in test_scalar_expressions
+_verify\test_c3.py:636: in test_scalar_expressions
     assert run(f"SELECT {expr} FROM p LIMIT 1").rows[0][0] == expected
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -40,7 +36,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 ______________________ test_scalar_expressions[7 % 2-1] _______________________
-_verify\test_c3.py:626: in test_scalar_expressions
+_verify\test_c3.py:636: in test_scalar_expressions
     assert run(f"SELECT {expr} FROM p LIMIT 1").rows[0][0] == expected
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -50,7 +46,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 _______________________ test_scalar_expressions[- 3--3] _______________________
-_verify\test_c3.py:626: in test_scalar_expressions
+_verify\test_c3.py:636: in test_scalar_expressions
     assert run(f"SELECT {expr} FROM p LIMIT 1").rows[0][0] == expected
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -60,7 +56,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 ___________________ test_scalar_expressions[(1 + 2) * 3-9] ____________________
-_verify\test_c3.py:626: in test_scalar_expressions
+_verify\test_c3.py:636: in test_scalar_expressions
     assert run(f"SELECT {expr} FROM p LIMIT 1").rows[0][0] == expected
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -70,7 +66,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 ____________________ test_scalar_expressions[1 + 2 * 3-7] _____________________
-_verify\test_c3.py:626: in test_scalar_expressions
+_verify\test_c3.py:636: in test_scalar_expressions
     assert run(f"SELECT {expr} FROM p LIMIT 1").rows[0][0] == expected
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -80,7 +76,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 _____________________ test_scalar_expressions[abs(- 4)-4] _____________________
-_verify\test_c3.py:626: in test_scalar_expressions
+_verify\test_c3.py:636: in test_scalar_expressions
     assert run(f"SELECT {expr} FROM p LIMIT 1").rows[0][0] == expected
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -90,7 +86,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 __________________ test_scalar_expressions[length('abc')-3] ___________________
-_verify\test_c3.py:626: in test_scalar_expressions
+_verify\test_c3.py:636: in test_scalar_expressions
     assert run(f"SELECT {expr} FROM p LIMIT 1").rows[0][0] == expected
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -100,7 +96,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 ___________________ test_scalar_expressions[upper('ab')-AB] ___________________
-_verify\test_c3.py:626: in test_scalar_expressions
+_verify\test_c3.py:636: in test_scalar_expressions
     assert run(f"SELECT {expr} FROM p LIMIT 1").rows[0][0] == expected
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -110,7 +106,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 ___________________ test_scalar_expressions[lower('AB')-ab] ___________________
-_verify\test_c3.py:626: in test_scalar_expressions
+_verify\test_c3.py:636: in test_scalar_expressions
     assert run(f"SELECT {expr} FROM p LIMIT 1").rows[0][0] == expected
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -120,7 +116,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 ________________ test_scalar_expressions[concat('a', 'b')-ab] _________________
-_verify\test_c3.py:626: in test_scalar_expressions
+_verify\test_c3.py:636: in test_scalar_expressions
     assert run(f"SELECT {expr} FROM p LIMIT 1").rows[0][0] == expected
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -130,7 +126,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 _____________ test_scalar_expressions[concat('a', 'b', 'c')-abc] ______________
-_verify\test_c3.py:626: in test_scalar_expressions
+_verify\test_c3.py:636: in test_scalar_expressions
     assert run(f"SELECT {expr} FROM p LIMIT 1").rows[0][0] == expected
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -140,7 +136,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 ________________ test_scalar_expressions[coalesce(NULL, 2)-2] _________________
-_verify\test_c3.py:626: in test_scalar_expressions
+_verify\test_c3.py:636: in test_scalar_expressions
     assert run(f"SELECT {expr} FROM p LIMIT 1").rows[0][0] == expected
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -150,7 +146,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 _____________ test_scalar_expressions[coalesce(NULL, NULL)-None] ______________
-_verify\test_c3.py:626: in test_scalar_expressions
+_verify\test_c3.py:636: in test_scalar_expressions
     assert run(f"SELECT {expr} FROM p LIMIT 1").rows[0][0] == expected
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -160,7 +156,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 __________________ test_scalar_expressions[coalesce(1, 2)-1] __________________
-_verify\test_c3.py:626: in test_scalar_expressions
+_verify\test_c3.py:636: in test_scalar_expressions
     assert run(f"SELECT {expr} FROM p LIMIT 1").rows[0][0] == expected
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -170,7 +166,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 __________________ test_scalar_null_propagation[upper(NULL)] __________________
-_verify\test_c3.py:632: in test_scalar_null_propagation
+_verify\test_c3.py:642: in test_scalar_null_propagation
     assert run(f"SELECT {expr} FROM p LIMIT 1").rows[0][0] is None
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -180,7 +176,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 __________________ test_scalar_null_propagation[lower(NULL)] __________________
-_verify\test_c3.py:632: in test_scalar_null_propagation
+_verify\test_c3.py:642: in test_scalar_null_propagation
     assert run(f"SELECT {expr} FROM p LIMIT 1").rows[0][0] is None
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -190,7 +186,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 _________________ test_scalar_null_propagation[length(NULL)] __________________
-_verify\test_c3.py:632: in test_scalar_null_propagation
+_verify\test_c3.py:642: in test_scalar_null_propagation
     assert run(f"SELECT {expr} FROM p LIMIT 1").rows[0][0] is None
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -200,7 +196,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 ___________________ test_scalar_null_propagation[abs(NULL)] ___________________
-_verify\test_c3.py:632: in test_scalar_null_propagation
+_verify\test_c3.py:642: in test_scalar_null_propagation
     assert run(f"SELECT {expr} FROM p LIMIT 1").rows[0][0] is None
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -210,7 +206,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 _______________ test_scalar_null_propagation[concat('a', NULL)] _______________
-_verify\test_c3.py:632: in test_scalar_null_propagation
+_verify\test_c3.py:642: in test_scalar_null_propagation
     assert run(f"SELECT {expr} FROM p LIMIT 1").rows[0][0] is None
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -220,7 +216,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 _______________ test_scalar_null_propagation[concat(NULL, 'a')] _______________
-_verify\test_c3.py:632: in test_scalar_null_propagation
+_verify\test_c3.py:642: in test_scalar_null_propagation
     assert run(f"SELECT {expr} FROM p LIMIT 1").rows[0][0] is None
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -230,7 +226,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 _________________ test_function_names_case_insensitive[UPPER] _________________
-_verify\test_c3.py:657: in test_function_names_case_insensitive
+_verify\test_c3.py:667: in test_function_names_case_insensitive
     assert run(f"SELECT {name}('a') FROM p LIMIT 1").rows[0][0] == "A"
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -240,7 +236,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 _________________ test_function_names_case_insensitive[Upper] _________________
-_verify\test_c3.py:657: in test_function_names_case_insensitive
+_verify\test_c3.py:667: in test_function_names_case_insensitive
     assert run(f"SELECT {name}('a') FROM p LIMIT 1").rows[0][0] == "A"
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -250,7 +246,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 _________________ test_function_names_case_insensitive[upper] _________________
-_verify\test_c3.py:657: in test_function_names_case_insensitive
+_verify\test_c3.py:667: in test_function_names_case_insensitive
     assert run(f"SELECT {name}('a') FROM p LIMIT 1").rows[0][0] == "A"
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -260,7 +256,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 ____________________ test_limit_offset[LIMIT 2-expected0] _____________________
-_verify\test_c3.py:979: in test_limit_offset
+_verify\test_c3.py:989: in test_limit_offset
     out = [r[0] for r in run(f"SELECT id FROM p ORDER BY id {clause}").rows]
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -270,7 +266,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 ____________________ test_limit_offset[LIMIT 0-expected1] _____________________
-_verify\test_c3.py:979: in test_limit_offset
+_verify\test_c3.py:989: in test_limit_offset
     out = [r[0] for r in run(f"SELECT id FROM p ORDER BY id {clause}").rows]
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -280,7 +276,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 ____________________ test_limit_offset[LIMIT 10-expected5] ____________________
-_verify\test_c3.py:979: in test_limit_offset
+_verify\test_c3.py:989: in test_limit_offset
     out = [r[0] for r in run(f"SELECT id FROM p ORDER BY id {clause}").rows]
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -290,7 +286,7 @@ microdb\executor.py:60: in execute_plan
     end = None if query.limit is None else start + query.limit
 E   TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
 ______________________________ test_plan_minimal ______________________________
-_verify\test_c3.py:1134: in test_plan_minimal
+_verify\test_c3.py:1144: in test_plan_minimal
     assert plan_roles(db, "SELECT a FROM t") == ["scan", "project"]
 E   AssertionError: assert ['from/join',...project', ...] == ['scan', 'project']
 E     
@@ -298,17 +294,17 @@ E     At index 0 diff: 'from/join' != 'scan'
 E     Left contains 8 more items, first extra item: 'group'
 E     Use -v to get more diff
 ________________________ test_plan_full_pipeline_order ________________________
-_verify\test_c3.py:1154: in test_plan_full_pipeline_order
+_verify\test_c3.py:1164: in test_plan_full_pipeline_order
     assert role in roles, f"{role} missing from {roles}"
 E   AssertionError: scan missing from ['from/join', 'filter', 'group', 'aggregate', 'having', 'project', 'distinct', 'sort', 'offset', 'limit']
 E   assert 'scan' in ['from/join', 'filter', 'group', 'aggregate', 'having', 'project', ...]
 ________________ test_plan_has_no_group_stage_for_plain_query _________________
-_verify\test_c3.py:1183: in test_plan_has_no_group_stage_for_plain_query
+_verify\test_c3.py:1193: in test_plan_has_no_group_stage_for_plain_query
     assert "group" not in plan_roles(db, "SELECT a FROM t")
 E   AssertionError: assert 'group' not in ['from/join', 'filter', 'group', 'aggregate', 'having', 'project', ...]
-E    +  where ['from/join', 'filter', 'group', 'aggregate', 'having', 'project', ...] = plan_roles(<test_c3._Facade object at 0x0000024AA4D4C4D0>, 'SELECT a FROM t')
+E    +  where ['from/join', 'filter', 'group', 'aggregate', 'having', 'project', ...] = plan_roles(<test_c3._Facade object at 0x000001A64CE8A490>, 'SELECT a FROM t')
 ____________________________ test_cli_header_names ____________________________
-_verify\test_c3.py:1212: in test_cli_header_names
+_verify\test_c3.py:1222: in test_cli_header_names
     assert done.stdout.splitlines() == ["id,name", "1,ann"]
 E   AssertionError: assert [] == ['id,name', '1,ann']
 E     
@@ -316,7 +312,6 @@ E     Right contains 2 more items, first extra item: 'id,name'
 E     Use -v to get more diff
 - generated xml file: C:\workspace\13_benchmark\GPT-6 in Coding\benchmark\reports\gpt-6-luna__C3-microdb\tests\hidden.xml -
 =========================== short test summary info ===========================
-FAILED _verify/test_c3.py::test_aggregate_in_where_rejected - Failed: DID NOT...
 FAILED _verify/test_c3.py::test_scalar_expressions[1 + 2-3] - TypeError: unsu...
 FAILED _verify/test_c3.py::test_scalar_expressions[2 * 3-6] - TypeError: unsu...
 FAILED _verify/test_c3.py::test_scalar_expressions[7 / 2-3.5] - TypeError: un...
@@ -349,4 +344,4 @@ FAILED _verify/test_c3.py::test_plan_minimal - AssertionError: assert ['from/...
 FAILED _verify/test_c3.py::test_plan_full_pipeline_order - AssertionError: sc...
 FAILED _verify/test_c3.py::test_plan_has_no_group_stage_for_plain_query - Ass...
 FAILED _verify/test_c3.py::test_cli_header_names - AssertionError: assert [] ...
-33 failed, 344 passed in 6.92s
+32 failed, 345 passed in 6.43s

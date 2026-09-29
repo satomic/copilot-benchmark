@@ -1,0 +1,26 @@
+{
+ "regex_named_groups": {
+  "maxPoints": 5,
+  "criterion": "用一条预编译正则 + 命名组解析日志行，不是多次 split 拼凑",
+  "points": 5,
+  "verdict": "完全符合：单条预编译正则，字段与时间戳分量全命名组",
+  "reasoning": "logstats.py:12-22 是单条模块级预编译正则，九个字段全部命名组，时间戳还拆成 day/mon/year/hh/mm/ss/tz 分量命名组供手工构造 datetime（绕开 strptime 的 locale 依赖，与 claude-fable-5.1 的处理动机相同），method 用 [A-Z]+ 严格大写，解析无 split 拼凑。与此前满分实现同型。",
+  "evidence": ["logstats.py:12-22"]
+ },
+ "streaming": {
+  "maxPoints": 4,
+  "criterion": "analyze 单遍流式处理任意可迭代对象，不把整个文件 list() 进内存",
+  "points": 4,
+  "verdict": "完全符合：analyze 单遍流式，CLI 直接迭代文件句柄",
+  "reasoning": "logstats.py:148 起的 analyze 对 lines 只有一层 for 循环（logstats.py:152），接受任意可迭代对象，计数器就地累加，唯一内存累积是分位数所需的 durations 列表（固有代价）；main 的 logstats.py:222 直接把文件句柄交给处理流程，全文件无 list() 物化。与 claude-fable-5.1 的满分口径一致。",
+  "evidence": ["logstats.py:148-160", "logstats.py:222"]
+ },
+ "percentile_isolated": {
+  "maxPoints": 3,
+  "criterion": "分位数抽成独立函数，空列表与 n=1 的边界显式处理",
+  "points": 2,
+  "verdict": "独立函数与 n=1 钳位达标，空列表守卫在函数外",
+  "reasoning": "logstats.py:95-99 的 _percentile 是模块级独立函数，max/min 双侧钳位覆盖 n=1；但空列表未在函数内处理（n=0 时 sorted_values[0] 抛 IndexError），守卫在调用侧的 durations 分支。与 claude-fable-5.1 / claude-sonnet-5 的同型结构对齐判 2 分（本批次里只有 deepseek-v4-flash 把空表守卫收进了函数内）。",
+  "evidence": ["logstats.py:95-99"]
+ }
+}

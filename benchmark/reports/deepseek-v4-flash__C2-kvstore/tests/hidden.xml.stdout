@@ -1,0 +1,71 @@
+.............................................FFF........................ [ 30%]
+........................................................................ [ 60%]
+.FFFFFF.............................F................................... [ 90%]
+............F.........                                                   [100%]
+================================== FAILURES ===================================
+________________________ test_encode_rejects_empty_key ________________________
+_verify\test_c2.py:232: in test_encode_rejects_empty_key
+    with pytest.raises(ValueError):
+E   Failed: DID NOT RAISE <class 'ValueError'>
+______________________ test_encode_rejects_oversize_key _______________________
+_verify\test_c2.py:238: in test_encode_rejects_oversize_key
+    kv.encode_record("a" * 70000, "v")
+kvstore\record.py:28: in encode_record
+    header = _HEADER_FMT.pack(_MAGIC, flags, len(key_bytes), len(value_bytes), crc)
+E   struct.error: 'H' format requires 0 <= number <= 65535
+_________________ test_encode_rejects_oversize_multibyte_key __________________
+_verify\test_c2.py:243: in test_encode_rejects_oversize_multibyte_key
+    kv.encode_record("中" * 30000, "v")
+kvstore\record.py:28: in encode_record
+    header = _HEADER_FMT.pack(_MAGIC, flags, len(key_bytes), len(value_bytes), crc)
+E   struct.error: 'H' format requires 0 <= number <= 65535
+_____________________ test_get_rejects_non_str_key[bytes] _____________________
+_verify\test_c2.py:812: in test_get_rejects_non_str_key
+    with pytest.raises(TypeError):
+E   Failed: DID NOT RAISE <class 'TypeError'>
+_______________________ test_get_rejects_non_str_key[1] _______________________
+_verify\test_c2.py:812: in test_get_rejects_non_str_key
+    with pytest.raises(TypeError):
+E   Failed: DID NOT RAISE <class 'TypeError'>
+_____________________ test_get_rejects_non_str_key[None] ______________________
+_verify\test_c2.py:812: in test_get_rejects_non_str_key
+    with pytest.raises(TypeError):
+E   Failed: DID NOT RAISE <class 'TypeError'>
+___________________ test_delete_rejects_non_str_key[bytes] ____________________
+_verify\test_c2.py:818: in test_delete_rejects_non_str_key
+    with pytest.raises(TypeError):
+E   Failed: DID NOT RAISE <class 'TypeError'>
+_____________________ test_delete_rejects_non_str_key[1] ______________________
+_verify\test_c2.py:818: in test_delete_rejects_non_str_key
+    with pytest.raises(TypeError):
+E   Failed: DID NOT RAISE <class 'TypeError'>
+____________________ test_delete_rejects_non_str_key[None] ____________________
+_verify\test_c2.py:818: in test_delete_rejects_non_str_key
+    with pytest.raises(TypeError):
+E   Failed: DID NOT RAISE <class 'TypeError'>
+___________________________ test_stats_field_order ____________________________
+_verify\test_c2.py:1027: in test_stats_field_order
+    [x.name for x in __import__("dataclasses").fields(stats)]]
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\dataclasses.py:1246: in fields
+    raise TypeError('must be called with a dataclass type or instance') from None
+E   TypeError: must be called with a dataclass type or instance
+___________________ test_cli_bad_max_segment_bytes_exit_two ___________________
+_verify\test_c2.py:1365: in test_cli_bad_max_segment_bytes_exit_two
+    assert cli(tmp_path / "db", "--max-segment-bytes", "4", "set", "a", "1").returncode == 2
+E   assert 1 == 2
+E    +  where 1 = CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...\\store.py", line 53, in __init__\n    raise ValueError(\nValueError: max_segment_bytes must be an int >= 16, got 4\n').returncode
+E    +    where CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...\\store.py", line 53, in __init__\n    raise ValueError(\nValueError: max_segment_bytes must be an int >= 16, got 4\n') = cli((WindowsPath('C:/Users/xuefengyin/AppData/Local/Temp/pytest-of-xuefengyin/pytest-475/test_cli_bad_max_segment_bytes0') / 'db'), '--max-segment-bytes', '4', 'set', 'a', '1')
+- generated xml file: C:\workspace\13_benchmark\GPT-6 in Coding\benchmark\reports\deepseek-v4-flash__C2-kvstore\tests\hidden.xml -
+=========================== short test summary info ===========================
+FAILED _verify/test_c2.py::test_encode_rejects_empty_key - Failed: DID NOT RA...
+FAILED _verify/test_c2.py::test_encode_rejects_oversize_key - struct.error: '...
+FAILED _verify/test_c2.py::test_encode_rejects_oversize_multibyte_key - struc...
+FAILED _verify/test_c2.py::test_get_rejects_non_str_key[bytes] - Failed: DID ...
+FAILED _verify/test_c2.py::test_get_rejects_non_str_key[1] - Failed: DID NOT ...
+FAILED _verify/test_c2.py::test_get_rejects_non_str_key[None] - Failed: DID N...
+FAILED _verify/test_c2.py::test_delete_rejects_non_str_key[bytes] - Failed: D...
+FAILED _verify/test_c2.py::test_delete_rejects_non_str_key[1] - Failed: DID N...
+FAILED _verify/test_c2.py::test_delete_rejects_non_str_key[None] - Failed: DI...
+FAILED _verify/test_c2.py::test_stats_field_order - TypeError: must be called...
+FAILED _verify/test_c2.py::test_cli_bad_max_segment_bytes_exit_two - assert 1...
+11 failed, 227 passed in 13.08s

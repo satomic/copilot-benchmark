@@ -1,0 +1,26 @@
+{
+ "shared_type_rules": {
+  "maxPoints": 5,
+  "criterion": "运行时类型规则单一来源：VM 的算术/比较/布尔检查收在一处，优化器折叠复用同一套规则或直接调用它，编译期折叠与运行期语义不可能分叉",
+  "points": 3,
+  "verdict": "优化器自带一套与 VM 平行的类型规则，物理上两份来源",
+  "reasoning": "vm.py:8-15 的 _is_number / _equal 与 optimizer.py:4-11 的同名函数是两份独立实现，optimizer.py:14-35 的 _binary_value 平行复刻 vm 的算术 / 比较语义而非导入调用。两套语义当前等价（1/0 不折叠 optimizer.py:29-30、true and X 不折叠成 X optimizer.py:52-60、折叠类隐藏埋点全过），但判据要求的『单一来源、不可能分叉』未达成。与 grok-4.6 的同型结构对齐判 3 分（对照：直接导入 VM 规则的实现得 5 分）。",
+  "evidence": ["vm.py:8-15", "optimizer.py:4-35", "optimizer.py:52-60"]
+ },
+ "jump_patching_single_point": {
+  "maxPoints": 4,
+  "criterion": "前向跳转回填经由一个集中的 emit/patch 机制（标签或补丁表），不是散落各处的裸下标运算",
+  "points": 4,
+  "verdict": "完全符合：集中的 emit 返回下标 + patch 方法回填",
+  "reasoning": "compiler.py:85 的 patch(index, target) 是唯一回填点，全部控制流（if compiler.py:114-122、while compiler.py:127-130、短路 compiler.py:151-168）经由 emit 返回的占位下标调用它，无散落的裸下标赋值与操作码重写。与此前满分实现同型。",
+  "evidence": ["compiler.py:85", "compiler.py:114-130", "compiler.py:151-168"]
+ },
+ "codec_discipline": {
+  "maxPoints": 3,
+  "criterion": "二进制布局用 struct 声明式表达且 dumps/loads 共用定义；loads 先验 CRC 再信任任何长度字段；读取有单一的越界检查点",
+  "points": 3,
+  "verdict": "完全符合：CRC 先行，_Reader 单一越界检查点",
+  "reasoning": "serializer.py:141-151 的 loads 先验 magic 与 CRC（覆盖 magic 与校验和之间的全部 body）再解析任何长度字段；serializer.py:81-91 的 _Reader.take 是唯一越界检查点；布局经 struct 与共享的 _ARGUMENT_OPS / OPCODES 表在 dumps/loads 两侧镜像（serializer.py:9-10、48-59、126-138）。类型保持的常量池埋点（BOOL 标签 4 与 INT 标签 1 分开）通过。与此前满分实现同型。",
+  "evidence": ["serializer.py:141-151", "serializer.py:81-91", "serializer.py:34-45"]
+ }
+}

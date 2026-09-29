@@ -1,0 +1,26 @@
+{
+ "null_logic_centralised": {
+  "maxPoints": 5,
+  "criterion": "三值逻辑与 NULL 规则集中在 value.py，WHERE / 聚合 / 排序三处都复用它，没有各自重写一套 NULL 判断",
+  "points": 5,
+  "verdict": "完全符合：value.py 单一来源，四处复用",
+  "reasoning": "value.py 集中定义 and_/or_/not_（Kleene 真值表）、compare_eq/compare_lt（NULL 即 UNKNOWN）、arith（NULL 传播与除零回 NULL）；expr.py:5、aggregate.py:5、executor.py:28、schema.py:4 全部 from .value import 复用，全库无第二套 NULL 判断。排序（executor.py:327-336 的比较器）经由共享的 compare_lt，NULL 恒排最后的分支只在这一处出现。与此前新模型的满分结构同型。",
+  "evidence": ["value.py:22-88", "expr.py:5", "aggregate.py:5", "executor.py:28"]
+ },
+ "explicit_stage_order": {
+  "maxPoints": 4,
+  "criterion": "执行阶段顺序由 planner 显式表达为数据（可枚举的阶段序列），executor 按该顺序执行，不在控制流里隐式重排",
+  "points": 2,
+  "verdict": "计划是数据但 executor 不消费它，顺序由控制流硬编码",
+  "reasoning": "planner.py:39-62 把阶段序列表达为不可变的 Stage 元组（FROM / JOIN / WHERE / GROUP BY / AGGREGATE / HAVING / SELECT / DISTINCT / ORDER BY / OFFSET / LIMIT），静态计划测试全过；但 executor.py:357-387 的 execute_plan 只取 query_plan.query，随后用硬编码的 if 链按控制流顺序执行，计划的阶段序列没有被消费。与 claude-sonnet-5 的同型结构对齐判 2 分（对照：grok-4.7 / claude-fable-5.1 的 executor 逐阶段消费计划，得 4 分）。",
+  "evidence": ["planner.py:39-62", "executor.py:357-387"]
+ },
+ "name_resolution_single_point": {
+  "maxPoints": 3,
+  "criterion": "名称解析（限定名、非限定名、别名优先、歧义报错）集中在一处，不是在投影与排序里各判一次",
+  "points": 3,
+  "verdict": "完全符合：_resolver 单点，排序别名委托同一路径",
+  "reasoning": "executor.py:60-78 的 _resolver 是唯一列解析点（限定名、非限定名、未知表 / 未知列 / 歧义三类报错都在这里），投影与 WHERE 全部经它；ORDER BY 的别名优先由 executor.py:284-289 的局部包装先查输出名再回落到同一个 _resolver，未重写解析逻辑。『ORDER BY 别名优先、WHERE 看不到别名』的隐藏埋点通过。与 kimi-k3 的满分口径一致。",
+  "evidence": ["executor.py:60-78", "executor.py:284-296"]
+ }
+}

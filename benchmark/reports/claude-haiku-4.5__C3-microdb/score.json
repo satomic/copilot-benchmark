@@ -18,7 +18,7 @@
     "errors": 0,
     "skipped": 0,
     "passed": 327,
-    "time": 11.921,
+    "time": 5.261,
     "bad": [
       {
         "name": "_verify.test_c3::test_comparison_not_associative[SELECT a FROM t WHERE 1 < 2 < 3]",
@@ -80,7 +80,7 @@
         "name": "_verify.test_c3::test_aggregate_in_where_rejected",
         "kind": "failure",
         "message": [
-          "Failed: DID NOT RAISE (<class 'microdb.errors.AggregateError'>, <class 'microdb.errors.ParseError'>)"
+          "microdb.errors.UnknownFunctionError: Unknown function: count"
         ]
       },
       {
@@ -396,7 +396,7 @@
         "kind": "failure",
         "message": [
           "AssertionError: assert 0 == 3",
-          " +  where 0 = CompletedProcess(args=['C:\\\\Users\\\\xuefengyin\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\\\\PythonSoftwareFoundation.Python...368\\\\test_cli_query_error_exit_thre2\\\\people.csv', 'SELECT id FROM t WHERE 1'], returncode=0, stdout='\\n\\n', stderr='').returncode"
+          " +  where 0 = CompletedProcess(args=['C:\\\\Users\\\\xuefengyin\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\\\\PythonSoftwareFoundation.Python...503\\\\test_cli_query_error_exit_thre2\\\\people.csv', 'SELECT id FROM t WHERE 1'], returncode=0, stdout='\\n\\n', stderr='').returncode"
         ]
       },
       {
@@ -416,7 +416,7 @@
     "errors": 0,
     "skipped": 0,
     "passed": 71,
-    "time": 0.442,
+    "time": 0.277,
     "bad": []
   }
 }

@@ -1,6 +1,6 @@
 ........................................................................ [ 19%]
 ....................................................................FFFF [ 38%]
-FFFFFFFFFFFFFFFFFFFFFFFFFF.......................F...................... [ 57%]
+FFFFFFFFFFFFFFFFFFFFFFFFFF.............................................. [ 57%]
 .....................................................................F.. [ 76%]
 .......F.........................................................F...... [ 95%]
 .............F...                                                        [100%]
@@ -185,12 +185,8 @@ _verify\test_c3.py:496: in test_lex_error_offset
 _verify\test_c3.py:43: in __getattr__
     raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
 E   AttributeError: microdb exposes no tokenize in the package or its submodules
-______________________ test_aggregate_in_where_rejected _______________________
-_verify\test_c3.py:560: in test_aggregate_in_where_rejected
-    with pytest.raises((db.AggregateError, db.ParseError)):
-E   Failed: DID NOT RAISE (<class 'microdb.errors.AggregateError'>, <class 'microdb.errors.ParseError'>)
 _______________________ test_min_max_reject_mixed_types _______________________
-_verify\test_c3.py:804: in test_min_max_reject_mixed_types
+_verify\test_c3.py:814: in test_min_max_reject_mixed_types
     db.execute("SELECT min(coalesce(a, b)) FROM t", {"t": t})
 microdb\__init__.py:70: in execute
     planned = plan(parsed_query)
@@ -204,7 +200,7 @@ microdb\planner.py:99: in _collect_aggregates
     ???
 E   TypeError: unhashable type: 'list'
 __________________________ test_group_by_expression ___________________________
-_verify\test_c3.py:841: in test_group_by_expression
+_verify\test_c3.py:851: in test_group_by_expression
     out = run("SELECT length(name), count(*) FROM p GROUP BY length(name)").rows
 _verify\test_c3.py:129: in go
     return db.execute(query, tables if tables is not None else {"p": people})
@@ -218,14 +214,14 @@ microdb\executor.py:192: in _exec_group_by_and_aggregate
     ???
 E   TypeError: unhashable type: 'list'
 _____________________________ test_cli_two_tables _____________________________
-_verify\test_c3.py:1244: in test_cli_two_tables
+_verify\test_c3.py:1254: in test_cli_two_tables
     assert done.stdout.splitlines() == ["id", "1"]
 E   AssertionError: assert ['l.id', '1'] == ['id', '1']
 E     
 E     At index 0 diff: 'l.id' != 'id'
 E     Use -v to get more diff
 _____________________ test_positioned_errors_have_offset ______________________
-_verify\test_c3.py:1331: in test_positioned_errors_have_offset
+_verify\test_c3.py:1341: in test_positioned_errors_have_offset
     db.tokenize("@")
 _verify\test_c3.py:43: in __getattr__
     raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
@@ -262,9 +258,8 @@ FAILED _verify/test_c3.py::test_unterminated_text_raises - AttributeError: mi...
 FAILED _verify/test_c3.py::test_lex_error_offset[#-0] - AttributeError: micro...
 FAILED _verify/test_c3.py::test_lex_error_offset[a #-2] - AttributeError: mic...
 FAILED _verify/test_c3.py::test_lex_error_offset[SELECT $-7] - AttributeError...
-FAILED _verify/test_c3.py::test_aggregate_in_where_rejected - Failed: DID NOT...
 FAILED _verify/test_c3.py::test_min_max_reject_mixed_types - TypeError: unhas...
 FAILED _verify/test_c3.py::test_group_by_expression - TypeError: unhashable t...
 FAILED _verify/test_c3.py::test_cli_two_tables - AssertionError: assert ['l.i...
 FAILED _verify/test_c3.py::test_positioned_errors_have_offset - AttributeErro...
-35 failed, 342 passed in 9.54s
+34 failed, 343 passed in 5.43s

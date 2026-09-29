@@ -1,0 +1,26 @@
+{
+ "o1_hotpath": {
+  "maxPoints": 5,
+  "criterion": "用 OrderedDict.move_to_end 或双向链表实现 O(1) 的 get/set，不是每次排序或线性查找",
+  "points": 5,
+  "verdict": "完全符合：OrderedDict + move_to_end，另配惰性失效过期堆",
+  "reasoning": "lru.py:58 用 OrderedDict 承载条目，get / set 命中路径经 move_to_end 常数时间重排；lru.py:59-60 的最小堆（expires_at, seq, key）配 seq 惰性失效（lru.py:77-80 起的 _drop_expired_from_heap）让 set 腾位时的过期回收无需全表扫描，docstring（lru.py:35-41）把这套设计写明。热路径无排序与线性查找，性能伸缩测试通过。",
+  "evidence": ["lru.py:34-41", "lru.py:58-60", "lru.py:77-80"]
+ },
+ "module_separation": {
+  "maxPoints": 4,
+  "criterion": "三个模块职责清晰，__init__.py 只做再导出，不塞实现",
+  "points": 4,
+  "verdict": "完全符合：__init__ 纯再导出，stats 独立数据类",
+  "reasoning": "__init__.py 共 4 行只做再导出并声明 __all__，stats.py 是独立的 frozen dataclass，lru.py 承载全部实现。与此前新模型的满分划分一致。",
+  "evidence": ["__init__.py:1-4", "stats.py", "lru.py"]
+ },
+ "sentinel": {
+  "maxPoints": 3,
+  "criterion": "区分 ttl=None 与省略 ttl 用私有模块级 sentinel（object()），不是 \"default\" 字符串或 -1 魔数",
+  "points": 3,
+  "verdict": "完全符合：私有模块级 object() 哨兵",
+  "reasoning": "lru.py:13 的 _MISSING = object() 是私有模块级哨兵，set 的 ttl 参数默认取它（lru.py:109），lru.py:111 用 is 判定区分『省略 ttl（用缓存默认）』与『显式 ttl=None（永不过期）』，无字符串或魔数替身。与此前新模型的满分口径一致。",
+  "evidence": ["lru.py:13", "lru.py:109-111"]
+ }
+}
