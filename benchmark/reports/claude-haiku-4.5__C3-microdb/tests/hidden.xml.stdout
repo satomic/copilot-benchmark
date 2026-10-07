@@ -328,12 +328,12 @@ _verify\test_c3.py:1083: in test_join_unknown_table
     with pytest.raises(db.UnknownTableError):
 E   Failed: DID NOT RAISE <class 'microdb.errors.UnknownTableError'>
 ________________________ test_plan_full_pipeline_order ________________________
-_verify\test_c3.py:1164: in test_plan_full_pipeline_order
+_verify\test_c3.py:1190: in test_plan_full_pipeline_order
     assert role in roles, f"{role} missing from {roles}"
 E   AssertionError: join missing from ['scan', 'group', 'project', 'distinct']
 E   assert 'join' in ['scan', 'group', 'project', 'distinct']
 _______________________________ test_cli_basic ________________________________
-_verify\test_c3.py:1217: in test_cli_basic
+_verify\test_c3.py:1249: in test_cli_basic
     assert done.stdout.splitlines() == ["count(*)", "1"]
 E   AssertionError: assert ['count(*)', '', '1', ''] == ['count(*)', '1']
 E     
@@ -341,7 +341,7 @@ E     At index 1 diff: '' != '1'
 E     Left contains 2 more items, first extra item: '1'
 E     Use -v to get more diff
 ____________________________ test_cli_header_names ____________________________
-_verify\test_c3.py:1222: in test_cli_header_names
+_verify\test_c3.py:1254: in test_cli_header_names
     assert done.stdout.splitlines() == ["id,name", "1,ann"]
 E   AssertionError: assert ['id,name', '', '1,ann', ''] == ['id,name', '1,ann']
 E     
@@ -349,14 +349,14 @@ E     At index 1 diff: '' != '1,ann'
 E     Left contains 2 more items, first extra item: '1,ann'
 E     Use -v to get more diff
 ________________________ test_cli_null_is_empty_field _________________________
-_verify\test_c3.py:1227: in test_cli_null_is_empty_field
+_verify\test_c3.py:1259: in test_cli_null_is_empty_field
     assert done.stdout.splitlines() == ["age", ""]
 E   assert ['age', '', '""', ''] == ['age', '']
 E     
 E     Left contains 2 more items, first extra item: '""'
 E     Use -v to get more diff
 ___________________________ test_cli_bool_lowercase ___________________________
-_verify\test_c3.py:1234: in test_cli_bool_lowercase
+_verify\test_c3.py:1266: in test_cli_bool_lowercase
     assert done.stdout.splitlines() == ["f", "true", "false"]
 E   AssertionError: assert ['f', '', 'tr..., 'false', ''] == ['f', 'true', 'false']
 E     
@@ -364,7 +364,7 @@ E     At index 1 diff: '' != 'true'
 E     Left contains 3 more items, first extra item: ''
 E     Use -v to get more diff
 ____________________ test_cli_bool_input_case_insensitive _____________________
-_verify\test_c3.py:1241: in test_cli_bool_input_case_insensitive
+_verify\test_c3.py:1273: in test_cli_bool_input_case_insensitive
     assert done.stdout.splitlines() == ["f", "true"]
 E   AssertionError: assert ['f', '', 'true', ''] == ['f', 'true']
 E     
@@ -372,7 +372,7 @@ E     At index 1 diff: '' != 'true'
 E     Left contains 2 more items, first extra item: 'true'
 E     Use -v to get more diff
 _____________________________ test_cli_two_tables _____________________________
-_verify\test_c3.py:1254: in test_cli_two_tables
+_verify\test_c3.py:1286: in test_cli_two_tables
     assert done.stdout.splitlines() == ["id", "1"]
 E   AssertionError: assert ['l.id', '', '1', ''] == ['id', '1']
 E     
@@ -380,18 +380,18 @@ E     At index 0 diff: 'l.id' != 'id'
 E     Left contains 2 more items, first extra item: '1'
 E     Use -v to get more diff
 ____________________ test_cli_usage_errors_exit_two[args1] ____________________
-_verify\test_c3.py:1263: in test_cli_usage_errors_exit_two
+_verify\test_c3.py:1295: in test_cli_usage_errors_exit_two
     assert cli(*args).returncode == 2
 E   assert 3 == 2
 E    +  where 3 = CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...z5n2kfra8p0\\python.exe', '-m', 'microdb', 'SELECT 1 FROM t'], returncode=3, stdout='', stderr="Table 't' not found\n").returncode
 E    +    where CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...z5n2kfra8p0\\python.exe', '-m', 'microdb', 'SELECT 1 FROM t'], returncode=3, stdout='', stderr="Table 't' not found\n") = cli(*('SELECT 1 FROM t',))
 __________ test_cli_query_error_exit_three[SELECT id FROM t WHERE 1] __________
-_verify\test_c3.py:1290: in test_cli_query_error_exit_three
+_verify\test_c3.py:1322: in test_cli_query_error_exit_three
     assert done.returncode == 3
 E   AssertionError: assert 0 == 3
-E    +  where 0 = CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...503\\test_cli_query_error_exit_thre2\\people.csv', 'SELECT id FROM t WHERE 1'], returncode=0, stdout='\n\n', stderr='').returncode
+E    +  where 0 = CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...611\\test_cli_query_error_exit_thre2\\people.csv', 'SELECT id FROM t WHERE 1'], returncode=0, stdout='\n\n', stderr='').returncode
 _________ test_cli_query_error_exit_three[SELECT id, count(*) FROM t] _________
-_verify\test_c3.py:1290: in test_cli_query_error_exit_three
+_verify\test_c3.py:1322: in test_cli_query_error_exit_three
     assert done.returncode == 3
 E   AssertionError: assert 0 == 3
 E    +  where 0 = CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...error_exit_thre4\\people.csv', 'SELECT id, count(*) FROM t'], returncode=0, stdout='id,count(*)\n\n1,3\n\n', stderr='').returncode
@@ -447,4 +447,4 @@ FAILED _verify/test_c3.py::test_cli_two_tables - AssertionError: assert ['l.i...
 FAILED _verify/test_c3.py::test_cli_usage_errors_exit_two[args1] - assert 3 == 2
 FAILED _verify/test_c3.py::test_cli_query_error_exit_three[SELECT id FROM t WHERE 1]
 FAILED _verify/test_c3.py::test_cli_query_error_exit_three[SELECT id, count(*) FROM t]
-50 failed, 327 passed in 5.29s
+50 failed, 327 passed in 7.26s

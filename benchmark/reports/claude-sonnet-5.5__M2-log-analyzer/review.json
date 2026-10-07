@@ -1,0 +1,36 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "regex_named_groups": {
+    "maxPoints": 5,
+    "criterion": "用一条预编译正则 + 命名组解析日志行，不是多次 split 拼凑",
+    "points": 5,
+    "verdict": "完全符合：一条预编译命名组正则",
+    "reasoning": "logstats.py:11-19 的模块级 _LINE_RE 一条预编译正则、全部字段命名组，parse_line（logstats.py:29）fullmatch 后按组取值，不是多次 split 拼凑。",
+    "evidence": [
+      "logstats.py:11-19",
+      "logstats.py:29"
+    ]
+  },
+  "streaming": {
+    "maxPoints": 4,
+    "criterion": "analyze 单遍流式处理任意可迭代对象，不把整个文件 list() 进内存",
+    "points": 4,
+    "verdict": "完全符合：analyze 单遍流式；CLI 侧因 --strict 预检 list 了文件",
+    "reasoning": "analyze（logstats.py:73-96）单层 for 遍历任意可迭代对象，计数器就地累加，仅保留 durations 列表。main 的 list(fh)（logstats.py:169）是为 --strict 预检服务的 CLI 侧选择，与 hydrafusion 的同型结构口径一致，不影响 analyze 本体的流式性。",
+    "evidence": [
+      "logstats.py:73-96",
+      "logstats.py:169"
+    ]
+  },
+  "percentile_isolated": {
+    "maxPoints": 3,
+    "criterion": "分位数抽成独立函数，空列表与 n=1 的边界显式处理",
+    "points": 2,
+    "verdict": "部分符合：函数已独立、n=1 由 clamp 覆盖，但空列表守卫在调用方",
+    "reasoning": "logstats.py:62-65 的 _percentile 独立函数，min/max clamp 覆盖 n=1；但空列表分支在调用方 analyze 内（logstats.py:98-107），不在函数内。与 opus-5.5 / sonnet-5 / hydrafusion 同型判 2 分。",
+    "evidence": [
+      "logstats.py:62-65",
+      "logstats.py:98-107"
+    ]
+  }
+}

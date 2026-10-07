@@ -1,0 +1,38 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "o1_hotpath": {
+    "maxPoints": 5,
+    "criterion": "用 OrderedDict.move_to_end 或双向链表实现 O(1) 的 get/set，不是每次排序或线性查找",
+    "points": 5,
+    "verdict": "完全符合：OrderedDict.move_to_end 热路径 + 过期堆",
+    "reasoning": "lru.py:38 用 OrderedDict 存储，get（lru.py:76）与 set（lru.py:95）经 move_to_end 维护 LRU 序，均 O(1)；过期批量清理经 lru.py:39-40 的最小堆（_drop_expired 惰性跳过陈旧堆项，lru.py:98-102 在堆超过 2×capacity+16 时重建），无每次排序或线性查找。",
+    "evidence": [
+      "lru.py:38-41",
+      "lru.py:44-55",
+      "lru.py:76",
+      "lru.py:95"
+    ]
+  },
+  "module_separation": {
+    "maxPoints": 4,
+    "criterion": "三个模块职责清晰，__init__.py 只做再导出，不塞实现",
+    "points": 4,
+    "verdict": "完全符合：三模块职责清晰，__init__ 只做再导出",
+    "reasoning": "lru.py 是唯一实现模块，stats.py 只有 CacheStats frozen dataclass，__init__.py 仅两行 import 与 __all__ 再导出，无实现代码。",
+    "evidence": [
+      "cache/__init__.py:1-4",
+      "cache/stats.py:1-9"
+    ]
+  },
+  "sentinel": {
+    "maxPoints": 3,
+    "criterion": "区分 ttl=None 与省略 ttl 用私有模块级 sentinel（object()），不是 \"default\" 字符串或 -1 魔数",
+    "points": 3,
+    "verdict": "完全符合：私有模块级 object() sentinel",
+    "reasoning": "lru.py:11 的 _DEFAULT = object() 为私有模块级 sentinel，set（lru.py:80-85）以 ttl is _DEFAULT 区分省略与显式 None，不是字符串或魔数。",
+    "evidence": [
+      "lru.py:11",
+      "lru.py:80-85"
+    ]
+  }
+}

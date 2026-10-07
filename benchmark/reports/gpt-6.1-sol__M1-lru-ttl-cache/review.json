@@ -1,0 +1,37 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "o1_hotpath": {
+    "maxPoints": 5,
+    "criterion": "用 OrderedDict.move_to_end 或双向链表实现 O(1) 的 get/set，不是每次排序或线性查找",
+    "points": 5,
+    "verdict": "完全符合：OrderedDict.move_to_end 热路径 + O(1) 位 trie 过期索引",
+    "reasoning": "lru.py:67 用 OrderedDict 存储，get（lru.py:133）经 move_to_end，set 插入尾部，均 O(1)；过期索引是 64 层位 trie（lru.py:74-99），对 IEEE-754 可排序 token 做定长 64 步的插入/删除/取最小，复杂度与缓存大小无关。结构复杂但满足判据的 O(1) 热路径要求；trie 相对堆属过度工程，判据外仅记录。",
+    "evidence": [
+      "lru.py:67",
+      "lru.py:74-99",
+      "lru.py:133"
+    ]
+  },
+  "module_separation": {
+    "maxPoints": 4,
+    "criterion": "三个模块职责清晰，__init__.py 只做再导出，不塞实现",
+    "points": 4,
+    "verdict": "完全符合：三模块职责清晰，__init__ 只做再导出",
+    "reasoning": "lru.py 是唯一实现模块，stats.py 只有 CacheStats frozen dataclass，__init__.py 仅两行 import 与 __all__ 再导出。",
+    "evidence": [
+      "cache/__init__.py:1-4",
+      "cache/stats.py:1-9"
+    ]
+  },
+  "sentinel": {
+    "maxPoints": 3,
+    "criterion": "区分 ttl=None 与省略 ttl 用私有模块级 sentinel（object()），不是 \"default\" 字符串或 -1 魔数",
+    "points": 3,
+    "verdict": "完全符合：私有模块级 sentinel 实例",
+    "reasoning": "lru.py:13-17 定义私有 _DefaultTTL 类并实例化模块级 _DEFAULT_TTL，set（lru.py:141-144）以 isinstance(ttl, _DefaultTTL) 区分省略与显式 None。专用 sentinel 类与 object() 同义且类型标注更友好，不是字符串或魔数。",
+    "evidence": [
+      "lru.py:13-17",
+      "lru.py:141-144"
+    ]
+  }
+}

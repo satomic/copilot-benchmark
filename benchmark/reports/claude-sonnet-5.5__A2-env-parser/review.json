@@ -1,0 +1,26 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "layering": {
+    "maxPoints": 6,
+    "criterion": "key 解析 / 值解引号 / 转义展开分成独立的辅助函数，主循环可读",
+    "points": 5,
+    "verdict": "值侧完整分层，key 解析仍内联在主循环",
+    "reasoning": "envparse.py:8-19 的 _unescape 与 envparse.py:22-33 的 _parse_value 把转义展开、解引号分派与注释剥离完整抽出，主循环（envparse.py:36-54）可读。key 解析（strip、export 前缀、_KEY_RE 校验）以约 6 行内联在主循环。与 claude-opus-5.5 / claude-sonnet-5 / hydrafusion 的同型结构一致判 5 分。",
+    "evidence": [
+      "envparse.py:8-19",
+      "envparse.py:22-33",
+      "envparse.py:46-52"
+    ]
+  },
+  "escape_single_pass": {
+    "maxPoints": 5,
+    "criterion": "转义用单次左到右扫描或查表，不是链式 .replace()（链式会引入顺序 bug）",
+    "points": 5,
+    "verdict": "完全符合：单次左到右扫描 + 模块级查表",
+    "reasoning": "envparse.py:8-19 的 _unescape 用索引 i 单次左到右扫描，查 envparse.py:5 的模块级 _ESCAPES 表，未知转义原样保留，不是链式 .replace()。",
+    "evidence": [
+      "envparse.py:5",
+      "envparse.py:8-19"
+    ]
+  }
+}

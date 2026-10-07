@@ -1,0 +1,38 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "record_codec_declarative": {
+    "maxPoints": 5,
+    "criterion": "记录格式集中在 record.py，用 struct 或等价的声明式方式表达头部布局，不是散落各处的手工字节切片；编码与解码共用同一份字段定义",
+    "points": 5,
+    "verdict": "完全符合：struct 声明式头部，编码解码共用同一份定义",
+    "reasoning": "record.py:7 的 _HEADER = struct.Struct『>4sBHII』集中声明布局，encode_record（record.py:28）与 _parse_header/decode_record（record.py:40）共用同一 _HEADER 打包解包，全部编解码集中在 record.py。",
+    "evidence": [
+      "record.py:7-8",
+      "record.py:28-31",
+      "record.py:40"
+    ]
+  },
+  "truncation_vs_corruption": {
+    "maxPoints": 4,
+    "criterion": "截断与损坏的区分有明确且单一的判定点（IncompleteRecordError 与 CorruptRecordError 分开抛、由 scan 统一转译），不是靠散落的 try/except 兜住",
+    "points": 4,
+    "verdict": "完全符合：两类错误分开抛、scan 统一转译",
+    "reasoning": "record.py 内 IncompleteRecordError 只在头部不足（record.py:39）与载荷不足（record.py:56）抛出，结构性问题一律 CorruptRecordError（record.py:41-48、60、65）；segment.py:48-62 的 scan 统一转译：截断静默停止、损坏转 CorruptSegmentError。",
+    "evidence": [
+      "record.py:35-49",
+      "record.py:52-66",
+      "segment.py:48-62"
+    ]
+  },
+  "atomic_compaction": {
+    "maxPoints": 3,
+    "criterion": "压实顺序正确：先写 tmp、再 os.replace、最后删旧段；tmp 名字不匹配段文件模式，且中途崩溃可恢复",
+    "points": 3,
+    "verdict": "完全符合：tmp → fsync → os.replace → 删旧段，tmp 名不匹配段模式",
+    "reasoning": "compact.py:24-39 先写 tmp 并 fsync（compact.py:35-36），os.replace 原子改名（compact.py:39）之后才逐个删除旧段（compact.py:45-48）；tmp 名为『NNNNNN.seg.tmp』（compact.py:22），不匹配 store.py:50 的 \\d{6}\\.seg 恢复模式，注释明确写了中断残留不参与恢复。",
+    "evidence": [
+      "compact.py:22-48",
+      "store.py:50"
+    ]
+  }
+}

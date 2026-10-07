@@ -1,0 +1,24 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "argparse_exit2": {
+    "maxPoints": 5,
+    "criterion": "用 argparse 的 type= 校验让退出码 2 自然产生，而不是散落的手写 sys.exit(2)",
+    "points": 5,
+    "verdict": "完全符合：argparse + type=_positive_integer，退出码 2 由 argparse 自然产生",
+    "reasoning": "wordfreq.py:22-29 的 _positive_integer 经 ArgumentTypeError 报错，wordfreq.py:34 以 type= 挂接，非法 N 由 argparse 自然产生退出码 2；wordfreq.py:37-39 捕获 SystemExit 仅为把该码原样返回给直接调用 main(argv) 的调用方，非手写散落的 sys.exit(2)。与 fable / astra / opus-5.5 的满分结构同型。",
+    "evidence": [
+      "wordfreq.py:22-29",
+      "wordfreq.py:34-39"
+    ]
+  },
+  "tokenize_single_regex": {
+    "maxPoints": 5,
+    "criterion": "分词用一条正则 + 统一 strip，不是多层 replace 或逐字符状态机",
+    "points": 5,
+    "verdict": "完全符合：一条正则 + 统一 strip",
+    "reasoning": "wordfreq.py:10 一条正则 findall，wordfreq.py:11 海象表达式统一 strip(\"'\") 并过滤空串，单个推导式完成分词。",
+    "evidence": [
+      "wordfreq.py:8-12"
+    ]
+  }
+}

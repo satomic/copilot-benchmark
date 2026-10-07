@@ -1,0 +1,24 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "root_cause_fix": {
+    "maxPoints": 7,
+    "criterion": "三个缺陷都从根因修（闭区间 +1、chunk 宽度 days-1、days<=0 前置校验）；不是在返回前特判补一个 chunk 之类的补丁",
+    "points": 7,
+    "verdict": "完全符合：三缺陷全部根因消除",
+    "reasoning": "① days 校验：daterange.py:19-21 入口 raise ValueError 且排除 bool 与非 int；② 闭区间：daterange.py:25 的 range(0, span + 1, days) 以 span+1 覆盖闭区间，end < start 时 range 为空自然返回空表；③ chunk 宽度：daterange.py:27 的 min(offset + days - 1, span) 修正宽度与尾块。保留原 range 步进结构，是与 gpt-6-astra 同型的最小结构改动。",
+    "evidence": [
+      "daterange.py:19-27"
+    ]
+  },
+  "minimal_diff": {
+    "maxPoints": 4,
+    "criterion": "diff 最小，未重写整个文件，未改动 docstring 的语义",
+    "points": 4,
+    "verdict": "完全符合：改动集中在函数体，docstring 仅一处措辞澄清、语义未变",
+    "reasoning": "diff 为单个函数内两小段（−5/+8 行）；docstring 的『not positive』改为『not a positive integer』与规格第 7 条逐字对齐，属措辞澄清而非语义变更（口径对齐：gpt-6-astra 同类澄清判满分）。test_daterange.py 未改。",
+    "evidence": [
+      "daterange.py:17",
+      "daterange.py:19-27"
+    ]
+  }
+}

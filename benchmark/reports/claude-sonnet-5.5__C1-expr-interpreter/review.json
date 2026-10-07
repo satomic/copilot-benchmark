@@ -1,0 +1,34 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "grammar_correspondence": {
+    "maxPoints": 5,
+    "criterion": "递归下降的函数与 task.md 的文法层级一一对应，命名可读，无手工回溯",
+    "points": 5,
+    "verdict": "完全符合：递归下降函数与文法层级一一对应",
+    "reasoning": "parser.py:87-174 的 expr/and_expr/not_expr/comparison/additive/multiplicative/unary/power/primary 与 task.md 第 68-82 行文法逐层对应，命名可读，单 token 前瞻无手工回溯。",
+    "evidence": [
+      "parser.py:87-174"
+    ]
+  },
+  "named_ast": {
+    "maxPoints": 4,
+    "criterion": "AST 用具名节点（dataclass / NamedTuple / 类），不是裸 tuple 或 dict",
+    "points": 4,
+    "verdict": "完全符合：frozen dataclass 具名节点",
+    "reasoning": "parser.py:7-53 定义 Number/String/Boolean/Variable/Call/Unary/Binary 七类 frozen dataclass 节点，不是裸 tuple 或 dict。",
+    "evidence": [
+      "parser.py:7-53"
+    ]
+  },
+  "error_consistency": {
+    "maxPoints": 3,
+    "criterion": "三类错误消息风格一致且带位置信息，没有 except Exception 吞异常",
+    "points": 2,
+    "verdict": "大体符合：三类异常层次与消息风格一致，但求值错误不带位置",
+    "reasoning": "errors.py:1-19 基类携带 message 与 position、str() 返回纯消息，三个子类继承；全库无 except Exception（自动检查通过）；消息统一为小写短句（evaluator.py:28/31/71/100 等）。但 evaluator 的全部 EvalError 站点均未传 position（evaluator.py:12-102），求值错误不带位置信息。与 sonnet-5 / opus-5 同型判 2 分（grok-4.7 / opus-5.5 因逐站点传 node.position 拿 3 分）。",
+    "evidence": [
+      "errors.py:1-19",
+      "evaluator.py:12-102"
+    ]
+  }
+}

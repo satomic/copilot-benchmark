@@ -1,0 +1,34 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "shared_type_rules": {
+    "maxPoints": 5,
+    "criterion": "运行时类型规则单一来源：VM 的算术/比较/布尔检查收在一处，优化器折叠复用同一套规则或直接调用它，编译期折叠与运行期语义不可能分叉",
+    "points": 5,
+    "verdict": "完全符合：优化器直接导入 VM 的求值函数，两期语义单一来源",
+    "reasoning": "optimizer.py:5 的 from .vm import apply_binary, apply_neg, apply_not 把运行期类型规则直接拿来做编译期折叠，两期语义物理上同一份实现，判据要求的『不可能分叉』达成。与 opus-5.5 / fable / kimi 的满分结构同型。",
+    "evidence": [
+      "optimizer.py:5"
+    ]
+  },
+  "jump_patching_single_point": {
+    "maxPoints": 4,
+    "criterion": "前向跳转回填经由一个集中的 emit/patch 机制（标签或补丁表），不是散落各处的裸下标运算",
+    "points": 4,
+    "verdict": "完全符合：集中的 emit/patch 机制",
+    "reasoning": "compiler.py:37-39 的 emit 返回指令下标，compiler.py:41-42 的 patch(at, target) 是唯一回填点（重建 Instr 保持 op 不变），控制流站点全部经由它，无散落的裸下标运算。",
+    "evidence": [
+      "compiler.py:37-42"
+    ]
+  },
+  "codec_discipline": {
+    "maxPoints": 3,
+    "criterion": "二进制布局用 struct 声明式表达且 dumps/loads 共用定义；loads 先验 CRC 再信任任何长度字段；读取有单一的越界检查点",
+    "points": 3,
+    "verdict": "完全符合：struct 声明式、CRC 先于长度字段、单一越界检查点",
+    "reasoning": "serializer.py 全程 struct.pack/unpack 声明式表达，dumps 与 loads 共用同一套格式常量；loads（serializer.py:130-149）先验 magic 与 CRC（serializer.py:138-141）再解析任何长度字段；_Reader.take/unpack 是单一越界检查点，结尾还验了 trailing bytes。",
+    "evidence": [
+      "serializer.py:130-149",
+      "serializer.py:88-95"
+    ]
+  }
+}

@@ -18,7 +18,7 @@
     "errors": 0,
     "skipped": 0,
     "passed": 358,
-    "time": 5.645,
+    "time": 7.157,
     "bad": [
       {
         "name": "_verify.test_c3::test_float_literals[1e3-1000.0]",
@@ -111,9 +111,9 @@
         "name": "_verify.test_c3::test_plan_minimal",
         "kind": "failure",
         "message": [
-          "AssertionError: assert ['scanstage', 'project'] == ['scan', 'project']",
-          "  ",
-          "  At index 0 diff: 'scanstage' != 'scan'"
+          "AssertionError: ['scanstage', 'project']",
+          "assert False",
+          " +  where False = _constant_pipeline_form(<test_c3._Facade object at 0x000001ED75745390>, ['scanstage', 'project'])"
         ]
       },
       {
@@ -182,7 +182,7 @@
     "errors": 0,
     "skipped": 0,
     "passed": 96,
-    "time": 0.316,
+    "time": 0.342,
     "bad": []
   }
 }

@@ -54,6 +54,20 @@
 # $0.20 / cache write $5.00 / output $20.00 - cheaper than Opus 5 across the
 # board with a 1M-token context window. Verified by smoke run before the batch.
 #
+# NOTE on claude-sonnet-5.5 / gpt-6.1-sol: slugs read from the CLI's CAPI
+# /models catalog (debug-log read-back, 2026-09-30, zero cost) and verified by
+# smoke runs (currentModel read-back exact match; ~1 credit each). Both slugs
+# use a DOT (same convention as claude-fable-5.1 / claude-opus-5.5). Both
+# ACCEPT --effort medium (catalog reasoning_effort: sonnet-5.5 low..max,
+# gpt-6.1-sol none..max). Catalog billing (unit = catalog price / 100 dollars
+# per 1M tokens, same calibration as claude-opus-5.5):
+#   claude-sonnet-5.5: input $2.00 / cache read $0.20 / cache write $2.50 /
+#     output $10.00, 1M context (long_context same prices).
+#   gpt-6.1-sol: input $2.00 / cache read $0.10 / cache write $2.50 /
+#     output $10.00 (default tier <=272k prompt; long_context doubles input),
+#     1.05M context.
+# The benchmark batch for these two runs on CLI 1.0.90-5.
+
 # NOTE on deepseek-v4-flash: NOT a Copilot catalog model. BYOK via Azure AI
 # Foundry project endpoint (COPILOT_PROVIDER_TYPE=azure + project URL + api-key,
 # wire model 'DeepSeek-V4-Flash'; see byok.local.ps1, gitignored). Verified
@@ -77,3 +91,5 @@ grok-4.7
 hydrafusion
 deepseek-v4-flash
 claude-opus-5.5
+claude-sonnet-5.5
+gpt-6.1-sol

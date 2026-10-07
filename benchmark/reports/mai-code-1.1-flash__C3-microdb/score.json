@@ -18,7 +18,7 @@
     "errors": 0,
     "skipped": 0,
     "passed": 354,
-    "time": 4.826,
+    "time": 7.051,
     "bad": [
       {
         "name": "_verify.test_c3::test_table_rejects_wrong_cell_type[BOOL-1]",
@@ -121,9 +121,9 @@
         "name": "_verify.test_c3::test_plan_minimal",
         "kind": "failure",
         "message": [
-          "AssertionError: assert ['scan', 'pro... 'limitstage'] == ['scan', 'project']",
-          "  ",
-          "  Left contains one more item: 'limitstage'"
+          "AssertionError: ['scan', 'project', 'limitstage']",
+          "assert False",
+          " +  where False = _constant_pipeline_form(<test_c3._Facade object at 0x000002AE04527C50>, ['scan', 'project', 'limitstage'])"
         ]
       },
       {
@@ -208,7 +208,7 @@
     "errors": 0,
     "skipped": 0,
     "passed": 64,
-    "time": 0.213,
+    "time": 0.287,
     "bad": []
   }
 }

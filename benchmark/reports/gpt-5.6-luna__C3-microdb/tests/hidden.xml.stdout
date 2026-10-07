@@ -2,7 +2,7 @@
 ...............................................F........................ [ 38%]
 ........................................................................ [ 57%]
 ........................................................................ [ 76%]
-..........FF..........................F..FFF.FF..FFFF.....F......F.....F [ 95%]
+..........FF..........................F..FFF.FF..FF.F............F.....F [ 95%]
 .....F...........                                                        [100%]
 ================================== FAILURES ===================================
 _______________________ test_table_column_index_unknown _______________________
@@ -104,16 +104,8 @@ microdb\parser.py:152: in parse
 microdb\parser.py:61: in parse
     if self.cur().kind != "EOF": raise ParseError("unexpected token", self.cur().offset)
 E   microdb.errors.ParseError: unexpected token
-______________________________ test_plan_minimal ______________________________
-_verify\test_c3.py:1144: in test_plan_minimal
-    assert plan_roles(db, "SELECT a FROM t") == ["scan", "project"]
-E   AssertionError: assert ['from_join',...project', ...] == ['scan', 'project']
-E     
-E     At index 0 diff: 'from_join' != 'scan'
-E     Left contains 7 more items, first extra item: 'group'
-E     Use -v to get more diff
 ________________________ test_plan_full_pipeline_order ________________________
-_verify\test_c3.py:1154: in test_plan_full_pipeline_order
+_verify\test_c3.py:1180: in test_plan_full_pipeline_order
     roles = plan_roles(
 _verify\test_c3.py:1113: in plan_roles
     obj = db.plan(db.parse(sql))
@@ -122,24 +114,19 @@ microdb\parser.py:152: in parse
 microdb\parser.py:61: in parse
     if self.cur().kind != "EOF": raise ParseError("unexpected token", self.cur().offset)
 E   microdb.errors.ParseError: unexpected token
-________________ test_plan_has_no_group_stage_for_plain_query _________________
-_verify\test_c3.py:1193: in test_plan_has_no_group_stage_for_plain_query
-    assert "group" not in plan_roles(db, "SELECT a FROM t")
-E   AssertionError: assert 'group' not in ['from_join', 'filter', 'group', 'aggregate', 'having', 'project', ...]
-E    +  where ['from_join', 'filter', 'group', 'aggregate', 'having', 'project', ...] = plan_roles(<test_c3._Facade object at 0x00000174F5C5DD50>, 'SELECT a FROM t')
 _____________________________ test_cli_two_tables _____________________________
-_verify\test_c3.py:1253: in test_cli_two_tables
+_verify\test_c3.py:1285: in test_cli_two_tables
     assert done.returncode == 0
 E   AssertionError: assert 3 == 0
 E    +  where 3 = CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...wo_tables0\\r.csv', 'SELECT l.id FROM l JOIN r ON l.id = r.lid'], returncode=3, stdout='', stderr='unexpected token\n').returncode
 ________________________ test_cli_bad_header_exit_two _________________________
-_verify\test_c3.py:1274: in test_cli_bad_header_exit_two
+_verify\test_c3.py:1306: in test_cli_bad_header_exit_two
     assert cli("--table", f"t={path}", "SELECT id FROM t").returncode == 2
 E   AssertionError: assert 1 == 2
 E    +  where 1 = CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: Column.__init__() missing 1 required positional argument: \'type\'\n').returncode
-E    +    where CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: Column.__init__() missing 1 required positional argument: \'type\'\n') = cli('--table', 't=C:\\Users\\xuefengyin\\AppData\\Local\\Temp\\pytest-of-xuefengyin\\pytest-513\\test_cli_bad_header_exit_two0\\bad.csv', 'SELECT id FROM t')
+E    +    where CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: Column.__init__() missing 1 required positional argument: \'type\'\n') = cli('--table', 't=C:\\Users\\xuefengyin\\AppData\\Local\\Temp\\pytest-of-xuefengyin\\pytest-619\\test_cli_bad_header_exit_two0\\bad.csv', 'SELECT id FROM t')
 _________ test_cli_query_error_exit_three[SELECT id, count(*) FROM t] _________
-_verify\test_c3.py:1290: in test_cli_query_error_exit_three
+_verify\test_c3.py:1322: in test_cli_query_error_exit_three
     assert done.returncode == 3
 E   AssertionError: assert 0 == 3
 E    +  where 0 = CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...ery_error_exit_thre4\\people.csv', 'SELECT id, count(*) FROM t'], returncode=0, stdout='id,count(*)\n1,3\n', stderr='').returncode
@@ -156,10 +143,8 @@ FAILED _verify/test_c3.py::test_ambiguous_column - microdb.errors.ParseError:...
 FAILED _verify/test_c3.py::test_unqualified_unique_column_resolves - microdb....
 FAILED _verify/test_c3.py::test_star_table_qualified - microdb.errors.ParseEr...
 FAILED _verify/test_c3.py::test_join_unknown_table - microdb.errors.ParseErro...
-FAILED _verify/test_c3.py::test_plan_minimal - AssertionError: assert ['from_...
 FAILED _verify/test_c3.py::test_plan_full_pipeline_order - microdb.errors.Par...
-FAILED _verify/test_c3.py::test_plan_has_no_group_stage_for_plain_query - Ass...
 FAILED _verify/test_c3.py::test_cli_two_tables - AssertionError: assert 3 == 0
 FAILED _verify/test_c3.py::test_cli_bad_header_exit_two - AssertionError: ass...
 FAILED _verify/test_c3.py::test_cli_query_error_exit_three[SELECT id, count(*) FROM t]
-17 failed, 360 passed in 5.58s
+15 failed, 362 passed in 6.59s

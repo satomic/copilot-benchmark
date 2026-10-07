@@ -1140,8 +1140,34 @@ def _before(roles, first, second):
     return a < b
 
 
+def _constant_pipeline_form(db, roles):
+    """True when the planner restates the whole section 8 pipeline for every
+    query (stage list independent of the query, except join which follows the
+    JOIN clause). task.md section 9 pins only "a sequence of named stage
+    objects" in section 8 order; it never says stages are omitted when the
+    clause is absent, so both the minimal form (reference) and this constant
+    form are correct. What would be wrong is a plan whose stage set varies
+    with the query yet claims stages the query cannot run.
+    """
+    grouped = plan_roles(db, "SELECT a, count(*) FROM t GROUP BY a")
+    return [r for r in roles if r != "join"] == [r for r in grouped if r != "join"]
+
+
 def test_plan_minimal(db):
-    assert plan_roles(db, "SELECT a FROM t") == ["scan", "project"]
+    roles = plan_roles(db, "SELECT a FROM t")
+    if roles == ["scan", "project"]:
+        return  # minimal form, same as the reference
+    # Constant-pipeline form. Stage vocabulary is unpinned (see _STAGE_ROLES),
+    # and merged stages are allowed, so only pinned properties are asserted:
+    # the projection stage exists, no join stage is claimed for a single-table
+    # query, and recognised roles keep the section 8 relative order.
+    assert _constant_pipeline_form(db, roles), roles
+    assert "project" in roles, roles
+    assert "join" not in roles, roles
+    order = ["scan", "join", "filter", "group", "aggregate", "having",
+             "project", "distinct", "sort"]
+    positions = [roles.index(r) for r in order if r in roles]
+    assert positions == sorted(positions), roles
 
 
 def test_plan_full_pipeline_order(db):
@@ -1190,7 +1216,13 @@ def test_plan_adds_aggregate_stage_without_group_by(db):
 
 
 def test_plan_has_no_group_stage_for_plain_query(db):
-    assert "group" not in plan_roles(db, "SELECT a FROM t")
+    """A group stage in a plain query's plan is only acceptable in the
+    constant-pipeline form (see _constant_pipeline_form); a query-dependent
+    planner that inserts group for an ungrouped query misstates the pipeline."""
+    roles = plan_roles(db, "SELECT a FROM t")
+    if "group" not in roles:
+        return  # minimal form, same as the reference
+    assert _constant_pipeline_form(db, roles), roles
 
 
 def test_execute_plan_matches_execute(db, people):

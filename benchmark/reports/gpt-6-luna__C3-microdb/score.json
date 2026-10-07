@@ -1,7 +1,7 @@
 {
   "task": "C3-microdb",
   "model": "gpt-6-luna",
-  "functional": 65.08,
+  "functional": 65.38,
   "functionalMax": 70.0,
   "spec": 15,
   "specMax": 15,
@@ -9,16 +9,16 @@
   "qualityMax": 15.0,
   "qualityAuto": 3.0,
   "qualityReview": 9,
-  "total": 92.08,
+  "total": 92.38,
   "reviewPending": [],
   "vetoTriggered": [],
   "hidden": {
     "total": 377,
-    "failures": 32,
+    "failures": 30,
     "errors": 0,
     "skipped": 0,
-    "passed": 345,
-    "time": 6.382,
+    "passed": 347,
+    "time": 19.85,
     "bad": [
       {
         "name": "_verify.test_c3::test_scalar_expressions[1 + 2-3]",
@@ -217,28 +217,11 @@
         ]
       },
       {
-        "name": "_verify.test_c3::test_plan_minimal",
-        "kind": "failure",
-        "message": [
-          "AssertionError: assert ['from/join',...project', ...] == ['scan', 'project']",
-          "  ",
-          "  At index 0 diff: 'from/join' != 'scan'"
-        ]
-      },
-      {
         "name": "_verify.test_c3::test_plan_full_pipeline_order",
         "kind": "failure",
         "message": [
           "AssertionError: scan missing from ['from/join', 'filter', 'group', 'aggregate', 'having', 'project', 'distinct', 'sort', 'offset', 'limit']",
           "assert 'scan' in ['from/join', 'filter', 'group', 'aggregate', 'having', 'project', ...]"
-        ]
-      },
-      {
-        "name": "_verify.test_c3::test_plan_has_no_group_stage_for_plain_query",
-        "kind": "failure",
-        "message": [
-          "AssertionError: assert 'group' not in ['from/join', 'filter', 'group', 'aggregate', 'having', 'project', ...]",
-          " +  where ['from/join', 'filter', 'group', 'aggregate', 'having', 'project', ...] = plan_roles(<test_c3._Facade object at 0x000001A64CE8A490>, 'SELECT a FROM t')"
         ]
       },
       {
@@ -259,7 +242,7 @@
     "errors": 0,
     "skipped": 0,
     "passed": 69,
-    "time": 0.29,
+    "time": 0.302,
     "bad": []
   }
 }

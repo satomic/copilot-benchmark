@@ -1,7 +1,7 @@
 {
   "task": "C3-microdb",
   "model": "gpt-5.6-luna",
-  "functional": 67.38,
+  "functional": 67.69,
   "functionalMax": 70.0,
   "spec": 15,
   "specMax": 15,
@@ -9,16 +9,16 @@
   "qualityMax": 15.0,
   "qualityAuto": 3.0,
   "qualityReview": 9,
-  "total": 94.38,
+  "total": 94.69,
   "reviewPending": [],
   "vetoTriggered": [],
   "hidden": {
     "total": 377,
-    "failures": 17,
+    "failures": 15,
     "errors": 0,
     "skipped": 0,
-    "passed": 360,
-    "time": 5.537,
+    "passed": 362,
+    "time": 6.549,
     "bad": [
       {
         "name": "_verify.test_c3::test_table_column_index_unknown",
@@ -98,27 +98,10 @@
         ]
       },
       {
-        "name": "_verify.test_c3::test_plan_minimal",
-        "kind": "failure",
-        "message": [
-          "AssertionError: assert ['from_join',...project', ...] == ['scan', 'project']",
-          "  ",
-          "  At index 0 diff: 'from_join' != 'scan'"
-        ]
-      },
-      {
         "name": "_verify.test_c3::test_plan_full_pipeline_order",
         "kind": "failure",
         "message": [
           "microdb.errors.ParseError: unexpected token"
-        ]
-      },
-      {
-        "name": "_verify.test_c3::test_plan_has_no_group_stage_for_plain_query",
-        "kind": "failure",
-        "message": [
-          "AssertionError: assert 'group' not in ['from_join', 'filter', 'group', 'aggregate', 'having', 'project', ...]",
-          " +  where ['from_join', 'filter', 'group', 'aggregate', 'having', 'project', ...] = plan_roles(<test_c3._Facade object at 0x00000174F5C5DD50>, 'SELECT a FROM t')"
         ]
       },
       {
@@ -135,7 +118,7 @@
         "message": [
           "AssertionError: assert 1 == 2",
           " +  where 1 = CompletedProcess(args=['C:\\\\Users\\\\xuefengyin\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\\\\PythonSoftwareFoundation.Python...        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nTypeError: Column.__init__() missing 1 required positional argument: \\'type\\'\\n').returncode",
-          " +    where CompletedProcess(args=['C:\\\\Users\\\\xuefengyin\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\\\\PythonSoftwareFoundation.Python...        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nTypeError: Column.__init__() missing 1 required positional argument: \\'type\\'\\n') = cli('--table', 't=C:\\\\Users\\\\xuefengyin\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-xuefengyin\\\\pytest-513\\\\test_cli_bad_header_exit_two0\\\\bad.csv', 'SELECT id FROM t')"
+          " +    where CompletedProcess(args=['C:\\\\Users\\\\xuefengyin\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\\\\PythonSoftwareFoundation.Python...        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nTypeError: Column.__init__() missing 1 required positional argument: \\'type\\'\\n') = cli('--table', 't=C:\\\\Users\\\\xuefengyin\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-xuefengyin\\\\pytest-619\\\\test_cli_bad_header_exit_two0\\\\bad.csv', 'SELECT id FROM t')"
         ]
       },
       {
@@ -155,7 +138,7 @@
     "errors": 0,
     "skipped": 0,
     "passed": 50,
-    "time": 0.207,
+    "time": 0.235,
     "bad": []
   }
 }

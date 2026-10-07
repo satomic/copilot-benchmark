@@ -1,0 +1,38 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "null_logic_centralised": {
+    "maxPoints": 5,
+    "criterion": "三值逻辑与 NULL 规则集中在 value.py，WHERE / 聚合 / 排序三处都复用它，没有各自重写一套 NULL 判断",
+    "points": 5,
+    "verdict": "完全符合：三值逻辑集中在 value.py，三处复用",
+    "reasoning": "value.py:18-90 集中定义 logical/and_/or_/not_ 与 compare_eq/compare_lt 的 NULL 传播及排序键 key()，expr.py（WHERE 求值）、aggregate.py（聚合忽略 NULL）与 executor.py（排序）均从 value 导入复用。",
+    "evidence": [
+      "value.py:18-91",
+      "expr.py",
+      "aggregate.py",
+      "executor.py"
+    ]
+  },
+  "explicit_stage_order": {
+    "maxPoints": 4,
+    "criterion": "执行阶段顺序由 planner 显式表达为数据（可枚举的阶段序列），executor 按该顺序执行，不在控制流里隐式重排",
+    "points": 4,
+    "verdict": "完全符合：顺序是数据，executor 逐阶段按序驱动",
+    "reasoning": "planner.py:36-42 把规格第 8 节的阶段顺序整体表达为数据（恒定全流水线，仅 JOIN 随查询出现；这是本批评分器第 45 处修正确认的另一种正确形态）；executor.py:262-288 的 execute_plan 用 for stage in plan 逐阶段分派执行，顺序完全由 plan 数据决定，重排 plan 即重排执行。与判据的『顺序由 planner 表达为数据、executor 按该顺序执行』完全一致；分派用 if/elif 而非查表是风格差异。",
+    "evidence": [
+      "planner.py:36-42",
+      "executor.py:262-288"
+    ]
+  },
+  "name_resolution_single_point": {
+    "maxPoints": 3,
+    "criterion": "名称解析（限定名、非限定名、别名优先、歧义报错）集中在一处，不是在投影与排序里各判一次",
+    "points": 3,
+    "verdict": "完全符合：输入列解析集中在 expr.resolve 单点",
+    "reasoning": "expr.py:39-49 的 resolve 是唯一的输入列解析点（限定名、非限定名、歧义报错），求值、签名比对与 ORDER BY 全部经由它；executor.py:84-87 的输出列歧义检查属 ORDER BY 输出命名空间的别名优先规则，与输入解析不同关注点且最终仍委托 resolve（executor.py:102）。",
+    "evidence": [
+      "expr.py:39-49",
+      "executor.py:84-102"
+    ]
+  }
+}

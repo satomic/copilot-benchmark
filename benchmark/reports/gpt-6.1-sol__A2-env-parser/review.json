@@ -1,0 +1,24 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "layering": {
+    "maxPoints": 6,
+    "criterion": "key 解析 / 值解引号 / 转义展开分成独立的辅助函数，主循环可读",
+    "points": 2,
+    "verdict": "不符合：模块内零辅助函数，三项关注点全部内联在单个函数里",
+    "reasoning": "envparse.py 只有 parse_env 一个函数（envparse.py:7-38，约 32 行），key 解析（15-22）、值解引号分派（24-32）、转义展开（26-30 的 _re.sub 内联 lambda）与注释剥离（34-36）全部内联。口径对齐：gpt-6-astra 的同型零辅助实现判 2/6。",
+    "evidence": [
+      "envparse.py:7-38"
+    ]
+  },
+  "escape_single_pass": {
+    "maxPoints": 5,
+    "criterion": "转义用单次左到右扫描或查表，不是链式 .replace()（链式会引入顺序 bug）",
+    "points": 5,
+    "verdict": "完全符合：单条正则单遍替换 + 模块级查表",
+    "reasoning": "envparse.py:26-30 用 _re.sub(r'\\\\(.)') 单遍左到右替换，查 envparse.py:4 的模块级 _ESCAPES 表，未知转义经 match[0] 原样保留；正则引擎保证不重扫已替换文本，与单次扫描等价，不是链式 .replace()。",
+    "evidence": [
+      "envparse.py:4",
+      "envparse.py:26-30"
+    ]
+  }
+}

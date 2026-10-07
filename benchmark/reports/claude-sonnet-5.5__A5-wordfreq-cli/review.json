@@ -1,0 +1,25 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "argparse_exit2": {
+    "maxPoints": 5,
+    "criterion": "用 argparse 的 type= 校验让退出码 2 自然产生，而不是散落的手写 sys.exit(2)",
+    "points": 3,
+    "verdict": "部分符合：用了 argparse 且退出码 2 收敛在单点，但绕开 type= 手动转换校验",
+    "reasoning": "wordfreq.py:47-48 用 argparse 但 -n 以字符串接收（default='10'），wordfreq.py:54-60 手动 int() 转换失败后打印错误并 return 2，退出码 2 不经 argparse 的 type= 自然产生。口径对齐：gemini-3.8-flash / gpt-5.6-luna / grok-4.6 的同型绕开 type= 实现均判 3/5。",
+    "evidence": [
+      "wordfreq.py:47-48",
+      "wordfreq.py:54-60"
+    ]
+  },
+  "tokenize_single_regex": {
+    "maxPoints": 5,
+    "criterion": "分词用一条正则 + 统一 strip，不是多层 replace 或逐字符状态机",
+    "points": 5,
+    "verdict": "完全符合：一条正则 + 统一 strip",
+    "reasoning": "wordfreq.py:7 的模块级 _TOKEN_RE 一条正则，wordfreq.py:10-16 findall 后统一 strip(\"'\") 并过滤空串，不是多层 replace 或状态机。",
+    "evidence": [
+      "wordfreq.py:7",
+      "wordfreq.py:10-16"
+    ]
+  }
+}

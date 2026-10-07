@@ -1,0 +1,24 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "root_cause_fix": {
+    "maxPoints": 7,
+    "criterion": "三个缺陷都从根因修（闭区间 +1、chunk 宽度 days-1、days<=0 前置校验）；不是在返回前特判补一个 chunk 之类的补丁",
+    "points": 7,
+    "verdict": "完全符合：三缺陷全部根因消除",
+    "reasoning": "① days<=0 前置校验：daterange.py:20-21 在入口 raise ValueError，且用 isinstance 排除 bool；② 闭区间：daterange.py:25 的 while chunk_start <= end 直接以闭区间语义驱动循环，end < start 时自然返回空表；③ chunk 宽度：daterange.py:26 的 chunk_start + timedelta(days=days-1) 与 min(..., end) 一次性修正宽度与尾块。无任何返回前特判补块的补丁。",
+    "evidence": [
+      "daterange.py:20-21",
+      "daterange.py:25-28"
+    ]
+  },
+  "minimal_diff": {
+    "maxPoints": 4,
+    "criterion": "diff 最小，未重写整个文件，未改动 docstring 的语义",
+    "points": 4,
+    "verdict": "完全符合：单 hunk 改动全在函数体内，docstring 未动",
+    "reasoning": "与 seed 的 diff 只有函数体一处：span/count/for 结构换成校验 + while（−6/+8 行），模块与函数 docstring 逐字未动，test_daterange.py 未改。",
+    "evidence": [
+      "daterange.py:19-29"
+    ]
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "regex_named_groups": {
+    "maxPoints": 5,
+    "criterion": "用一条预编译正则 + 命名组解析日志行，不是多次 split 拼凑",
+    "points": 5,
+    "verdict": "完全符合：一条预编译命名组正则",
+    "reasoning": "logstats.py:13-21 的模块级 _LINE 一条预编译正则、全部字段命名组，parse_line（logstats.py:42）fullmatch 后按 groupdict 取值。",
+    "evidence": [
+      "logstats.py:13-21",
+      "logstats.py:42-45"
+    ]
+  },
+  "streaming": {
+    "maxPoints": 4,
+    "criterion": "analyze 单遍流式处理任意可迭代对象，不把整个文件 list() 进内存",
+    "points": 4,
+    "verdict": "完全符合：单遍流式，CLI 直接把文件句柄交给分析器",
+    "reasoning": "_analyze（logstats.py:94-141）单层 for 遍历任意可迭代对象就地累加，仅保留 durations；main（logstats.py:171-172)直接把打开的文件对象传入，全程无 list() 物化，--strict 也在同一遍内经 _MalformedLine 提前终止。",
+    "evidence": [
+      "logstats.py:94-141",
+      "logstats.py:171-172"
+    ]
+  },
+  "percentile_isolated": {
+    "maxPoints": 3,
+    "criterion": "分位数抽成独立函数，空列表与 n=1 的边界显式处理",
+    "points": 1,
+    "verdict": "基本不符合：分位数计算完全内联，没有独立函数",
+    "reasoning": "p50/p95 是 _analyze 内部 duration dict 里的两个内联 ceil 表达式（logstats.py:127-128），未抽成任何函数；空列表有显式分支（logstats.py:122-123），n=1 由 ceil 公式覆盖。口径对齐：gpt-6-astra 的同型全内联实现判 1/3。",
+    "evidence": [
+      "logstats.py:122-130"
+    ]
+  }
+}
