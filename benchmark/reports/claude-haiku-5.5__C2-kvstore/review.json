@@ -1,0 +1,38 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "record_codec_declarative": {
+    "maxPoints": 5,
+    "criterion": "记录格式集中在 record.py，用 struct 或等价的声明式方式表达头部布局，不是散落各处的手工字节切片；编码与解码共用同一份字段定义",
+    "points": 5,
+    "verdict": "完全符合：struct.Struct 单一头部定义，编解码共用",
+    "reasoning": "record.py:19-20 用 struct.Struct(『>4sBHII』) 声明头部布局并派生 HEADER_SIZE，record.py:45 的 encode_record 用 HEADER.pack、record.py:69 的 decode_record 用 HEADER.unpack_from，同一份字段定义；magic / flags / 长度上限等常量全部集中在 record.py:14-18，segment.py:10 只从 record 导入 HEADER 与 HEADER_SIZE 复用，没有散落的手工字节切片。与 sonnet-5.5 / opus-5.5 的满分形态同型。",
+    "evidence": [
+      "record.py:14-20",
+      "record.py:33-46",
+      "record.py:60-84"
+    ]
+  },
+  "truncation_vs_corruption": {
+    "maxPoints": 4,
+    "criterion": "截断与损坏的区分有明确且单一的判定点（IncompleteRecordError 与 CorruptRecordError 分开抛、由 scan 统一转译），不是靠散落的 try/except 兜住",
+    "points": 4,
+    "verdict": "完全符合：两类异常在 decode_record 分开抛，scan 单点转译",
+    "reasoning": "record.py:66-73 在头部不足与记录体不足两处抛 IncompleteRecordError，record.py:49-57 / 78 / 83 对坏 magic、未知 flags、key_len 为 0、tombstone 带值、CRC 不符、非法 UTF-8 抛 CorruptRecordError，两类异常共享 errors.py:13-22 的 RecordError 基类；segment.py:76-83 的 scan 是唯一的判定点：IncompleteRecordError 记下截断位置后静默停止，其余 RecordError 统一转译为带路径与偏移的 CorruptSegmentError。没有散落的 try/except 兜底。",
+    "evidence": [
+      "record.py:66-83",
+      "segment.py:76-83",
+      "errors.py:13-32"
+    ]
+  },
+  "atomic_compaction": {
+    "maxPoints": 3,
+    "criterion": "压实顺序正确：先写 tmp、再 os.replace、最后删旧段；tmp 名字不匹配段文件模式，且中途崩溃可恢复",
+    "points": 3,
+    "verdict": "完全符合：先写 tmp，再 os.replace，最后删旧段，tmp 名字不匹配段模式",
+    "reasoning": "compact.py:26-27 的临时文件名为 <id>.seg.tmp，与 segment.py:12 的 _SEGMENT_NAME_RE（六位数字加 .seg 的 fullmatch）不匹配，不会被当作段文件装载；compact.py:28 先清掉上次崩溃遗留的 tmp，compact.py:29-34 把全部存活记录写进 tmp 并关闭，compact.py:35-36 关闭旧段后 os.replace 原子落盘，compact.py:38-39 才逐个删除旧段，compact.py:40 重载。中途崩溃可恢复：replace 之前崩溃只剩一个可忽略的 tmp，replace 之后崩溃则新段 id 最大、重放时最后生效，旧段可以在下一次压实时被清理。判据外记录：append 只 flush 未 fsync（segment.py:65）。",
+    "evidence": [
+      "compact.py:26-40",
+      "segment.py:12"
+    ]
+  }
+}

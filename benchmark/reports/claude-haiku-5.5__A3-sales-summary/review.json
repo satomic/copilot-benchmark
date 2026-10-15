@@ -1,0 +1,25 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "grouping_efficiency": {
+    "maxPoints": 5,
+    "criterion": "单遍 dict 累加分组，不是对每个 region 重复扫描全表（O(n²)）",
+    "points": 5,
+    "verdict": "完全符合：单遍 dict 累加",
+    "reasoning": "sales.py:16-29 单个 for 循环按 region.lower() 键入 groups 就地累加 count 与 total，无对每个 region 的重复全表扫描。sales.py:36-37 先用未舍入 total 算 avg 再各自舍入，舍入陷阱没踩。",
+    "evidence": [
+      "sales.py:16-29",
+      "sales.py:31-41"
+    ]
+  },
+  "separation": {
+    "maxPoints": 5,
+    "criterion": "region/amount 的取值与校验抽成辅助函数，错误消息集中构造，聚合逻辑干净",
+    "points": 3,
+    "verdict": "部分符合：amount 侧有辅助函数，region 的取值校验内联在主循环",
+    "reasoning": "sales.py:1-9 的 _parse_amount 完整承担 amount 的取值、空值归零与转换报错；但 region 的取值校验（sales.py:17-20）内联在主循环，『missing region』的消息在循环内就地构造。与 claude-sonnet-5.5 的同型结构（只有 amount 侧辅助）判 3 分口径一致，介于零辅助的 2 分形态与双辅助的 5 分形态（opus-5.5）之间。分组值用裸列表下标（sales.py:26-29）是判据外缺点，仅记录。",
+    "evidence": [
+      "sales.py:1-9",
+      "sales.py:17-20"
+    ]
+  }
+}

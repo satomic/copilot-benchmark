@@ -1,0 +1,25 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "argparse_exit2": {
+    "maxPoints": 5,
+    "criterion": "用 argparse 的 type= 校验让退出码 2 自然产生，而不是散落的手写 sys.exit(2)",
+    "points": 5,
+    "verdict": "完全符合：type= 校验抛 ArgumentTypeError，退出码 2 由 argparse 产生",
+    "reasoning": "wordfreq.py:30-37 的 _positive_int 对非整数与 n<1 分别抛 argparse.ArgumentTypeError，wordfreq.py:46 经 type=_positive_int 挂入 argparse，退出码 2 由 argparse 自身产生并在 wordfreq.py:56-60 经 SystemExit 捕获转为返回值，无散落的手写 sys.exit(2)。与 opus-5.5 / gpt-6.1-sol / hydrafusion 的满分形态同型。",
+    "evidence": [
+      "wordfreq.py:30-51",
+      "wordfreq.py:54-60"
+    ]
+  },
+  "tokenize_single_regex": {
+    "maxPoints": 5,
+    "criterion": "分词用一条正则 + 统一 strip，不是多层 replace 或逐字符状态机",
+    "points": 5,
+    "verdict": "完全符合：一条正则 + 统一 strip",
+    "reasoning": "wordfreq.py:10 的 _TOKEN_RE 一条正则 [a-z0-9']+ 在 lower() 后 findall，wordfreq.py:16 对每个 token 统一 strip 首尾撇号并丢弃空串，无多层 replace 或逐字符状态机。",
+    "evidence": [
+      "wordfreq.py:10",
+      "wordfreq.py:13-19"
+    ]
+  }
+}

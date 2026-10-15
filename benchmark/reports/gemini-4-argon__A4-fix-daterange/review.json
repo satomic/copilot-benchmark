@@ -1,0 +1,24 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "root_cause_fix": {
+    "maxPoints": 7,
+    "criterion": "三个缺陷都从根因修（闭区间 +1、chunk 宽度 days-1、days<=0 前置校验）；不是在返回前特判补一个 chunk 之类的补丁",
+    "points": 7,
+    "verdict": "完全符合：三个缺陷都从根因修",
+    "reasoning": "daterange.py:19-20 前置校验 days 为正整数（并排除 bool）后抛 ValueError；daterange.py:21-22 对 end 早于 start 返回空表；daterange.py:24-31 把种子的整除计数 for 循环换成游标 while 循环，chunk_end 取 chunk_start + (days - 1) 与 end 的较小值（闭区间宽度修正），下一块从 chunk_end + 1 开始，尾块自然被覆盖，没有在返回前特判补一块的补丁。与此前全部满分实现同型。",
+    "evidence": [
+      "daterange.py:19-22",
+      "daterange.py:24-31"
+    ]
+  },
+  "minimal_diff": {
+    "maxPoints": 4,
+    "criterion": "diff 最小，未重写整个文件，未改动 docstring 的语义",
+    "points": 4,
+    "verdict": "完全符合：diff 只落在函数体内",
+    "reasoning": "对照 seed 的 diff 只有 split_range 函数体内一个 hunk（-6 +11 行，多出的行是两个 timedelta 常量与 chunks 的类型标注），模块 docstring 与函数 docstring 逐字未动，签名、导入、返回结构保持；test_daterange.py 未改。循环从 for-range 换成 while 推进是根因修复的必要重写。与 claude-fable-5.1 / claude-opus-5 带常量与标注的满分形态同型。",
+    "evidence": [
+      "daterange.py:19-31"
+    ]
+  }
+}

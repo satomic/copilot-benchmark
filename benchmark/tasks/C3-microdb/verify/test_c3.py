@@ -1186,9 +1186,17 @@ def test_plan_full_pipeline_order(db):
              "project", "distinct", "sort"]
     positions = [roles.index(r) for r in order if r in roles]
     assert positions == sorted(positions)
-    for role in ("scan", "join", "filter", "having", "project", "distinct", "sort"):
+    for role in ("filter", "having", "project", "distinct", "sort"):
         assert role in roles, f"{role} missing from {roles}"
     assert "group" in roles or "aggregate" in roles, f"no grouping stage in {roles}"
+    # Section 8 step 1 is "FROM and JOIN": one logical step, so the join may be
+    # its own stage or folded into the source stage (any name). Either way the
+    # plan must open with a source stage, and a separate join stage must precede
+    # the filter.
+    later = set(order[2:]) | {"offset", "limit", "limit_offset"}
+    assert roles[0] not in later, f"plan does not start with a source stage: {roles}"
+    if "join" in roles:
+        assert roles.index("join") < roles.index("filter"), f"join after filter in {roles}"
 
 
 def test_plan_filter_before_group(db):

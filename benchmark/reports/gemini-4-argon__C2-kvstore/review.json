@@ -1,0 +1,38 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "record_codec_declarative": {
+    "maxPoints": 5,
+    "criterion": "记录格式集中在 record.py，用 struct 或等价的声明式方式表达头部布局，不是散落各处的手工字节切片；编码与解码共用同一份字段定义",
+    "points": 5,
+    "verdict": "完全符合：单一 struct 格式串，编解码共用",
+    "reasoning": "record.py:8 的 HEADER_FORMAT = 『>4sBHII』以 struct 格式串声明头部布局，record.py:46-53 的 encode_record 用 struct.pack、record.py:75-77 的 decode_record 用 struct.unpack_from，同一份字段定义；magic / flags / 长度上限等常量集中在 record.py:8-14，没有散落的手工字节切片。判据外记录：HEADER_SIZE 手写为 15（record.py:9）而非 struct.calcsize 派生。",
+    "evidence": [
+      "record.py:8-14",
+      "record.py:29-54",
+      "record.py:68-100"
+    ]
+  },
+  "truncation_vs_corruption": {
+    "maxPoints": 4,
+    "criterion": "截断与损坏的区分有明确且单一的判定点（IncompleteRecordError 与 CorruptRecordError 分开抛、由 scan 统一转译），不是靠散落的 try/except 兜住",
+    "points": 4,
+    "verdict": "完全符合：两类异常在 decode_record 分开抛，scan 单点转译",
+    "reasoning": "record.py:72-73 与 81-82 在头部不足与记录体不足两处抛 IncompleteRecordError，record.py:57-65 / 91-92 / 97-98 对坏 magic、非法 flags、key_len 为 0、tombstone 带值、CRC 不符、非法 UTF-8 抛 CorruptRecordError，两类共享 errors.py:10-19 的 RecordError 基类；segment.py:60-65 的 scan 是唯一判定点：IncompleteRecordError 静默停止、CorruptRecordError 统一转译为带路径与偏移的 CorruptSegmentError。没有散落的 try/except 兜底。",
+    "evidence": [
+      "record.py:57-98",
+      "segment.py:53-67",
+      "errors.py:10-29"
+    ]
+  },
+  "atomic_compaction": {
+    "maxPoints": 3,
+    "criterion": "压实顺序正确：先写 tmp、再 os.replace、最后删旧段；tmp 名字不匹配段文件模式，且中途崩溃可恢复",
+    "points": 3,
+    "verdict": "完全符合：先写 tmp，再 os.replace，最后删旧段，tmp 名字不匹配段模式",
+    "reasoning": "compact.py:31 的临时文件名为 <id>.seg.tmp，与 store.py:12 的 SEGMENT_PATTERN（^\\d{6}\\.seg$）不匹配，不会被当作段文件装载；compact.py:35-45 把全部存活记录写进 tmp 并 flush，compact.py:47 用 os.replace 原子落盘，compact.py:49-51 才逐个关闭并删除旧段，compact.py:53-57 切换内存状态。中途崩溃可恢复：replace 之前崩溃只剩一个可忽略的 tmp（下次压实以 wb 覆盖），replace 之后崩溃则新段 id 最大、重放时最后生效。",
+    "evidence": [
+      "compact.py:28-57",
+      "store.py:12"
+    ]
+  }
+}

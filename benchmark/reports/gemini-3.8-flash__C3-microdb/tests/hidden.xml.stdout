@@ -214,14 +214,14 @@ microdb\executor.py:192: in _exec_group_by_and_aggregate
     ???
 E   TypeError: unhashable type: 'list'
 _____________________________ test_cli_two_tables _____________________________
-_verify\test_c3.py:1286: in test_cli_two_tables
+_verify\test_c3.py:1294: in test_cli_two_tables
     assert done.stdout.splitlines() == ["id", "1"]
 E   AssertionError: assert ['l.id', '1'] == ['id', '1']
 E     
 E     At index 0 diff: 'l.id' != 'id'
 E     Use -v to get more diff
 _____________________ test_positioned_errors_have_offset ______________________
-_verify\test_c3.py:1373: in test_positioned_errors_have_offset
+_verify\test_c3.py:1381: in test_positioned_errors_have_offset
     db.tokenize("@")
 _verify\test_c3.py:43: in __getattr__
     raise AttributeError(f"microdb exposes no {name} in the package or its submodules")
@@ -262,4 +262,4 @@ FAILED _verify/test_c3.py::test_min_max_reject_mixed_types - TypeError: unhas...
 FAILED _verify/test_c3.py::test_group_by_expression - TypeError: unhashable t...
 FAILED _verify/test_c3.py::test_cli_two_tables - AssertionError: assert ['l.i...
 FAILED _verify/test_c3.py::test_positioned_errors_have_offset - AttributeErro...
-34 failed, 343 passed in 8.39s
+34 failed, 343 passed in 12.34s

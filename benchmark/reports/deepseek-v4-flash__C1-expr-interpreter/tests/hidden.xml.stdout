@@ -1,4 +1,4 @@
-......F.FFFFFF.F.................................................F...... [ 47%]
+......F.FFFFFF...................................................F...... [ 47%]
 ........................F...........FF.......................F.......... [ 94%]
 .........                                                                [100%]
 ================================== FAILURES ===================================
@@ -57,40 +57,33 @@ E
 E     comparison failed
 E     Obtained: 2E+8
 E     Expected: 200000000.0 ± 2.0e+02
-__________________________ test_comments_are_skipped __________________________
-_verify\test_c1.py:170: in test_comments_are_skipped
-    assert ml.tokenize("1 # trailing comment") == ml.tokenize("1")
-E   AssertionError: assert [Token(NUMBER, '1', 0)] == [Token(NUMBER, '1', 0)]
-E     
-E     At index 0 diff: Token(NUMBER, '1', 0) != Token(NUMBER, '1', 0)
-E     Use -v to get more diff
 _________________________ test_all_numbers_are_floats _________________________
-_verify\test_c1.py:264: in test_all_numbers_are_floats
+_verify\test_c1.py:269: in test_all_numbers_are_floats
     assert isinstance(ev(src), float), f"{src} must yield a float"
 E   AssertionError: round(1.4) must yield a float
 E   assert False
 E    +  where False = isinstance(1, float)
-E    +    where 1 = <function evaluate at 0x000002475A739260>('round(1.4)')
+E    +    where 1 = <function evaluate at 0x000001E4106AD120>('round(1.4)')
 ___________________________ test_type_errors[-true] ___________________________
-_verify\test_c1.py:337: in test_type_errors
+_verify\test_c1.py:342: in test_type_errors
     with pytest.raises(ml.EvalError):
 E   Failed: DID NOT RAISE <class 'minilang.errors.EvalError'>
 ________________________ test_builtins[round(1.4)-1.0] ________________________
-_verify\test_c1.py:396: in test_builtins
+_verify\test_c1.py:401: in test_builtins
     assert type(got) is type(expected), f"{src} -> {type(got).__name__}"
 E   AssertionError: round(1.4) -> int
 E   assert <class 'int'> is <class 'float'>
 E    +  where <class 'int'> = type(1)
 E    +  and   <class 'float'> = type(1.0)
 ________________________ test_builtins[round(1.6)-2.0] ________________________
-_verify\test_c1.py:396: in test_builtins
+_verify\test_c1.py:401: in test_builtins
     assert type(got) is type(expected), f"{src} -> {type(got).__name__}"
 E   AssertionError: round(1.6) -> int
 E   assert <class 'int'> is <class 'float'>
 E    +  where <class 'int'> = type(2)
 E    +  and   <class 'float'> = type(2.0)
 ________________________ test_builtin_errors[round()] _________________________
-_verify\test_c1.py:415: in test_builtin_errors
+_verify\test_c1.py:420: in test_builtin_errors
     ml.evaluate(src)
 minilang\evaluator.py:18: in evaluate
     return _eval_node(ast, env_copy)
@@ -110,10 +103,9 @@ FAILED _verify/test_c1.py::test_number_forms[.5-0.5] - AssertionError: assert...
 FAILED _verify/test_c1.py::test_number_forms[1e3-1000.0] - AssertionError: as...
 FAILED _verify/test_c1.py::test_number_forms[1.2e-4-0.00012] - AssertionError...
 FAILED _verify/test_c1.py::test_number_forms[2E+8-200000000.0] - AssertionErr...
-FAILED _verify/test_c1.py::test_comments_are_skipped - AssertionError: assert...
 FAILED _verify/test_c1.py::test_all_numbers_are_floats - AssertionError: roun...
 FAILED _verify/test_c1.py::test_type_errors[-true] - Failed: DID NOT RAISE <c...
 FAILED _verify/test_c1.py::test_builtins[round(1.4)-1.0] - AssertionError: ro...
 FAILED _verify/test_c1.py::test_builtins[round(1.6)-2.0] - AssertionError: ro...
 FAILED _verify/test_c1.py::test_builtin_errors[round()] - IndexError: list in...
-13 failed, 140 passed in 2.39s
+12 failed, 141 passed in 1.92s

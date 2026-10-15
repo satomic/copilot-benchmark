@@ -18,7 +18,7 @@
     "errors": 0,
     "skipped": 0,
     "passed": 354,
-    "time": 7.051,
+    "time": 8.522,
     "bad": [
       {
         "name": "_verify.test_c3::test_table_rejects_wrong_cell_type[BOOL-1]",
@@ -123,15 +123,15 @@
         "message": [
           "AssertionError: ['scan', 'project', 'limitstage']",
           "assert False",
-          " +  where False = _constant_pipeline_form(<test_c3._Facade object at 0x000002AE04527C50>, ['scan', 'project', 'limitstage'])"
+          " +  where False = _constant_pipeline_form(<test_c3._Facade object at 0x000002286EBAC4D0>, ['scan', 'project', 'limitstage'])"
         ]
       },
       {
         "name": "_verify.test_c3::test_plan_full_pipeline_order",
         "kind": "failure",
         "message": [
-          "AssertionError: join missing from ['scan', 'inner', 'filter', 'groupstage', 'project', 'distinct', 'orderstage', 'limitstage']",
-          "assert 'join' in ['scan', 'inner', 'filter', 'groupstage', 'project', 'distinct', ...]"
+          "AssertionError: having missing from ['scan', 'inner', 'filter', 'groupstage', 'project', 'distinct', 'orderstage', 'limitstage']",
+          "assert 'having' in ['scan', 'inner', 'filter', 'groupstage', 'project', 'distinct', ...]"
         ]
       },
       {
@@ -208,7 +208,7 @@
     "errors": 0,
     "skipped": 0,
     "passed": 64,
-    "time": 0.287,
+    "time": 0.692,
     "bad": []
   }
 }

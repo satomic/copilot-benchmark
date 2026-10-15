@@ -1,0 +1,44 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "null_logic_centralised": {
+    "maxPoints": 5,
+    "criterion": "三值逻辑与 NULL 规则集中在 value.py，WHERE / 聚合 / 排序三处都复用它，没有各自重写一套 NULL 判断",
+    "points": 5,
+    "verdict": "完全符合：三值逻辑与 NULL 规则全部在 value.py，三处复用",
+    "reasoning": "value.py:26-50 的 as_logical / and_ / or_ / not_ 承载三值逻辑，value.py:62-121 的 compare / arith / negate 承载 NULL 传播与类型检查，value.py:124-135 的 group_key 定义 NULL 等于 NULL 的分组键。WHERE 与 HAVING 共用 executor.py:122-123 的 _keep（as_logical(...) is True），聚合 aggregate.py:6 只从 value 导入 compare_lt / is_numeric / type_of，排序 executor.py:206-220 的 _cmp_one 用 compare_lt 比较非 NULL 值、只在排序层补 NULL 末尾规则，DISTINCT 与 GROUP BY 都经 group_key（executor.py:134、198）。没有任何一处自己重写 NULL 判断。",
+    "evidence": [
+      "value.py:26-50",
+      "value.py:62-135",
+      "executor.py:122-123",
+      "executor.py:206-220",
+      "aggregate.py:6"
+    ]
+  },
+  "explicit_stage_order": {
+    "maxPoints": 4,
+    "criterion": "执行阶段顺序由 planner 显式表达为数据（可枚举的阶段序列），executor 按该顺序执行，不在控制流里隐式重排",
+    "points": 4,
+    "verdict": "完全符合：planner 产出阶段数据序列，executor 按序表驱动分派",
+    "reasoning": "planner.py:14-67 定义九种 frozen dataclass 阶段（每种带 ClassVar name），planner.py:89-110 的 plan 按第 8 节顺序逐个追加（FROM 与 JOIN 合为 ScanStage，与规格第 8 节第 1 步『FROM and JOIN』的表述一致），planner.py:69-86 的 Plan 是可迭代、可索引的序列；executor.py:52-56 的 execute_plan 用 for stage in plan 经 executor.py:250-260 的 _HANDLERS 类型表分派，控制流里没有隐式重排。与 gpt-6.1-sol 的数据驱动满分形态同型。",
+    "evidence": [
+      "planner.py:14-67",
+      "planner.py:89-110",
+      "executor.py:52-56",
+      "executor.py:250-260"
+    ]
+  },
+  "name_resolution_single_point": {
+    "maxPoints": 3,
+    "criterion": "名称解析（限定名、非限定名、别名优先、歧义报错）集中在一处，不是在投影与排序里各判一次",
+    "points": 3,
+    "verdict": "完全符合：Scope.resolve 单点解析，别名优先在 evaluate 的单一入口处理",
+    "reasoning": "expr.py:29-46 的 Scope.resolve 是唯一的列名解析点：限定名先校验表名再精确匹配、非限定名按列名匹配、零命中抛 UnknownColumnError、多命中抛 AmbiguousColumnError；executor.py:94-103 的 _check_columns 与 expr.py:85-91 的 _column 都调用它，投影与排序没有各自再判一次。别名优先规则只在 expr.py:67-68 的 evaluate 入口判一次（aliases 只在 ORDER BY 的 Env 里非空，executor.py:234-238），DISTINCT 后不可见输入列由 scope=None 单点表达（executor.py:236、expr.py:89-90）。",
+    "evidence": [
+      "expr.py:29-46",
+      "expr.py:67-68",
+      "expr.py:85-91",
+      "executor.py:94-103",
+      "executor.py:231-241"
+    ]
+  }
+}

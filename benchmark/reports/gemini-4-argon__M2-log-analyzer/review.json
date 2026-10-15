@@ -1,0 +1,36 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "regex_named_groups": {
+    "maxPoints": 5,
+    "criterion": "用一条预编译正则 + 命名组解析日志行，不是多次 split 拼凑",
+    "points": 3,
+    "verdict": "部分符合：单条预编译正则，但全部是位置组而非命名组",
+    "reasoning": "logstats.py:28-33 的 _LINE_RE 是单条模块级预编译正则，一次匹配整行并以行首行尾锚定，method 字符类 [A-Z]+ 命中规格埋点，无 split 拼凑。但整条正则没有任何 (?P<name>) 命名组，解析靠位置解包（logstats.py:77-93 一次 15 元组 match.groups()），时间戳还被拆成 7 个位置组再交给 _parse_timestamp 的 7 个参数（logstats.py:36-44），字段与位置的对应完全依赖计数，判据点名的『命名组』未达成。与 gemini-3.8-flash 的同型位置组实现对齐判 3 分。",
+    "evidence": [
+      "logstats.py:28-33",
+      "logstats.py:77-93",
+      "logstats.py:36-44"
+    ]
+  },
+  "streaming": {
+    "maxPoints": 4,
+    "criterion": "analyze 单遍流式处理任意可迭代对象，不把整个文件 list() 进内存",
+    "points": 4,
+    "verdict": "完全符合：analyze 单层 for 流式推进",
+    "reasoning": "analyze（logstats.py:130-211）单层 for 遍历任意可迭代对象，计数器与 Counter 就地累加，唯一增长容器是分位数所需的 durations 列表。main 的 list(fh)（logstats.py:278）是为 --strict 预检服务的 CLI 侧选择，与 sonnet-5.5 / haiku-5.5 的同型结构口径一致，不影响 analyze 本体的流式性。",
+    "evidence": [
+      "logstats.py:130-169",
+      "logstats.py:276-278"
+    ]
+  },
+  "percentile_isolated": {
+    "maxPoints": 3,
+    "criterion": "分位数抽成独立函数，空列表与 n=1 的边界显式处理",
+    "points": 3,
+    "verdict": "完全符合：独立函数，空表与 n=1 都在函数内显式处理",
+    "reasoning": "logstats.py:121-127 的 _percentile 是模块级独立函数，函数内 n == 0 守卫返回 0.0，最近秩公式加 max/min 双侧钳位显式覆盖 n=1。判据三要件全部落在函数内，与 grok-4.6 / deepseek-v4-flash 的满分口径一致。",
+    "evidence": [
+      "logstats.py:121-127"
+    ]
+  }
+}

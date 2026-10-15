@@ -1,0 +1,36 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "grammar_correspondence": {
+    "maxPoints": 5,
+    "criterion": "递归下降的函数与 task.md 的文法层级一一对应，命名可读，无手工回溯",
+    "points": 5,
+    "verdict": "完全符合：十个解析方法与文法逐层对应",
+    "reasoning": "parser.py:97-205 的 _parse_expr / _parse_or / _parse_and / _parse_not / _parse_comparison / _parse_additive / _parse_multiplicative / _parse_unary / _parse_power / _parse_primary 与 task.md 第 68-82 行文法逐层一一对应，命名直接沿用产生式名；单 token 前瞻（_current / _match / _expect）无手工回溯；^ 右结合取 unary 右操作数（parser.py:162-167）、not 递归（parser.py:114-118）、比较非结合显式报错（parser.py:127-129）都落实。与 grok-4.7 / opus-5.5 的满分结构同型。",
+    "evidence": [
+      "parser.py:97-205"
+    ]
+  },
+  "named_ast": {
+    "maxPoints": 4,
+    "criterion": "AST 用具名节点（dataclass / NamedTuple / 类），不是裸 tuple 或 dict",
+    "points": 4,
+    "verdict": "完全符合：七种 frozen dataclass 节点",
+    "reasoning": "parser.py:10-53 用 @dataclass(frozen=True) 定义 NumberLiteral / StringLiteral / BoolLiteral / Identifier / UnaryOp / BinaryOp / Call 七种节点，每种都携带 position 字段；evaluator.py:16 起按 isinstance 分派。不是裸 tuple 或 dict。",
+    "evidence": [
+      "parser.py:10-53",
+      "evaluator.py:16-28"
+    ]
+  },
+  "error_consistency": {
+    "maxPoints": 3,
+    "criterion": "三类错误消息风格一致且带位置信息，没有 except Exception 吞异常",
+    "points": 2,
+    "verdict": "部分符合：求值器站点全带位置、无宽捕获，但内置函数层的错误不带位置",
+    "reasoning": "errors.py:1-18 基类携带 position 且 str() 返回纯消息，三个子类继承；evaluator.py:121-122 对幂运算只窄捕获 ZeroDivisionError / OverflowError / ValueError，全库无 except Exception（自动检查通过）；evaluator.py 的全部 EvalError 站点（变量、一元、逻辑、比较、算术、除零，evaluator.py:28-129）逐一传入 node.position，消息统一为小写短句。但内置函数这一整层（builtins.py:29-141：参数个数、参数类型、未知函数、if() 条件、num() 转换）的 EvalError 全部不带位置，Call 节点的 position 没有传入 builtins。介于 haiku-5.5 / sonnet-5.5 的 2 分形态与 opus-5.5 / grok-4.7 全站点带位置的 3 分形态之间，按既有口径整数计分判 2 分。",
+    "evidence": [
+      "errors.py:1-18",
+      "evaluator.py:28-129",
+      "builtins.py:29-141"
+    ]
+  }
+}

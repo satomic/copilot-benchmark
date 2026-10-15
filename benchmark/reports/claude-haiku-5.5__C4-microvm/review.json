@@ -1,0 +1,40 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "shared_type_rules": {
+    "maxPoints": 5,
+    "criterion": "运行时类型规则单一来源：VM 的算术/比较/布尔检查收在一处，优化器折叠复用同一套规则或直接调用它，编译期折叠与运行期语义不可能分叉",
+    "points": 5,
+    "verdict": "完全符合：优化器直接导入 VM 的 binary_op / unary_op 折叠",
+    "reasoning": "vm.py:30-104 把 bool 与数值的判别、相等、排序、算术全部收在 binary_op / unary_op 与其私有辅助里，vm.py:144-146 的解释循环经同一对函数执行；optimizer.py:7 直接 from .vm import binary_op, unary_op，optimizer.py:38-56 对双字面量调用它们折叠，捕获 VMRuntimeError 时保留原表达式让错误留到运行期（optimizer.py:41-44、52-55）。编译期折叠与运行期语义是同一份代码，不可能分叉。与 sonnet-5.5 / gpt-6.1-sol 的满分形态同型。",
+    "evidence": [
+      "vm.py:30-104",
+      "optimizer.py:7",
+      "optimizer.py:38-56"
+    ]
+  },
+  "jump_patching_single_point": {
+    "maxPoints": 4,
+    "criterion": "前向跳转回填经由一个集中的 emit/patch 机制（标签或补丁表），不是散落各处的裸下标运算",
+    "points": 4,
+    "verdict": "完全符合：emit 返回下标、patch 单点回填",
+    "reasoning": "compiler.py:90-98 的 emit 返回新指令下标、patch 以不可变 Instr 替换目标、here 读当前位置，是唯一的回填机制；compiler.py:126-144 的 if / while 与 compiler.py:161-179 的短路逻辑全部用 emit(..., 0) 占位后 patch(index, here()) 回填，没有散落的裸下标运算。",
+    "evidence": [
+      "compiler.py:90-98",
+      "compiler.py:126-144",
+      "compiler.py:161-179"
+    ]
+  },
+  "codec_discipline": {
+    "maxPoints": 3,
+    "criterion": "二进制布局用 struct 声明式表达且 dumps/loads 共用定义；loads 先验 CRC 再信任任何长度字段；读取有单一的越界检查点",
+    "points": 3,
+    "verdict": "完全符合：struct 声明、先验 CRC、单一越界检查点",
+    "reasoning": "serializer.py:151-155 的 _pack 统一封装 struct.pack，dumps（serializer.py:18-32）与 loads（serializer.py:35-47）共用 MAGIC / VERSION / NO_ARG / 常量标签与 OPCODES 表；serializer.py:50-60 的 _checked_body 先验 magic 与 CRC 再返回 body，loads 在此之前不解释任何长度字段；serializer.py:63-83 的 _Reader.take 是唯一的越界检查点，所有 unpack 经它读取，结尾还验 trailing bytes（serializer.py:45-46）。与 sonnet-5.5 / gpt-6.1-sol 的满分口径一致。",
+    "evidence": [
+      "serializer.py:18-47",
+      "serializer.py:50-60",
+      "serializer.py:63-83",
+      "serializer.py:151-155"
+    ]
+  }
+}

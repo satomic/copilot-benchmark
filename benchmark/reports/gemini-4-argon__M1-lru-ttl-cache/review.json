@@ -1,0 +1,38 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "o1_hotpath": {
+    "maxPoints": 5,
+    "criterion": "用 OrderedDict.move_to_end 或双向链表实现 O(1) 的 get/set，不是每次排序或线性查找",
+    "points": 5,
+    "verdict": "完全符合：OrderedDict + move_to_end 的 O(1) 热路径",
+    "reasoning": "lru.py:57 用 OrderedDict 保存条目，get（lru.py:90-105）命中后 move_to_end，set（lru.py:107-132）满时 popitem(last=False) 淘汰 LRU，均为 O(1)；过期条目用 lru.py:67-78 的最小堆按截止时间弹出、以 seq 识别陈旧堆项，不做全表扫描；每个公共方法在 RLock 内执行。与此前全部满分实现同型。",
+    "evidence": [
+      "lru.py:57-59",
+      "lru.py:67-78",
+      "lru.py:90-132"
+    ]
+  },
+  "module_separation": {
+    "maxPoints": 4,
+    "criterion": "三个模块职责清晰，__init__.py 只做再导出，不塞实现",
+    "points": 4,
+    "verdict": "完全符合：__init__ 只再导出，stats 独立数据类，lru 承载实现",
+    "reasoning": "cache/__init__.py 共 4 行：两条 from 导入与 __all__，零实现；cache/stats.py 共 9 行只有 frozen dataclass CacheStats；cache/lru.py 承载全部实现（含 _Entry 与 _validate_ttl 辅助）。与此前全部满分划分一致。",
+    "evidence": [
+      "cache/__init__.py:1-4",
+      "cache/stats.py:4-9",
+      "cache/lru.py:17-37"
+    ]
+  },
+  "sentinel": {
+    "maxPoints": 3,
+    "criterion": "区分 ttl=None 与省略 ttl 用私有模块级 sentinel（object()），不是 \"default\" 字符串或 -1 魔数",
+    "points": 3,
+    "verdict": "完全符合：模块级 object() 哨兵区分省略与 None",
+    "reasoning": "lru.py:14 的 _UNSET = object() 是私有模块级哨兵，set 的 ttl 默认值为它（lru.py:107），lru.py:109-112 用 ttl is _UNSET 判断是否省略，省略时沿用实例默认 ttl、显式 None 则不过期，没有字符串或魔数。",
+    "evidence": [
+      "lru.py:14",
+      "lru.py:107-112"
+    ]
+  }
+}

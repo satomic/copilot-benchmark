@@ -18,7 +18,7 @@
     "errors": 0,
     "skipped": 0,
     "passed": 358,
-    "time": 7.157,
+    "time": 8.623,
     "bad": [
       {
         "name": "_verify.test_c3::test_float_literals[1e3-1000.0]",
@@ -113,15 +113,15 @@
         "message": [
           "AssertionError: ['scanstage', 'project']",
           "assert False",
-          " +  where False = _constant_pipeline_form(<test_c3._Facade object at 0x000001ED75745390>, ['scanstage', 'project'])"
+          " +  where False = _constant_pipeline_form(<test_c3._Facade object at 0x000001C5A003C4D0>, ['scanstage', 'project'])"
         ]
       },
       {
         "name": "_verify.test_c3::test_plan_full_pipeline_order",
         "kind": "failure",
         "message": [
-          "AssertionError: scan missing from ['scanstage', 'join', 'filterstage', 'group', 'filterstage', 'project', 'distinct', 'sort', 'offsetstage', 'limitstage']",
-          "assert 'scan' in ['scanstage', 'join', 'filterstage', 'group', 'filterstage', 'project', ...]"
+          "AssertionError: filter missing from ['scanstage', 'join', 'filterstage', 'group', 'filterstage', 'project', 'distinct', 'sort', 'offsetstage', 'limitstage']",
+          "assert 'filter' in ['scanstage', 'join', 'filterstage', 'group', 'filterstage', 'project', ...]"
         ]
       },
       {
@@ -182,7 +182,7 @@
     "errors": 0,
     "skipped": 0,
     "passed": 96,
-    "time": 0.342,
+    "time": 0.734,
     "bad": []
   }
 }

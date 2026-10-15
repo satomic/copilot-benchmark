@@ -115,18 +115,18 @@ microdb\parser.py:61: in parse
     if self.cur().kind != "EOF": raise ParseError("unexpected token", self.cur().offset)
 E   microdb.errors.ParseError: unexpected token
 _____________________________ test_cli_two_tables _____________________________
-_verify\test_c3.py:1285: in test_cli_two_tables
+_verify\test_c3.py:1293: in test_cli_two_tables
     assert done.returncode == 0
 E   AssertionError: assert 3 == 0
 E    +  where 3 = CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...wo_tables0\\r.csv', 'SELECT l.id FROM l JOIN r ON l.id = r.lid'], returncode=3, stdout='', stderr='unexpected token\n').returncode
 ________________________ test_cli_bad_header_exit_two _________________________
-_verify\test_c3.py:1306: in test_cli_bad_header_exit_two
+_verify\test_c3.py:1314: in test_cli_bad_header_exit_two
     assert cli("--table", f"t={path}", "SELECT id FROM t").returncode == 2
 E   AssertionError: assert 1 == 2
 E    +  where 1 = CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: Column.__init__() missing 1 required positional argument: \'type\'\n').returncode
-E    +    where CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: Column.__init__() missing 1 required positional argument: \'type\'\n') = cli('--table', 't=C:\\Users\\xuefengyin\\AppData\\Local\\Temp\\pytest-of-xuefengyin\\pytest-619\\test_cli_bad_header_exit_two0\\bad.csv', 'SELECT id FROM t')
+E    +    where CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: Column.__init__() missing 1 required positional argument: \'type\'\n') = cli('--table', 't=C:\\Users\\xuefengyin\\AppData\\Local\\Temp\\pytest-of-xuefengyin\\pytest-664\\test_cli_bad_header_exit_two0\\bad.csv', 'SELECT id FROM t')
 _________ test_cli_query_error_exit_three[SELECT id, count(*) FROM t] _________
-_verify\test_c3.py:1322: in test_cli_query_error_exit_three
+_verify\test_c3.py:1330: in test_cli_query_error_exit_three
     assert done.returncode == 3
 E   AssertionError: assert 0 == 3
 E    +  where 0 = CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...ery_error_exit_thre4\\people.csv', 'SELECT id, count(*) FROM t'], returncode=0, stdout='id,count(*)\n1,3\n', stderr='').returncode
@@ -147,4 +147,4 @@ FAILED _verify/test_c3.py::test_plan_full_pipeline_order - microdb.errors.Par...
 FAILED _verify/test_c3.py::test_cli_two_tables - AssertionError: assert 3 == 0
 FAILED _verify/test_c3.py::test_cli_bad_header_exit_two - AssertionError: ass...
 FAILED _verify/test_c3.py::test_cli_query_error_exit_three[SELECT id, count(*) FROM t]
-15 failed, 362 passed in 6.59s
+15 failed, 362 passed in 9.50s

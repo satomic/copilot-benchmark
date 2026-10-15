@@ -1,0 +1,49 @@
+{
+  "task": "C4-microvm",
+  "model": "claude-haiku-5.5",
+  "functional": 69.61,
+  "functionalMax": 70.0,
+  "spec": 15,
+  "specMax": 15,
+  "quality": 15.0,
+  "qualityMax": 15.0,
+  "qualityAuto": 3.0,
+  "qualityReview": 12,
+  "total": 99.61,
+  "reviewPending": [],
+  "vetoTriggered": [],
+  "hidden": {
+    "total": 296,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 294,
+    "time": 8.123,
+    "bad": [
+      {
+        "name": "_verify.test_c4::test_parse_errors[if true { }]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE (<class 'microvm.errors.ParseError'>, <class 'microvm.errors.LexError'>)"
+        ]
+      },
+      {
+        "name": "_verify.test_c4::test_parse_errors[while true { }]",
+        "kind": "failure",
+        "message": [
+          "Failed: DID NOT RAISE (<class 'microvm.errors.ParseError'>, <class 'microvm.errors.LexError'>)"
+        ]
+      }
+    ]
+  },
+  "visible": null,
+  "own": {
+    "total": 70,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 70,
+    "time": 0.552,
+    "bad": []
+  }
+}

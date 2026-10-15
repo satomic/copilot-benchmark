@@ -1,0 +1,24 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "algorithm": {
+    "maxPoints": 6,
+    "criterion": "查表 + 贪心（divmod / 循环减法）实现；不是按千百十个位写 if/elif 硬编码分支",
+    "points": 6,
+    "verdict": "完全符合：模块级查表 + divmod 贪心",
+    "reasoning": "roman.py:1-15 是模块级 13 组 (value, symbol) 元组 _NUMERAL_PAIRS，roman.py:27-29 对其 divmod 贪心累积后 join，无按千百十个位的 if/elif 分支。roman.py:20 用 isinstance(n, bool) 显式排除 bool。与 claude-sonnet-5.5 / claude-opus-5.5 的满分实现同型。",
+    "evidence": [
+      "roman.py:1-15",
+      "roman.py:27-30"
+    ]
+  },
+  "error_messages": {
+    "maxPoints": 4,
+    "criterion": "TypeError / ValueError 的消息可读且包含出错的实际值或类型，不是裸 raise",
+    "points": 4,
+    "verdict": "完全符合：两条消息都带出错的实际类型或实际值",
+    "reasoning": "roman.py:21 的 TypeError 消息『expected int, got {type(n).__name__}』带出错的实际类型名，roman.py:23 的 ValueError 消息『value must be in 1..3999, got {n}』带出错的实际值，都不是裸 raise。与 claude-opus-5.5 带实际值的 4 分口径一致（sonnet-5.5 / gpt-6.1-sol 因不带实际值判 3 分）。",
+    "evidence": [
+      "roman.py:20-23"
+    ]
+  }
+}

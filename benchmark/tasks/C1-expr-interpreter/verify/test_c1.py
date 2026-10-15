@@ -167,7 +167,12 @@ def test_string_escapes(ml):
 
 
 def test_comments_are_skipped(ml):
-    assert ml.tokenize("1 # trailing comment") == ml.tokenize("1")
+    # Spec item 32 pins .kind/.value/.position, not Token equality, so compare
+    # attribute tuples (same idiom as test_token_kinds_and_positions).
+    def shape(tokens):
+        return [(t.kind, t.value, t.position) for t in tokens]
+
+    assert shape(ml.tokenize("1 # trailing comment")) == shape(ml.tokenize("1"))
     assert ml.evaluate("# leading\n2 + 3 # trailing") == 5.0
 
 

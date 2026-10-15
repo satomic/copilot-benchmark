@@ -76,6 +76,23 @@
 # (input $0.19 / cache read $0.028 / output $0.51 per 1M, DeepSeek-V4 Flash
 # Global, read 2026-09-28). The benchmark batch runs on CLI 1.0.89-6.
 
+# NOTE on claude-haiku-5.5 / gemini-4-argon: slugs read from the CLI's CAPI
+# /models catalog (debug-log read-back, 2026-10-15, zero cost; catalog now has
+# 36 entries and no longer lists claude-sonnet-5 / claude-opus-5 /
+# claude-haiku-4.5 / gpt-5.6-luna) and verified by smoke runs (currentModel
+# read-back exact match; 0.05 and 0.68 credits). Both ACCEPT --effort medium
+# (catalog reasoning_effort: haiku-5.5 low..max, gemini-4-argon low..high only,
+# so never pass xhigh/max to argon). Catalog billing (unit = catalog price /
+# 100 dollars per 1M tokens, same calibration as the earlier batches):
+#   claude-haiku-5.5: input $0.10 / cache read $0.01 / cache write $0.125 /
+#     output $0.50 (default tier <=100k prompt; long_context tier is 5x on
+#     every line), 1M context, /model group lightweight. Unlike haiku-4.5 it
+#     is NOT in $NoEffortModels.
+#   gemini-4-argon: input $2.00 / cache read $0.10 / cache write $0 /
+#     output $10.00 (same prices on the long_context tier), 1.05M context,
+#     /model group powerful.
+# The benchmark batch for these two runs on CLI 1.0.98.
+
 gpt-6-astra
 claude-sonnet-5
 claude-opus-5
@@ -93,3 +110,5 @@ deepseek-v4-flash
 claude-opus-5.5
 claude-sonnet-5.5
 gpt-6.1-sol
+claude-haiku-5.5
+gemini-4-argon

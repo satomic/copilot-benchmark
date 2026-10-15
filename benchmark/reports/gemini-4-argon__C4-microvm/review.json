@@ -1,0 +1,39 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "shared_type_rules": {
+    "maxPoints": 5,
+    "criterion": "运行时类型规则单一来源：VM 的算术/比较/布尔检查收在一处，优化器折叠复用同一套规则或直接调用它，编译期折叠与运行期语义不可能分叉",
+    "points": 3,
+    "verdict": "部分符合：VM 规则收在一处，但优化器另写了一套平行的折叠语义",
+    "reasoning": "vm.py:9-78 的 _is_num / _exec_arith / _exec_cmp / _exec_unary 把运行期算术、比较、布尔检查收在一处；但 optimizer.py:20-100 的 _is_number / _fold_unary / _fold_arith / _fold_compare / _fold_logic 是独立实现的第二套折叠语义，optimizer.py:3-17 只导入 parser 的节点类型，没有导入或调用 vm 的任何规则，编译期与运行期语义理论上可分叉。两套语义当前等价（除零不折叠 optimizer.py:47-48、非 INT 取模不折叠 optimizer.py:51、短路保类型 optimizer.py:91-99，折叠类隐藏断言全过），但判据要求的『单一来源、不可能分叉』未达成。与 gpt-6-luna / hydrafusion / grok-4.6 / gemini-3.8-flash 的同型结构对齐判 3 分（直接导入 VM 规则的实现得 5 分）。",
+    "evidence": [
+      "vm.py:9-78",
+      "optimizer.py:3-17",
+      "optimizer.py:20-100"
+    ]
+  },
+  "jump_patching_single_point": {
+    "maxPoints": 4,
+    "criterion": "前向跳转回填经由一个集中的 emit/patch 机制（标签或补丁表），不是散落各处的裸下标运算",
+    "points": 4,
+    "verdict": "完全符合：emit 返回下标、patch 单点回填",
+    "reasoning": "compiler.py:80-88 的 emit 返回新指令下标、patch 单点回填目标，是唯一的回填机制；compiler.py:170-188 的 if / while 与 compiler.py:205-232 的短路逻辑全部用 emit(..., 0) 占位后 patch 回填，没有散落的裸下标运算。",
+    "evidence": [
+      "compiler.py:80-88",
+      "compiler.py:170-188",
+      "compiler.py:205-232"
+    ]
+  },
+  "codec_discipline": {
+    "maxPoints": 3,
+    "criterion": "二进制布局用 struct 声明式表达且 dumps/loads 共用定义；loads 先验 CRC 再信任任何长度字段；读取有单一的越界检查点",
+    "points": 3,
+    "verdict": "完全符合：struct 声明、先验 CRC、单一越界检查点",
+    "reasoning": "serializer.py 全程 struct.pack / struct.unpack 声明式表达，dumps（serializer.py:54-83）与 loads（serializer.py:142-184）共用 MAGIC / VERSION / NO_ARG / 常量标签与 OPCODE_NUMBERS 表（serializer.py:9-18）；loads 在 serializer.py:149-155 先验 magic 与 CRC 再解析任何长度字段；serializer.py:86-89 的 _read_bytes 是唯一的越界检查点，所有字段读取经它，结尾还验 trailing bytes（serializer.py:182-183）。判据外记录：serializer.py:146-147 注释算出的最小长度是 17 却只检查 9，但 CRC 校验与 _read_bytes 让这个宽松上界不会放过任何畸形输入。与 sonnet-5.5 / gpt-6.1-sol 的满分口径一致。",
+    "evidence": [
+      "serializer.py:9-18",
+      "serializer.py:86-89",
+      "serializer.py:142-184"
+    ]
+  }
+}

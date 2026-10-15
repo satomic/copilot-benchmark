@@ -1,0 +1,25 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "layering": {
+    "maxPoints": 6,
+    "criterion": "key 解析 / 值解引号 / 转义展开分成独立的辅助函数，主循环可读",
+    "points": 5,
+    "verdict": "大体符合：值解引号与转义展开已抽出，key 解析仍内联在主循环",
+    "reasoning": "envparse.py:11-13 的 _expand 与 envparse.py:16-26 的 _parse_value 把转义展开、解引号分派与注释剥离完整抽出，主循环（envparse.py:29-43）可读。key 解析（strip、_EXPORT_RE 去 export 前缀、_KEY_RE 校验，envparse.py:38-41）以约 4 行内联在主循环。与 claude-sonnet-5.5 / claude-opus-5.5 / hydrafusion 的同型结构一致判 5 分。",
+    "evidence": [
+      "envparse.py:11-26",
+      "envparse.py:38-41"
+    ]
+  },
+  "escape_single_pass": {
+    "maxPoints": 5,
+    "criterion": "转义用单次左到右扫描或查表，不是链式 .replace()（链式会引入顺序 bug）",
+    "points": 5,
+    "verdict": "完全符合：一条正则 + 查表的单次替换",
+    "reasoning": "envparse.py:5 的 _ESCAPE_RE 匹配受支持的五种转义，envparse.py:13 用 re.sub 一次左到右替换并查 envparse.py:6 的 _ESCAPE_MAP，未知转义原样保留；envparse.py:12 的注释明确说明单遍是为了让反斜杠加 n 不被二次展开。不是链式 .replace()。",
+    "evidence": [
+      "envparse.py:5-6",
+      "envparse.py:11-13"
+    ]
+  }
+}

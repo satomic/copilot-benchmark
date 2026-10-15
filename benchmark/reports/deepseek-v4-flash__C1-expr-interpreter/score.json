@@ -1,7 +1,7 @@
 {
   "task": "C1-expr-interpreter",
   "model": "deepseek-v4-flash",
-  "functional": 65.07,
+  "functional": 65.45,
   "functionalMax": 70.0,
   "spec": 15,
   "specMax": 15,
@@ -9,16 +9,16 @@
   "qualityMax": 15.0,
   "qualityAuto": 2.25,
   "qualityReview": 12,
-  "total": 94.32,
+  "total": 94.7,
   "reviewPending": [],
   "vetoTriggered": [],
   "hidden": {
     "total": 153,
-    "failures": 13,
+    "failures": 12,
     "errors": 0,
     "skipped": 0,
-    "passed": 140,
-    "time": 2.35,
+    "passed": 141,
+    "time": 1.883,
     "bad": [
       {
         "name": "_verify.test_c1::test_token_kinds_and_positions",
@@ -84,15 +84,6 @@
         ]
       },
       {
-        "name": "_verify.test_c1::test_comments_are_skipped",
-        "kind": "failure",
-        "message": [
-          "AssertionError: assert [Token(NUMBER, '1', 0)] == [Token(NUMBER, '1', 0)]",
-          "  ",
-          "  At index 0 diff: Token(NUMBER, '1', 0) != Token(NUMBER, '1', 0)"
-        ]
-      },
-      {
         "name": "_verify.test_c1::test_all_numbers_are_floats",
         "kind": "failure",
         "message": [
@@ -142,7 +133,7 @@
     "errors": 0,
     "skipped": 0,
     "passed": 111,
-    "time": 2.358,
+    "time": 2.215,
     "bad": []
   }
 }

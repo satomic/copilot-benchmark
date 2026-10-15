@@ -1,0 +1,43 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "null_logic_centralised": {
+    "maxPoints": 5,
+    "criterion": "三值逻辑与 NULL 规则集中在 value.py，WHERE / 聚合 / 排序三处都复用它，没有各自重写一套 NULL 判断",
+    "points": 4,
+    "verdict": "大体符合：原语集中在 value.py 且三处复用，但 HAVING 的谓词判定在 executor 里重写了一遍",
+    "reasoning": "value.py:26-131 集中定义 _ensure_logical / and_ / or_ / not_ / compare_eq / compare_lt / compare / arith / negate，三值逻辑与 NULL 传播全部在此；expr.py:27 与 aggregate.py:6 只从 value 导入，WHERE 经 expr.py:179-188 的 eval_predicate（BOOL 校验 + is True），排序 executor.py:399-417 用 compare_eq / compare_lt 比较非 NULL 值、只在排序层补 NULL 末尾规则，min/max 经 compare_lt（aggregate.py:52-55）。失分点：HAVING 没有复用 eval_predicate，executor.py:468-472 用三行内联代码重写了『非 BOOL 抛 TypeMismatchError、非 True 丢弃』的判定，与 WHERE 的判定逻辑重复。比 haiku-4.5 排序层完全绕开原语的 2 分形态轻得多，判 4 分。",
+    "evidence": [
+      "value.py:26-131",
+      "expr.py:179-188",
+      "executor.py:468-472",
+      "executor.py:399-417"
+    ]
+  },
+  "explicit_stage_order": {
+    "maxPoints": 4,
+    "criterion": "执行阶段顺序由 planner 显式表达为数据（可枚举的阶段序列），executor 按该顺序执行，不在控制流里隐式重排",
+    "points": 2,
+    "verdict": "部分符合：planner 产出真实的阶段数据序列，但 executor 不消费它",
+    "reasoning": "planner.py:24-73 定义九种 frozen dataclass 阶段（FromJoinStage 把 FROM 与 JOIN 合为一步，与规格第 8 节第 1 步的表述一致），planner.py:139-160 的 plan 按查询形态依次追加，planner.py:76-94 的 Plan 实现 Sequence 协议，静态计划测试全过。失分点是后半截没有兑现：executor.py:552-569 的 execute_plan 只取 query_plan.query 与 is_grouped 两个字段，随后用硬编码的 if 链（FROM/JOIN、WHERE、投影、grouped / ungrouped 分支、OFFSET、LIMIT）按控制流顺序执行，DISTINCT 与 ORDER BY 的顺序还埋在 _execute_grouped / _execute_ungrouped 内部（executor.py:479-494、509-527），从不迭代 plan 的阶段序列。与 claude-sonnet-5 / hydrafusion 的同型装饰性 Plan 对齐判 2 分。",
+    "evidence": [
+      "planner.py:139-160",
+      "executor.py:552-569",
+      "executor.py:479-494",
+      "executor.py:509-527"
+    ]
+  },
+  "name_resolution_single_point": {
+    "maxPoints": 3,
+    "criterion": "名称解析（限定名、非限定名、别名优先、歧义报错）集中在一处，不是在投影与排序里各判一次",
+    "points": 2,
+    "verdict": "部分符合：源列解析单点，但别名优先规则在四处各判一次",
+    "reasoning": "expr.py:48-67 的 RowSchema.resolve 是源列名的唯一解析点：限定名先校验表名再精确匹配、非限定名按列名匹配、零命中抛 UnknownColumnError、多命中抛 AmbiguousColumnError，_validate_row_expr 与 eval_expr 都经由它。失分点：别名优先与 DISTINCT 后输出列可见性的规则没有收敛：executor.py:302-306 的 _resolve_alias_index、executor.py:309-333 的 _resolve_distinct_col、executor.py:517-522 的 resolver 闭包、executor.py:248-250 的 _eval_group_expr alias_lookup 分支、executor.py:531-539 的 _validate_ungrouped_order_expr 各自实现一遍『先查别名再回退源列』，排序与校验路径里重复判断。判 2 分。",
+    "evidence": [
+      "expr.py:48-67",
+      "executor.py:302-333",
+      "executor.py:517-522",
+      "executor.py:248-250",
+      "executor.py:531-539"
+    ]
+  }
+}

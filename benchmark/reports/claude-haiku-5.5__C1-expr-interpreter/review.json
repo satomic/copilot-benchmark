@@ -1,0 +1,39 @@
+{
+  "_instructions": "One entry per review item: {\"points\": <int>, \"verdict\": \"<one line>\", \"reasoning\": \"<why, referencing the code>\", \"evidence\": [\"<file:line or snippet>\"]}. points must be between 0 and the item maximum shown below.",
+  "grammar_correspondence": {
+    "maxPoints": 5,
+    "criterion": "递归下降的函数与 task.md 的文法层级一一对应，命名可读，无手工回溯",
+    "points": 4,
+    "verdict": "大体符合：八个解析方法对应九层文法，additive 层被内联到 comparison 里",
+    "reasoning": "parser.py:84-145 的 expression / _and / _not / _comparison / _multiplicative / _unary / _power / _primary 与 task.md 第 68-82 行文法逐层对应，parser.py:76-82 的 _binary_level 把左结合循环抽成通用组合子（与 gpt-6.1-sol 的 left_chain 同型），单 token 前瞻、无手工回溯，^ 右结合（parser.py:118-124）与 not 结合性（parser.py:90-94）都落实。但 additive 这一层没有自己的具名方法：parser.py:97 与 parser.py:102 在 _comparison 内部两次直接调用 _binary_level(『+』『-』, self._multiplicative)，文法与函数不是严格一一对应，读者要从 _comparison 的实现里才能看出加法层的存在。相比 sonnet-5.5 / gpt-6.1-sol 九层各有具名函数的满分形态少一层，判 4 分。",
+    "evidence": [
+      "parser.py:76-82",
+      "parser.py:84-145",
+      "parser.py:96-107"
+    ]
+  },
+  "named_ast": {
+    "maxPoints": 4,
+    "criterion": "AST 用具名节点（dataclass / NamedTuple / 类），不是裸 tuple 或 dict",
+    "points": 4,
+    "verdict": "完全符合：五种 frozen dataclass 节点",
+    "reasoning": "parser.py:12-43 用 @dataclass(frozen=True) 定义 Literal / Var / Call / Unary / Binary 五种节点，每种都携带 position 字段，Call.args 用 tuple 保持不可变；evaluator.py:23-34 按 isinstance 分派。不是裸 tuple 或 dict。",
+    "evidence": [
+      "parser.py:12-43",
+      "evaluator.py:23-34"
+    ]
+  },
+  "error_consistency": {
+    "maxPoints": 3,
+    "criterion": "三类错误消息风格一致且带位置信息，没有 except Exception 吞异常",
+    "points": 2,
+    "verdict": "部分符合：层次与风格一致、无宽捕获，但类型错误站点不带位置",
+    "reasoning": "errors.py:4-22 基类携带 message 与 position、str() 返回纯消息，三个子类继承；evaluator.py:123-128 对幂运算只窄捕获 ZeroDivisionError / OverflowError，全库无 except Exception（自动检查通过）；消息统一为小写短句。位置信息只做了一半：undefined variable / undefined function / 除零 / 取模零 / 幂运算错误站点传了 node.position（evaluator.py:39、42、116、120、126-130、137），但最常见的类型错误站点 _require（evaluator.py:46-50）、_ordering（evaluator.py:96）、_add（evaluator.py:103）、_arithmetic 的类型检查（evaluator.py:109）与 check_arity（builtins.py:52-62）都不带位置。按既有口径（全站点带位置 3 分，不带 2 分）判 2 分。",
+    "evidence": [
+      "errors.py:4-22",
+      "evaluator.py:46-50",
+      "evaluator.py:92-109",
+      "evaluator.py:123-128"
+    ]
+  }
+}

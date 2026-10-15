@@ -114,7 +114,7 @@ microdb\parser.py:395: in _expect_eof
     raise ParseError("unexpected token", tok.start)
 E   microdb.errors.ParseError: unexpected token
 _____________________________ test_cli_two_tables _____________________________
-_verify\test_c3.py:1285: in test_cli_two_tables
+_verify\test_c3.py:1293: in test_cli_two_tables
     assert done.returncode == 0
 E   AssertionError: assert 3 == 0
 E    +  where 3 = CompletedProcess(args=['C:\\Users\\xuefengyin\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python...wo_tables0\\r.csv', 'SELECT l.id FROM l JOIN r ON l.id = r.lid'], returncode=3, stdout='', stderr='unexpected token\n').returncode
@@ -130,4 +130,4 @@ FAILED _verify/test_c3.py::test_star_table_qualified - microdb.errors.ParseEr...
 FAILED _verify/test_c3.py::test_join_unknown_table - microdb.errors.ParseErro...
 FAILED _verify/test_c3.py::test_plan_full_pipeline_order - microdb.errors.Par...
 FAILED _verify/test_c3.py::test_cli_two_tables - AssertionError: assert 3 == 0
-10 failed, 367 passed in 7.35s
+10 failed, 367 passed in 7.43s
